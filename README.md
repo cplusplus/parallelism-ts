@@ -1,4 +1,4 @@
-parallelism_ts
+parallelism-ts
 ==============
 
 Technical Specification: Parallelism
