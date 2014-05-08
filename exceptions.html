@@ -49,4 +49,80 @@
           </ul>
         </p>
     </cxx-section>
+    <cxx-section id="parallel.exceptions.synop">
+      <pre>
+namespace std {
+namespace experimental {
+namespace parallel {
+  class exception_list : public exception
+  {
+    public:
+      typedef exception_ptr                                             value_type;
+      typedef const value_type&                                         reference;
+      typedef const value_type&                                         const_reference;
+      typedef <em>implementation-defined</em>                                    const_iterator;
+      typedef const_iterator                                            iterator;
+<ins>      typedef typename iterator_traits<const_iterator>::difference_type                 difference_type;</ins>
+      typedef size_t                                                    size_type;
+  
+<del>      size_t size() const;</del>
+<ins>      size_t size() const noexcept;</ins>
+<del>      iterator begin() const;</del>
+<ins>      iterator begin() const noexcept;</ins>
+<del>      iterator end() const;</del>
+<ins>      iterator end() const noexcept;</ins>
+  
+    private:
+      std::list&lt;exception_ptr&gt; exceptions_; // exposition only
+  };
+}
+}
+}
+      </pre>
+
+      <p>
+        The class <code>exception_list</code> is a container of <code>exception_ptr</code> objects parallel
+        algorithms may use to communicate uncaught exceptions encountered during parallel execution to the
+        caller of the algorithm.
+      </p>
+
+      <p>
+        <ins>The type <code>exception_list::const_iterator</code> shall fulfill the requirements of
+        <code>ForwardIterator</code></ins>.
+      </p>
+
+      <cxx-function>
+        <cxx-signature>
+          size_t size() const <ins>noexcept</ins>;
+        </cxx-signature>
+
+        <cxx-returns>
+          The number of <code>exception_ptr</code> objects contained within the <code>exception_list</code>.
+        </cxx-returns>
+
+        <cxx-complexity>
+          Constant time.
+        </cxx-complexity>
+      </cxx-function>
+
+      <cxx-function>
+        <cxx-signature>
+          exception_list::iterator begin() const <ins>noexcept</ins>;
+        </cxx-signature>
+
+        <cxx-returns>
+          An iterator referring to the first <code>exception_ptr</code> object contained within the <code>exception_list</code>.
+        </cxx-returns>
+      </cxx-function>
+
+      <cxx-function>
+        <cxx-signature>
+          exception_list::iterator end() const <ins>noexcept</ins>;
+        </cxx-signature>
+
+        <cxx-returns>
+          An iterator which is the past-the-end value for the <code>exception_list</code>.
+        </cxx-returns>
+      </cxx-function>
+    </cxx-section>
 </cxx-clause>
