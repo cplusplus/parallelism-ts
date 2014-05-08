@@ -1,0 +1,52 @@
+<cxx-clause id="parallel.exceptions">
+  <h1>Parallel exceptions</h1>
+    <cxx-section id="parallel.exceptions.behavior">
+      <h1>Exception reporting behavior</h1>
+        <p>
+          If temporary memory resources are required by the algorithm and none are available,
+          the algorithm throws a `std::bad_alloc` exception.
+        </p>
+        <p>
+          During the execution of a standard parallel algorithm, if the application of a function
+          object terminates with an uncaught exception, the behavior of the program is determined
+          by the type of execution policy used to invoke the algorithm:
+
+          <ul>
+            <li>
+              If the execution policy object is of type <code>vector_execution_policy</code>,
+              <code>std::terminate</code> shall be called.
+            </li>
+            <li>
+              If the execution policy object is of type <code>sequential_execution_policy</code> or
+              <code>parallel_execution_policy</code>, the execution of the algorithm terminates with an
+              <code>exception_list</code> exception. All uncaught exceptions thrown during
+              the application of user-provided function objects shall be contained in the
+              <code>exception_list</code>.
+
+              <cxx-note>
+                For example, the number of invocations of the user-provided function object in
+                <code>for_each</code> is unspecified. When <code>for_each</code> is executed sequentially,
+                only one exception will be contained in the <code>exception_list</code> object.
+              </cxx-note>
+
+              <cxx-note>
+                These guarantees imply that, unless the algorithm has failed to allocate memory and
+                terminated with <code>std::bad_alloc</code>, all exceptions thrown during the execution of
+                the algorithm are communicated to the caller. It is unspecified whether an algorithm implementation will "forge ahead" after 
+                encountering and capturing a user exception.
+              </cxx-note>
+
+              <cxx-note>
+                The algorithm may terminate with the <code>std::bad_alloc</code> exception even if one or more
+                user-provided function objects have terminated with an exception. For example, this can happen when an algorithm fails to allocate memory while
+                creating or adding elements to the <code>exception_list</code> object.
+              </cxx-note>
+            </li>
+
+            <li>
+              If the execution policy object is of any other type, the behavior is implementation-defined.
+            </li>
+          </ul>
+        </p>
+    </cxx-section>
+</cxx-clause>
