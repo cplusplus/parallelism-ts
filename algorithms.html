@@ -133,10 +133,7 @@ for_each(vec, std::begin(a), std::end(a), [&amp;](int) {
 
       <p>
         Algorithms invoked with an execution policy object of type <code>execution_policy</code>
-        execute internally as if invoked with instances of type
-        <code>sequential_execution_policy</code>, <code>parallel_execution_policy</code>, or an
-        implementation-defined execution policy type depending on the dynamic value of the
-        <code>execution_policy</code> object.
+        execute internally as if invoked with the contained execution policy object.
       </p>
 
       <p>
