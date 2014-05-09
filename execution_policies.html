@@ -193,7 +193,10 @@ std::sort(exec, sort_me.begin(), sort_me.end());</pre>
 
         <cxx-effects>Constructs an <code>execution_policy</code> object with a copy of <code>exec</code>'s state.</cxx-effects>
 
-        <cxx-requires><code>is_execution_policy&lt;T&gt;::value</code> is <code>true</code>.</cxx-requires>
+        <cxx-remarks>
+          This constructor shall not participate in overload resolution unless
+          <code>is_execution_policy&lt;T&gt;::value</code> is <code>true</code>.
+        </cxx-remarks>
       </cxx-function>
 
       <cxx-function>
@@ -203,7 +206,10 @@ std::sort(exec, sort_me.begin(), sort_me.end());</pre>
 
         <cxx-returns><code>*this</code>.
 
-        <cxx-requires><code>is_execution_policy&lt;T&gt;::value</code> is <code>true</code>.</cxx-requires>
+        <cxx-remarks>
+          This operator shall not partipate in overload resolution uless
+          <code>is_execution_policy&lt;T&gt;::value</code> is <code>true</code>.
+        </cxx-remarks>
       </cxx-function>
     </cxx-section>
 
@@ -226,7 +232,10 @@ std::sort(exec, sort_me.begin(), sort_me.end());</pre>
 
         <cxx-returns>If <code>target_type() == typeid(T)</code>, a pointer to the stored execution policy object; otherwise a null pointer.</cxx-returns>
 
-        <cxx-requires><code>is_execution_policy&lt;T&gt;</code> is <code>true</code>.</cxx-requires>
+        <cxx-remarks>
+          This function shall not participate in overload resolution unless
+          <code>is_execution_policy&lt;T&gt;</code> is <code>true</code>.
+        </cxx-remarks>
       </cxx-function>
 
     </cxx-section>

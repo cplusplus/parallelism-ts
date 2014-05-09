@@ -158,8 +158,8 @@ for_each(vec, std::begin(a), std::end(a), [&amp;](int) {
       </p>
         
       <p>
-        Parallel algorithms have the requirement <code>is_execution_policy&lt;ExecutionPolicy&gt;::value</code>
-        is <code>true</code>.
+        Parallel algorithms shall not participate in overload resolution unless
+        <code>is_execution_policy&lt;ExecutionPolicy&gt;::value</code> is <code>true</code>.
       </p>
         
       <p>The algorithms listed in <cxx-ref to="tab.parallel.algorithms"></cxx-ref> shall have <code>ExecutionPolicy</code> overloads.</p>
