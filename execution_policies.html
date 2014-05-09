@@ -90,18 +90,15 @@ namespace parallel {
     
     <p>The behavior of a program that adds specializations for <code>is_execution_policy</code> is undefined.</p>
   </cxx-section>
-  <cxx-section id="parallel.execpol.seq">
-  <h1>Sequential execution policy</h1>
 
-<pre>
+  <cxx-section id="parallel.execpol.seq">
+    <h1>Sequential execution policy</h1>
+
+    <pre>
 namespace std {
 namespace experimental {
 namespace parallel {
-<del>  class sequential_execution_policy
-  {
-    void swap(sequential_execution_policy& other);
-  };</del>
-<ins>  class sequential_execution_policy{};</ins>
+  class sequential_execution_policy{};
 }
 }
 }
@@ -109,13 +106,6 @@ namespace parallel {
 
     <p>The class <code>sequential_execution_policy</code> is an execution policy type used as a unique type to disambiguate parallel algorithm overloading and require that a parallel algorithm's execution may not be parallelized.</p>
 
-    <del>
-      <cxx-function>
-        <cxx-signature><del>void swap(sequential_execution_policy& other);</del></cxx-signature>
-
-        <cxx-effects>Swaps the state of <code>*this</code> and <code>other</code>.</cxx-effects>
-      </cxx-function>
-    </del>
   </cxx-section>
   <cxx-section id="parallel.execpol.par">
     <h1>Parallel execution policy</h1>
@@ -125,11 +115,7 @@ namespace std {
 namespace experimental {
 namespace parallel {
 
-<del>  class parallel_execution_policy
-  {
-    void swap(parallel_execution_policy& other);
-  };</del>
-<ins> class parallel_execution_policy{};</ins>
+ class parallel_execution_policy{};
 }
 }
 }
@@ -137,13 +123,6 @@ namespace parallel {
 
     <p>The class <code>parallel_execution_policy</code> is an execution policy type used as a unique type to disambiguate parallel algorithm overloading and indicate that a parallel algorithm's execution may be parallelized.</p>
 
-    <del>
-      <cxx-function>
-        <cxx-signature><del>void swap(parallel_execution_policy& other);</del></cxx-signature>
-
-        <cxx-effects>Swaps the state of <code>*this</code> and <code>other</code>.</cxx-effects>
-      </cxx-function>
-    </del>
   </cxx-section>
   <cxx-section id="parallel.execpol.vec">
     <h1>Vector execution policy</h1>
@@ -153,11 +132,7 @@ namespace std {
 namespace experimental {
 namespace parallel {
 
-<del>  class vector_execution_policy
-  {
-    void swap(vector_execution_policy& other);
-  };</del>
-<ins> class vector_execution_policy{};</ins>
+ class vector_execution_policy{};
 }
 }
 }
@@ -165,13 +140,6 @@ namespace parallel {
 
     <p>The class <code>vector_execution_policy</code> is an execution policy type used as a unique type to disambiguate parallel algorithm overloading and indicate that a parallel algorithm's execution may be vectorized.</p>
 
-    <del>
-      <cxx-function>
-        <cxx-signature><del>void swap(vector_execution_policy& other);</del></cxx-signature>
-
-        <cxx-effects>Swaps the state of <code>*this</code> and <code>other</code>.</cxx-effects>
-      </cxx-function>
-    </del>
   </cxx-section>
 
   <cxx-section id="parallel.execpol.dynamic">
@@ -186,15 +154,12 @@ namespace parallel {
   {
     public:
       <cxx-ref insynopsis="" to="parallel.execpol.con"></cxx-ref>
-      template&lt;class T&gt; execution_policy(const T& exec);
-      template&lt;class T&gt; execution_policy& operator=(const T& exec);
-<del>      void swap(execution_policy& other);</del>
+      template&lt;class T&gt; execution_policy(const T&amp; exec);
+      template&lt;class T&gt; execution_policy&amp; operator=(const T&amp; exec);
 
       <cxx-ref insynopsis="" to="parallel.execpol.access"></cxx-ref>
-<del>      template&lt;class T&gt; T* target();</del>
-<del>      template&lt;class T&gt; const T* target() const noexcept;</del>
-<ins>      template&lt;class T&gt; T* get() noexcept;</ins>
-<ins>      template&lt;class T&gt; const T* get() const noexcept;</ins>
+      template&lt;class T&gt; T* get() noexcept;
+      template&lt;class T&gt; const T* get() const noexcept;
   };
 }
 }
@@ -224,30 +189,28 @@ std::sort(exec, sort_me.begin(), sort_me.end());</pre>
       <h1><code>execution_policy</code> construct/assign</h1>
 
       <cxx-function>
-        <cxx-signature>template&lt;class T&gt; execution_policy(const T& exec);</cxx-signature>
+        <cxx-signature>template&lt;class T&gt; execution_policy(const T&amp; exec);</cxx-signature>
 
         <cxx-effects>Constructs an <code>execution_policy</code> object with a copy of <code>exec</code>'s state.</cxx-effects>
 
-        <cxx-requires><code>is_execution_policy&lt;T&gt;::value</code> is <code>true</code>.</cxx-requires>
+        <cxx-remarks>
+          This constructor shall not participate in overload resolution unless
+          <code>is_execution_policy&lt;T&gt;::value</code> is <code>true</code>.
+        </cxx-remarks>
       </cxx-function>
 
       <cxx-function>
-        <cxx-signature>template&lt;class T&gt; execution_policy& operator=(const T& exec);</cxx-signature>
+        <cxx-signature>template&lt;class T&gt; execution_policy&amp; operator=(const T&amp; exec);</cxx-signature>
 
         <cxx-effects>Assigns a copy of <code>exec</code>'s state to <code>*this</code>.</cxx-effects>
 
         <cxx-returns><code>*this</code>.
 
-        <cxx-requires><code>is_execution_policy&lt;T&gt;::value</code> is <code>true</code>.</cxx-requires>
+        <cxx-remarks>
+          This operator shall not partipate in overload resolution uless
+          <code>is_execution_policy&lt;T&gt;::value</code> is <code>true</code>.
+        </cxx-remarks>
       </cxx-function>
-
-      <del>
-        <cxx-function>
-          <cxx-signature><del>void swap(execution_policy& other);</del></cxx-signature>
-
-          <cxx-effects>Swaps the stored object of <code>*this</code> with that of <code>other</code>.</cxx-effects>
-        </cxx-function>
-      </del>
     </cxx-section>
 
     <cxx-section id="parallel.execpol.access">
@@ -255,8 +218,7 @@ std::sort(exec, sort_me.begin(), sort_me.end());</pre>
 
       <cxx-function>
         <cxx-signature>
-          <del>const type_info& target_type() const;</del>
-          <ins>const type_info& type() const noexcept;</ins>
+          const type_info&amp; type() const noexcept;
         </cxx-signature>
 
         <cxx-returns><code>typeid(T)</code>, such that <code>T</code> is the type of the execution policy object contained by <code>*this</code>.</cxx-returns>
@@ -264,38 +226,20 @@ std::sort(exec, sort_me.begin(), sort_me.end());</pre>
 
       <cxx-function>
         <cxx-signature>
-          <del>template&lt;class T&gt; T* target();</del>
-          <del>template&lt;class T&gt; const T* target() const;</del>
-          <ins>template&lt;class T&gt; T* get() noexcept;</ins>
-          <ins>template&lt;class T&gt; const T* get() noexcept;</ins>
+          template&lt;class T&gt; T* get() noexcept;
+          template&lt;class T&gt; const T* get() noexcept;
         </cxx-signature>
 
         <cxx-returns>If <code>target_type() == typeid(T)</code>, a pointer to the stored execution policy object; otherwise a null pointer.</cxx-returns>
 
-        <cxx-requires><code>is_execution_policy&lt;T&gt;</code> is <code>true</code>.</cxx-requires>
+        <cxx-remarks>
+          This function shall not participate in overload resolution unless
+          <code>is_execution_policy&lt;T&gt;</code> is <code>true</code>.
+        </cxx-remarks>
       </cxx-function>
 
     </cxx-section>
   </cxx-section>
-
-  <del>
-    <cxx-section id="parallel.execpol.algorithms">
-      <h1>Execution policy specialized algorithms</h1>
-
-      <cxx-function>
-        <cxx-signature>
-          <del>
-            void swap(sequential_execution_policy& a, sequential_execution_policy& b);
-            void swap(parallel_execution_policy& a, parallel_execution_policy& b);
-            void swap(vector_execution_policy& a, vector_execution_policy& b);
-            void swap(execution_policy& a, execution_policy& b);
-          </del>
-        </cxx-signature>
-
-        <cxx-effects><code>a.swap(b)</code>.</cxx-effects>
-      </cxx-function>
-    </cxx-section>
-  </del>
 
   <cxx-section id="parallel.execpol.objects">
     <h1>Execution policy objects</h1>

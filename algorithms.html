@@ -36,7 +36,7 @@
       <cxx-example><pre>using namespace std::experimental::parallel;
 int a[] = {0,1};
 std::vector&lt;int&gt; v;
-for_each(par, std::begin(a), std::end(a), [&](int i) {
+for_each(par, std::begin(a), std::end(a), [&amp;](int i) {
   v.push_back(i*2+1);
 });
 foo bar</pre>
@@ -66,7 +66,7 @@ using namespace std::experimental::parallel;
 int x;
 std::mutex m;
 int a[] = {1,2};
-for_each(par, std::begin(a), std::end(a), [&](int) {
+for_each(par, std::begin(a), std::end(a), [&amp;](int) {
   m.lock();
   ++x;
   m.unlock();
@@ -92,7 +92,7 @@ using namespace std::experimental::parallel;
 int x;
 std::mutex m;
 int a[] = {1,2};
-for_each(vec, std::begin(a), std::end(a), [&](int) {
+for_each(vec, std::begin(a), std::end(a), [&amp;](int) {
   m.lock();
   ++x;
   m.unlock();
@@ -133,10 +133,7 @@ for_each(vec, std::begin(a), std::end(a), [&](int) {
 
       <p>
         Algorithms invoked with an execution policy object of type <code>execution_policy</code>
-        execute internally as if invoked with instances of type
-        <code>sequential_execution_policy</code>, <code>parallel_execution_policy</code>, or an
-        implementation-defined execution policy type depending on the dynamic value of the
-        <code>execution_policy</code> object.
+        execute internally as if invoked with the contained execution policy object.
       </p>
 
       <p>
@@ -151,8 +148,8 @@ for_each(vec, std::begin(a), std::end(a), [&](int) {
       <p>
         Parallel algorithms coexist alongside their sequential counterparts as overloads
         distinguished by a formal template parameter named <code>ExecutionPolicy</code>. This
-        template parameter corresponds to the parallel algorithm's first function parameter, whose
-        type is <code>ExecutionPolicy&&</code>.
+        is the first template parameter and corresponds to the parallel algorithm's first function
+        parameter, whose type is <code>ExecutionPolicy&amp;&amp;</code>.
       </p>
         
       <p>
@@ -161,160 +158,164 @@ for_each(vec, std::begin(a), std::end(a), [&](int) {
       </p>
         
       <p>
-        Parallel algorithms have the requirement <code>is_execution_policy&lt;ExecutionPolicy&gt;::value</code>
-        is <code>true</code>.
+        Parallel algorithms shall not participate in overload resolution unless
+        <code>is_execution_policy&lt;ExecutionPolicy&gt;::value</code> is <code>true</code>.
       </p>
         
-      <p>The algorithms listed in table <cxx-ref to="tab.parallel.algorithms"></cxx-ref> shall have <code>ExecutionPolicy</code> overloads.</p>
+      <p>The algorithms listed in <cxx-ref to="tab.parallel.algorithms"></cxx-ref> shall have <code>ExecutionPolicy</code> overloads.</p>
 
       <table is="cxx-table" id="tab.parallel.algorithms" class="list">
         <caption>Table of parallel algorithms</caption>
-        <tr>
-          <td><code>adjacent_find</code></td>
-          <td><code>for_each</code></td>
-          <td><code>none_of</code></td>
-          <td><code>search</code></td>
-        </tr>
-        <tr>
-          <td><code>all_of</code></td>
-          <td><code>for_each_n</code></td>
-          <td><code>nth_element</code></td>
-          <td><code>search_n</code></td>
-        </tr>
-        <tr>
-          <td><code>any_of</code></td>
-          <td><code>generate</code></td>
-          <td><code>partial_sort</code></td>
-          <td><code>set_difference</code></td>
-        </tr>
-        <tr>
-          <td><code>copy</code></td>
-          <td><code>generate_n</code></td>
-          <td><code>partial_sort_copy</code></td>
-          <td><code>set_intersection</code></td>
-        </tr>
-        <tr>
-          <td><code>copy_if</code></td>
-          <td><code>includes</code></td>
-          <td><code>partition</code></td>
-          <td><code>set_symmetric_difference</code></td>
-        </tr>
-        <tr>
-          <td><code>copy_n</code></td>
-          <td><code>inclusive_scan</code></td>
-          <td><code>partition_copy</code></td>
-          <td><code>set_union</code></td>
-        </tr>
-        <tr>
-          <td><code>count</code></td>
-          <td><code>inplace_merge</code></td>
-          <td><code>reduce</code></td>
-          <td><code>sort</code></td>
-        </tr>
-        <tr>
-          <td><code>count_if</code></td>
-          <td><code>is_heap</code></td>
-          <td><code>remove</code></td>
-          <td><code>stable_partition</code></td>
-        </tr>
-        <tr>
-          <td><code>equal</code></td>
-          <td><code>is_partitioned</code></td>
-          <td><code>remove_copy</code></td>
-          <td><code>stable_sort</code></td>
-        </tr>
-        <tr>
-          <td><code>exclusive_scan</code></td>
-          <td><code>is_sorted</code></td>
-          <td><code>remove_copy_if</code></td>
-          <td><code>swap_ranges</code></td>
-        </tr>
-        <tr>
-          <td><code>fill</code></td>
-          <td><code>is_sorted_until</code></td>
-          <td><code>remove_if</code></td>
-          <td><code>transform</code></td>
-        </tr>
-        <tr>
-          <td><code>fill_n</code></td>
-          <td><code>lexicographical_compare</code></td>
-          <td><code>replace</code></td>
-          <td><code>uninitialized_copy</code></td>
-        </tr>
-        <tr>
-          <td><code>find</code></td>
-          <td><code>max_element</code></td>
-          <td><code>replace_copy</code></td>
-          <td><code>uninitialized_copy_n</code></td>
-        </tr>
-        <tr>
-          <td><code>find</code></td>
-          <td><code>merge</code></td>
-          <td><code>replace_copy_if</code></td>
-          <td><code>uninitialized_fill</code></td>
-        </tr>
-        <tr>
-          <td><code>find_end</code></td>
-          <td><code>min_element</code></td>
-          <td><code>reverse</code></td>
-          <td><code>uninitialized_fill_n</code></td>
-        </tr>
-        <tr>
-          <td><code>find_first_of</code></td>
-          <td><code>minmax_element</code></td>
-          <td><code>reverse_copy</code></td>
-          <td><code>unique</code></td>
-        </tr>
-        <tr>
-          <td><code>find_if</code></td>
-          <td><code>mismatch</code></td>
-          <td><code>rotate</code></td>
-          <td><code>unique_copy</code></td>
-        </tr>
-        <tr>
-          <td><code>find_if_not</code></td>
-          <td><code>move</code></td>
-          <td><code>rotate_copy</code></td>
-          <td></td>
-        </tr>
+          <tr>
+            <td>adjacent_difference</td>
+            <td>adjacent_find</td>
+            <td>all_of</td>
+            <td>any_of</td>
+          </tr>
+          <tr>
+            <td>copy</td>
+            <td>copy_if</td>
+            <td>copy_n</td>
+            <td>count</td>
+          </tr>
+          <tr>
+            <td>count_if</td>
+            <td>equal</td>
+            <td>exclusive_scan</td>
+            <td>fill</td>
+          </tr>
+          <tr>
+            <td>fill_n</td>
+            <td>find</td>
+            <td>find_end</td>
+            <td>find_first_of</td>
+          </tr>
+          <tr>
+            <td>find_if</td>
+            <td>find_if_not</td>
+            <td>for_each</td>
+            <td>for_each_n</td>
+          </tr>
+          <tr>
+            <td>generate</td>
+            <td>generate_n</td>
+            <td>includes</td>
+            <td>inclusive_scan</td>
+          </tr>
+          <tr>
+            <td>inner_product</td>
+            <td>inplace_merge</td>
+            <td>is_heap</td>
+            <td>is_heap_until</td>
+          </tr>
+          <tr>
+            <td>is_partitioned</td>
+            <td>is_sorted</td>
+            <td>is_sorted_until</td>
+            <td>lexicographical_compare</td>
+          </tr>
+          <tr>
+            <td>max_element</td>
+            <td>merge</td>
+            <td>min_element</td>
+            <td>minmax_element</td>
+          </tr>
+          <tr>
+            <td>mismatch</td>
+            <td>move</td>
+            <td>none_of</td>
+            <td>nth_element</td>
+          </tr>
+          <tr>
+            <td>partial_sort</td>
+            <td>partial_sort_copy</td>
+            <td>partition</td>
+            <td>partition_copy</td>
+          </tr>
+          <tr>
+            <td>reduce</td>
+            <td>remove</td>
+            <td>remove_copy</td>
+            <td>remove_copy_if</td>
+          </tr>
+          <tr>
+            <td>remove_if</td>
+            <td>replace</td>
+            <td>replace_copy</td>
+            <td>replace_copy_if</td>
+          </tr>
+          <tr>
+            <td>replace_if</td>
+            <td>reverse</td>
+            <td>reverse_copy</td>
+            <td>rotate</td>
+          </tr>
+          <tr>
+            <td>rotate_copy</td>
+            <td>search</td>
+            <td>search_n</td>
+            <td>set_difference</td>
+          </tr>
+          <tr>
+            <td>set_intersection</td>
+            <td>set_symmetric_difference</td>
+            <td>set_union</td>
+            <td>sort</td>
+          </tr>
+          <tr>
+            <td>stable_partition</td>
+            <td>stable_sort</td>
+            <td>swap_ranges</td>
+            <td>transform</td>
+          </tr>
+          <tr>
+            <td>uninitialized_copy</td>
+            <td>uninitialized_copy_n</td>
+            <td>uninitialized_fill</td>
+            <td>uninitialized_fill_n</td>
+          </tr>
+          <tr>
+            <td>unique</td>
+            <td>unique_copy</td>
+            <td></td>
+            <td></td>
+          </tr>
       </table>
     </cxx-section>
   </cxx-section>
 
   <cxx-section id="parallel.alg.defns">
-    <ins>
-      <h1>Definitions</h1>
+    <h1>Definitions</h1>
 
-      <p>
-        Define <code><em>GENERALIZED_SUM</em>(op, a1, ..., aN)</code> as follows:
+    <p>
+      Define <code><em>GENERALIZED_SUM</em>(op, a1, ..., aN)</code> as follows:
 
-        <ul>
-          <li><code>a1</code> when <code>N</code> is <code>1</code></li>
-        
-          <li>
-            <code>op(<em>GENERALIZED_SUM</em>(op, b1, ..., bM)</code>, <code><em>GENERALIZED_SUM</em>(op, bM, ..., bN))</code> where
-             
-            <ul>
-              <li><code>b1, ..., bN</code> may be any permutation of <code>a1, ..., aN</code> and</li>
+      <ul>
+        <li><code>a1</code> when <code>N</code> is <code>1</code></li>
+      
+        <li>
+          <code>op(<em>GENERALIZED_SUM</em>(op, b1, ..., bM)</code>, <code><em>GENERALIZED_SUM</em>(op, bM, ..., bN))</code> where
+           
+          <ul>
+            <li><code>b1, ..., bN</code> may be any permutation of <code>a1, ..., aN</code> and</li>
 
-              <li><code>0 < M &lt; N</code>.</li>
-            </ul>
-          </li>
-        </ul>
-      </p>
+            <li><code>0 &lt; M &lt; N</code>.</li>
+          </ul>
+        </li>
+      </ul>
+    </p>
 
-      <p>
-        Define <code><em>GENERALIZED_NONCOMMUTATIVE_SUM</em>(op, a1, ..., aN)</code> as follows:
+    <p>
+      Define <code><em>GENERALIZED_NONCOMMUTATIVE_SUM</em>(op, a1, ..., aN)</code> as follows:
 
-        <ul>
-          <li><code>a1</code> when <code>N</code> is <code>1</code></li>
+      <ul>
+        <li><code>a1</code> when <code>N</code> is <code>1</code></li>
 
-          <li>
-            <code>op(<em>GENERALIZED_NONCOMMUTATIVE_SUM</em>(op, a1, ..., aM), <em>GENERALIZED_NONCOMMUTATIVE_SUM</em>(op, aM, ..., aN)</code> where <code>0 &lt; M &lt; N</code>.
-          </li>
-        </ul>
-      </p>
-    </ins>
+        <li>
+          <code>op(<em>GENERALIZED_NONCOMMUTATIVE_SUM</em>(op, a1, ..., aM), <em>GENERALIZED_NONCOMMUTATIVE_SUM</em>(op, aM, ..., aN)</code> where <code>0 &lt; M &lt; N</code>.
+        </li>
+      </ul>
+    </p>
   </cxx-section>
 
   <cxx-section id="parallel.alg.novel">
@@ -331,21 +332,12 @@ namespace experimental {
 namespace parallel {
   template&lt;class ExecutionPolicy,
            class InputIterator, class Function&gt;
-<del>    InputIterator for_each(ExecutionPolicy&& exec,</del>
-<del>                           InputIterator first, InputIterator last,</del>
-<del>                           Function f);</del>
-<ins>    void for_each(ExecutionPolicy&& exec,</ins>
-<ins>                  InputIterator first, InputIterator last,</ins>
-<ins>                  Function f);</ins>
+    void for_each(ExecutionPolicy&amp;&amp; exec,
+                  InputIterator first, InputIterator last,
+                  Function f);
   template&lt;class InputIterator, class Size, class Function&gt;
-<del>    Function for_each_n(InputIterator first, Size n,</del>
-<del>                        Function f);</del>
-<ins>    InputIterator for_each_n(InputIterator first, Size n,</ins>
-<ins>                             Function f);</ins>
-<del>  template&lt;class ExecutionPolicy,</del>
-<del>           class InputIterator, class Size, class Function&gt;</del>
-<del>    InputIterator for_each_n(ExecutionPolicy&& exec, InputIterator first, Size n,</del>
-<del>                             Function f);</del>
+    InputIterator for_each_n(InputIterator first, Size n,
+                             Function f);
 }
 }
 }
@@ -359,12 +351,9 @@ namespace parallel {
         <cxx-signature>
           template&lt;class ExecutionPolicy,
                    class InputIterator, class Function&gt;
-          <del>  InputIterator for_each(ExecutionPolicy&& exec,</del>
-          <del>                         InputIterator first, InputIterator last,</del>
-          <del>                         Function f);</del>
-          <ins>  void for_each(ExecutionPolicy&& exec,</ins>
-          <ins>                InputIterator first, InputIterator last,</ins>
-          <ins>                Function f);</ins>
+            void for_each(ExecutionPolicy&amp;&amp; exec,
+                          InputIterator first, InputIterator last,
+                          Function f);
         </cxx-signature>
 
         <cxx-effects>
@@ -376,12 +365,6 @@ namespace parallel {
           </cxx-note>
         </cxx-effects>
 
-        <del>
-          <cxx-returns>
-            <code>first + (last - first)</code>.
-          </cxx-returns>
-        </del>
-
         <cxx-complexity>
           Applies <code>f</code> exactly <code>last - first</code> times.
         </cxx-complexity>
@@ -390,20 +373,18 @@ namespace parallel {
           If <code>f</code> returns a result, the result is ignored.
         </cxx-remarks>
 
-        <cxx-note>
+        <cxx-notes>
           Unlike its sequential form, the parallel overload of <code>for_each</code> does not return a copy of
           its <code>Function</code> parameter, since parallelization may not permit efficient state
           accumulation.
-        </cxx-note>
+        </cxx-notes>
       </cxx-function>
 
       <cxx-function>
         <cxx-signature>
           template&lt;class InputIterator, class Size, class Function&gt;
-          <del>  Function for_each_n(InputIterator first, Size n,</del>
-          <del>                      Function f);</del>
-          <ins>  InputIterator for_each_n(InputIterator first, Size n,</ins>
-          <ins>                           Function f);</ins>
+            InputIterator for_each_n(InputIterator first, Size n,
+                                     Function f);
         </cxx-signature>
 
         <cxx-requires>
@@ -425,7 +406,7 @@ namespace parallel {
         </cxx-effects>
 
         <cxx-returns>
-          <del><code>std::move(f)</code></del><ins><code>first + n</code></ins>.
+          <code>first + n</code> for non-negative values of <code>n</code> and <code>first</code> for negative values.
         </cxx-returns>
 
         <cxx-remarks>
@@ -433,48 +414,38 @@ namespace parallel {
         </cxx-remarks>
       </cxx-function>
 
-      <del>
-        <cxx-function>
-          <cxx-signature>
-              template&lt;class ExecutionPolicy,
-                       class InputIterator, class Size, class Function&gt;
-                InputIterator for_each_n(ExecutionPolicy&& exec,
-                                         InputIterator first, Size n,
-                                         Function f);
-          </cxx-signature>
+      <cxx-function>
+        <cxx-signature>
+        template&lt;class ExecutionPolicy,
+                 class InputIterator, class Size, class Function&gt;
+                 InputIterator for_each_n(ExecutionPolicy &amp;&amp; exec,
+                                          InputIterator first, Size n,
+                                          Function f);
+        </cxx-signature>
 
-          <cxx-requires>
-            <code>Function</code> shall meet the requirements of <code>MoveConstructible</code>.
-              
-            <cxx-note>
-              <code>Function</code> need not meet the requirements of <code>CopyConstructible</code>.
-            </cxx-note>
-          </cxx-requires>
+        <cxx-effects>
+          Applies <code>f</code> to the result of dereferencing every iterator in the range
+          <code>[first,first + n)</code>, starting from <code>first</code> and proceeding to <code>first + n - 1</code>.
 
-          <cxx-effects>
-            Applies <code>f</code> to the result of dereferencing every iterator in the range
-            <code>[first,first + n)</code>, starting from <code>first</code> and proceeding to
-            <code>first + n - 1</code>.
+          <cxx-note>
+            If the type of <code>first</code> satisfies the requirements of a mutable iterator,
+            <code>f</code> may apply nonconstant functions through the dereferenced iterator.
+          </cxx-note>
+        </cxx-effects>
 
-            <cxx-note>
-              If the type of <code>first</code> satisfies the requirements of a mutable iterator,
-              <code>f</code> may apply nonconstant functions through the dereferenced iterator.
-            </cxx-note>
-          </cxx-effects>
+        <cxx-returns>
+          <code>first + n</code> for non-negative values of <code>n</code> and <code>first</code> for negative values.
+        </cxx-returns>
 
-          <cxx-returns>
-            <code>first + n</code>.
-          </cxx-returns>
+        <cxx-remarks>
+          If <code>f</code> returns a result, the result is ignored.
+        </cxx-remarks>
 
-          <cxx-complexity>
-            Applies <code>f</code> exactly <code>n</code> times.
-          </cxx-complexity>
-
-          <cxx-remarks>
-            If <code>f</code> returns a result, the result is ignored.
-          </cxx-remarks>
-        </cxx-function>
-      </del>
+        <cxx-notes>
+          Unlike its sequential form, the parallel overload of <code>for_each_n</code> does not require
+          <code>Function</code> to meet the requirements of <code>MoveConstructible</code>.
+        </cxx-notes>
+      </cxx-function>
     </cxx-section>
 
     <cxx-section id="parallel.alg.novel.numeric.synop">
@@ -543,11 +514,11 @@ namespace parallel {
         </cxx-signature>
 
         <cxx-returns>
-          <code>reduce(first, last, typename iterator_traits&lt;InputIterator&gt;::value_type<del>(0)</del><ins>{}</ins>)</code>
+          <code>reduce(first, last, typename iterator_traits&lt;InputIterator&gt;::value_type{})</code>
         </cxx-returns>
 
         <cxx-requires>
-          <code>typename iterator_traits&lt;InputIterator&gt;::value_type<del>(0)</del><ins>{}</ins></code>
+          <code>typename iterator_traits&lt;InputIterator&gt;::value_type{}</code>
           shall be a valid expression. The <code>operator+</code> function associated with
           <code>iterator_traits&lt;InputIterator&gt;::value_type</code> shall not invalidate iterators or
           subranges, nor modify elements in the range <code>[first,last)</code>.
@@ -557,11 +528,11 @@ namespace parallel {
           O(<code>last - first</code>) applications of <code>operator+</code>.
         </cxx-complexity>
 
-        <cxx-note>
+        <cxx-notes>
           The primary difference between <code>reduce</code> and <code>accumulate</code> is that the behavior
           of <code>reduce</code> may be non-deterministic for non-associative or non-commutative
           <code>operator+</code>.
-        </cxx-note>
+        </cxx-notes>
       </cxx-function>
 
       <cxx-function>
@@ -583,10 +554,10 @@ namespace parallel {
           O(<code>last - first</code>) applications of <code>operator+</code>.
         </cxx-complexity>
 
-        <cxx-note>
+        <cxx-notes>
           The primary difference between <code>reduce</code> and <code>accumulate</code> is that the behavior
           of <code>reduce</code> may be non-deterministic for non-associative or non-commutative <code>operator+</code>.
-        </cxx-note>
+        </cxx-notes>
       </cxx-function>
 
       <cxx-function>
@@ -609,10 +580,10 @@ namespace parallel {
           O(<code>last - first</code>) applications of <code>binary_op</code>.
         </cxx-complexity>
 
-        <cxx-note>
+        <cxx-notes>
           The primary difference between <code>reduce</code> and <code>accumulate</code> is that the behavior
-          of <code>reduce</code> may be non-deterministic for non-associative or non-commutative <code>operator+</code>.
-        </cxx-note>
+          of <code>reduce</code> may be non-deterministic for non-associative or non-commutative <code>binary_op</code>.
+        </cxx-notes>
       </cxx-function>
     </cxx-section>
 
@@ -630,7 +601,7 @@ namespace parallel {
         </cxx-signature>
 
         <cxx-returns>
-          <code>exclusive_scan(first, last, result, init, plus<>())</code>
+          <code>exclusive_scan(first, last, result, init, plus&lt;&gt;())</code>
         </cxx-returns>
 
         <cxx-requires>
