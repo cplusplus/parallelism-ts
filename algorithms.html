@@ -405,9 +405,46 @@ namespace parallel {
           </cxx-note>
         </cxx-effects>
 
+        <cxx-returns>
+          <code>first + n</code>.
+        </cxx-returns>
+
         <cxx-remarks>
           If <code>f</code> returns a result, the result is ignored.
         </cxx-remarks>
+      </cxx-function>
+
+      <cxx-function>
+        <cxx-signature>
+        template&lt;class ExecutionPolicy,
+                 class InputIterator, class Size, class Function&gt;
+                 InputIterator for_each_n(ExecutionPolicy &amp;&amp; exec,
+                                          InputIterator first, Size n,
+                                          Function f);
+        </cxx-signature>
+
+        <cxx-effects>
+          Applies <code>f</code> to the result of dereferencing every iterator in the range
+          <code>[first,first + n)</code>, starting from <code>first</code> and proceeding to <code>first + n - 1</code>.
+
+          <cxx-note>
+            If the type of <code>first</code> satisfies the requirements of a mutable iterator,
+            <code>f</code> may apply nonconstant functions through the dereferenced iterator.
+          </cxx-note>
+        </cxx-effects>
+
+        <cxx-returns>
+          <code>first + n</code>.
+        </cxx-returns>
+
+        <cxx-remarks>
+          If <code>f</code> returns a result, the result is ignored.
+        </cxx-remarks>
+
+        <cxx-notes>
+          Unlike its sequential form, the parallel overload of <code>for_each_n</code> does not require
+          <code>Function</code> to meet the requirements of <code>MoveConstructible</code>.
+        </cxx-notes>
       </cxx-function>
     </cxx-section>
 
