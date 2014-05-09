@@ -58,8 +58,8 @@ namespace parallel {
   {
     public:
       typedef exception_ptr                                             value_type;
-      typedef const value_type&                                         reference;
-      typedef const value_type&                                         const_reference;
+      typedef const value_type&amp;                                         reference;
+      typedef const value_type&amp;                                         const_reference;
       typedef <em>implementation-defined</em>                                    const_iterator;
       typedef const_iterator                                            iterator;
       typedef typename iterator_traits<const_iterator>::difference_type                 difference_type;

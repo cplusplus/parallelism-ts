@@ -36,7 +36,7 @@
       <cxx-example><pre>using namespace std::experimental::parallel;
 int a[] = {0,1};
 std::vector&lt;int&gt; v;
-for_each(par, std::begin(a), std::end(a), [&](int i) {
+for_each(par, std::begin(a), std::end(a), [&amp;](int i) {
   v.push_back(i*2+1);
 });
 foo bar</pre>
@@ -66,7 +66,7 @@ using namespace std::experimental::parallel;
 int x;
 std::mutex m;
 int a[] = {1,2};
-for_each(par, std::begin(a), std::end(a), [&](int) {
+for_each(par, std::begin(a), std::end(a), [&amp;](int) {
   m.lock();
   ++x;
   m.unlock();
@@ -92,7 +92,7 @@ using namespace std::experimental::parallel;
 int x;
 std::mutex m;
 int a[] = {1,2};
-for_each(vec, std::begin(a), std::end(a), [&](int) {
+for_each(vec, std::begin(a), std::end(a), [&amp;](int) {
   m.lock();
   ++x;
   m.unlock();
@@ -152,7 +152,7 @@ for_each(vec, std::begin(a), std::end(a), [&](int) {
         Parallel algorithms coexist alongside their sequential counterparts as overloads
         distinguished by a formal template parameter named <code>ExecutionPolicy</code>. This
         template parameter corresponds to the parallel algorithm's first function parameter, whose
-        type is <code>ExecutionPolicy&&</code>.
+        type is <code>ExecutionPolicy&amp;&amp;</code>.
       </p>
         
       <p>
@@ -329,7 +329,7 @@ namespace experimental {
 namespace parallel {
   template&lt;class ExecutionPolicy,
            class InputIterator, class Function&gt;
-    void for_each(ExecutionPolicy&& exec,
+    void for_each(ExecutionPolicy&amp;&amp; exec,
                   InputIterator first, InputIterator last,
                   Function f);
   template&lt;class InputIterator, class Size, class Function&gt;
@@ -348,7 +348,7 @@ namespace parallel {
         <cxx-signature>
           template&lt;class ExecutionPolicy,
                    class InputIterator, class Function&gt;
-            void for_each(ExecutionPolicy&& exec,
+            void for_each(ExecutionPolicy&amp;&amp; exec,
                           InputIterator first, InputIterator last,
                           Function f);
         </cxx-signature>
