@@ -282,39 +282,37 @@ for_each(vec, std::begin(a), std::end(a), [&](int) {
   </cxx-section>
 
   <cxx-section id="parallel.alg.defns">
-    <ins>
-      <h1>Definitions</h1>
+    <h1>Definitions</h1>
 
-      <p>
-        Define <code><em>GENERALIZED_SUM</em>(op, a1, ..., aN)</code> as follows:
+    <p>
+      Define <code><em>GENERALIZED_SUM</em>(op, a1, ..., aN)</code> as follows:
 
-        <ul>
-          <li><code>a1</code> when <code>N</code> is <code>1</code></li>
-        
-          <li>
-            <code>op(<em>GENERALIZED_SUM</em>(op, b1, ..., bM)</code>, <code><em>GENERALIZED_SUM</em>(op, bM, ..., bN))</code> where
-             
-            <ul>
-              <li><code>b1, ..., bN</code> may be any permutation of <code>a1, ..., aN</code> and</li>
+      <ul>
+        <li><code>a1</code> when <code>N</code> is <code>1</code></li>
+      
+        <li>
+          <code>op(<em>GENERALIZED_SUM</em>(op, b1, ..., bM)</code>, <code><em>GENERALIZED_SUM</em>(op, bM, ..., bN))</code> where
+           
+          <ul>
+            <li><code>b1, ..., bN</code> may be any permutation of <code>a1, ..., aN</code> and</li>
 
-              <li><code>0 < M &lt; N</code>.</li>
-            </ul>
-          </li>
-        </ul>
-      </p>
+            <li><code>0 &lt; M &lt; N</code>.</li>
+          </ul>
+        </li>
+      </ul>
+    </p>
 
-      <p>
-        Define <code><em>GENERALIZED_NONCOMMUTATIVE_SUM</em>(op, a1, ..., aN)</code> as follows:
+    <p>
+      Define <code><em>GENERALIZED_NONCOMMUTATIVE_SUM</em>(op, a1, ..., aN)</code> as follows:
 
-        <ul>
-          <li><code>a1</code> when <code>N</code> is <code>1</code></li>
+      <ul>
+        <li><code>a1</code> when <code>N</code> is <code>1</code></li>
 
-          <li>
-            <code>op(<em>GENERALIZED_NONCOMMUTATIVE_SUM</em>(op, a1, ..., aM), <em>GENERALIZED_NONCOMMUTATIVE_SUM</em>(op, aM, ..., aN)</code> where <code>0 &lt; M &lt; N</code>.
-          </li>
-        </ul>
-      </p>
-    </ins>
+        <li>
+          <code>op(<em>GENERALIZED_NONCOMMUTATIVE_SUM</em>(op, a1, ..., aM), <em>GENERALIZED_NONCOMMUTATIVE_SUM</em>(op, aM, ..., aN)</code> where <code>0 &lt; M &lt; N</code>.
+        </li>
+      </ul>
+    </p>
   </cxx-section>
 
   <cxx-section id="parallel.alg.novel">
@@ -331,21 +329,12 @@ namespace experimental {
 namespace parallel {
   template&lt;class ExecutionPolicy,
            class InputIterator, class Function&gt;
-<del>    InputIterator for_each(ExecutionPolicy&& exec,</del>
-<del>                           InputIterator first, InputIterator last,</del>
-<del>                           Function f);</del>
-<ins>    void for_each(ExecutionPolicy&& exec,</ins>
-<ins>                  InputIterator first, InputIterator last,</ins>
-<ins>                  Function f);</ins>
+    void for_each(ExecutionPolicy&& exec,
+                  InputIterator first, InputIterator last,
+                  Function f);
   template&lt;class InputIterator, class Size, class Function&gt;
-<del>    Function for_each_n(InputIterator first, Size n,</del>
-<del>                        Function f);</del>
-<ins>    InputIterator for_each_n(InputIterator first, Size n,</ins>
-<ins>                             Function f);</ins>
-<del>  template&lt;class ExecutionPolicy,</del>
-<del>           class InputIterator, class Size, class Function&gt;</del>
-<del>    InputIterator for_each_n(ExecutionPolicy&& exec, InputIterator first, Size n,</del>
-<del>                             Function f);</del>
+    InputIterator for_each_n(InputIterator first, Size n,
+                             Function f);
 }
 }
 }
@@ -359,12 +348,9 @@ namespace parallel {
         <cxx-signature>
           template&lt;class ExecutionPolicy,
                    class InputIterator, class Function&gt;
-          <del>  InputIterator for_each(ExecutionPolicy&& exec,</del>
-          <del>                         InputIterator first, InputIterator last,</del>
-          <del>                         Function f);</del>
-          <ins>  void for_each(ExecutionPolicy&& exec,</ins>
-          <ins>                InputIterator first, InputIterator last,</ins>
-          <ins>                Function f);</ins>
+            void for_each(ExecutionPolicy&& exec,
+                          InputIterator first, InputIterator last,
+                          Function f);
         </cxx-signature>
 
         <cxx-effects>
@@ -375,12 +361,6 @@ namespace parallel {
             apply nonconstant functions through the dereferenced iterator.
           </cxx-note>
         </cxx-effects>
-
-        <del>
-          <cxx-returns>
-            <code>first + (last - first)</code>.
-          </cxx-returns>
-        </del>
 
         <cxx-complexity>
           Applies <code>f</code> exactly <code>last - first</code> times.
@@ -400,10 +380,8 @@ namespace parallel {
       <cxx-function>
         <cxx-signature>
           template&lt;class InputIterator, class Size, class Function&gt;
-          <del>  Function for_each_n(InputIterator first, Size n,</del>
-          <del>                      Function f);</del>
-          <ins>  InputIterator for_each_n(InputIterator first, Size n,</ins>
-          <ins>                           Function f);</ins>
+            InputIterator for_each_n(InputIterator first, Size n,
+                                     Function f);
         </cxx-signature>
 
         <cxx-requires>
@@ -424,57 +402,10 @@ namespace parallel {
           </cxx-note>
         </cxx-effects>
 
-        <cxx-returns>
-          <del><code>std::move(f)</code></del><ins><code>first + n</code></ins>.
-        </cxx-returns>
-
         <cxx-remarks>
           If <code>f</code> returns a result, the result is ignored.
         </cxx-remarks>
       </cxx-function>
-
-      <del>
-        <cxx-function>
-          <cxx-signature>
-              template&lt;class ExecutionPolicy,
-                       class InputIterator, class Size, class Function&gt;
-                InputIterator for_each_n(ExecutionPolicy&& exec,
-                                         InputIterator first, Size n,
-                                         Function f);
-          </cxx-signature>
-
-          <cxx-requires>
-            <code>Function</code> shall meet the requirements of <code>MoveConstructible</code>.
-              
-            <cxx-note>
-              <code>Function</code> need not meet the requirements of <code>CopyConstructible</code>.
-            </cxx-note>
-          </cxx-requires>
-
-          <cxx-effects>
-            Applies <code>f</code> to the result of dereferencing every iterator in the range
-            <code>[first,first + n)</code>, starting from <code>first</code> and proceeding to
-            <code>first + n - 1</code>.
-
-            <cxx-note>
-              If the type of <code>first</code> satisfies the requirements of a mutable iterator,
-              <code>f</code> may apply nonconstant functions through the dereferenced iterator.
-            </cxx-note>
-          </cxx-effects>
-
-          <cxx-returns>
-            <code>first + n</code>.
-          </cxx-returns>
-
-          <cxx-complexity>
-            Applies <code>f</code> exactly <code>n</code> times.
-          </cxx-complexity>
-
-          <cxx-remarks>
-            If <code>f</code> returns a result, the result is ignored.
-          </cxx-remarks>
-        </cxx-function>
-      </del>
     </cxx-section>
 
     <cxx-section id="parallel.alg.novel.numeric.synop">
@@ -543,11 +474,11 @@ namespace parallel {
         </cxx-signature>
 
         <cxx-returns>
-          <code>reduce(first, last, typename iterator_traits&lt;InputIterator&gt;::value_type<del>(0)</del><ins>{}</ins>)</code>
+          <code>reduce(first, last, typename iterator_traits&lt;InputIterator&gt;::value_type{})</code>
         </cxx-returns>
 
         <cxx-requires>
-          <code>typename iterator_traits&lt;InputIterator&gt;::value_type<del>(0)</del><ins>{}</ins></code>
+          <code>typename iterator_traits&lt;InputIterator&gt;::value_type{}</code>
           shall be a valid expression. The <code>operator+</code> function associated with
           <code>iterator_traits&lt;InputIterator&gt;::value_type</code> shall not invalidate iterators or
           subranges, nor modify elements in the range <code>[first,last)</code>.
@@ -630,7 +561,7 @@ namespace parallel {
         </cxx-signature>
 
         <cxx-returns>
-          <code>exclusive_scan(first, last, result, init, plus<>())</code>
+          <code>exclusive_scan(first, last, result, init, plus&lt;&gt;())</code>
         </cxx-returns>
 
         <cxx-requires>
