@@ -377,6 +377,10 @@ namespace parallel {
           Unlike its sequential form, the parallel overload of <code>for_each</code> does not return a copy of
           its <code>Function</code> parameter, since parallelization may not permit efficient state
           accumulation.
+
+          Unlike its sequential form, the parallel overload of <code>for_each</code> requires
+          <code>Function</code> to meet the requirements of <code>CopyConstructible</code>, but not
+          <code>MoveConstructible</code>.
         </cxx-notes>
       </cxx-function>
 
@@ -442,8 +446,9 @@ namespace parallel {
         </cxx-remarks>
 
         <cxx-notes>
-          Unlike its sequential form, the parallel overload of <code>for_each_n</code> does not require
-          <code>Function</code> to meet the requirements of <code>MoveConstructible</code>.
+          Unlike its sequential form, the parallel overload of <code>for_each_n</code> requires
+          <code>Function</code> to meet the requirements of <code>CopyConstructible</code>, but not
+          <code>MoveConstructible</code>.
         </cxx-notes>
       </cxx-function>
     </cxx-section>

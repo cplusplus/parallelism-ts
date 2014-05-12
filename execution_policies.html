@@ -172,7 +172,8 @@ namespace parallel {
     <cxx-example>
       <pre>std::vector&lt;float&gt; sort_me = ...
         
-std::execution_policy exec = std::seq;
+using namespace std::experimental::parallel;
+execution_policy exec = seq;
 
 if(sort_me.size() &gt; threshold)
 {
