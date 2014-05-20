@@ -172,8 +172,8 @@ namespace parallel {
     <cxx-example>
       <pre>std::vector&lt;float&gt; sort_me = ...
         
-using namespace std::experimental::parallel;
-execution_policy exec = seq;
+<ins>using namespace std::experimental::parallel;</ins>
+<del><code>std::</code></del>execution_policy exec = <del><code>std::</code></del>seq;
 
 if(sort_me.size() &gt; threshold)
 {
@@ -194,10 +194,17 @@ std::sort(exec, sort_me.begin(), sort_me.end());</pre>
 
         <cxx-effects>Constructs an <code>execution_policy</code> object with a copy of <code>exec</code>'s state.</cxx-effects>
 
-        <cxx-remarks>
-          This constructor shall not participate in overload resolution unless
-          <code>is_execution_policy&lt;T&gt;::value</code> is <code>true</code>.
-        </cxx-remarks>
+        <del>
+          <cxx-requires>
+            <code>is_execution_policy&lt;T&gt;::value</code> is <code>true</code>.
+          </cxx-requires>
+        </del>
+        <ins>
+          <cxx-remarks>
+            This constructor shall not participate in overload resolution unless
+            <code>is_execution_policy&lt;T&gt;::value</code> is <code>true</code>.
+          </cxx-remarks>
+        </ins>
       </cxx-function>
 
       <cxx-function>
@@ -207,10 +214,17 @@ std::sort(exec, sort_me.begin(), sort_me.end());</pre>
 
         <cxx-returns><code>*this</code>.
 
-        <cxx-remarks>
-          This operator shall not partipate in overload resolution unless
-          <code>is_execution_policy&lt;T&gt;::value</code> is <code>true</code>.
-        </cxx-remarks>
+        <del>
+          <cxx-requires>
+            <code>is_execution_policy&lt;T&gt;::value</code> is <code>true</code>.
+          </cxx-requires>
+        </del>
+        <ins>
+          <cxx-remarks>
+            This operator shall not partipate in overload resolution unless
+            <code>is_execution_policy&lt;T&gt;::value</code> is <code>true</code>.
+          </cxx-remarks>
+        </ins>
       </cxx-function>
     </cxx-section>
 
@@ -233,10 +247,17 @@ std::sort(exec, sort_me.begin(), sort_me.end());</pre>
 
         <cxx-returns>If <code>target_type() == typeid(T)</code>, a pointer to the stored execution policy object; otherwise a null pointer.</cxx-returns>
 
-        <cxx-remarks>
-          This function shall not participate in overload resolution unless
-          <code>is_execution_policy&lt;T&gt;</code> is <code>true</code>.
-        </cxx-remarks>
+        <del>
+          <cxx-requires>
+            <code>is_execution_policy&lt;T&gt;::value</code> is <code>true</code>.
+          </cxx-requires>
+        </del>
+        <ins>
+          <cxx-remarks>
+            This function shall not participate in overload resolution unless
+            <code>is_execution_policy&lt;T&gt;</code> is <code>true</code>.
+          </cxx-remarks>
+        </ins>
       </cxx-function>
 
     </cxx-section>
