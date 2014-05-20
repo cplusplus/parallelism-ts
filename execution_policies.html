@@ -12,18 +12,22 @@
     <pre>std::vector&lt;int&gt; v = ...
 
 // standard sequential sort
-std::sort(vec.begin(), vec.end());                  
+<del>std::sort(vec.begin(), vec.end());</del>
+<ins>std::sort(std::begin(vec), std::end(vec));</ins>
 
 using namespace std::experimental::parallel;
 
 // explicitly sequential sort
-sort(seq, v.begin(), v.end());        
+<del>sort(seq, v.begin(), v.end());</del>
+<ins>sort(seq, std::begin(v), std::end(v));</ins>
 
 // permitting parallel execution
-sort(par, v.begin(), v.end());        
+<del>sort(par, v.begin(), v.end());</del>
+<ins>sort(par, std::begin(v), std::end(v));</ins>
 
 // permitting vectorization as well
-sort(vec, v.begin(), v.end());
+<del>sort(vec, v.begin(), v.end());</del>
+<ins>sort(vec, std::begin(v), std::end(v));</ins>
 
 // sort with dynamically-selected execution
 size_t threshold = ...
@@ -33,7 +37,8 @@ if(v.size() &gt; threshold)
   exec = par;
 }
 
-sort(exec, v.begin(), v.end());</pre>
+<del>sort(exec, v.begin(), v.end());</del>
+<ins>sort(exec, std::begin(v), std::end(v));</ins></pre>
     </cxx-example><pre>
 </pre> 
     <cxx-note>
@@ -180,7 +185,8 @@ if(sort_me.size() &gt; threshold)
   exec = std::par;
 }
  
-std::sort(exec, sort_me.begin(), sort_me.end());</pre>
+<del>std::sort(exec, sort_me.begin(), sort_me.end());</del>
+<ins>std::sort(exec, std::begin(sort_me), std::end(sort_me));</ins></pre>
     </cxx-example>
 
     <p>Objects of type <code>execution_policy</code> shall be constructible and assignable from objects of
