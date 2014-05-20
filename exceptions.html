@@ -21,21 +21,23 @@
               <code>parallel_execution_policy</code>, the execution of the algorithm terminates with an
               <code>exception_list</code> exception. All uncaught exceptions thrown during
               the application of user-provided function objects shall be contained in the
-              <code>exception_list</code>.
+              <code>exception_list</code>.<pre>
+</pre>
 
               <cxx-note>
                 For example, the number of invocations of the user-provided function object in
                 <code>for_each</code> is unspecified. When <code>for_each</code> is executed sequentially,
                 only one exception will be contained in the <code>exception_list</code> object.
-              </cxx-note>
+              </cxx-note><pre>
+</pre>
 
               <cxx-note>
                 These guarantees imply that, unless the algorithm has failed to allocate memory and
                 terminated with <code>std::bad_alloc</code>, all exceptions thrown during the execution of
                 the algorithm are communicated to the caller. It is unspecified whether an algorithm implementation will "forge ahead" after 
                 encountering and capturing a user exception.
-              </cxx-note>
-
+              </cxx-note><pre>
+</pre>
               <cxx-note>
                 The algorithm may terminate with the <code>std::bad_alloc</code> exception even if one or more
                 user-provided function objects have terminated with an exception. For example, this can happen when an algorithm fails to allocate memory while
@@ -50,6 +52,7 @@
         </p>
     </cxx-section>
     <cxx-section id="parallel.exceptions.synop">
+      <h1>Header <code>&lt;experimental/exception_list&gt;</code> synopsis</h1>
       <pre>
 namespace std {
 namespace experimental {
