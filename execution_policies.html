@@ -12,18 +12,22 @@
     <pre>std::vector&lt;int&gt; v = ...
 
 // standard sequential sort
-std::sort(vec.begin(), vec.end());                  
+<del>std::sort(vec.begin(), vec.end());</del>
+<ins>std::sort(std::begin(vec), std::end(vec));</ins>
 
 using namespace std::experimental::parallel;
 
 // explicitly sequential sort
-sort(seq, v.begin(), v.end());        
+<del>sort(seq, v.begin(), v.end());</del>
+<ins>sort(seq, std::begin(v), std::end(v));</ins>
 
 // permitting parallel execution
-sort(par, v.begin(), v.end());        
+<del>sort(par, v.begin(), v.end());</del>
+<ins>sort(par, std::begin(v), std::end(v));</ins>
 
 // permitting vectorization as well
-sort(vec, v.begin(), v.end());
+<del>sort(vec, v.begin(), v.end());</del>
+<ins>sort(vec, std::begin(v), std::end(v));</ins>
 
 // sort with dynamically-selected execution
 size_t threshold = ...
@@ -33,7 +37,8 @@ if(v.size() &gt; threshold)
   exec = par;
 }
 
-sort(exec, v.begin(), v.end());</pre>
+<del>sort(exec, v.begin(), v.end());</del>
+<ins>sort(exec, std::begin(v), std::end(v));</ins></pre>
     </cxx-example><pre>
 </pre> 
     <cxx-note>
@@ -172,15 +177,16 @@ namespace parallel {
     <cxx-example>
       <pre>std::vector&lt;float&gt; sort_me = ...
         
-using namespace std::experimental::parallel;
-execution_policy exec = seq;
+<ins>using namespace std::experimental::parallel;</ins>
+<del><code>std::</code></del>execution_policy exec = <del><code>std::</code></del>seq;
 
 if(sort_me.size() &gt; threshold)
 {
   exec = std::par;
 }
  
-std::sort(exec, sort_me.begin(), sort_me.end());</pre>
+<del>std::sort(exec, sort_me.begin(), sort_me.end());</del>
+<ins>std::sort(exec, std::begin(sort_me), std::end(sort_me));</ins></pre>
     </cxx-example>
 
     <p>Objects of type <code>execution_policy</code> shall be constructible and assignable from objects of
@@ -194,10 +200,17 @@ std::sort(exec, sort_me.begin(), sort_me.end());</pre>
 
         <cxx-effects>Constructs an <code>execution_policy</code> object with a copy of <code>exec</code>'s state.</cxx-effects>
 
-        <cxx-remarks>
-          This constructor shall not participate in overload resolution unless
-          <code>is_execution_policy&lt;T&gt;::value</code> is <code>true</code>.
-        </cxx-remarks>
+        <del>
+          <cxx-requires>
+            <code>is_execution_policy&lt;T&gt;::value</code> is <code>true</code>.
+          </cxx-requires>
+        </del>
+        <ins>
+          <cxx-remarks>
+            This constructor shall not participate in overload resolution unless
+            <code>is_execution_policy&lt;T&gt;::value</code> is <code>true</code>.
+          </cxx-remarks>
+        </ins>
       </cxx-function>
 
       <cxx-function>
@@ -207,10 +220,17 @@ std::sort(exec, sort_me.begin(), sort_me.end());</pre>
 
         <cxx-returns><code>*this</code>.
 
-        <cxx-remarks>
-          This operator shall not partipate in overload resolution unless
-          <code>is_execution_policy&lt;T&gt;::value</code> is <code>true</code>.
-        </cxx-remarks>
+        <del>
+          <cxx-requires>
+            <code>is_execution_policy&lt;T&gt;::value</code> is <code>true</code>.
+          </cxx-requires>
+        </del>
+        <ins>
+          <cxx-remarks>
+            This operator shall not partipate in overload resolution unless
+            <code>is_execution_policy&lt;T&gt;::value</code> is <code>true</code>.
+          </cxx-remarks>
+        </ins>
       </cxx-function>
     </cxx-section>
 
@@ -233,10 +253,17 @@ std::sort(exec, sort_me.begin(), sort_me.end());</pre>
 
         <cxx-returns>If <code>target_type() == typeid(T)</code>, a pointer to the stored execution policy object; otherwise a null pointer.</cxx-returns>
 
-        <cxx-remarks>
-          This function shall not participate in overload resolution unless
-          <code>is_execution_policy&lt;T&gt;</code> is <code>true</code>.
-        </cxx-remarks>
+        <del>
+          <cxx-requires>
+            <code>is_execution_policy&lt;T&gt;::value</code> is <code>true</code>.
+          </cxx-requires>
+        </del>
+        <ins>
+          <cxx-remarks>
+            This function shall not participate in overload resolution unless
+            <code>is_execution_policy&lt;T&gt;</code> is <code>true</code>.
+          </cxx-remarks>
+        </ins>
       </cxx-function>
 
     </cxx-section>
