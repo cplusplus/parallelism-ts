@@ -366,7 +366,6 @@ first function parameter of type <code>ExecutionPolicy&amp;&amp;</code>.
 namespace std {
 namespace experimental {
 <ins2>inline</ins2> namespace parallel<ins2>_v1</ins2> {
-<ins2>namespace parallel {</ins2>
   template&lt;class ExecutionPolicy,
            class InputIterator, class Function&gt;
     void for_each(ExecutionPolicy&amp;&amp; exec,
@@ -375,7 +374,6 @@ namespace experimental {
   template&lt;class InputIterator, class Size, class Function&gt;
     InputIterator for_each_n(InputIterator first, Size n,
                              Function f);
-<ins2>}</ins2>
 }
 }
 }
@@ -507,7 +505,6 @@ namespace experimental {
 namespace std {
 namespace experimental {
 <ins2>inline</ins2> namespace parallel<ins2>_v1</ins2> {
-<ins2>namespace parallel {</ins2>
   template&lt;class InputIterator&gt;
     typename iterator_traits&lt;InputIterator&gt;::value_type
       reduce(InputIterator first, InputIterator last);
@@ -517,10 +514,12 @@ namespace experimental {
     T reduce(InputIterator first, InputIterator last, T init,
              BinaryOperation binary_op);
 
+  <del2>
   template&lt;class InputIterator, class OutputIterator&gt;
     OutputIterator
       exclusive_scan(InputIterator first, InputIterator last,
                      OutputIterator result);
+  </del2>
   template&lt;class InputIterator, class OutputIterator,
            class T&gt;
     OutputIterator
@@ -545,12 +544,11 @@ namespace experimental {
                      OutputIterator result,
                      BinaryOperation binary_op);
   template&lt;class InputIterator, class OutputIterator,
-           class T, class BinaryOperation&gt;
+           <del2>class T, </del2>class BinaryOperation<ins2>, class T</ins2>&gt;
     OutputIterator
       inclusive_scan(InputIterator first, InputIterator last,
                      OutputIterator result,
-                     T init, BinaryOperation binary_op);
-<ins2>}</ins2>
+                     <del2>T init, </del2>BinaryOperation binary_op<ins2>, T init</ins2>);
 }
 }
 }
@@ -567,11 +565,17 @@ namespace experimental {
               reduce(InputIterator first, InputIterator last);
         </cxx-signature>
 
-        <cxx-returns>
-          <code>reduce(first, last, typename iterator_traits&lt;InputIterator&gt;::value_type{})</code>
-        </cxx-returns>
+        <cxx-effects>
+          <ins2>
+            Same as <code>reduce(first, last, typename iterator_traits&lt;InputIterator&gt;::value_type{})</code>.
+          </ins2>
+        </cxx-effects>
 
         <del2>
+          <cxx-returns>
+            <code>reduce(first, last, typename iterator_traits&lt;InputIterator&gt;::value_type{})</code>
+          </cxx-returns>
+
           <cxx-requires>
             <code>typename iterator_traits&lt;InputIterator&gt;::value_type{}</code>
             shall be a valid expression. The <code>operator+</code> function associated with
@@ -597,11 +601,17 @@ namespace experimental {
             T reduce(InputIterator first, InputIterator last, T init);
         </cxx-signature>
 
-        <cxx-returns>
-          <code>reduce(first, last, init, plus&lt;&gt;())</code>
-        </cxx-returns>
+        <cxx-effects>
+          <ins2>
+            Same as <code>reduce(first, last, init, plus&lt;&gt;())</code>.
+          </ins2>
+        </cxx-effects>
 
         <del2>
+          <cxx-returns>
+            <code>reduce(first, last, init, plus&lt;&gt;())</code>
+          </cxx-returns>
+
           <cxx-requires>
             The <code>operator+</code> function associated with <code>T</code> shall not invalidate iterators
             or subranges, nor modify elements in the range <code>[first,last)</code>.
@@ -658,11 +668,17 @@ namespace experimental {
                              T init);
         </cxx-signature>
 
-        <cxx-returns>
-          <code>exclusive_scan(first, last, result, init, plus&lt;&gt;())</code>
-        </cxx-returns>
+        <cxx-effects>
+          <ins2>
+            Same as <code>exclusive_scan(first, last, result, init, plus&lt;&gt;())</code>.
+          </ins2>
+        </cxx-effects>
 
         <del2>
+          <cxx-returns>
+            <code>exclusive_scan(first, last, result, init, plus&lt;&gt;())</code>
+          </cxx-returns>
+
           <cxx-requires>
             The <code>operator+</code> function associated with <code>iterator_traits&lt;InputIterator&gt;::value_type</code> shall
             not invalidate iterators or subranges, nor modify elements in the ranges <code>[first,last)</code> or
@@ -730,11 +746,17 @@ namespace experimental {
                              OutputIterator result);
         </cxx-signature>
 
-        <cxx-returns>
-          <code>inclusive_scan(first, last, result, plus&lt;&gt;())</code>
-        </cxx-returns>
+        <cxx-effects>
+          <ins2>
+            Same as <code>inclusive_scan(first, last, result, plus&lt;&gt;())</code>.
+          </ins2>
+        </cxx-effects>
 
         <del2>
+          <cxx-returns>
+            <code>inclusive_scan(first, last, result, plus&lt;&gt;())</code>
+          </cxx-returns>
+
           <cxx-requires>
             The <code>operator+</code> function associated with
             <code>iterator_traits&lt;InputIterator&gt;::value_type</code> shall not invalidate iterators or
@@ -765,11 +787,11 @@ namespace experimental {
                              BinaryOperation binary_op);
           
           template&lt;class InputIterator, class OutputIterator,
-                   class T, class BinaryOperation&gt;
+                   <del2>class T, </del2>class BinaryOperation<ins2>, class T</ins2>&gt;
             OutputIterator
               inclusive_scan(InputIterator first, InputIterator last,
                              OutputIterator result,
-                             T init, BinaryOperation binary_op);
+                             <del2>T init, </del2>BinaryOperation binary_op<ins2>, T init</ins2>);
         </cxx-signature>
 
         <cxx-effects>
