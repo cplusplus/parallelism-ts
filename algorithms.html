@@ -351,7 +351,8 @@ first function parameter of type <code>ExecutionPolicy&amp;&amp;</code>.
       <pre>
 namespace std {
 namespace experimental {
-namespace parallel<ins2>_v1</ins2> {
+<ins2>inline</ins2> namespace parallel<ins2>_v1</ins2> {
+<ins2>namespace parallel {</ins2>
   template&lt;class ExecutionPolicy,
            class InputIterator, class Function&gt;
     void for_each(ExecutionPolicy&amp;&amp; exec,
@@ -360,6 +361,7 @@ namespace parallel<ins2>_v1</ins2> {
   template&lt;class InputIterator, class Size, class Function&gt;
     InputIterator for_each_n(InputIterator first, Size n,
                              Function f);
+<ins2>}</ins2>
 }
 }
 }
@@ -486,7 +488,8 @@ namespace parallel<ins2>_v1</ins2> {
       <pre>
 namespace std {
 namespace experimental {
-namespace parallel<ins2>_v1</ins2> {
+<ins2>inline</ins2> namespace parallel<ins2>_v1</ins2> {
+<ins2>namespace parallel {</ins2>
   template&lt;class InputIterator&gt;
     typename iterator_traits&lt;InputIterator&gt;::value_type
       reduce(InputIterator first, InputIterator last);
@@ -529,6 +532,7 @@ namespace parallel<ins2>_v1</ins2> {
       inclusive_scan(InputIterator first, InputIterator last,
                      OutputIterator result,
                      T init, BinaryOperation binary_op);
+<ins2>}</ins2>
 }
 }
 }

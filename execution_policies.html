@@ -60,7 +60,8 @@ if(v.size() &gt; threshold)
 <pre>
 namespace std {
 namespace experimental {
-namespace parallel<ins2>_v1</ins2> {
+<ins2>inline</ins2> namespace parallel<ins2>_v1</ins2> {
+<ins2>namespace parallel {</ins2>
   <cxx-ref insynopsis="" to="parallel.execpol.type"></cxx-ref>
   template&lt;class T&gt; struct is_execution_policy;
   <ins2>template&lt;class T&gt; constexpr bool is_execution_policy_v = is_execution_policy&lt;T&gt;::value;</ins2>
@@ -76,6 +77,7 @@ namespace parallel<ins2>_v1</ins2> {
 
   <cxx-ref insynopsis="" to="parallel.execpol.dynamic"></cxx-ref>
   class execution_policy;
+<ins2>}</ins2>
 }
 }
 }
@@ -85,14 +87,17 @@ namespace parallel<ins2>_v1</ins2> {
     <h1>Execution policy type trait</h1>
 
 <pre>
+<del2>
 namespace std {
 namespace experimental {
-namespace parallel<ins2>_v1</ins2> {
+namespace parallel<ins2>_v1</ins2> { </del2>
   template&lt;class T&gt; struct is_execution_policy <ins2> { <em>see below</em> };</ins2>
   <del2>  : integral_constant&lt;bool, <em>see below</em>&gt; { };</del2>
+<del2>
 }
 }
 }
+</del2>
 </pre>
 
     <p><code>is_execution_policy</code> can be used to detect parallel execution policies for the purpose of excluding function signatures from otherwise ambiguous overload resolution participation.</p>
@@ -108,13 +113,17 @@ namespace parallel<ins2>_v1</ins2> {
     <h1>Sequential execution policy</h1>
 
     <pre>
+<del2>
 namespace std {
 namespace experimental {
 namespace parallel<ins2>_v1</ins2> {
+</del2>
   class sequential_execution_policy{ <ins2><i>unspecified</i></ins2> };
+<del2>
 }
 }
 }
+</del2>
 </pre>
 
     <p>The class <code>sequential_execution_policy</code> is an execution policy type used as a unique type to disambiguate parallel algorithm overloading and require that a parallel algorithm's execution may not be parallelized.</p>
@@ -124,13 +133,17 @@ namespace parallel<ins2>_v1</ins2> {
     <h1>Parallel execution policy</h1>
 
 <pre>
+<del2>
 namespace std {
 namespace experimental {
 namespace parallel<ins2>_v1</ins2> {
+</del2>
   class parallel_execution_policy{ <ins2><i>unspecified</i></ins2> };
+<del2>
 }
 }
 }
+</del2>
 </pre>
 
     <p>The class <code>parallel_execution_policy</code> is an execution policy type used as a unique type to disambiguate parallel algorithm overloading and indicate that a parallel algorithm's execution may be parallelized.</p>
@@ -140,13 +153,17 @@ namespace parallel<ins2>_v1</ins2> {
     <h1><ins2>Parallel+</ins2>Vector execution policy</h1>
 
 <pre>
+<del2>
 namespace std {
 namespace experimental {
 namespace parallel<ins2>_v1</ins2> {
+</del2>
   class <del2>vector_execution_policy</del2><ins2>parallel_vector_execution_policy</ins2>{ <ins2><i>unspecified</i></ins2> };
+<del2>
 }
 }
 }
+</del2>
 </pre>
 
     <p>The class <code>class <del2>vector_execution_policy</del2><ins2>parallel_vector_execution_policy</ins2></code> is an execution policy type used as a unique type to disambiguate parallel algorithm overloading and indicate that a parallel algorithm's execution may be vectorized.</p>
@@ -157,10 +174,11 @@ namespace parallel<ins2>_v1</ins2> {
     <h1>Dynamic execution policy</h1>
 
 <pre>
+<del2>
 namespace std {
 namespace experimental {
 namespace parallel<ins2>_v1</ins2> {
-
+</del2>
   class execution_policy
   {
     public:
@@ -172,9 +190,11 @@ namespace parallel<ins2>_v1</ins2> {
       template&lt;class T&gt; T* get() noexcept;
       template&lt;class T&gt; const T* get() const noexcept;
   };
+<del2>
 }
 }
 }
+</del2>
 </pre>
 
     <p>The class <code>execution_policy</code> is a dynamic container for execution policy objects.
@@ -279,9 +299,11 @@ if(sort_me.size() &gt; threshold)
     <h1>Execution policy objects</h1>
 
 <pre>
+<del2>
 namespace std {
 namespace experimental {
 namespace parallel<ins2>_v1</ins2> {
+</del2>
 <del2>
   constexpr sequential_execution_policy seq = sequential_execution_policy();
   constexpr parallel_execution_policy   par = parallel_execution_policy();
@@ -292,9 +314,11 @@ namespace parallel<ins2>_v1</ins2> {
   constexpr parallel_execution_policy        par = {};
   constexpr parallel_vector_execution_policy par_vec = {};
 </ins2>
+<del2>
 }
 }
 }
+</del2>
 </pre>
 
     <p>The header <code>&lt;<ins2>experimental/</ins2>execution_policy&gt;</code> declares a global object associated with each type of execution policy defined by this Technical Specification.</p>

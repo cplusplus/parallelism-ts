@@ -55,9 +55,12 @@
     <cxx-section id="parallel.exceptions.synop">
       <h1>Header <code>&lt;experimental/exception_list&gt;</code> synopsis</h1>
       <pre>
+
 namespace std {
 namespace experimental {
-namespace parallel<ins2>_v1</ins2> {
+<ins2>inline</ins2> namespace parallel<ins2>_v1</ins2> {
+<ins2>namespace parallel {</ins2>
+
   class exception_list : public exception
   {
     public:
@@ -81,6 +84,7 @@ namespace parallel<ins2>_v1</ins2> {
       std::list&lt;exception_ptr&gt; exceptions_; // exposition only
   </del2>
   };
+<ins2>}</ins2>
 }
 }
 }
