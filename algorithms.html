@@ -695,7 +695,7 @@ namespace parallel<ins2>_v1</ins2> {
         </cxx-complexity>
 
         <cxx-notes>
-          The primary difference between <code>exclusive_scan</code> and <code>inclusive_scan</code> is that
+          The <del2>primary</del2> difference between <code>exclusive_scan</code> and <code>inclusive_scan</code> is that
           <code>exclusive_scan</code> excludes the <code>i</code>th input element from the <code>i</code>th
           sum. If <code>binary_op</code> is not mathematically associative, the behavior of
           <code>exclusive_scan</code> may be non-deterministic.
@@ -719,21 +719,25 @@ namespace parallel<ins2>_v1</ins2> {
         </cxx-returns>
 
         <cxx-requires>
-          The <code>operator+</code> function associated with
-          <code>iterator_traits&lt;InputIterator&gt;::value_type</code> shall not invalidate iterators or
-          subranges, nor modify elements in the ranges <code>[first,last)</code> or
-          <code>[result,result + (last - first))</code>.
+          <del2>
+            The <code>operator+</code> function associated with
+            <code>iterator_traits&lt;InputIterator&gt;::value_type</code> shall not invalidate iterators or
+            subranges, nor modify elements in the ranges <code>[first,last)</code> or
+            <code>[result,result + (last - first))</code>.
+          </del2>
         </cxx-requires>
 
         <cxx-complexity>
-          O(<code>last - first</code>) applications of <code>operator+</code>.
+          <del2>O(<code>last - first</code>) applications of <code>operator+</code>.</del2>
         </cxx-complexity>
 
         <cxx-notes>
-          The <del2>primary</del2> difference between <code>exclusive_scan</code> and <code>inclusive_scan</code> is that
-          <code>exclusive_scan</code> excludes the <code>i</code>th input element from the <code>i</code>th sum.
-          If the <code>operator+</code> function is not mathematically associative, the behavior of
-          <code>inclusive_scan</code> may be non-deterministic.
+          <del2>
+            The primary difference between <code>exclusive_scan</code> and <code>inclusive_scan</code> is that
+            <code>exclusive_scan</code> excludes the <code>i</code>th input element from the <code>i</code>th sum.
+            If the <code>operator+</code> function is not mathematically associative, the behavior of
+            <code>inclusive_scan</code> may be non-deterministic.
+          </del2>
         </cxx-notes>
       </cxx-function>
 
