@@ -481,7 +481,7 @@ namespace parallel<ins2>_v1</ins2> {
     </cxx-section>
 
     <cxx-section id="parallel.alg.added.numeric.synop">
-      <h1>Header <code>&lt;experimental/numeric&gt;</code></h1>
+      <h1>Header <code>&lt;experimental/numeric&gt;</code><ins2> synopsis</ins2></h1>
 
       <pre>
 namespace std {
@@ -522,7 +522,7 @@ namespace parallel<ins2>_v1</ins2> {
     OutputIterator
       inclusive_scan(InputIterator first, InputIterator last,
                      OutputIterator result,
-                     T init);
+                     <del2>T init</del2><ins2>BinaryOperation binary_op</ins2>);
   template&lt;class InputIterator, class OutputIterator,
            class T, class BinaryOperation&gt;
     OutputIterator
