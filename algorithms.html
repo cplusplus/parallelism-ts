@@ -33,7 +33,7 @@
         </cxx-note>
       </p>
 
-      <cxx-example><pre>using namespace std::experimental::parallel<ins2>_v1</ins2>;
+      <cxx-example><pre>using namespace std::experimental::parallel;
 int a[] = {0,1};
 std::vector&lt;int&gt; v;
 for_each(par, std::begin(a), std::end(a), [&amp;](int i) {
@@ -47,7 +47,7 @@ for_each(par, std::begin(a), std::end(a), [&amp;](int i) {
 </pre>
 
       <cxx-example><pre>
-using namespace std::experimental::parallel<ins2>_v1</ins2>;
+using namespace std::experimental::parallel;
 std::atomic<ins2>&lt;int></ins2> x = 0;
 int a[] = {1,2};
 for_each(par, std::begin(a), std::end(a), [<ins2>&amp;</ins2>](int n) {
@@ -62,7 +62,7 @@ for_each(par, std::begin(a), std::end(a), [<ins2>&amp;</ins2>](int n) {
 </pre>
 
       <cxx-example><pre>
-using namespace std::experimental::parallel<ins2>_v1</ins2>;
+using namespace std::experimental::parallel;
 int x<ins2>=0</ins2>;
 std::mutex m;
 int a[] = {1,2};
@@ -82,7 +82,7 @@ for_each(par, std::begin(a), std::end(a), [&amp;](int) {
         in unspecified threads, and unsequenced within each thread.
         <ins2>
         <cxx-note>
-          This means that multiple function-object invocations may be interleaved on a single thread.
+          This means that multiple function object invocations may be interleaved on a single thread.
         </cxx-note>
         </ins2>
         <cxx-note>
@@ -120,8 +120,11 @@ for_each(par_vec, std::begin(a), std::end(a), [&amp;](int) {
         resources.
       </cxx-note>
 
+<!-- TODO: LWG suggested removing it, I suspect this is a mistake based on the incorrect
+  understanding that it is already covered elsewhere -->
+<del2>
       <p>
-        <del2>If they exist, a</del2><ins2>A</ins2> parallel algorithm invoked with an execution policy object of type
+        <ins2>A</ins2> parallel algorithm invoked with an execution policy object of type
         <code>parallel_execution_policy</code> or <code><del2>vector_execution_policy</del2><ins2>parallel_vector_execution_policy</ins2></code> may apply
         iterator member functions of a stronger category than its specification requires<ins2>, if such iterators exist</ins2>. In this
         case, the application of these member functions are subject to provisions 3. and 4. above,
@@ -134,6 +137,8 @@ for_each(par_vec, std::begin(a), std::end(a), [&amp;](int) {
         <code>operator[]</code>. In this case, it is the algorithm caller's responsibility to ensure
         <code>operator[]</code> is race-free.
       </cxx-note>
+</del2>
+<!-- end of potentially-incorrectly removed section -->
 
       <p>
         Algorithms invoked with an execution policy object of type <code>execution_policy</code>
@@ -163,10 +168,13 @@ for_each(par_vec, std::begin(a), std::end(a), [&amp;](int) {
         <ins2>
 The Parallel Algorithms Library provides overloads for each of the algorithms named in
 Table 1, corresponding to the algorithms with the same name in the C++ Standard Algorithms Library.
-For each algorithm in <cxx-ref to="tab.parallel.algorithms"></cxx-ref>, there shall be overloads with an additional
-template type parameter named <code>ExecutionPolicy</code>, which is the first template parameter.
-In addition, each such overload shall have the new function parameter as the
-first function parameter of type <code>ExecutionPolicy&amp;&amp;</code>.
+
+For each algorithm in <cxx-ref to="tab.parallel.algorithms"></cxx-ref>, if there are overloads for
+corresponding algorithms with the same name
+in the C++ Standard Algorithms Library,
+the overloads shall have an additional template type parameter named
+<code>ExecutionPolicy&amp;&amp;</code>, which shall be the first template parameter.
+
         </ins2>
 
       </p>
@@ -180,7 +188,7 @@ first function parameter of type <code>ExecutionPolicy&amp;&amp;</code>.
         Parallel algorithms
         <del>have the requirement <code>is_execution_policy&lt;ExecutionPolicy&gt;::value</code> is <code>true</code></del>
         <ins>shall not participate in overload resolution unless
-        <code>is_execution_policy&lt;ExecutionPolicy&gt;::value</code> is <code>true</code></ins>.
+        <code>is_execution_policy&lt;decay_t&lt;ExecutionPolicy&gt;&gt;::value</code> is <code>true</code></ins>.
       </p>
         
       <del2><p>The algorithms listed in <cxx-ref to="tab.parallel.algorithms"></cxx-ref> shall have <code>ExecutionPolicy</code> overloads.</p></del2>
@@ -302,6 +310,10 @@ first function parameter of type <code>ExecutionPolicy&amp;&amp;</code>.
             <td></td>
           </tr>
       </table>
+
+      <cxx-note>
+      Not all algorithms in the Standard Library have counterparts in <cxx-ref to="tab.parallel.algorithms"></cxx-ref>.
+      </cxx-note>
     </cxx-section>
   </cxx-section>
 
@@ -340,12 +352,10 @@ first function parameter of type <code>ExecutionPolicy&amp;&amp;</code>.
     </p>
   </cxx-section>
 
-  <cxx-section id="parallel.alg.added">
-    <h1>Novel algorithms</h1>
+  <cxx-section id="parallel.alg.ops">
+    <h1>Non-Numeric Parallel Algorithms</h1>
 
-    This subclause describes novel algorithms introduced by this Technical Specification.
-
-    <cxx-section id="parallel.alg.added.algorithms.synop">
+    <cxx-section id="parallel.alg.ops.synopsis">
       <h1>Header <code>&lt;experimental/algorithm&gt;</code> synopsis</h1>
 
       <pre>
@@ -368,7 +378,7 @@ namespace experimental {
 </pre>
     </cxx-section>
 
-    <cxx-section id="parallel.alg.added.foreach">
+    <cxx-section id="parallel.alg.foreach">
       <h1>For each</h1>
 
       <cxx-function>
@@ -475,14 +485,18 @@ namespace experimental {
 
           <cxx-notes>
             Unlike its sequential form, the parallel overload of <code>for_each_n</code> requires
-            <code>Function</code> to meet the requirements of <code>CopyConstructible</code>, but not
-            <code>MoveConstructible</code>.
+            <code>Function</code> to meet the requirements of <code>CopyConstructible</code><del2>, but not
+            <code>MoveConstructible</code></del2>.
           </cxx-notes>
         </cxx-function>
       </ins>
     </cxx-section>
+  </cxx-section>
 
-    <cxx-section id="parallel.alg.added.numeric.synop">
+    <cxx-section id="parallel.alg.numeric">
+    <h1>Numeric Parallel Algorithms</h1>
+
+    <cxx-section id="parallel.alg.numeric.synopsis">
       <h1>Header <code>&lt;experimental/numeric&gt;</code><ins2> synopsis</ins2></h1>
 
       <pre>
@@ -539,7 +553,7 @@ namespace experimental {
 </pre>
     </cxx-section>
 
-    <cxx-section id="parallel.alg.added.reduce">
+    <cxx-section id="parallel.alg.reduce">
       <h1>Reduce</h1>
 
       <cxx-function>
@@ -627,7 +641,7 @@ namespace experimental {
       </cxx-function>
     </cxx-section>
 
-    <cxx-section id="parallel.alg.added.exclusive.scan">
+    <cxx-section id="parallel.alg.exclusive.scan">
       <h1>Exclusive scan</h1>
 
       <cxx-function>
@@ -701,7 +715,7 @@ namespace experimental {
       </cxx-function>
     </cxx-section>
 
-    <cxx-section id="parallel.alg.added.inclusive.scan">
+    <cxx-section id="parallel.alg.inclusive.scan">
       <h1>Inclusive scan</h1>
 
       <cxx-function>

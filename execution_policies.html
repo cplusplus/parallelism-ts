@@ -2,7 +2,7 @@
   <h1>Execution policies</h1>
   <cxx-section id="parallel.execpol.general">
     <h1>In general</h1>
-      <p>This subclause describes classes that represent <dfn>execution policies</dfn>. An
+      <p>This clause describes classes that represent <dfn>execution policies</dfn>. An
       <dfn>execution policy</dfn> is an object that expresses the requirements on the ordering
       of functions invoked as a consequence of the invocation of a standard
       algorithm. Execution policies afford standard algorithms the discretion to
@@ -36,7 +36,7 @@ using namespace std::experimental::parallel<ins2>_v1</ins2>;
 // sort with dynamically-selected execution
 size_t threshold = ...
 execution_policy exec = seq;
-if(v.size() &gt; threshold)
+if (v.size() &gt; threshold)
 {
   exec = par;
 }
@@ -54,7 +54,7 @@ if(v.size() &gt; threshold)
       Technical Specification as extensions.
     </cxx-note>
   </cxx-section>
-  <cxx-section id="parallel.execpol.synop">
+  <cxx-section id="parallel.execpol.synopsis">
   <h1>Header <code>&lt;experimental/execution_policy&gt;</code> synopsis</h1>
 
 <pre>
@@ -197,13 +197,13 @@ namespace parallel<ins2>_v1</ins2> {
 </del2>
 </pre>
 
-    <p>The class <code>execution_policy</code> is a dynamic container for execution policy objects.
+    <p>The class <code>execution_policy</code> is a container for execution policy objects.
     <code>execution_policy</code> allows dynamic control over standard algorithm execution.</p>
 
     <cxx-example>
       <pre>std::vector&lt;float&gt; sort_me = ...
         
-<ins>using namespace std::experimental::parallel<ins2>_v1</ins2>;</ins>
+<ins>using namespace std::experimental::parallel;</ins>
 <del><code>std::</code></del>execution_policy exec = <del><code>std::</code></del>seq;
 
 if(sort_me.size() &gt; threshold)
@@ -310,9 +310,9 @@ namespace parallel<ins2>_v1</ins2> {
   constexpr vector_execution_policy     vec = vector_execution_policy();
 </del2>
 <ins2>
-  constexpr sequential_execution_policy      seq = {};
-  constexpr parallel_execution_policy        par = {};
-  constexpr parallel_vector_execution_policy par_vec = {};
+  constexpr sequential_execution_policy      seq{};
+  constexpr parallel_execution_policy        par{};
+  constexpr parallel_vector_execution_policy par_vec{};
 </ins2>
 <del2>
 }
