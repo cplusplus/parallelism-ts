@@ -173,7 +173,10 @@ For each algorithm in <cxx-ref to="tab.parallel.algorithms"></cxx-ref>, if there
 corresponding algorithms with the same name
 in the C++ Standard Algorithms Library,
 the overloads shall have an additional template type parameter named
-<code>ExecutionPolicy&amp;&amp;</code>, which shall be the first template parameter.
+<code>ExecutionPolicy</code>, which shall be the first template parameter.
+
+In addition, each such overload shall have the new function parameter as the
+first function parameter of type <code>ExecutionPolicy&amp;&amp;</code>.
 
         </ins2>
 
