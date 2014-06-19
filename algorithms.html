@@ -513,10 +513,12 @@ namespace experimental {
     T reduce(InputIterator first, InputIterator last, T init,
              BinaryOperation binary_op);
 
+  <del2>
   template&lt;class InputIterator, class OutputIterator&gt;
     OutputIterator
       exclusive_scan(InputIterator first, InputIterator last,
                      OutputIterator result);
+  </del2>
   template&lt;class InputIterator, class OutputIterator,
            class T&gt;
     OutputIterator
