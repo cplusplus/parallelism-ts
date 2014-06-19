@@ -565,11 +565,17 @@ namespace experimental {
               reduce(InputIterator first, InputIterator last);
         </cxx-signature>
 
-        <cxx-returns>
-          <code>reduce(first, last, typename iterator_traits&lt;InputIterator&gt;::value_type{})</code>
-        </cxx-returns>
+        <cxx-effects>
+          <ins2>
+            Same as <code>reduce(first, last, typename iterator_traits&lt;InputIterator&gt;::value_type{})</code>.
+          </ins2>
+        </cxx-effects>
 
         <del2>
+          <cxx-returns>
+            <code>reduce(first, last, typename iterator_traits&lt;InputIterator&gt;::value_type{})</code>
+          </cxx-returns>
+
           <cxx-requires>
             <code>typename iterator_traits&lt;InputIterator&gt;::value_type{}</code>
             shall be a valid expression. The <code>operator+</code> function associated with
@@ -595,11 +601,17 @@ namespace experimental {
             T reduce(InputIterator first, InputIterator last, T init);
         </cxx-signature>
 
-        <cxx-returns>
-          <code>reduce(first, last, init, plus&lt;&gt;())</code>
-        </cxx-returns>
+        <cxx-effects>
+          <ins2>
+            Same as <code>reduce(first, last, init, plus&lt;&gt;())</code>.
+          </ins2>
+        </cxx-effects>
 
         <del2>
+          <cxx-returns>
+            <code>reduce(first, last, init, plus&lt;&gt;())</code>
+          </cxx-returns>
+
           <cxx-requires>
             The <code>operator+</code> function associated with <code>T</code> shall not invalidate iterators
             or subranges, nor modify elements in the range <code>[first,last)</code>.
@@ -656,11 +668,17 @@ namespace experimental {
                              T init);
         </cxx-signature>
 
-        <cxx-returns>
-          <code>exclusive_scan(first, last, result, init, plus&lt;&gt;())</code>
-        </cxx-returns>
+        <cxx-effects>
+          <ins2>
+            Same as <code>exclusive_scan(first, last, result, init, plus&lt;&gt;())</code>.
+          </ins2>
+        </cxx-effects>
 
         <del2>
+          <cxx-returns>
+            <code>exclusive_scan(first, last, result, init, plus&lt;&gt;())</code>
+          </cxx-returns>
+
           <cxx-requires>
             The <code>operator+</code> function associated with <code>iterator_traits&lt;InputIterator&gt;::value_type</code> shall
             not invalidate iterators or subranges, nor modify elements in the ranges <code>[first,last)</code> or
@@ -728,11 +746,17 @@ namespace experimental {
                              OutputIterator result);
         </cxx-signature>
 
-        <cxx-returns>
-          <code>inclusive_scan(first, last, result, plus&lt;&gt;())</code>
-        </cxx-returns>
+        <cxx-effects>
+          <ins2>
+            Same as <code>inclusive_scan(first, last, result, plus&lt;&gt;())</code>.
+          </ins2>
+        </cxx-effects>
 
         <del2>
+          <cxx-returns>
+            <code>inclusive_scan(first, last, result, plus&lt;&gt;())</code>
+          </cxx-returns>
+
           <cxx-requires>
             The <code>operator+</code> function associated with
             <code>iterator_traits&lt;InputIterator&gt;::value_type</code> shall not invalidate iterators or
