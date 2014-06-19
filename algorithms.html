@@ -120,8 +120,10 @@ for_each(par_vec, std::begin(a), std::end(a), [&amp;](int) {
         resources.
       </cxx-note>
 
-<!-- TODO: LWG suggested removing it, I suspect this is a mistake based on the incorrect
-  understanding that it is already covered elsewhere -->
+<!-- Update 6/20/14: this is OK: this is covered in N4063:
+"All operations of the categories of the iterators that the algorithm is instantiated with"
+So there is no problem, deletion is OK.
+-->
 <del2>
       <p>
         <ins2>A</ins2> parallel algorithm invoked with an execution policy object of type
@@ -138,7 +140,6 @@ for_each(par_vec, std::begin(a), std::end(a), [&amp;](int) {
         <code>operator[]</code> is race-free.
       </cxx-note>
 </del2>
-<!-- end of potentially-incorrectly removed section -->
 
       <p>
         Algorithms invoked with an execution policy object of type <code>execution_policy</code>
