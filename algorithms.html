@@ -543,11 +543,11 @@ namespace experimental {
                      OutputIterator result,
                      BinaryOperation binary_op);
   template&lt;class InputIterator, class OutputIterator,
-           class T, class BinaryOperation&gt;
+           <del2>class T, </del2>class BinaryOperation<ins2>, class T</ins2>&gt;
     OutputIterator
       inclusive_scan(InputIterator first, InputIterator last,
                      OutputIterator result,
-                     T init, BinaryOperation binary_op);
+                     <del2>T init, </del2>BinaryOperation binary_op<ins2>, T init</ins2>);
 <ins2>}</ins2>
 }
 }
@@ -787,11 +787,11 @@ namespace experimental {
                              BinaryOperation binary_op);
           
           template&lt;class InputIterator, class OutputIterator,
-                   class T, class BinaryOperation&gt;
+                   <del2>class T, </del2>class BinaryOperation<ins2>, class T</ins2>&gt;
             OutputIterator
               inclusive_scan(InputIterator first, InputIterator last,
                              OutputIterator result,
-                             T init, BinaryOperation binary_op);
+                             <del2>T init, </del2>BinaryOperation binary_op<ins2>, T init</ins2>);
         </cxx-signature>
 
         <cxx-effects>
