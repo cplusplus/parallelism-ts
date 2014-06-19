@@ -362,7 +362,6 @@ the overloads shall have an additional template type parameter named
 namespace std {
 namespace experimental {
 <ins2>inline</ins2> namespace parallel<ins2>_v1</ins2> {
-<ins2>namespace parallel {</ins2>
   template&lt;class ExecutionPolicy,
            class InputIterator, class Function&gt;
     void for_each(ExecutionPolicy&amp;&amp; exec,
@@ -371,7 +370,6 @@ namespace experimental {
   template&lt;class InputIterator, class Size, class Function&gt;
     InputIterator for_each_n(InputIterator first, Size n,
                              Function f);
-<ins2>}</ins2>
 }
 }
 }
@@ -503,7 +501,6 @@ namespace experimental {
 namespace std {
 namespace experimental {
 <ins2>inline</ins2> namespace parallel<ins2>_v1</ins2> {
-<ins2>namespace parallel {</ins2>
   template&lt;class InputIterator&gt;
     typename iterator_traits&lt;InputIterator&gt;::value_type
       reduce(InputIterator first, InputIterator last);
@@ -543,12 +540,11 @@ namespace experimental {
                      OutputIterator result,
                      BinaryOperation binary_op);
   template&lt;class InputIterator, class OutputIterator,
-           class T, class BinaryOperation&gt;
+           <del2>class T, </del2>class BinaryOperation<ins2>, class T</ins2>&gt;
     OutputIterator
       inclusive_scan(InputIterator first, InputIterator last,
                      OutputIterator result,
-                     T init, BinaryOperation binary_op);
-<ins2>}</ins2>
+                     <del2>T init, </del2>BinaryOperation binary_op<ins2>, T init</ins2>);
 }
 }
 }
@@ -787,11 +783,11 @@ namespace experimental {
                              BinaryOperation binary_op);
           
           template&lt;class InputIterator, class OutputIterator,
-                   class T, class BinaryOperation&gt;
+                   <del2>class T, </del2>class BinaryOperation<ins2>, class T</ins2>&gt;
             OutputIterator
               inclusive_scan(InputIterator first, InputIterator last,
                              OutputIterator result,
-                             T init, BinaryOperation binary_op);
+                             <del2>T init, </del2>BinaryOperation binary_op<ins2>, T init</ins2>);
         </cxx-signature>
 
         <cxx-effects>
