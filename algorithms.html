@@ -192,7 +192,7 @@ first function parameter of type <code>ExecutionPolicy&amp;&amp;</code>.
         Parallel algorithms
         <del>have the requirement <code>is_execution_policy&lt;ExecutionPolicy&gt;::value</code> is <code>true</code></del>
         <ins>shall not participate in overload resolution unless
-        <code>is_execution_policy&lt;decay_t&lt;ExecutionPolicy&gt;&gt;::value</code> is <code>true</code></ins>.
+        <code>is_execution_policy<ins2>&lt;decay_t&lt;</ins2>ExecutionPolicy<ins2>&gt;</ins2>&gt;::value</code> is <code>true</code></ins>.
       </p>
         
       <del2><p>The algorithms listed in <cxx-ref to="tab.parallel.algorithms"></cxx-ref> shall have <code>ExecutionPolicy</code> overloads.</p></del2>
@@ -315,9 +315,11 @@ first function parameter of type <code>ExecutionPolicy&amp;&amp;</code>.
           </tr>
       </table>
 
+      <ins2>
       <cxx-note>
       Not all algorithms in the Standard Library have counterparts in <cxx-ref to="tab.parallel.algorithms"></cxx-ref>.
       </cxx-note>
+      </ins2>
     </cxx-section>
   </cxx-section>
 

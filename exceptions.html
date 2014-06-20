@@ -79,7 +79,7 @@ namespace parallel {
       iterator begin() const noexcept;
       iterator end() const noexcept;
 
-      <ins2>const char* what() const override noexcept;</ins2>
+      <ins2>const char* what() const noexcept override;</ins2>
   <del2>
     private:
       std::list&lt;exception_ptr&gt; exceptions_; // exposition only
@@ -138,7 +138,7 @@ namespace parallel {
 
       <cxx-function>
         <cxx-signature>
-          <ins2>const char* what() const noexcept;</ins2>
+          <ins2>const char* what() const noexcept override;</ins2>
         </cxx-signature>
 
         <cxx-returns>
