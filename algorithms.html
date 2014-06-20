@@ -92,7 +92,7 @@ for_each(par, std::begin(a), std::end(a), [&amp;](int) {
       </p>
 
       <cxx-example><pre>
-using namespace std::experimental::parallel<ins2>_v1</ins2>;
+using namespace std::experimental::parallel;
 int x<ins2>=0</ins2>;
 std::mutex m;
 int a[] = {1,2};
@@ -365,7 +365,8 @@ first function parameter of type <code>ExecutionPolicy&amp;&amp;</code>.
       <pre>
 namespace std {
 namespace experimental {
-<ins2>inline</ins2> namespace parallel<ins2>_v1</ins2> {
+namespace parallel {
+<ins2>inline namespace v1 {</ins2>
   template&lt;class ExecutionPolicy,
            class InputIterator, class Function&gt;
     void for_each(ExecutionPolicy&amp;&amp; exec,
@@ -374,6 +375,7 @@ namespace experimental {
   template&lt;class InputIterator, class Size, class Function&gt;
     InputIterator for_each_n(InputIterator first, Size n,
                              Function f);
+<ins2>}</ins2>
 }
 }
 }
@@ -504,7 +506,8 @@ namespace experimental {
       <pre>
 namespace std {
 namespace experimental {
-<ins2>inline</ins2> namespace parallel<ins2>_v1</ins2> {
+namespace parallel {
+<ins2>inline namespace v1 {</ins2>
   template&lt;class InputIterator&gt;
     typename iterator_traits&lt;InputIterator&gt;::value_type
       reduce(InputIterator first, InputIterator last);
@@ -549,6 +552,7 @@ namespace experimental {
       inclusive_scan(InputIterator first, InputIterator last,
                      OutputIterator result,
                      <del2>T init, </del2>BinaryOperation binary_op<ins2>, T init</ins2>);
+<ins2>}</ins2>
 }
 }
 }
