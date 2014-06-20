@@ -834,7 +834,7 @@ ul li:before {
     experimental and not part of the C++ Standard Library, they should not be
     declared directly within namespace <code>std</code>. Unless otherwise specified, all
     components described in this Technical Specification are declared in namespace 
-    <code>std::experimental::parallel<ins2>_v1</ins2></code>.</p>
+    <code>std::experimental::parallel<ins2>::v1</ins2></code>.</p>
 
     <cxx-note><span class="nowrap">[ <em>Note:</em></span>
     
@@ -845,7 +845,7 @@ ul li:before {
 
     <p para_num="2" id="parallel.general.namespaces.2">Unless otherwise specified, references to such entities described in this
     Technical Specification are assumed to be qualified with
-    <code>std::experimental::parallel<ins2>_v1</ins2></code>, and references to entities described in the C++
+    <code>std::experimental::parallel<ins2>::v1</ins2></code>, and references to entities described in the C++
     Standard Library are assumed to be qualified with <code>std::</code>.</p>
 
     <p para_num="3" id="parallel.general.namespaces.3">Extensions that are expected to eventually be added to an existing header
@@ -865,7 +865,7 @@ ul li:before {
 
     <p para_num="1" id="parallel.general.defns.1">For the purposes of this document, the terms and definitions given in the C++ Standard and the following apply.</p>
 
-    <p para_num="2" id="parallel.general.defns.2">A <dfn>parallel algorithm</dfn> is a function template described by this Technical Specification declared in namespace <code>std::experimental::parallel<ins2>_v1</ins2></code> with a formal template parameter named <code>ExecutionPolicy</code>.</p>
+    <p para_num="2" id="parallel.general.defns.2">A <dfn>parallel algorithm</dfn> is a function template described by this Technical Specification declared in namespace <code>std::experimental::parallel<ins2>::v1</ins2></code> with a formal template parameter named <code>ExecutionPolicy</code>.</p>
   
     </section>
   </cxx-section>
@@ -907,7 +907,7 @@ ul li:before {
 <insdel>std::sort(std::begin(vec), std::end(vec));</insdel>
 <ins2>std::sort(vec.begin(), vec.end());</ins2>
 
-using namespace std::experimental::parallel<ins2>_v1</ins2>;
+using namespace std::experimental::parallel;
 
 // explicitly sequential sort
 <del>sort(seq, v.begin(), v.end());</del>
@@ -961,7 +961,8 @@ if (v.size() &gt; threshold)
 
 <pre>namespace std {
 namespace experimental {
-<ins2>inline</ins2> namespace parallel<ins2>_v1</ins2> {
+namespace parallel {
+<ins2>inline namespace v1 {</ins2>
   <cxx-ref insynopsis="" to="parallel.execpol.type">// <i><a title="parallel.execpol.type" href="#parallel.execpol.type">2.3</a>, Execution policy type trait</i></cxx-ref>
   template&lt;class T&gt; struct is_execution_policy;
   <ins2>template&lt;class T&gt; constexpr bool is_execution_policy_v = is_execution_policy&lt;T&gt;::value;</ins2>
@@ -977,6 +978,7 @@ namespace experimental {
 
   <cxx-ref insynopsis="" to="parallel.execpol.dynamic">// <i><a title="parallel.execpol.dynamic" href="#parallel.execpol.dynamic">2.7</a>, Dynamic execution policy</i></cxx-ref>
   class execution_policy;
+<ins2>}</ins2>
 }
 }
 }
@@ -995,7 +997,7 @@ namespace experimental {
 <pre><del2>
 namespace std {
 namespace experimental {
-namespace parallel<ins2>_v1</ins2> { </del2>
+namespace parallel { </del2>
   template&lt;class T&gt; struct is_execution_policy <ins2> { <em>see below</em> };</ins2>
   <del2>  : integral_constant&lt;bool, <em>see below</em>&gt; { };</del2>
 <del2>
@@ -1030,7 +1032,7 @@ resolution participation.</p>
     <pre><del2>
 namespace std {
 namespace experimental {
-namespace parallel<ins2>_v1</ins2> {
+namespace parallel {
 </del2>
   class sequential_execution_policy{ <ins2><i>unspecified</i></ins2> };
 <del2>
@@ -1059,7 +1061,7 @@ execution may not be parallelized.</p>
 <pre><del2>
 namespace std {
 namespace experimental {
-namespace parallel<ins2>_v1</ins2> {
+namespace parallel {
 </del2>
   class parallel_execution_policy{ <ins2><i>unspecified</i></ins2> };
 <del2>
@@ -1088,7 +1090,7 @@ execution may be parallelized.</p>
 <pre><del2>
 namespace std {
 namespace experimental {
-namespace parallel<ins2>_v1</ins2> {
+namespace parallel {
 </del2>
   class <del2>vector_execution_policy</del2><ins2>parallel_vector_execution_policy</ins2>{ <ins2><i>unspecified</i></ins2> };
 <del2>
@@ -1118,7 +1120,7 @@ execution may be vectorized and parallelized.</p>
 <pre><del2>
 namespace std {
 namespace experimental {
-namespace parallel<ins2>_v1</ins2> {
+namespace parallel {
 </del2>
   class execution_policy
   {
@@ -1329,7 +1331,7 @@ if(sort_me.size() &gt; threshold)
 <pre><del2>
 namespace std {
 namespace experimental {
-namespace parallel<ins2>_v1</ins2> {
+namespace parallel {
 </del2>
 <del2>
   constexpr sequential_execution_policy seq = sequential_execution_policy();
@@ -1443,7 +1445,8 @@ allocate memory while
       
       <pre>namespace std {
 namespace experimental {
-<ins2>inline</ins2> namespace parallel<ins2>_v1</ins2> {
+namespace parallel {
+<ins2>inline namespace v1 {</ins2>
 
   class exception_list : public exception
   {
@@ -1469,6 +1472,7 @@ namespace experimental {
       std::list&lt;exception_ptr&gt; exceptions_; // exposition only
   </del2>
   };
+<ins2>}</ins2>
 }
 }
 }
@@ -1709,7 +1713,7 @@ for_each(par, std::begin(a), std::end(a), [&amp;](int) {
       <cxx-example>
     
     <span class="nowrap">[ <em>Example:</em></span>
-    <pre>using namespace std::experimental::parallel<ins2>_v1</ins2>;
+    <pre>using namespace std::experimental::parallel;
 int x<ins2>=0</ins2>;
 std::mutex m;
 int a[] = {1,2};
@@ -1743,8 +1747,10 @@ for_each(par_vec, std::begin(a), std::end(a), [&amp;](int) {
     <span class="nowrap">— <em>end note</em> ]</span>
   </cxx-note>
 
-<!-- TODO: LWG suggested removing it, I suspect this is a mistake based on the incorrect
-  understanding that it is already covered elsewhere -->
+<!-- Update 6/20/14: this is OK: this is covered in N4063:
+"All operations of the categories of the iterators that the algorithm is instantiated with"
+So there is no problem, deletion is OK.
+-->
 <del2>
       <p>
         <ins2>A</ins2> parallel algorithm invoked with an execution policy object of type
@@ -1764,7 +1770,6 @@ for_each(par_vec, std::begin(a), std::end(a), [&amp;](int) {
     <span class="nowrap">— <em>end note</em> ]</span>
   </cxx-note>
 </del2>
-<!-- end of potentially-incorrectly removed section -->
 
       <p para_num="5" id="parallel.alg.general.exec.5">
         Algorithms invoked with an execution policy object of type <code>execution_policy</code>
@@ -1806,7 +1811,10 @@ For each algorithm in <cxx-ref to="tab.parallel.algorithms"><a title="tab.parall
 corresponding algorithms with the same name
 in the C++ Standard Algorithms Library,
 the overloads shall have an additional template type parameter named
-<code>ExecutionPolicy&amp;&amp;</code>, which shall be the first template parameter.
+<code>ExecutionPolicy</code>, which shall be the first template parameter.
+
+In addition, each such overload shall have the new function parameter as the
+first function parameter of type <code>ExecutionPolicy&amp;&amp;</code>.
 
         </ins2>
 
@@ -2022,7 +2030,8 @@ the overloads shall have an additional template type parameter named
 
       <pre>namespace std {
 namespace experimental {
-<ins2>inline</ins2> namespace parallel<ins2>_v1</ins2> {
+namespace parallel {
+<ins2>inline namespace v1 {</ins2>
   template&lt;class ExecutionPolicy,
            class InputIterator, class Function&gt;
     void for_each(ExecutionPolicy&amp;&amp; exec,
@@ -2031,6 +2040,7 @@ namespace experimental {
   template&lt;class InputIterator, class Size, class Function&gt;
     InputIterator for_each_n(InputIterator first, Size n,
                              Function f);
+<ins2>}</ins2>
 }
 }
 }
@@ -2253,7 +2263,8 @@ namespace experimental {
 
       <pre>namespace std {
 namespace experimental {
-<ins2>inline</ins2> namespace parallel<ins2>_v1</ins2> {
+namespace parallel {
+<ins2>inline namespace v1 {</ins2>
   template&lt;class InputIterator&gt;
     typename iterator_traits&lt;InputIterator&gt;::value_type
       reduce(InputIterator first, InputIterator last);
@@ -2298,6 +2309,7 @@ namespace experimental {
       inclusive_scan(InputIterator first, InputIterator last,
                      OutputIterator result,
                      <del2>T init, </del2>BinaryOperation binary_op<ins2>, T init</ins2>);
+<ins2>}</ins2>
 }
 }
 }
