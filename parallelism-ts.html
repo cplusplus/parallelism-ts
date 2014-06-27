@@ -1481,7 +1481,7 @@ inline namespace v1 {
       <cxx-function para_num="10" id="parallel.exceptions.synopsis.10">
     
     <pre><code><cxx-signature>
-          const char* what() const noexcept;
+          const char* what() const noexcept override;
         </cxx-signature></code></pre>
 
     <dl>
@@ -1885,12 +1885,14 @@ for_each(par_vec, std::begin(a), std::end(a), [&amp;](int) {
       </tbody>
   </table>
 
+      <ins2>
       <cxx-note><span class="nowrap">[ <em>Note:</em></span>
     
       Not all algorithms in the Standard Library have counterparts in <cxx-ref to="tab.parallel.algorithms"><a title="tab.parallel.algorithms" href="#tab.parallel.algorithms">Table 1</a></cxx-ref>.
       
     <span class="nowrap">— <em>end note</em> ]</span>
   </cxx-note>
+      </ins2>
     
     </section>
   </cxx-section>
