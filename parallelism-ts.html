@@ -687,11 +687,15 @@ ul li:before {
         
           <ol>
             
-              <li><span class="marker">4.1.1</span><a href="#parallel.alg.general.exec">Effect of execution policies on algorithm execution</a>
+              <li><span class="marker">4.1.1</span><a href="#parallel.alg.general.user">Requirements on user-provided function objects</a>
         
       </li>
             
-              <li><span class="marker">4.1.2</span><a href="#parallel.alg.overloads">ExecutionPolicy algorithm overloads</a>
+              <li><span class="marker">4.1.2</span><a href="#parallel.alg.general.exec">Effect of execution policies on algorithm execution</a>
+        
+      </li>
+            
+              <li><span class="marker">4.1.3</span><a href="#parallel.alg.overloads">ExecutionPolicy algorithm overloads</a>
         
       </li>
             
@@ -855,7 +859,7 @@ ul li:before {
 <pre><code>    #include &lt;meow&gt;</code>
 </pre>
 
-    <cxx-section id="parallel.general.defns">
+  <cxx-section id="parallel.general.defns">
     
 
     <section>
@@ -866,6 +870,50 @@ ul li:before {
     <p para_num="1" id="parallel.general.defns.1">For the purposes of this document, the terms and definitions given in the C++ Standard and the following apply.</p>
 
     <p para_num="2" id="parallel.general.defns.2">A <dfn>parallel algorithm</dfn> is a function template described by this Technical Specification declared in namespace <code>std::experimental::parallel::v1</code> with a formal template parameter named <code>ExecutionPolicy</code>.</p>
+
+    <p para_num="3" id="parallel.general.defns.3">
+      <ins>Parallel algorithms access objects indirectly accessible via their arguments by invoking the following functions:</ins>
+
+      </p><ul>
+        <li>
+          <ins>All operations of the categories of the iterators that the algorithm is instantiated with.</ins>
+        </li>
+
+        <li>
+          <ins>Functions on those sequence elements that are required by its specification.</ins>
+        </li>
+
+        <li>
+          <ins>User-provided function objects to be applied during the execution of the algorithm, if required by the specification.</ins>
+        </li>
+      </ul>
+
+      <ins>These functions are herein called <em>element access functions</em>.</ins><pre></pre>
+
+      <cxx-example>
+    
+    <span class="nowrap">[ <em>Example:</em></span>
+    
+        <ins>The <code>sort</code> function may invoke the following element access functions:</ins>
+
+        <ul>
+          <li>
+            <ins>Methods of the random-access iterator of the actual template argument, as per 24.2.7, as implied by the name of the
+            template parameters <code>RandomAccessIterator</code>.</ins>
+          </li>
+
+          <li>
+            <ins>The <code>swap</code> function on the elements of the sequence (as per 25.4.1.1 [sort]/2).</ins>
+          </li>
+
+          <li>
+            <ins>The user-provided <code>Compare</code> function object.</ins>
+          </li>
+        </ul>
+      
+    <span class="nowrap">— <em>end example</em> ]</span>
+  </cxx-example>
+    <p para_num="4" id="parallel.general.defns.4"></p>
   
     </section>
   </cxx-section>
@@ -874,7 +922,6 @@ ul li:before {
   </cxx-section>
     </section>
   </cxx-clause>
-
 
 <cxx-clause id="parallel.execpol">
     
@@ -890,11 +937,16 @@ ul li:before {
       <header><span class="section-number">2.1</span> <h1 data-bookmark-label="2.1 In general">In general</h1> <span style="float:right"><a href="#parallel.execpol.general">[parallel.execpol.general]</a></span></header>
       
     
-      <p para_num="1" id="parallel.execpol.general.1">This clause describes classes that represent <dfn>execution policies</dfn>. An
+      <p para_num="1" id="parallel.execpol.general.1">
+      <del>This clause describes classes that represent <dfn>execution policies</dfn>. An
       <dfn>execution policy</dfn> is an object that expresses the requirements on the ordering
       of functions invoked as a consequence of the invocation of a standard
       algorithm. Execution policies afford standard algorithms the discretion to
-      execute in parallel.</p>
+      execute in parallel.</del>
+      <ins>This clause describes classes that are <dfn>execution policy</dfn> types. An object
+      of an execution policy type indicates to an algorithm whether it is allowed to execute
+      in parallel and expresses the requirements on the element access functions.</ins>
+      </p>
 
       <cxx-example>
     
@@ -1260,9 +1312,10 @@ std::sort(exec, std::begin(sort_me), std::end(sort_me));</pre>
           the algorithm throws a <code>std::bad_alloc</code> exception.
         </p>
         <p para_num="2" id="parallel.exceptions.behavior.2">
-          During the execution of a standard parallel algorithm, if the application of a function
-          object terminates with an uncaught exception, the behavior of the program is determined
-          by the type of execution policy used to invoke the algorithm:
+          During the execution of a standard parallel algorithm, if the <del>application of a function
+          object</del><ins>invocation of an element access function</ins> terminates with an uncaught
+          exception, the behavior of the program is determined by the type of execution policy used to
+          invoke the algorithm:
 
           </p><ul>
             <li>
@@ -1273,8 +1326,8 @@ std::sort(exec, std::begin(sort_me), std::end(sort_me));</pre>
               If the execution policy object is of type <code>sequential_execution_policy</code> or
               <code>parallel_execution_policy</code>, the execution of the algorithm terminates with an
               <code>exception_list</code> exception. All uncaught exceptions thrown during
-              the application of user-provided function objects shall be contained in the
-              <code>exception_list</code>.<pre></pre>
+              the <del>application of user-provided function objects</del><ins>invocations of element access functions</ins>
+              shall be contained in the <code>exception_list</code>.<pre></pre>
 
               <cxx-note><span class="nowrap">[ <em>Note:</em></span>
     
@@ -1470,30 +1523,47 @@ inline namespace v1 {
     This clause describes components that C++ programs may use to perform operations on containers
     and other sequences in parallel.
 
+    <cxx-section id="parallel.alg.general.user">
+    
+
+    <section>
+      <header><span class="section-number">4.1.1</span> <h1 data-bookmark-label="4.1.1 Requirements on user-provided function objects">Requirements on user-provided function objects</h1> <span style="float:right"><a href="#parallel.alg.general.user">[parallel.alg.general.user]</a></span></header>
+      
+      
+      <p para_num="1" id="parallel.alg.general.user.1">
+        <ins>Function objects passed into parallel algorithms as objects of type <code>BinaryPredicate</code>,
+        <code>Compare</code>, and <code>BinaryOperation</code> shall not directly or indirectly modify
+        objects via their arguments.</ins>
+      </p>
+    
+    </section>
+  </cxx-section>
+
     <cxx-section id="parallel.alg.general.exec">
     
 
     <section>
-      <header><span class="section-number">4.1.1</span> <h1 data-bookmark-label="4.1.1 Effect of execution policies on algorithm execution">Effect of execution policies on algorithm execution</h1> <span style="float:right"><a href="#parallel.alg.general.exec">[parallel.alg.general.exec]</a></span></header>
+      <header><span class="section-number">4.1.2</span> <h1 data-bookmark-label="4.1.2 Effect of execution policies on algorithm execution">Effect of execution policies on algorithm execution</h1> <span style="float:right"><a href="#parallel.alg.general.exec">[parallel.alg.general.exec]</a></span></header>
       
       
 
       <p para_num="1" id="parallel.alg.general.exec.1">
         Parallel algorithms have template parameters named <code>ExecutionPolicy</code> which describe
         the manner in which the execution of these algorithms may be parallelized and the manner in
-        which they apply user-provided function objects.
+        which they apply <del>user-provided function objects</del><ins>the element access functions</ins>.
       </p>
 
       <p para_num="2" id="parallel.alg.general.exec.2">
-        The applications of function objects in parallel algorithms invoked with an execution policy
-        object of type <code>sequential_execution_policy</code> execute in sequential order in the
-        calling thread.
+        The <del>applications of function objects</del><ins>invocations of element access functions</ins>
+        in parallel algorithms invoked with an execution policy object of type
+        <code>sequential_execution_policy</code> execute in sequential order in the calling thread.
       </p>
 
       <p para_num="3" id="parallel.alg.general.exec.3">
-        The applications of function objects in parallel algorithms invoked with an execution policy
-        object of type <code>parallel_execution_policy</code> are permitted to execute in an unordered
-        fashion in unspecified threads, and indeterminately sequenced within each thread. 
+        The <del>applications of function objects</del><ins>invocations of element access functions</ins>
+        in parallel algorithms invoked with an execution policy object of type
+        <code>parallel_execution_policy</code> are permitted to execute in an unordered fashion in
+        unspecified threads, and indeterminately sequenced within each thread. 
 
         <cxx-note><span class="nowrap">[ <em>Note:</em></span>
     
@@ -1558,8 +1628,9 @@ for_each(par, std::begin(a), std::end(a), [&amp;](int) {
   </cxx-example>
 
       <p para_num="4" id="parallel.alg.general.exec.4">
-        The applications of function objects in parallel algorithms invoked with an execution policy
-        of type <code>parallel_vector_execution_policy</code> are permitted to execute in an unordered fashion
+        The <del>applications of function objects</del><ins>invocations of element access functions</ins>
+        in parallel algorithms invoked with an execution policy of type
+        <code>parallel_vector_execution_policy</code> are permitted to execute in an unordered fashion
         in unspecified threads, and unsequenced <ins>with respect to one another</ins> within each thread.
 
         <cxx-note><span class="nowrap">[ <em>Note:</em></span>
@@ -1663,7 +1734,7 @@ for_each(par_vec, std::begin(a), std::end(a), [&amp;](int) {
     
 
     <section>
-      <header><span class="section-number">4.1.2</span> <h1 data-bookmark-label="4.1.2 ExecutionPolicy algorithm overloads"><code>ExecutionPolicy</code> algorithm overloads</h1> <span style="float:right"><a href="#parallel.alg.overloads">[parallel.alg.overloads]</a></span></header>
+      <header><span class="section-number">4.1.3</span> <h1 data-bookmark-label="4.1.3 ExecutionPolicy algorithm overloads"><code>ExecutionPolicy</code> algorithm overloads</h1> <span style="float:right"><a href="#parallel.alg.overloads">[parallel.alg.overloads]</a></span></header>
       
       
 

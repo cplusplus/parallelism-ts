@@ -8,9 +8,10 @@
           the algorithm throws a <code>std::bad_alloc</code> exception.
         </p>
         <p>
-          During the execution of a standard parallel algorithm, if the application of a function
-          object terminates with an uncaught exception, the behavior of the program is determined
-          by the type of execution policy used to invoke the algorithm:
+          During the execution of a standard parallel algorithm, if the <del>application of a function
+          object</del><ins>invocation of an element access function</ins> terminates with an uncaught
+          exception, the behavior of the program is determined by the type of execution policy used to
+          invoke the algorithm:
 
           <ul>
             <li>
@@ -21,8 +22,8 @@
               If the execution policy object is of type <code>sequential_execution_policy</code> or
               <code>parallel_execution_policy</code>, the execution of the algorithm terminates with an
               <code>exception_list</code> exception. All uncaught exceptions thrown during
-              the application of user-provided function objects shall be contained in the
-              <code>exception_list</code>.<pre>
+              the <del>application of user-provided function objects</del><ins>invocations of element access functions</ins>
+              shall be contained in the <code>exception_list</code>.<pre>
 </pre>
 
               <cxx-note>

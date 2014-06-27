@@ -71,12 +71,51 @@
 <code>    #include &lt;meow&gt;</code>
 </pre>
 
-    <cxx-section id="parallel.general.defns">
+  <cxx-section id="parallel.general.defns">
     <h1>Terms and definitions</h1>
 
     <p>For the purposes of this document, the terms and definitions given in the C++ Standard and the following apply.</p>
 
     <p>A <dfn>parallel algorithm</dfn> is a function template described by this Technical Specification declared in namespace <code>std::experimental::parallel::v1</code> with a formal template parameter named <code>ExecutionPolicy</code>.</p>
+
+    <p>
+      <ins>Parallel algorithms access objects indirectly accessible via their arguments by invoking the following functions:</ins>
+
+      <ul>
+        <li>
+          <ins>All operations of the categories of the iterators that the algorithm is instantiated with.</ins>
+        </li>
+
+        <li>
+          <ins>Functions on those sequence elements that are required by its specification.</ins>
+        </li>
+
+        <li>
+          <ins>User-provided function objects to be applied during the execution of the algorithm, if required by the specification.</ins>
+        </li>
+      </ul>
+
+      <ins>These functions are herein called <em>element access functions</em>.</ins><pre>
+</pre>
+
+      <cxx-example>
+        <ins>The <code>sort</code> function may invoke the following element access functions:</ins>
+
+        <ul>
+          <li>
+            <ins>Methods of the random-access iterator of the actual template argument, as per 24.2.7, as implied by the name of the
+            template parameters <code>RandomAccessIterator</code>.</ins>
+          </li>
+
+          <li>
+            <ins>The <code>swap</code> function on the elements of the sequence (as per 25.4.1.1 [sort]/2).</ins>
+          </li>
+
+          <li>
+            <ins>The user-provided <code>Compare</code> function object.</ins>
+          </li>
+        </ul>
+      </cxx-example>
+    </p>
   </cxx-section>
 </cxx-clause>
-

@@ -2,11 +2,16 @@
   <h1>Execution policies</h1>
   <cxx-section id="parallel.execpol.general">
     <h1>In general</h1>
-      <p>This clause describes classes that represent <dfn>execution policies</dfn>. An
+      <p>
+      <del>This clause describes classes that represent <dfn>execution policies</dfn>. An
       <dfn>execution policy</dfn> is an object that expresses the requirements on the ordering
       of functions invoked as a consequence of the invocation of a standard
       algorithm. Execution policies afford standard algorithms the discretion to
-      execute in parallel.</p>
+      execute in parallel.</del>
+      <ins>This clause describes classes that are <dfn>execution policy</dfn> types. An object
+      of an execution policy type indicates to an algorithm whether it is allowed to execute
+      in parallel and expresses the requirements on the element access functions.</ins>
+      </p>
 
       <cxx-example>
     <pre>std::vector&lt;int&gt; v = ...
