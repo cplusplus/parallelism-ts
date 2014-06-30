@@ -112,7 +112,7 @@ for_each(par, std::begin(a), std::end(a), [&amp;](int) {
 </pre>
         
         <ins>
-          Since <code>parallel_vector_execution_policy</code> allows the execution of such function objects to be
+          Since <code>parallel_vector_execution_policy</code> allows the execution of element access functions to be
           interleaved on a single thread, synchronization, including the use of mutexes, risks deadlock. Thus the
           synchronization with <code>parallel_vector_execution_policy</code> is restricted as follows:<pre>
 </pre>
@@ -120,7 +120,7 @@ for_each(par, std::begin(a), std::end(a), [&amp;](int) {
           A standard library function is <em>vectorization-unsafe</em> if it is specified to synchronize with
           another function invocation, or another function invocation is specified to synchronize with it, and if
           it is not a memory allocation or deallocation function. Vectorization-unsafe standard library functions
-          may not be invoked by user code called from <code>parallel_vector_execution_policy</code> algorithms.<pre>
+          may not be invoked by element access functions invoked by <code>parallel_vector_execution_policy</code> algorithms.<pre>
 </pre>
 
           <cxx-note>
