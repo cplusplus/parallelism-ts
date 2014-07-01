@@ -9,10 +9,11 @@
 
     <cxx-section id="parallel.alg.general.user">
       <h1>Requirements on user-provided function objects</h1>
-      <p>
-        <ins>Function objects passed into parallel algorithms as objects of type <code>BinaryPredicate</code>,
+
+     <p>
+        <ins3>Function objects passed into parallel algorithms as objects of type <code>BinaryPredicate</code>,
         <code>Compare</code>, and <code>BinaryOperation</code> shall not directly or indirectly modify
-        objects via their arguments.</ins>
+        objects via their arguments.</ins3>
       </p>
     </cxx-section>
 
@@ -22,20 +23,20 @@
       <p>
         Parallel algorithms have template parameters named <code>ExecutionPolicy</code> which describe
         the manner in which the execution of these algorithms may be parallelized and the manner in
-        which they apply <del>user-provided function objects</del><ins>the element access functions</ins>.
+        which they apply <del3>user-provided function objects</del3><ins3>the element access functions</ins3>.
       </p>
 
       <p>
-        The <del>applications of function objects</del><ins>invocations of element access functions</ins>
-        in parallel algorithms invoked with an execution policy object of type
-        <code>sequential_execution_policy</code> execute in sequential order in the calling thread.
+        The <del3>applications of function objects</del3><ins3>invocations of element access functions</ins3>
+        in parallel algorithms invoked with an execution policy object of type <code>sequential_execution_policy</code>
+        execute in sequential order in the calling thread.
       </p>
 
       <p>
-        The <del>applications of function objects</del><ins>invocations of element access functions</ins>
-        in parallel algorithms invoked with an execution policy object of type
-        <code>parallel_execution_policy</code> are permitted to execute in an unordered fashion in
-        unspecified threads, and indeterminately sequenced within each thread. 
+        The <del3>applications of function objects</del3><ins3>invocations of element access
+        functions</ins3> in parallel algorithms invoked with an execution policy object of
+        type <code>parallel_execution_policy</code> are permitted to execute in an unordered
+        fashion in unspecified threads, and indeterminately sequenced within each thread. 
 
         <cxx-note>
           It is the caller's responsibility to ensure correctness, for example that the invocation does
@@ -48,7 +49,8 @@ int a[] = {0,1};
 std::vector&lt;int&gt; v;
 for_each(par, std::begin(a), std::end(a), [&amp;](int i) {
   v.push_back(i*2+1);
-});</pre>
+});
+<del2>foo bar</del2></pre>
 
         The program above has a data race because of the unsynchronized access to the container
         <code>v</code>.
@@ -57,9 +59,9 @@ for_each(par, std::begin(a), std::end(a), [&amp;](int i) {
 
       <cxx-example><pre>
 using namespace std::experimental::parallel;
-std::atomic&lt;int&gt; x = 0;
+std::atomic<ins2>&lt;int></ins2> x = 0;
 int a[] = {1,2};
-for_each(par, std::begin(a), std::end(a), [&amp;](int n) {
+for_each(par, std::begin(a), std::end(a), [<ins2>&amp;</ins2>](int n) {
   x.fetch_add(1, std::memory_order_relaxed);
   // spin wait for another iteration to change the value of x
   while (x.load(std::memory_order_relaxed) == 1) { }
@@ -72,7 +74,7 @@ for_each(par, std::begin(a), std::end(a), [&amp;](int n) {
 
       <cxx-example><pre>
 using namespace std::experimental::parallel;
-int x=0;
+int x<ins2>=0</ins2>;
 std::mutex m;
 int a[] = {1,2};
 for_each(par, std::begin(a), std::end(a), [&amp;](int) {
@@ -86,32 +88,34 @@ for_each(par, std::begin(a), std::end(a), [&amp;](int) {
       </cxx-example>
 
       <p>
-        The <del>applications of function objects</del><ins>invocations of element access functions</ins>
+        The <del3>applications of function objects</del3><ins3>invocations of element access functions</ins3>
         in parallel algorithms invoked with an execution policy of type
-        <code>parallel_vector_execution_policy</code> are permitted to execute in an unordered fashion
-        in unspecified threads, and unsequenced <ins>with respect to one another</ins> within each thread.
-
+        <code><del2>vector_execution_policy</del2><ins2>parallel_vector_execution_policy</ins2></code>
+        are permitted to execute in an unordered fashion in unspecified threads, and unsequenced
+        <ins3>with respect to one another</ins3> within each thread.
+        <ins2>
         <cxx-note>
           This means that multiple function object invocations may be interleaved on a single thread.
-        </cxx-note><pre>
+        </cxx-note>
+        </ins2><pre>
 </pre>
 
-        <del>
+        <del3>
         <cxx-note>
-          As a consequence, function objects governed by the <code>parallel_vector_execution_policy</code>
+          As a consequence, function objects governed by the <code><del2>vector_execution_policy</del2><ins2>parallel_vector_execution_policy</ins2></code>
           policy must not synchronize with each other. Specifically, they must not acquire locks.
         </cxx-note>
-        </del>
-        <ins>
+        </del3>
+
+        <ins3>
         <cxx-note>
-          <ins>This overrides the usual guarantee from the C++ standard, Section 1.9 [intro.execution] that
-          function executions do not interleave with one another.</ins>
+          This overrides the usual guarantee from the C++ standard, Section 1.9 [intro.execution] that
+          function executions do not interleave with one another.
         </cxx-note>
-        </ins>
-        <pre>
+        </ins3><pre>
 </pre>
-        
-        <ins>
+
+        <ins3>
           Since <code>parallel_vector_execution_policy</code> allows the execution of element access functions to be
           interleaved on a single thread, synchronization, including the use of mutexes, risks deadlock. Thus the
           synchronization with <code>parallel_vector_execution_policy</code> is restricted as follows:<pre>
@@ -120,19 +124,19 @@ for_each(par, std::begin(a), std::end(a), [&amp;](int) {
           A standard library function is <em>vectorization-unsafe</em> if it is specified to synchronize with
           another function invocation, or another function invocation is specified to synchronize with it, and if
           it is not a memory allocation or deallocation function. Vectorization-unsafe standard library functions
-          may not be invoked by element access functions invoked by <code>parallel_vector_execution_policy</code> algorithms.<pre>
+          may not be invoked by user code called from <code>parallel_vector_execution_policy</code> algorithms.<pre>
 </pre>
 
           <cxx-note>
             Implementations must ensure that internal synchronization inside standard library routines does not
             induce deadlock.
           </cxx-note>
-        </ins>
+        </ins3>
       </p>
 
       <cxx-example><pre>
 using namespace std::experimental::parallel;
-int x=0;
+int x<ins2>=0</ins2>;
 std::mutex m;
 int a[] = {1,2};
 for_each(par_vec, std::begin(a), std::end(a), [&amp;](int) {
@@ -154,19 +158,43 @@ for_each(par_vec, std::begin(a), std::end(a), [&amp;](int) {
 
       <cxx-note>
         The semantics of the <code>parallel_execution_policy</code> or the
-        <code>parallel_vector_execution_policy</code> invocation allow the implementation to fall back to
+        <code><del2>vector_execution_policy</del2><ins2>parallel_vector_execution_policy</ins2></code> invocation allow the implementation to fall back to
         sequential execution if the system cannot parallelize an algorithm invocation due to lack of
         resources.
       </cxx-note>
 
+<!-- Update 6/20/14: this is OK: this is covered in N4063:
+"All operations of the categories of the iterators that the algorithm is instantiated with"
+So there is no problem, deletion is OK.
+-->
+<del2>
+      <p>
+        <ins2>A</ins2> parallel algorithm invoked with an execution policy object of type
+        <code>parallel_execution_policy</code> or <code><del2>vector_execution_policy</del2><ins2>parallel_vector_execution_policy</ins2></code> may apply
+        iterator member functions of a stronger category than its specification requires<ins2>, if such iterators exist</ins2>. In this
+        case, the application of these member functions are subject to provisions 3. and 4. above,
+        respectively.
+      </p>
+
+      <cxx-note>
+        For example, an algorithm whose specification requires <code>InputIterator</code> but
+        receives a concrete iterator of the category <code>RandomAccessIterator</code> may use
+        <code>operator[]</code>. In this case, it is the algorithm caller's responsibility to ensure
+        <code>operator[]</code> is race-free.
+      </cxx-note>
+</del2>
+
       <p>
         Algorithms invoked with an execution policy object of type <code>execution_policy</code>
-        execute internally as if invoked with the contained execution policy object.
+        execute internally as if invoked with <del>instances of type <code>sequential_execution_policy</code>,
+        <code>parallel_execution_policy</code>, or an implementation-defined execution policy type depending
+        on the dynamic value of the <code>execution_policy</code> object.</del>
+        <ins>the contained execution policy object.</ins>
       </p>
 
       <p>
         The semantics of parallel algorithms invoked with an execution policy object of
-        implementation-defined type are implementation-defined.
+        implementation-defined type are <del2>unspecified</del2><ins2>implementation-defined</ins2>.
       </p>
     </cxx-section>
 
@@ -174,17 +202,28 @@ for_each(par_vec, std::begin(a), std::end(a), [&amp;](int) {
       <h1><code>ExecutionPolicy</code> algorithm overloads</h1>
 
       <p>
-        The Parallel Algorithms Library provides overloads for each of the algorithms named in
-        Table 1, corresponding to the algorithms with the same name in the C++ Standard Algorithms Library.
-        
-        For each algorithm in <cxx-ref to="tab.parallel.algorithms"></cxx-ref>, if there are overloads for
-        corresponding algorithms with the same name
-        in the C++ Standard Algorithms Library,
-        the overloads shall have an additional template type parameter named
-        <code>ExecutionPolicy</code>, which shall be the first template parameter.
-        
-        In addition, each such overload shall have the new function parameter as the
-        first function parameter of type <code>ExecutionPolicy&amp;&amp;</code>.
+        <del2>
+        Parallel algorithms coexist alongside their sequential counterparts as overloads
+        distinguished by a formal template parameter named <code>ExecutionPolicy</code>. This
+        <del>template parameter corresponds to the parallel algorithm's first function parameter, whose
+        type is <code>ExecutionPolicy</code></del>
+        <insdel>is the first template parameter and corresponds to the parallel algorithm's first function
+        parameter, whose type is <code>ExecutionPolicy&amp;&amp;</code></insdel>.</del2>
+        <ins2>
+The Parallel Algorithms Library provides overloads for each of the algorithms named in
+Table 1, corresponding to the algorithms with the same name in the C++ Standard Algorithms Library.
+
+For each algorithm in <cxx-ref to="tab.parallel.algorithms"></cxx-ref>, if there are overloads for
+corresponding algorithms with the same name
+in the C++ Standard Algorithms Library,
+the overloads shall have an additional template type parameter named
+<code>ExecutionPolicy</code>, which shall be the first template parameter.
+
+In addition, each such overload shall have the new function parameter as the
+first function parameter of type <code>ExecutionPolicy&amp;&amp;</code>.
+
+        </ins2>
+
       </p>
 
       <p>
@@ -193,14 +232,18 @@ for_each(par_vec, std::begin(a), std::end(a), [&amp;](int) {
       </p>
         
       <p>
-        Parallel algorithms shall not participate in overload resolution unless
-        <code>is_execution_policy&lt;decay_t&lt;ExecutionPolicy&gt;&gt;::value</code> is <code>true</code>.
+        Parallel algorithms
+        <del>have the requirement <code>is_execution_policy&lt;ExecutionPolicy&gt;::value</code> is <code>true</code></del>
+        <ins>shall not participate in overload resolution unless
+        <code>is_execution_policy<ins2>&lt;decay_t&lt;</ins2>ExecutionPolicy<ins2>&gt;</ins2>&gt;::value</code> is <code>true</code></ins>.
       </p>
         
+      <del2><p>The algorithms listed in <cxx-ref to="tab.parallel.algorithms"></cxx-ref> shall have <code>ExecutionPolicy</code> overloads.</p></del2>
+
       <table is="cxx-table" id="tab.parallel.algorithms" class="list">
         <caption>Table of parallel algorithms</caption>
           <tr>
-            <td><code>adjacent_difference</code></td>
+            <td><ins><code>adjacent_difference</code></ins></td>
             <td><code>adjacent_find</code></td>
             <td><code>all_of</code></td>
             <td><code>any_of</code></td>
@@ -236,7 +279,7 @@ for_each(par_vec, std::begin(a), std::end(a), [&amp;](int) {
             <td><code>inclusive_scan</code></td>
           </tr>
           <tr>
-            <td><code>inner_product</code></td>
+            <td><ins><code>inner_product</code></ins></td>
             <td><code>inplace_merge</code></td>
             <td><code>is_heap</code></td>
             <td><code>is_heap_until</code></td>
@@ -333,11 +376,13 @@ for_each(par_vec, std::begin(a), std::end(a), [&amp;](int) {
         <li><code>a1</code> when <code>N</code> is <code>1</code></li>
       
         <li>
-          <code>op(<em>GENERALIZED_SUM</em>(op, b1, ..., bK)</code>, <code><em>GENERALIZED_SUM</em>(op, bM, ..., bN))</code> where
+          <code>op(<em>GENERALIZED_SUM</em>(op, b1, ..., b<del2>M</del2><ins2>K</ins2>)</code>, <code><em>GENERALIZED_SUM</em>(op, bM, ..., bN))</code> where
            
           <ul>
             <li><code>b1, ..., bN</code> may be any permutation of <code>a1, ..., aN</code> and</li>
-            <li><code>1 &lt; K+1 = M &le; N</code>.</li>
+
+            <del2><li><code>0 &lt; M &lt; N</code>.</li></del2>
+            <ins2><li><code>1 &lt; K+1 = M &le; N</code>.</li></ins2>
           </ul>
         </li>
       </ul>
@@ -350,7 +395,7 @@ for_each(par_vec, std::begin(a), std::end(a), [&amp;](int) {
         <li><code>a1</code> when <code>N</code> is <code>1</code></li>
 
         <li>
-          <code>op(<em>GENERALIZED_NONCOMMUTATIVE_SUM</em>(op, a1, ..., aK), <em>GENERALIZED_NONCOMMUTATIVE_SUM</em>(op, aM, ..., aN)</code> where <code>1 &lt; K+1 = M &le; N</code>.
+          <code>op(<em>GENERALIZED_NONCOMMUTATIVE_SUM</em>(op, a1, ..., a<del2>M</del2><ins2>K</ins2>), <em>GENERALIZED_NONCOMMUTATIVE_SUM</em>(op, aM, ..., aN)</code> where <del2><code>0 &lt; M &lt; N</code></del2> <ins2><code>1 &lt; K+1 = M &le; N</code></ins2>.
         </li>
       </ul>
     </p>
@@ -366,7 +411,7 @@ for_each(par_vec, std::begin(a), std::end(a), [&amp;](int) {
 namespace std {
 namespace experimental {
 namespace parallel {
-inline namespace v1 {
+<ins2>inline namespace v1 {</ins2>
   template&lt;class ExecutionPolicy,
            class InputIterator, class Function&gt;
     void for_each(ExecutionPolicy&amp;&amp; exec,
@@ -375,7 +420,7 @@ inline namespace v1 {
   template&lt;class InputIterator, class Size, class Function&gt;
     InputIterator for_each_n(InputIterator first, Size n,
                              Function f);
-}
+<ins2>}</ins2>
 }
 }
 }
@@ -417,8 +462,11 @@ inline namespace v1 {
           accumulation.
         </cxx-notes>
         <cxx-requires>
-          Unlike its sequential form, the parallel overload of <code>for_each</code> requires
-          <code>Function</code> to meet the requirements of <code>CopyConstructible</code>.
+          <ins>
+            Unlike its sequential form, the parallel overload of <code>for_each</code> requires
+            <code>Function</code> to meet the requirements of <code>CopyConstructible</code><insdel>, but not
+            <code>MoveConstructible</code></insdel>.
+          </ins>
         </cxx-requires>
       </cxx-function>
 
@@ -448,7 +496,7 @@ inline namespace v1 {
         </cxx-effects>
 
         <cxx-returns>
-          <code>first + n</code> for non-negative values of <code>n</code> and <code>first</code> for negative values.
+          <code>first + n</code><ins> for non-negative values of <code>n</code> and <code>first</code> for negative values</ins>.
         </cxx-returns>
 
         <cxx-remarks>
@@ -456,38 +504,41 @@ inline namespace v1 {
         </cxx-remarks>
       </cxx-function>
 
-      <cxx-function>
-        <cxx-signature>
-        template&lt;class ExecutionPolicy,
-                 class InputIterator, class Size, class Function&gt;
-                 InputIterator for_each_n(ExecutionPolicy &amp;&amp; exec,
-                                          InputIterator first, Size n,
-                                          Function f);
-        </cxx-signature>
+      <ins>
+        <cxx-function>
+          <cxx-signature>
+          template&lt;class ExecutionPolicy,
+                   class InputIterator, class Size, class Function&gt;
+                   InputIterator for_each_n(ExecutionPolicy &amp;&amp; exec,
+                                            InputIterator first, Size n,
+                                            Function f);
+          </cxx-signature>
 
-        <cxx-effects>
-          Applies <code>f</code> to the result of dereferencing every iterator in the range
-          <code>[first,first + n)</code>, starting from <code>first</code> and proceeding to <code>first + n - 1</code>.
+          <cxx-effects>
+            Applies <code>f</code> to the result of dereferencing every iterator in the range
+            <code>[first,first + n)</code>, starting from <code>first</code> and proceeding to <code>first + n - 1</code>.
 
-          <cxx-note>
-            If the type of <code>first</code> satisfies the requirements of a mutable iterator,
-            <code>f</code> may apply nonconstant functions through the dereferenced iterator.
-          </cxx-note>
-        </cxx-effects>
+            <cxx-note>
+              If the type of <code>first</code> satisfies the requirements of a mutable iterator,
+              <code>f</code> may apply nonconstant functions through the dereferenced iterator.
+            </cxx-note>
+          </cxx-effects>
 
-        <cxx-returns>
-        <code>first + n</code> for non-negative values of <code>n</code> and <code>first</code> for negative values.
-        </cxx-returns>
+          <cxx-returns>
+          <code>first + n</code><ins> for non-negative values of <code>n</code> and <code>first</code> for negative values.
+          </cxx-returns>
 
-        <cxx-remarks>
-          If <code>f</code> returns a result, the result is ignored.
-        </cxx-remarks>
+          <cxx-remarks>
+            If <code>f</code> returns a result, the result is ignored.
+          </cxx-remarks>
 
-        <cxx-notes>
-          Unlike its sequential form, the parallel overload of <code>for_each_n</code> requires
-          <code>Function</code> to meet the requirements of <code>CopyConstructible</code>.
-        </cxx-notes>
-      </cxx-function>
+          <cxx-notes>
+            Unlike its sequential form, the parallel overload of <code>for_each_n</code> requires
+            <code>Function</code> to meet the requirements of <code>CopyConstructible</code><del2>, but not
+            <code>MoveConstructible</code></del2>.
+          </cxx-notes>
+        </cxx-function>
+      </ins>
     </cxx-section>
   </cxx-section>
 
@@ -495,22 +546,28 @@ inline namespace v1 {
     <h1>Numeric Parallel Algorithms</h1>
 
     <cxx-section id="parallel.alg.numeric.synopsis">
-      <h1>Header <code>&lt;experimental/numeric&gt;</code> synopsis</h1>
+      <h1>Header <code>&lt;experimental/numeric&gt;</code><ins2> synopsis</ins2></h1>
 
       <pre>
 namespace std {
 namespace experimental {
 namespace parallel {
-inline namespace v1 {
+<ins2>inline namespace v1 {</ins2>
   template&lt;class InputIterator&gt;
     typename iterator_traits&lt;InputIterator&gt;::value_type
       reduce(InputIterator first, InputIterator last);
   template&lt;class InputIterator, class T&gt;
-    T reduce(InputIterator first, InputIterator last, T init);
+    T reduce(InputIterator first, InputIterator last<ins2>,</ins2> T init);
   template&lt;class InputIterator, class T, class BinaryOperation&gt;
     T reduce(InputIterator first, InputIterator last, T init,
              BinaryOperation binary_op);
 
+  <del2>
+  template&lt;class InputIterator, class OutputIterator&gt;
+    OutputIterator
+      exclusive_scan(InputIterator first, InputIterator last,
+                     OutputIterator result);
+  </del2>
   template&lt;class InputIterator, class OutputIterator,
            class T&gt;
     OutputIterator
@@ -535,12 +592,12 @@ inline namespace v1 {
                      OutputIterator result,
                      BinaryOperation binary_op);
   template&lt;class InputIterator, class OutputIterator,
-           class BinaryOperation, class T&gt;
+           <del2>class T, </del2>class BinaryOperation<ins2>, class T</ins2>&gt;
     OutputIterator
       inclusive_scan(InputIterator first, InputIterator last,
                      OutputIterator result,
-                     BinaryOperation binary_op, T init);
-}
+                     <del2>T init, </del2>BinaryOperation binary_op<ins2>, T init</ins2>);
+<ins2>}</ins2>
 }
 }
 }
@@ -558,8 +615,33 @@ inline namespace v1 {
         </cxx-signature>
 
         <cxx-effects>
-          Same as <code>reduce(first, last, typename iterator_traits&lt;InputIterator&gt;::value_type{})</code>.
+          <ins2>
+            Same as <code>reduce(first, last, typename iterator_traits&lt;InputIterator&gt;::value_type{})</code>.
+          </ins2>
         </cxx-effects>
+
+        <del2>
+          <cxx-returns>
+            <code>reduce(first, last, typename iterator_traits&lt;InputIterator&gt;::value_type{})</code>
+          </cxx-returns>
+
+          <cxx-requires>
+            <code>typename iterator_traits&lt;InputIterator&gt;::value_type{}</code>
+            shall be a valid expression. The <code>operator+</code> function associated with
+            <code>iterator_traits&lt;InputIterator&gt;::value_type</code> shall not invalidate iterators or
+            subranges, nor modify elements in the range <code>[first,last)</code>.
+          </cxx-requires>
+
+          <cxx-complexity>
+            O(<code>last - first</code>) applications of <code>operator+</code>.
+          </cxx-complexity>
+
+          <cxx-notes>
+            The primary difference between <code>reduce</code> and <code>accumulate</code> is that the behavior
+            of <code>reduce</code> may be non-deterministic for non-associative or non-commutative
+            <code>operator+</code>.
+          </cxx-notes>
+        </del2>
       </cxx-function>
 
       <cxx-function>
@@ -569,8 +651,30 @@ inline namespace v1 {
         </cxx-signature>
 
         <cxx-effects>
-          Same as <code>reduce(first, last, init, plus&lt;&gt;())</code>.
+          <ins2>
+            Same as <code>reduce(first, last, init, plus&lt;&gt;())</code>.
+          </ins2>
         </cxx-effects>
+
+        <del2>
+          <cxx-returns>
+            <code>reduce(first, last, init, plus&lt;&gt;())</code>
+          </cxx-returns>
+
+          <cxx-requires>
+            The <code>operator+</code> function associated with <code>T</code> shall not invalidate iterators
+            or subranges, nor modify elements in the range <code>[first,last)</code>.
+          </cxx-requires>
+
+          <cxx-complexity>
+            O(<code>last - first</code>) applications of <code>operator+</code>.
+          </cxx-complexity>
+
+          <cxx-notes>
+            The primary difference between <code>reduce</code> and <code>accumulate</code> is that the behavior
+            of <code>reduce</code> may be non-deterministic for non-associative or non-commutative <code>operator+</code>.
+          </cxx-notes>
+        </del2>
       </cxx-function>
 
       <cxx-function>
@@ -581,7 +685,7 @@ inline namespace v1 {
         </cxx-signature>
 
         <cxx-returns>
-          <code><em>GENERALIZED_SUM</em>(binary_op, init, *first, ..., *(first + (last - first) - 1))</code>.
+          <code><em>GENERALIZED_SUM</em>(binary_op, init, *first, ..., <del2>*(first + last - first - 1)</del2><ins2>*(first + (last - first) - 1)</ins2>)</code>.
         </cxx-returns>
 
         <cxx-requires>
@@ -595,7 +699,7 @@ inline namespace v1 {
 
         <cxx-notes>
           The primary difference between <code>reduce</code> and <code>accumulate</code> is that the behavior
-          of <code>reduce</code> may be non-deterministic for non-associative or non-commutative <code>binary_op</code>.
+          of <code>reduce</code> may be non-deterministic for non-associative or non-commutative <del><code>operator+</code></del><ins><code>binary_op</code></ins>.
         </cxx-notes>
       </cxx-function>
     </cxx-section>
@@ -614,8 +718,33 @@ inline namespace v1 {
         </cxx-signature>
 
         <cxx-effects>
-          Same as <code>exclusive_scan(first, last, result, init, plus&lt;&gt;())</code>.
+          <ins2>
+            Same as <code>exclusive_scan(first, last, result, init, plus&lt;&gt;())</code>.
+          </ins2>
         </cxx-effects>
+
+        <del2>
+          <cxx-returns>
+            <code>exclusive_scan(first, last, result, init, plus&lt;&gt;())</code>
+          </cxx-returns>
+
+          <cxx-requires>
+            The <code>operator+</code> function associated with <code>iterator_traits&lt;InputIterator&gt;::value_type</code> shall
+            not invalidate iterators or subranges, nor modify elements in the ranges <code>[first,last)</code> or
+            <code>[result,result + (last - first))</code>.
+          </cxx-requires>
+
+          <cxx-complexity>
+          O(<code>last - first</code>) applications of <code>operator+</code>.
+          </cxx-complexity>
+
+          <cxx-notes>
+            The primary difference between <code>exclusive_scan</code> and <code>inclusive_scan</code> is that
+            <code>exclusive_scan</code> excludes the <code>i</code>th input element from the <code>i</code>th sum.
+            If the <code>operator+</code> function is not mathematically associative, the behavior of
+            <code>exclusive_scan</code> may be non-deterministic.
+          </cxx-notes>
+        </del2>
       </cxx-function>
 
       <cxx-function>
@@ -630,7 +759,7 @@ inline namespace v1 {
 
         <cxx-effects>
           Assigns through each iterator <code>i</code> in <code>[result,result + (last - first))</code> the
-          value of <code><em>GENERALIZED_NONCOMMUTATIVE_SUM</em>(binary_op, init, *first, ..., *(first + (i - result) - 1))</code>.
+          value of <code><em>GENERALIZED_NONCOMMUTATIVE_SUM</em>(binary_op, init, *first, ..., <del2>(*first + i - result - 1)</del2><ins2>*(first + (i - result) - 1)</ins2>)</code>.
         </cxx-effects>
 
         <cxx-returns>
@@ -647,7 +776,7 @@ inline namespace v1 {
         </cxx-complexity>
 
         <cxx-notes>
-          The difference between <code>exclusive_scan</code> and <code>inclusive_scan</code> is that
+          The <del2>primary</del2> difference between <code>exclusive_scan</code> and <code>inclusive_scan</code> is that
           <code>exclusive_scan</code> excludes the <code>i</code>th input element from the <code>i</code>th
           sum. If <code>binary_op</code> is not mathematically associative, the behavior of
           <code>exclusive_scan</code> may be non-deterministic.
@@ -667,8 +796,34 @@ inline namespace v1 {
         </cxx-signature>
 
         <cxx-effects>
-          Same as <code>inclusive_scan(first, last, result, plus&lt;&gt;())</code>.
+          <ins2>
+            Same as <code>inclusive_scan(first, last, result, plus&lt;&gt;())</code>.
+          </ins2>
         </cxx-effects>
+
+        <del2>
+          <cxx-returns>
+            <code>inclusive_scan(first, last, result, plus&lt;&gt;())</code>
+          </cxx-returns>
+
+          <cxx-requires>
+            The <code>operator+</code> function associated with
+            <code>iterator_traits&lt;InputIterator&gt;::value_type</code> shall not invalidate iterators or
+            subranges, nor modify elements in the ranges <code>[first,last)</code> or
+            <code>[result,result + (last - first))</code>.
+          </cxx-requires>
+
+          <cxx-complexity>
+            O(<code>last - first</code>) applications of <code>operator+</code>.
+          </cxx-complexity>
+
+          <cxx-notes>
+            The primary difference between <code>exclusive_scan</code> and <code>inclusive_scan</code> is that
+            <code>exclusive_scan</code> excludes the <code>i</code>th input element from the <code>i</code>th sum.
+            If the <code>operator+</code> function is not mathematically associative, the behavior of
+            <code>inclusive_scan</code> may be non-deterministic.
+          </cxx-notes>
+        </del2>
       </cxx-function>
 
       <cxx-function>
@@ -681,17 +836,17 @@ inline namespace v1 {
                              BinaryOperation binary_op);
           
           template&lt;class InputIterator, class OutputIterator,
-                   class BinaryOperation, class T&gt;
+                   <del2>class T, </del2>class BinaryOperation<ins2>, class T</ins2>&gt;
             OutputIterator
               inclusive_scan(InputIterator first, InputIterator last,
                              OutputIterator result,
-                             BinaryOperation binary_op, T init);
+                             <del2>T init, </del2>BinaryOperation binary_op<ins2>, T init</ins2>);
         </cxx-signature>
 
         <cxx-effects>
           Assigns through each iterator <code>i</code> in <code>[result,result + (last - first))</code> the value of
-          <code><em>GENERALIZED_NONCOMMUTATIVE_SUM</em>(binary_op, *first, ..., *(first + (i - result)))</code> or
-          <code><em>GENERALIZED_NONCOMMUTATIVE_SUM</em>(binary_op, init, *first, ..., *(first + (i - result)))</code>
+          <code><em>GENERALIZED_NONCOMMUTATIVE_SUM</em>(binary_op, *first, ..., <del2>(*first + i - result)</del2><ins2>*(first + (i - result))</ins2>)</code> or
+          <code><em>GENERALIZED_NONCOMMUTATIVE_SUM</em>(binary_op, init, *first, ..., <del2>(*first + i - result)</del2><ins2>*(first + (i - result))</ins2>)</code>
           if <code>init</code> is provided.
         </cxx-effects>
 
@@ -709,7 +864,7 @@ inline namespace v1 {
         </cxx-complexity>
 
         <cxx-notes>
-          The difference between <code>exclusive_scan</code> and <code>inclusive_scan</code> is that
+          The <del2>primary</del2> difference between <code>exclusive_scan</code> and <code>inclusive_scan</code> is that
           <code>inclusive_scan</code> includes the <code>i</code>th input element in the <code>i</code>th sum.
           If <code>binary_op</code> is not mathematically associative, the behavior of
           <code>inclusive_scan</code> may be non-deterministic.
