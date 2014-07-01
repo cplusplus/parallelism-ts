@@ -80,7 +80,7 @@ ins2 {text-decoration: underline; color: #FF0040; font-size:100%;}
 insdel {text-decoration: line-through; color: #FF4440; font-size:100%;}
 
 del3 {text-decoration: line-through; color: #006666; font-size:100%;}
-ins3 {text-decoration: line-through: color: #00CC66; font-size:100%;}
+ins3 {text-decoration: underline; color: #00CC66; font-size:100%;}
 
 /* inserted in Rappersil and then deleted by another paper */
 insdel2 {text-decoration: line-through; color: #003366; font-size:100%;}
