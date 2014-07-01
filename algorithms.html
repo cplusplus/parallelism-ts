@@ -7,24 +7,35 @@
     This clause describes components that C++ programs may use to perform operations on containers
     and other sequences in parallel.
 
+    <cxx-section id="parallel.alg.general.user">
+      <h1>Requirements on user-provided function objects</h1>
+
+     <p>
+        <ins3>Function objects passed into parallel algorithms as objects of type <code>BinaryPredicate</code>,
+        <code>Compare</code>, and <code>BinaryOperation</code> shall not directly or indirectly modify
+        objects via their arguments.</ins3>
+      </p>
+    </cxx-section>
+
     <cxx-section id="parallel.alg.general.exec">
       <h1>Effect of execution policies on algorithm execution</h1>
 
       <p>
         Parallel algorithms have template parameters named <code>ExecutionPolicy</code> which describe
         the manner in which the execution of these algorithms may be parallelized and the manner in
-        which they apply user-provided function objects.
+        which they apply <del3>user-provided function objects</del3><ins3>the element access functions</ins3>.
       </p>
 
       <p>
-        The applications of function objects in parallel algorithms invoked with an execution policy
-        object of type <code>sequential_execution_policy</code> execute in sequential order in the
-        calling thread.
+        The <del3>applications of function objects</del3><ins3>invocations of element access functions</ins3>
+        in parallel algorithms invoked with an execution policy object of type <code>sequential_execution_policy</code>
+        execute in sequential order in the calling thread.
       </p>
 
       <p>
-        The applications of function objects in parallel algorithms invoked with an execution policy
-        object of type <code>parallel_execution_policy</code> are permitted to execute in an unordered
+        The <del3>applications of function objects</del3><ins3>invocations of element access
+        functions</ins3> in parallel algorithms invoked with an execution policy object of
+        type <code>parallel_execution_policy</code> are permitted to execute in an unordered
         fashion in unspecified threads, and indeterminately sequenced within each thread. 
 
         <cxx-note>
@@ -77,9 +88,11 @@ for_each(par, std::begin(a), std::end(a), [&amp;](int) {
       </cxx-example>
 
       <p>
-        The applications of function objects in parallel algorithms invoked with an execution policy
-        of type <code><del2>vector_execution_policy</del2><ins2>parallel_vector_execution_policy</ins2></code> are permitted to execute in an unordered fashion
-        in unspecified threads, and unsequenced within each thread.
+        The <del3>applications of function objects</del3><ins3>invocations of element access functions</ins3>
+        in parallel algorithms invoked with an execution policy of type
+        <code><del2>vector_execution_policy</del2><ins2>parallel_vector_execution_policy</ins2></code>
+        are permitted to execute in an unordered fashion in unspecified threads, and unsequenced
+        within each thread.
         <ins2>
         <cxx-note>
           This means that multiple function object invocations may be interleaved on a single thread.

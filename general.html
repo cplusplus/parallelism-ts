@@ -72,11 +72,52 @@
 </pre>
 
     <cxx-section id="parallel.general.defns">
-    <h1>Terms and definitions</h1>
-
-    <p>For the purposes of this document, the terms and definitions given in the C++ Standard and the following apply.</p>
-
-    <p>A <dfn>parallel algorithm</dfn> is a function template described by this Technical Specification declared in namespace <code>std::experimental::parallel<ins2>::v1</ins2></code> with a formal template parameter named <code>ExecutionPolicy</code>.</p>
-  </cxx-section>
+      <h1>Terms and definitions</h1>
+  
+      <p>For the purposes of this document, the terms and definitions given in the C++ Standard and the following apply.</p>
+  
+      <p>A <dfn>parallel algorithm</dfn> is a function template described by this Technical Specification declared in namespace <code>std::experimental::parallel<ins2>::v1</ins2></code> with a formal template parameter named <code>ExecutionPolicy</code>.</p>
+  
+  
+      <p>
+        <ins3>Parallel algorithms access objects indirectly accessible via their arguments by invoking the following functions:</ins3>
+  
+        <ul>
+          <li>
+            <ins3>All operations of the categories of the iterators that the algorithm is instantiated with.</ins3>
+          </li>
+  
+          <li>
+            <ins3>Functions on those sequence elements that are required by its specification.</ins3>
+          </li>
+  
+          <li>
+            <ins3>User-provided function objects to be applied during the execution of the algorithm, if required by the specification.</ins3>
+          </li>
+        </ul>
+  
+        <ins3>These functions are herein called <em>element access functions</em>.</ins3><pre>
+</pre>
+  
+        <cxx-example>
+          <ins3>The <code>sort</code> function may invoke the following element access functions:</ins3>
+  
+          <ul>
+            <li>
+              <ins3>Methods of the random-access iterator of the actual template argument, as per 24.2.7, as implied by the name of the
+              template parameters <code>RandomAccessIterator</code>.</ins3>
+            </li>
+  
+            <li>
+              <ins3>The <code>swap</code> function on the elements of the sequence (as per 25.4.1.1 [sort]/2).</ins3>
+            </li>
+  
+            <li>
+              <ins3>The user-provided <code>Compare</code> function object.</ins3>
+            </li>
+          </ul>
+        </cxx-example>
+      </p>
+    </cxx-section>
 </cxx-clause>
 
