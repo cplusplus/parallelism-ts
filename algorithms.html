@@ -92,16 +92,46 @@ for_each(par, std::begin(a), std::end(a), [&amp;](int) {
         in parallel algorithms invoked with an execution policy of type
         <code><del2>vector_execution_policy</del2><ins2>parallel_vector_execution_policy</ins2></code>
         are permitted to execute in an unordered fashion in unspecified threads, and unsequenced
-        within each thread.
+        <ins3>with respect to one another</ins3> within each thread.
         <ins2>
         <cxx-note>
           This means that multiple function object invocations may be interleaved on a single thread.
         </cxx-note>
-        </ins2>
+        </ins2><pre>
+</pre>
+
+        <del3>
         <cxx-note>
           As a consequence, function objects governed by the <code><del2>vector_execution_policy</del2><ins2>parallel_vector_execution_policy</ins2></code>
           policy must not synchronize with each other. Specifically, they must not acquire locks.
         </cxx-note>
+        </del3>
+
+        <ins3>
+        <cxx-note>
+          This overrides the usual guarantee from the C++ standard, Section 1.9 [intro.execution] that
+          function executions do not interleave with one another.
+        </cxx-note>
+        </ins3><pre>
+</pre>
+
+        <ins3>
+          Since <code>parallel_vector_execution_policy</code> allows the execution of element access functions to be
+          interleaved on a single thread, synchronization, including the use of mutexes, risks deadlock. Thus the
+          synchronization with <code>parallel_vector_execution_policy</code> is restricted as follows:<pre>
+</pre>
+
+          A standard library function is <em>vectorization-unsafe</em> if it is specified to synchronize with
+          another function invocation, or another function invocation is specified to synchronize with it, and if
+          it is not a memory allocation or deallocation function. Vectorization-unsafe standard library functions
+          may not be invoked by user code called from <code>parallel_vector_execution_policy</code> algorithms.<pre>
+</pre>
+
+          <cxx-note>
+            Implementations must ensure that internal synchronization inside standard library routines does not
+            induce deadlock.
+          </cxx-note>
+        </ins3>
       </p>
 
       <cxx-example><pre>
