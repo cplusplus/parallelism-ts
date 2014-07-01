@@ -1,6 +1,7 @@
 <!DOCTYPE html>
+<!-- Sources at https://github.com/cplusplus/parallelism-ts -->
 <html><head>
-<meta http-equiv="content-type" content="text/html; charset=UTF-8"><style>template {display: none !important;} /* injected by platform.js */</style><style>body {transition: opacity ease-in 0.2s; } 
+<meta http-equiv="content-type" content="text/html; charset=UTF-8"><!--[if lte IE 8]><script>document.createElement("nav");document.createElement("section");document.createElement("time");document.createElement("CXX-TITLEPAGE");document.createElement("CXX-DOCNUM");document.createElement("CXX-REVISES");document.createElement("CXX-EDITOR");document.createElement("CXX-EMAIL");document.createElement("CXX-TOC");document.createElement("CXX-CLAUSE");document.createElement("CXX-SECTION");document.createElement("CXX-FOOTNOTE");document.createElement("CXX-FOREIGN-INDEX");document.createElement("CXX-REF");document.createElement("CXX-NOTE");document.createElement("CXX-EXAMPLE");document.createElement("CXX-FUNCTION");document.createElement("CXX-SIGNATURE");document.createElement("CXX-EFFECTS");document.createElement("CXX-REQUIRES");document.createElement("CXX-REMARKS");document.createElement("CXX-RETURNS");document.createElement("CXX-COMPLEXITY");document.createElement("CXX-NOTES");document.createElement("CXX-PUBLISH-BUTTON");</script><![endif]--><style>template {display: none !important;} /* injected by platform.js */</style><style>body {transition: opacity ease-in 0.2s; } 
 body[unresolved] {opacity: 0; display: block; overflow: hidden; } 
 </style><style shim-shadowdom-css="">style { display: none !important; }
 cxx-function {
@@ -433,8 +434,8 @@ cxx-example .nowrap {
 	font-style: normal;
 }</style>
   <meta charset="utf-8">
-  <script src="parallelism-ts_files/platform.js"></script>
-  <link rel="import" href="file:///home/jhoberock/dev/git/parallelism-ts-4104/bower_components/cxx-html-doc-framework/framework.html">
+  
+  
 <style shim-shadowdom-css="">/* Copyright 2014 Google Inc. All rights reserved.
 
 Licensed under the Apache License, Version 2.0 (the "License");
@@ -473,13 +474,16 @@ cxx-titlepage { page: title; page-break-after: always; }
 
 @media print {
     html { font-size: 10pt; }
-    *   pre, *   code { font-size: 8pt; }
+    *   code { font-size: 80%; }
     /* Note that only Prince generates clickable links. */
     *   a[href] { text-decoration:none; }
 }
 
-/* Needed to make the <cxx-titlepage>'s vertical spacing work. */
-html, body {height: 100%}
+@media screen {
+    /* Needed to make the <cxx-titlepage>'s vertical spacing work.
+       For print see the <cxx-titlepage> definition. */
+    html, body {height: 100%}
+}
 
 cxx-docnum { string-set: docnum content(); }
 
@@ -527,19 +531,25 @@ pre {
     margin-top: .5em;
     margin-bottom: .5em;
 }
-pre > code { display: inline-block; }
 
-
-/* Use an em-dash for the list bullet. */
-ul {
-    list-style: none;
-    /* Relative positioning on the 'ul' lets the absolutely-positioned
-       marker align relative to it.*/
-    position: relative;
+/* Use an em-dash for the list bullet.
+   'print' is a proxy for supporting ::marker. */
+@media screen {
+    ul {
+        list-style: none;
+        /* Relative positioning on the 'ul' lets the absolutely-positioned
+           marker align relative to it.*/
+        position: relative;
+    }
+    ul li:before {
+        content: "\2014";
+        position: absolute; left: 10px;
+    }
 }
-ul li:before {
-    content: "\2014";
-    position: absolute; left: 10px;
+@media print {
+    ul li::marker {
+        content: "\2014";
+    }
 }
 
 /* This is here rather than inside elements/toc.html because browsers
@@ -556,25 +566,25 @@ ul li:before {
 <cxx-titlepage stage="draft">
     
     <table>
-      <template if="{{docnum}}"></template>
-        <tr><th>Document Number:</th><td><cxx-docnum>N4104</cxx-docnum></td></tr>
       
-      <template if="{{pubdate}}"></template>
+        <tbody><tr><th>Document Number:</th><td><cxx-docnum>N4104</cxx-docnum></td></tr>
+      
+      
         <tr><th>Date:</th><td><time pubdate="">2014-06-19</time></td></tr>
       
-      <template if="{{revises}}"></template>
+      
         <tr><th>Revises:</th><td><cxx-revises><a href="https://github.com/cplusplus/parallelism-ts/releases/download/N4071/parallelism-ts.html">N4071</a></cxx-revises></td></tr>
       
-      <template if="{{editor}}"></template>
+      
         <tr><th>Editor:</th><td><cxx-editor>
     Jared Hoberock<br>
     NVIDIA Corporation<br>
     <cxx-email><a href="mailto:jhoberock@nvidia.com">jhoberock@nvidia.com</a></cxx-email>
   </cxx-editor></td></tr>
       
-    </table>
+    </tbody></table>
     <h1>Working Draft, Technical Specification for C++ Extensions for Parallelism</h1>
-    <template if="{{stage == 'draft'}}"></template>
+    
       <p class="warning"><strong>Note: this is an early draft. It’s known to be
       incomplet and incorrekt, and it has lots of b<span style="margin-left: -1.2pt; margin-right: 1pt">a</span>d<span style="width:1.5em"> </span>for<span style="margin-left:-3pt; margin-right:0.6pt">mat</span>ti<span style="position:relative; top:-0.15ex">n</span>g.</strong></p>
     
@@ -584,31 +594,27 @@ ul li:before {
     
     <nav>
       <h1>Contents</h1>
-      <template bind="" id="hierarchy"></template>
-        <template if="{{sections.length &gt; 0}}"></template>
+      
+        
           <ol>
-            <template repeat="{{sections}}"></template>
-              <li><span class="marker">1</span><a href="#parallel.general">General</a><template bind="" ref="hierarchy"></template>
-        <template if="{{sections.length &gt; 0}}"></template>
+            
+              <li><span class="marker">1</span><a href="#parallel.general">General</a>
+        
           <ol>
-            <template repeat="{{sections}}"></template>
-              <li><span class="marker">1.1</span><a href="#parallel.general.scope">Scope</a><template bind="" ref="hierarchy"></template>
-        <template if="{{sections.length &gt; 0}}"></template>
+            
+              <li><span class="marker">1.1</span><a href="#parallel.general.scope">Scope</a>
+        
       </li>
             
-              <li><span class="marker">1.2</span><a href="#parallel.general.references">Normative references</a><template bind="" ref="hierarchy"></template>
-        <template if="{{sections.length &gt; 0}}"></template>
+              <li><span class="marker">1.2</span><a href="#parallel.general.references">Normative references</a>
+        
       </li>
             
-              <li><span class="marker">1.3</span><a href="#parallel.general.namespaces">Namespaces and headers</a><template bind="" ref="hierarchy"></template>
-        <template if="{{sections.length &gt; 0}}"></template>
+              <li><span class="marker">1.3</span><a href="#parallel.general.namespaces">Namespaces and headers</a>
+        
           <ol>
-            <template repeat="{{sections}}"></template>
-              <li><span class="marker">1.3.1</span><a href="#parallel.general.defns">Terms and definitions</a><template bind="" ref="hierarchy"></template>
-        <template if="{{sections.length &gt; 0}}"></template>
-      </li>
             
-          </ol>
+              <li><span class="marker">1.3.1</span><a href="#parallel.general.defns">Terms and definitions</a>
         
       </li>
             
@@ -616,136 +622,140 @@ ul li:before {
         
       </li>
             
-              <li><span class="marker">2</span><a href="#parallel.execpol">Execution policies</a><template bind="" ref="hierarchy"></template>
-        <template if="{{sections.length &gt; 0}}"></template>
+          </ol>
+        
+      </li>
+            
+              <li><span class="marker">2</span><a href="#parallel.execpol">Execution policies</a>
+        
           <ol>
-            <template repeat="{{sections}}"></template>
-              <li><span class="marker">2.1</span><a href="#parallel.execpol.general">In general</a><template bind="" ref="hierarchy"></template>
-        <template if="{{sections.length &gt; 0}}"></template>
+            
+              <li><span class="marker">2.1</span><a href="#parallel.execpol.general">In general</a>
+        
       </li>
             
-              <li><span class="marker">2.2</span><a href="#parallel.execpol.synopsis">Header &lt;experimental/execution_policy&gt; synopsis</a><template bind="" ref="hierarchy"></template>
-        <template if="{{sections.length &gt; 0}}"></template>
+              <li><span class="marker">2.2</span><a href="#parallel.execpol.synopsis">Header &lt;experimental/execution_policy&gt; synopsis</a>
+        
       </li>
             
-              <li><span class="marker">2.3</span><a href="#parallel.execpol.type">Execution policy type trait</a><template bind="" ref="hierarchy"></template>
-        <template if="{{sections.length &gt; 0}}"></template>
+              <li><span class="marker">2.3</span><a href="#parallel.execpol.type">Execution policy type trait</a>
+        
       </li>
             
-              <li><span class="marker">2.4</span><a href="#parallel.execpol.seq">Sequential execution policy</a><template bind="" ref="hierarchy"></template>
-        <template if="{{sections.length &gt; 0}}"></template>
+              <li><span class="marker">2.4</span><a href="#parallel.execpol.seq">Sequential execution policy</a>
+        
       </li>
             
-              <li><span class="marker">2.5</span><a href="#parallel.execpol.par">Parallel execution policy</a><template bind="" ref="hierarchy"></template>
-        <template if="{{sections.length &gt; 0}}"></template>
+              <li><span class="marker">2.5</span><a href="#parallel.execpol.par">Parallel execution policy</a>
+        
       </li>
             
-              <li><span class="marker">2.6</span><a href="#parallel.execpol.vec">Parallel+Vector execution policy</a><template bind="" ref="hierarchy"></template>
-        <template if="{{sections.length &gt; 0}}"></template>
+              <li><span class="marker">2.6</span><a href="#parallel.execpol.vec">Parallel+Vector execution policy</a>
+        
       </li>
             
-              <li><span class="marker">2.7</span><a href="#parallel.execpol.dynamic">Dynamic execution policy</a><template bind="" ref="hierarchy"></template>
-        <template if="{{sections.length &gt; 0}}"></template>
+              <li><span class="marker">2.7</span><a href="#parallel.execpol.dynamic">Dynamic execution policy</a>
+        
           <ol>
-            <template repeat="{{sections}}"></template>
-              <li><span class="marker">2.7.1</span><a href="#parallel.execpol.con">execution_policy construct/assign</a><template bind="" ref="hierarchy"></template>
-        <template if="{{sections.length &gt; 0}}"></template>
+            
+              <li><span class="marker">2.7.1</span><a href="#parallel.execpol.con">execution_policy construct/assign</a>
+        
       </li>
             
-              <li><span class="marker">2.7.2</span><a href="#parallel.execpol.access">execution_policy object access</a><template bind="" ref="hierarchy"></template>
-        <template if="{{sections.length &gt; 0}}"></template>
+              <li><span class="marker">2.7.2</span><a href="#parallel.execpol.access">execution_policy object access</a>
+        
       </li>
             
           </ol>
         
       </li>
             
-              <li><span class="marker">2.8</span><a href="#parallel.execpol.objects">Execution policy objects</a><template bind="" ref="hierarchy"></template>
-        <template if="{{sections.length &gt; 0}}"></template>
+              <li><span class="marker">2.8</span><a href="#parallel.execpol.objects">Execution policy objects</a>
+        
       </li>
             
           </ol>
         
       </li>
             
-              <li><span class="marker">3</span><a href="#parallel.exceptions">Parallel exceptions</a><template bind="" ref="hierarchy"></template>
-        <template if="{{sections.length &gt; 0}}"></template>
+              <li><span class="marker">3</span><a href="#parallel.exceptions">Parallel exceptions</a>
+        
           <ol>
-            <template repeat="{{sections}}"></template>
-              <li><span class="marker">3.1</span><a href="#parallel.exceptions.behavior">Exception reporting behavior</a><template bind="" ref="hierarchy"></template>
-        <template if="{{sections.length &gt; 0}}"></template>
+            
+              <li><span class="marker">3.1</span><a href="#parallel.exceptions.behavior">Exception reporting behavior</a>
+        
       </li>
             
-              <li><span class="marker">3.2</span><a href="#parallel.exceptions.synopsis">Header &lt;experimental/exception_list&gt; synopsis</a><template bind="" ref="hierarchy"></template>
-        <template if="{{sections.length &gt; 0}}"></template>
+              <li><span class="marker">3.2</span><a href="#parallel.exceptions.synopsis">Header &lt;experimental/exception_list&gt; synopsis</a>
+        
       </li>
             
           </ol>
         
       </li>
             
-              <li><span class="marker">4</span><a href="#parallel.alg">Parallel algorithms</a><template bind="" ref="hierarchy"></template>
-        <template if="{{sections.length &gt; 0}}"></template>
+              <li><span class="marker">4</span><a href="#parallel.alg">Parallel algorithms</a>
+        
           <ol>
-            <template repeat="{{sections}}"></template>
-              <li><span class="marker">4.1</span><a href="#parallel.alg.general">In general</a><template bind="" ref="hierarchy"></template>
-        <template if="{{sections.length &gt; 0}}"></template>
+            
+              <li><span class="marker">4.1</span><a href="#parallel.alg.general">In general</a>
+        
           <ol>
-            <template repeat="{{sections}}"></template>
-              <li><span class="marker">4.1.1</span><a href="#parallel.alg.general.user">Requirements on user-provided function objects</a><template bind="" ref="hierarchy"></template>
-        <template if="{{sections.length &gt; 0}}"></template>
+            
+              <li><span class="marker">4.1.1</span><a href="#parallel.alg.general.user">Requirements on user-provided function objects</a>
+        
       </li>
             
-              <li><span class="marker">4.1.2</span><a href="#parallel.alg.general.exec">Effect of execution policies on algorithm execution</a><template bind="" ref="hierarchy"></template>
-        <template if="{{sections.length &gt; 0}}"></template>
+              <li><span class="marker">4.1.2</span><a href="#parallel.alg.general.exec">Effect of execution policies on algorithm execution</a>
+        
       </li>
             
-              <li><span class="marker">4.1.3</span><a href="#parallel.alg.overloads">ExecutionPolicy algorithm overloads</a><template bind="" ref="hierarchy"></template>
-        <template if="{{sections.length &gt; 0}}"></template>
+              <li><span class="marker">4.1.3</span><a href="#parallel.alg.overloads">ExecutionPolicy algorithm overloads</a>
+        
       </li>
             
           </ol>
         
       </li>
             
-              <li><span class="marker">4.2</span><a href="#parallel.alg.defns">Definitions</a><template bind="" ref="hierarchy"></template>
-        <template if="{{sections.length &gt; 0}}"></template>
+              <li><span class="marker">4.2</span><a href="#parallel.alg.defns">Definitions</a>
+        
       </li>
             
-              <li><span class="marker">4.3</span><a href="#parallel.alg.ops">Non-Numeric Parallel Algorithms</a><template bind="" ref="hierarchy"></template>
-        <template if="{{sections.length &gt; 0}}"></template>
+              <li><span class="marker">4.3</span><a href="#parallel.alg.ops">Non-Numeric Parallel Algorithms</a>
+        
           <ol>
-            <template repeat="{{sections}}"></template>
-              <li><span class="marker">4.3.1</span><a href="#parallel.alg.ops.synopsis">Header &lt;experimental/algorithm&gt; synopsis</a><template bind="" ref="hierarchy"></template>
-        <template if="{{sections.length &gt; 0}}"></template>
+            
+              <li><span class="marker">4.3.1</span><a href="#parallel.alg.ops.synopsis">Header &lt;experimental/algorithm&gt; synopsis</a>
+        
       </li>
             
-              <li><span class="marker">4.3.2</span><a href="#parallel.alg.foreach">For each</a><template bind="" ref="hierarchy"></template>
-        <template if="{{sections.length &gt; 0}}"></template>
+              <li><span class="marker">4.3.2</span><a href="#parallel.alg.foreach">For each</a>
+        
       </li>
             
           </ol>
         
       </li>
             
-              <li><span class="marker">4.4</span><a href="#parallel.alg.numeric">Numeric Parallel Algorithms</a><template bind="" ref="hierarchy"></template>
-        <template if="{{sections.length &gt; 0}}"></template>
+              <li><span class="marker">4.4</span><a href="#parallel.alg.numeric">Numeric Parallel Algorithms</a>
+        
           <ol>
-            <template repeat="{{sections}}"></template>
-              <li><span class="marker">4.4.1</span><a href="#parallel.alg.numeric.synopsis">Header &lt;experimental/numeric&gt; synopsis</a><template bind="" ref="hierarchy"></template>
-        <template if="{{sections.length &gt; 0}}"></template>
+            
+              <li><span class="marker">4.4.1</span><a href="#parallel.alg.numeric.synopsis">Header &lt;experimental/numeric&gt; synopsis</a>
+        
       </li>
             
-              <li><span class="marker">4.4.2</span><a href="#parallel.alg.reduce">Reduce</a><template bind="" ref="hierarchy"></template>
-        <template if="{{sections.length &gt; 0}}"></template>
+              <li><span class="marker">4.4.2</span><a href="#parallel.alg.reduce">Reduce</a>
+        
       </li>
             
-              <li><span class="marker">4.4.3</span><a href="#parallel.alg.exclusive.scan">Exclusive scan</a><template bind="" ref="hierarchy"></template>
-        <template if="{{sections.length &gt; 0}}"></template>
+              <li><span class="marker">4.4.3</span><a href="#parallel.alg.exclusive.scan">Exclusive scan</a>
+        
       </li>
             
-              <li><span class="marker">4.4.4</span><a href="#parallel.alg.inclusive.scan">Inclusive scan</a><template bind="" ref="hierarchy"></template>
-        <template if="{{sections.length &gt; 0}}"></template>
+              <li><span class="marker">4.4.4</span><a href="#parallel.alg.inclusive.scan">Inclusive scan</a>
+        
       </li>
             
           </ol>
@@ -815,11 +825,7 @@ ul li:before {
     Be sure not to introduce whitespace here, as it appears around the footnote.
   --><sup id="footnote-call-1"><a href="#footnote-body-1">1</a></sup><aside class="footnote" id="footnote-body-1"><span class="marker"><a href="#footnote-call-1">1</a>) </span>To be published. Section references are relative to <a href="http://open-std.org/jtc1/sc22/wg21/docs/papers/2013/n3797.pdf">N3797</a>.</aside></cxx-footnote>,
       <cite>Programming Languages — C++</cite>
-      <cxx-foreign-index id="cxx" src="cxx_N3797_index.json" name="C++14">
-    
-    <core-ajax auto="" url="{{src}}" handleas="json" on-core-response="{{ attachIndex }}">
-    </core-ajax>
-  </cxx-foreign-index></li>
+      </li>
     </ul>
 
     <p para_num="2" id="parallel.general.references.2">ISO/IEC 14882:— is herein called the <dfn>C++ Standard</dfn>.
@@ -829,7 +835,7 @@ ul li:before {
     Algorithms Library</dfn>.</p>
 
     <p para_num="3" id="parallel.general.references.3">Unless otherwise specified, the whole of the C++ Standard's Library
-    introduction (<cxx-ref in="cxx" to="library"><cxx-get-element-by-id elemid="{{in}}" elem="{{inElem}}"></cxx-get-element-by-id><template if="{{!in}}"></template><template id="target_num"></template><template if="{{insynopsis}}"></template><template if="{{!insynopsis}}"></template><template bind="" ref="target_num"></template><template if="{{inElem.index}}"></template>C++14 <span title="library">§17</span><template if="{{!in}}"></template></cxx-ref>) is included into this
+    introduction (<cxx-ref in="cxx" to="library">C++14 <span title="library">§17</span></cxx-ref>) is included into this
     Technical Specification by reference.</p>
   
     </section>
@@ -1028,20 +1034,20 @@ if (v.size() &gt; threshold)
 namespace experimental {
 namespace parallel {
 <ins2>inline namespace v1 {</ins2>
-  <cxx-ref insynopsis="" to="parallel.execpol.type"><cxx-get-element-by-id elemid="{{in}}" elem="{{inElem}}"></cxx-get-element-by-id><template if="{{!in}}"></template><cxx-get-element-by-id elemid="{{to}}" elem="{{toElem}}"></cxx-get-element-by-id><template id="target_num"></template><template if="{{insynopsis}}"></template>// <i><template bind="" ref="target_num"></template><template if="{{inElem.index}}"></template><template if="{{!in}}"></template><a title="parallel.execpol.type" href="#parallel.execpol.type"><template if="{{toElem.sec_num}}"></template>2.3<template if="{{toElem.table_num}}"></template><template if="{{toElem.figure_num}}"></template></a>, Execution policy type trait</i><template if="{{!insynopsis}}"></template></cxx-ref>
+  <cxx-ref insynopsis="" to="parallel.execpol.type">// <i><a title="parallel.execpol.type" href="#parallel.execpol.type">2.3</a>, Execution policy type trait</i></cxx-ref>
   template&lt;class T&gt; struct is_execution_policy;
   <ins2>template&lt;class T&gt; constexpr bool is_execution_policy_v = is_execution_policy&lt;T&gt;::value;</ins2>
 
-  <cxx-ref insynopsis="" to="parallel.execpol.seq"><cxx-get-element-by-id elemid="{{in}}" elem="{{inElem}}"></cxx-get-element-by-id><template if="{{!in}}"></template><cxx-get-element-by-id elemid="{{to}}" elem="{{toElem}}"></cxx-get-element-by-id><template id="target_num"></template><template if="{{insynopsis}}"></template>// <i><template bind="" ref="target_num"></template><template if="{{inElem.index}}"></template><template if="{{!in}}"></template><a title="parallel.execpol.seq" href="#parallel.execpol.seq"><template if="{{toElem.sec_num}}"></template>2.4<template if="{{toElem.table_num}}"></template><template if="{{toElem.figure_num}}"></template></a>, Sequential execution policy</i><template if="{{!insynopsis}}"></template></cxx-ref>
+  <cxx-ref insynopsis="" to="parallel.execpol.seq">// <i><a title="parallel.execpol.seq" href="#parallel.execpol.seq">2.4</a>, Sequential execution policy</i></cxx-ref>
   class sequential_execution_policy;
 
-  <cxx-ref insynopsis="" to="parallel.execpol.par"><cxx-get-element-by-id elemid="{{in}}" elem="{{inElem}}"></cxx-get-element-by-id><template if="{{!in}}"></template><cxx-get-element-by-id elemid="{{to}}" elem="{{toElem}}"></cxx-get-element-by-id><template id="target_num"></template><template if="{{insynopsis}}"></template>// <i><template bind="" ref="target_num"></template><template if="{{inElem.index}}"></template><template if="{{!in}}"></template><a title="parallel.execpol.par" href="#parallel.execpol.par"><template if="{{toElem.sec_num}}"></template>2.5<template if="{{toElem.table_num}}"></template><template if="{{toElem.figure_num}}"></template></a>, Parallel execution policy</i><template if="{{!insynopsis}}"></template></cxx-ref>
+  <cxx-ref insynopsis="" to="parallel.execpol.par">// <i><a title="parallel.execpol.par" href="#parallel.execpol.par">2.5</a>, Parallel execution policy</i></cxx-ref>
   class parallel_execution_policy;
 
-  <cxx-ref insynopsis="" to="parallel.execpol.vec"><cxx-get-element-by-id elemid="{{in}}" elem="{{inElem}}"></cxx-get-element-by-id><template if="{{!in}}"></template><cxx-get-element-by-id elemid="{{to}}" elem="{{toElem}}"></cxx-get-element-by-id><template id="target_num"></template><template if="{{insynopsis}}"></template>// <i><template bind="" ref="target_num"></template><template if="{{inElem.index}}"></template><template if="{{!in}}"></template><a title="parallel.execpol.vec" href="#parallel.execpol.vec"><template if="{{toElem.sec_num}}"></template>2.6<template if="{{toElem.table_num}}"></template><template if="{{toElem.figure_num}}"></template></a>, Parallel+Vector execution policy</i><template if="{{!insynopsis}}"></template></cxx-ref>
+  <cxx-ref insynopsis="" to="parallel.execpol.vec">// <i><a title="parallel.execpol.vec" href="#parallel.execpol.vec">2.6</a>, Parallel+Vector execution policy</i></cxx-ref>
   class <del2>vector_execution_policy</del2><ins2>parallel_vector_execution_policy</ins2>;
 
-  <cxx-ref insynopsis="" to="parallel.execpol.dynamic"><cxx-get-element-by-id elemid="{{in}}" elem="{{inElem}}"></cxx-get-element-by-id><template if="{{!in}}"></template><cxx-get-element-by-id elemid="{{to}}" elem="{{toElem}}"></cxx-get-element-by-id><template id="target_num"></template><template if="{{insynopsis}}"></template>// <i><template bind="" ref="target_num"></template><template if="{{inElem.index}}"></template><template if="{{!in}}"></template><a title="parallel.execpol.dynamic" href="#parallel.execpol.dynamic"><template if="{{toElem.sec_num}}"></template>2.7<template if="{{toElem.table_num}}"></template><template if="{{toElem.figure_num}}"></template></a>, Dynamic execution policy</i><template if="{{!insynopsis}}"></template></cxx-ref>
+  <cxx-ref insynopsis="" to="parallel.execpol.dynamic">// <i><a title="parallel.execpol.dynamic" href="#parallel.execpol.dynamic">2.7</a>, Dynamic execution policy</i></cxx-ref>
   class execution_policy;
 <ins2>}</ins2>
 }
@@ -1190,11 +1196,11 @@ namespace parallel {
   class execution_policy
   {
     public:
-      <cxx-ref insynopsis="" to="parallel.execpol.con"><cxx-get-element-by-id elemid="{{in}}" elem="{{inElem}}"></cxx-get-element-by-id><template if="{{!in}}"></template><cxx-get-element-by-id elemid="{{to}}" elem="{{toElem}}"></cxx-get-element-by-id><template id="target_num"></template><template if="{{insynopsis}}"></template>// <i><template bind="" ref="target_num"></template><template if="{{inElem.index}}"></template><template if="{{!in}}"></template><a title="parallel.execpol.con" href="#parallel.execpol.con"><template if="{{toElem.sec_num}}"></template>2.7.1<template if="{{toElem.table_num}}"></template><template if="{{toElem.figure_num}}"></template></a>, execution_policy construct/assign</i><template if="{{!insynopsis}}"></template></cxx-ref>
+      <cxx-ref insynopsis="" to="parallel.execpol.con">// <i><a title="parallel.execpol.con" href="#parallel.execpol.con">2.7.1</a>, execution_policy construct/assign</i></cxx-ref>
       template&lt;class T&gt; execution_policy(const T&amp; exec);
       template&lt;class T&gt; execution_policy&amp; operator=(const T&amp; exec);
 
-      <cxx-ref insynopsis="" to="parallel.execpol.access"><cxx-get-element-by-id elemid="{{in}}" elem="{{inElem}}"></cxx-get-element-by-id><template if="{{!in}}"></template><cxx-get-element-by-id elemid="{{to}}" elem="{{toElem}}"></cxx-get-element-by-id><template id="target_num"></template><template if="{{insynopsis}}"></template>// <i><template bind="" ref="target_num"></template><template if="{{inElem.index}}"></template><template if="{{!in}}"></template><a title="parallel.execpol.access" href="#parallel.execpol.access"><template if="{{toElem.sec_num}}"></template>2.7.2<template if="{{toElem.table_num}}"></template><template if="{{toElem.figure_num}}"></template></a>, execution_policy object access</i><template if="{{!insynopsis}}"></template></cxx-ref>
+      <cxx-ref insynopsis="" to="parallel.execpol.access">// <i><a title="parallel.execpol.access" href="#parallel.execpol.access">2.7.2</a>, execution_policy object access</i></cxx-ref>
       template&lt;class T&gt; T* get() noexcept;
       template&lt;class T&gt; const T* get() const noexcept;
   };
@@ -1293,11 +1299,11 @@ if(sort_me.size() &gt; threshold)
         <del>
           <cxx-requires>
     
-    <dt>Requires:</dt><dd>
+    </cxx-requires></del></dd><dt>Requires:</dt><dd>
             <code>is_execution_policy&lt;T&gt;::value</code> is <code>true</code>.
           </dd>
-  </cxx-requires>
-        </del>
+  
+        
         <insdel>
           <cxx-remarks>
     
@@ -1307,7 +1313,7 @@ if(sort_me.size() &gt; threshold)
           </dd>
   </cxx-remarks>
         </insdel>
-      </dd>
+      
   </cxx-returns>
     </dl>
   </cxx-function>
@@ -1509,8 +1515,7 @@ allocate memory while
       <header><span class="section-number">3.2</span> <h1 data-bookmark-label="3.2 Header &lt;experimental/exception_list&gt; synopsis">Header <code>&lt;experimental/exception_list&gt;</code> synopsis</h1> <span style="float:right"><a href="#parallel.exceptions.synopsis">[parallel.exceptions.synopsis]</a></span></header>
       
       
-      <pre>
-namespace std {
+      <pre>namespace std {
 namespace experimental {
 namespace parallel {
 <ins2>inline namespace v1 {</ins2>
@@ -1926,7 +1931,7 @@ So there is no problem, deletion is OK.
 The Parallel Algorithms Library provides overloads for each of the algorithms named in
 Table 1, corresponding to the algorithms with the same name in the C++ Standard Algorithms Library.
 
-For each algorithm in <cxx-ref to="tab.parallel.algorithms"><cxx-get-element-by-id elemid="{{in}}" elem="{{inElem}}"></cxx-get-element-by-id><template if="{{!in}}"></template><cxx-get-element-by-id elemid="{{to}}" elem="{{toElem}}"></cxx-get-element-by-id><template id="target_num"></template><template if="{{insynopsis}}"></template><template if="{{!insynopsis}}"></template><template bind="" ref="target_num"></template><template if="{{inElem.index}}"></template><template if="{{!in}}"></template><a title="tab.parallel.algorithms" href="#tab.parallel.algorithms"><template if="{{toElem.sec_num}}"></template><template if="{{toElem.table_num}}"></template>Table 1<template if="{{toElem.figure_num}}"></template></a></cxx-ref>, if there are overloads for
+For each algorithm in <cxx-ref to="tab.parallel.algorithms"><a title="tab.parallel.algorithms" href="#tab.parallel.algorithms">Table 1</a></cxx-ref>, if there are overloads for
 corresponding algorithms with the same name
 in the C++ Standard Algorithms Library,
 the overloads shall have an additional template type parameter named
@@ -1951,12 +1956,12 @@ first function parameter of type <code>ExecutionPolicy&amp;&amp;</code>.
         <code>is_execution_policy<ins2>&lt;decay_t&lt;</ins2>ExecutionPolicy<ins2>&gt;</ins2>&gt;::value</code> is <code>true</code></ins>.
       </p>
         
-      <del2><p>The algorithms listed in <cxx-ref to="tab.parallel.algorithms"><cxx-get-element-by-id elemid="{{in}}" elem="{{inElem}}"></cxx-get-element-by-id><template if="{{!in}}"></template><cxx-get-element-by-id elemid="{{to}}" elem="{{toElem}}"></cxx-get-element-by-id><template id="target_num"></template><template if="{{insynopsis}}"></template><template if="{{!insynopsis}}"></template><template bind="" ref="target_num"></template><template if="{{inElem.index}}"></template><template if="{{!in}}"></template><a title="tab.parallel.algorithms" href="#tab.parallel.algorithms"><template if="{{toElem.sec_num}}"></template><template if="{{toElem.table_num}}"></template>Table 1<template if="{{toElem.figure_num}}"></template></a></cxx-ref> shall have <code>ExecutionPolicy</code> overloads.</p></del2>
+      <del2><p>The algorithms listed in <cxx-ref to="tab.parallel.algorithms"><a title="tab.parallel.algorithms" href="#tab.parallel.algorithms">Table 1</a></cxx-ref> shall have <code>ExecutionPolicy</code> overloads.</p></del2>
 
       <table is="cxx-table" id="tab.parallel.algorithms" class="list">
     
 
-    <caption>Table 1 — <wbr><caption>Table of parallel algorithms</caption></caption>
+    <caption>Table 1 — <wbr><span>Table of parallel algorithms</span></caption>
     
         
           <tbody><tr>
@@ -2076,14 +2081,14 @@ first function parameter of type <code>ExecutionPolicy&amp;&amp;</code>.
       </tbody>
   </table>
 
-      <ins2>
+      <ins>
       <cxx-note><span class="nowrap">[ <em>Note:</em></span>
     
-      Not all algorithms in the Standard Library have counterparts in <cxx-ref to="tab.parallel.algorithms"><cxx-get-element-by-id elemid="{{in}}" elem="{{inElem}}"></cxx-get-element-by-id><template if="{{!in}}"></template><cxx-get-element-by-id elemid="{{to}}" elem="{{toElem}}"></cxx-get-element-by-id><template id="target_num"></template><template if="{{insynopsis}}"></template><template if="{{!insynopsis}}"></template><template bind="" ref="target_num"></template><template if="{{inElem.index}}"></template><template if="{{!in}}"></template><a title="tab.parallel.algorithms" href="#tab.parallel.algorithms"><template if="{{toElem.sec_num}}"></template><template if="{{toElem.table_num}}"></template>Table 1<template if="{{toElem.figure_num}}"></template></a></cxx-ref>.
+      Not all algorithms in the Standard Library have counterparts in <cxx-ref to="tab.parallel.algorithms"><a title="tab.parallel.algorithms" href="#tab.parallel.algorithms">Table 1</a></cxx-ref>.
       
     <span class="nowrap">— <em>end note</em> ]</span>
   </cxx-note>
-      </ins2>
+      </ins>
     
     </section>
   </cxx-section>
@@ -2885,10 +2890,7 @@ namespace parallel {
     </section>
   </cxx-clause>
 
-<cxx-publish-button source="https://github.com/cplusplus/parallelism-ts">
-    
-    <button on-click="{{ publish }}">Publish to new window</button>
-  </cxx-publish-button>
+
 
 
 
