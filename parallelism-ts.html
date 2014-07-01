@@ -552,10 +552,10 @@ ul li:before {
     
     <table>
       
-        <tbody><tr><th>Document Number:</th><td><cxx-docnum>N4104</cxx-docnum></td></tr>
+        <tbody><tr><th>Document Number:</th><td><cxx-docnum>post-Rapperswil working draft number</cxx-docnum></td></tr>
       
       
-        <tr><th>Date:</th><td><time pubdate="">2014-07-04</time></td></tr>
+        <tr><th>Date:</th><td><time pubdate="">2014-06-XX</time></td></tr>
       
       
         <tr><th>Revises:</th><td><cxx-revises><a href="https://github.com/cplusplus/parallelism-ts/releases/download/N4071/parallelism-ts.pdf">N4071</a></cxx-revises></td></tr>
@@ -1661,14 +1661,14 @@ for_each(par, std::begin(a), std::end(a), [&amp;](int) {
         <pre></pre>
         
         <ins>
-          Since <code>parallel_vector_execution_policy</code> allows the execution of element access functions to be
+          Since <code>parallel_vector_execution_policy</code> allows the execution of such function objects to be
           interleaved on a single thread, synchronization, including the use of mutexes, risks deadlock. Thus the
           synchronization with <code>parallel_vector_execution_policy</code> is restricted as follows:<pre></pre>
 
           A standard library function is <em>vectorization-unsafe</em> if it is specified to synchronize with
           another function invocation, or another function invocation is specified to synchronize with it, and if
           it is not a memory allocation or deallocation function. Vectorization-unsafe standard library functions
-          may not be invoked by element access functions invoked by <code>parallel_vector_execution_policy</code> algorithms.<pre></pre>
+          may not be invoked by user code called from <code>parallel_vector_execution_policy</code> algorithms.<pre></pre>
 
           <cxx-note><span class="nowrap">[ <em>Note:</em></span>
     
