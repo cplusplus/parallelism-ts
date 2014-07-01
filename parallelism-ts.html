@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <!-- Sources at https://github.com/cplusplus/parallelism-ts -->
 <html><head>
-<meta http-equiv="content-type" content="text/html; charset=UTF-8"><!--[if lte IE 8]><script>document.createElement("nav");document.createElement("section");document.createElement("time");document.createElement("CXX-TITLEPAGE");document.createElement("CXX-DOCNUM");document.createElement("CXX-REVISES");document.createElement("CXX-EDITOR");document.createElement("CXX-EMAIL");document.createElement("CXX-TOC");document.createElement("CXX-CLAUSE");document.createElement("CXX-SECTION");document.createElement("CXX-FOOTNOTE");document.createElement("CXX-FOREIGN-INDEX");document.createElement("CXX-REF");document.createElement("CXX-NOTE");document.createElement("CXX-EXAMPLE");document.createElement("CXX-FUNCTION");document.createElement("CXX-SIGNATURE");document.createElement("CXX-EFFECTS");document.createElement("CXX-REMARKS");document.createElement("CXX-RETURNS");document.createElement("CXX-REQUIRES");document.createElement("CXX-COMPLEXITY");document.createElement("CXX-NOTES");document.createElement("CXX-PUBLISH-BUTTON");</script><![endif]--><style>template {display: none !important;} /* injected by platform.js */</style><style>body {transition: opacity ease-in 0.2s; } 
+<meta http-equiv="content-type" content="text/html; charset=UTF-8"><!--[if lte IE 8]><script>document.createElement("nav");document.createElement("section");document.createElement("time");document.createElement("CXX-TITLEPAGE");document.createElement("CXX-DOCNUM");document.createElement("CXX-REVISES");document.createElement("CXX-EDITOR");document.createElement("CXX-EMAIL");document.createElement("CXX-TOC");document.createElement("CXX-CLAUSE");document.createElement("CXX-SECTION");document.createElement("CXX-FOOTNOTE");document.createElement("CXX-FOREIGN-INDEX");document.createElement("CXX-REF");document.createElement("CXX-NOTE");document.createElement("CXX-EXAMPLE");document.createElement("CXX-FUNCTION");document.createElement("CXX-SIGNATURE");document.createElement("CXX-EFFECTS");document.createElement("CXX-REQUIRES");document.createElement("CXX-REMARKS");document.createElement("CXX-RETURNS");document.createElement("CXX-COMPLEXITY");document.createElement("CXX-NOTES");document.createElement("CXX-PUBLISH-BUTTON");</script><![endif]--><style>template {display: none !important;} /* injected by platform.js */</style><style>body {transition: opacity ease-in 0.2s; } 
 body[unresolved] {opacity: 0; display: block; overflow: hidden; } 
 </style><style shim-shadowdom-css="">style { display: none !important; }
 cxx-function {
@@ -552,13 +552,13 @@ ul li:before {
     
     <table>
       
-        <tbody><tr><th>Document Number:</th><td><cxx-docnum>post-Rapperswil working draft number</cxx-docnum></td></tr>
+        <tbody><tr><th>Document Number:</th><td><cxx-docnum>N4071</cxx-docnum></td></tr>
       
       
-        <tr><th>Date:</th><td><time pubdate="">2014-06-XX</time></td></tr>
+        <tr><th>Date:</th><td><time pubdate="">2014-06-19</time></td></tr>
       
       
-        <tr><th>Revises:</th><td><cxx-revises><a href="https://github.com/cplusplus/parallelism-ts/releases/download/N4071/parallelism-ts.pdf">N4071</a></cxx-revises></td></tr>
+        <tr><th>Revises:</th><td><cxx-revises><a href="http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2014/n3989.html">N3989</a></cxx-revises></td></tr>
       
       
         <tr><th>Editor:</th><td><cxx-editor>
@@ -687,15 +687,11 @@ ul li:before {
         
           <ol>
             
-              <li><span class="marker">4.1.1</span><a href="#parallel.alg.general.user">Requirements on user-provided function objects</a>
+              <li><span class="marker">4.1.1</span><a href="#parallel.alg.general.exec">Effect of execution policies on algorithm execution</a>
         
       </li>
             
-              <li><span class="marker">4.1.2</span><a href="#parallel.alg.general.exec">Effect of execution policies on algorithm execution</a>
-        
-      </li>
-            
-              <li><span class="marker">4.1.3</span><a href="#parallel.alg.overloads">ExecutionPolicy algorithm overloads</a>
+              <li><span class="marker">4.1.2</span><a href="#parallel.alg.overloads">ExecutionPolicy algorithm overloads</a>
         
       </li>
             
@@ -816,7 +812,7 @@ ul li:before {
     <p para_num="2" id="parallel.general.references.2">ISO/IEC 14882:— is herein called the <dfn>C++ Standard</dfn>.
     The library described in ISO/IEC 14882:— clauses 17-30 is herein called
     the <dfn>C++ Standard Library</dfn>. The C++ Standard Library components described in
-    ISO/IEC 14882:— clauses 25 , 26.7 and 20.7.2 are herein called the <dfn>C++ Standard
+    ISO/IEC 14882:— clauses 25 <del2>and</del2><ins2>,</ins2> 26.7<ins2> and 20.7.2</ins2> are herein called the <dfn>C++ Standard
     Algorithms Library</dfn>.</p>
 
     <p para_num="3" id="parallel.general.references.3">Unless otherwise specified, the whole of the C++ Standard's Library
@@ -838,7 +834,7 @@ ul li:before {
     experimental and not part of the C++ Standard Library, they should not be
     declared directly within namespace <code>std</code>. Unless otherwise specified, all
     components described in this Technical Specification are declared in namespace 
-    <code>std::experimental::parallel::v1</code>.</p>
+    <code>std::experimental::parallel<ins2>::v1</ins2></code>.</p>
 
     <cxx-note><span class="nowrap">[ <em>Note:</em></span>
     
@@ -849,7 +845,7 @@ ul li:before {
 
     <p para_num="2" id="parallel.general.namespaces.2">Unless otherwise specified, references to such entities described in this
     Technical Specification are assumed to be qualified with
-    <code>std::experimental::parallel::v1</code>, and references to entities described in the C++
+    <code>std::experimental::parallel<ins2>::v1</ins2></code>, and references to entities described in the C++
     Standard Library are assumed to be qualified with <code>std::</code>.</p>
 
     <p para_num="3" id="parallel.general.namespaces.3">Extensions that are expected to eventually be added to an existing header
@@ -859,7 +855,7 @@ ul li:before {
 <pre><code>    #include &lt;meow&gt;</code>
 </pre>
 
-  <cxx-section id="parallel.general.defns">
+    <cxx-section id="parallel.general.defns">
     
 
     <section>
@@ -869,51 +865,7 @@ ul li:before {
 
     <p para_num="1" id="parallel.general.defns.1">For the purposes of this document, the terms and definitions given in the C++ Standard and the following apply.</p>
 
-    <p para_num="2" id="parallel.general.defns.2">A <dfn>parallel algorithm</dfn> is a function template described by this Technical Specification declared in namespace <code>std::experimental::parallel::v1</code> with a formal template parameter named <code>ExecutionPolicy</code>.</p>
-
-    <p para_num="3" id="parallel.general.defns.3">
-      <ins>Parallel algorithms access objects indirectly accessible via their arguments by invoking the following functions:</ins>
-
-      </p><ul>
-        <li>
-          <ins>All operations of the categories of the iterators that the algorithm is instantiated with.</ins>
-        </li>
-
-        <li>
-          <ins>Functions on those sequence elements that are required by its specification.</ins>
-        </li>
-
-        <li>
-          <ins>User-provided function objects to be applied during the execution of the algorithm, if required by the specification.</ins>
-        </li>
-      </ul>
-
-      <ins>These functions are herein called <em>element access functions</em>.</ins><pre></pre>
-
-      <cxx-example>
-    
-    <span class="nowrap">[ <em>Example:</em></span>
-    
-        <ins>The <code>sort</code> function may invoke the following element access functions:</ins>
-
-        <ul>
-          <li>
-            <ins>Methods of the random-access iterator of the actual template argument, as per 24.2.7, as implied by the name of the
-            template parameters <code>RandomAccessIterator</code>.</ins>
-          </li>
-
-          <li>
-            <ins>The <code>swap</code> function on the elements of the sequence (as per 25.4.1.1 [sort]/2).</ins>
-          </li>
-
-          <li>
-            <ins>The user-provided <code>Compare</code> function object.</ins>
-          </li>
-        </ul>
-      
-    <span class="nowrap">— <em>end example</em> ]</span>
-  </cxx-example>
-    <p para_num="4" id="parallel.general.defns.4"></p>
+    <p para_num="2" id="parallel.general.defns.2">A <dfn>parallel algorithm</dfn> is a function template described by this Technical Specification declared in namespace <code>std::experimental::parallel<ins2>::v1</ins2></code> with a formal template parameter named <code>ExecutionPolicy</code>.</p>
   
     </section>
   </cxx-section>
@@ -922,6 +874,7 @@ ul li:before {
   </cxx-section>
     </section>
   </cxx-clause>
+
 
 <cxx-clause id="parallel.execpol">
     
@@ -937,16 +890,11 @@ ul li:before {
       <header><span class="section-number">2.1</span> <h1 data-bookmark-label="2.1 In general">In general</h1> <span style="float:right"><a href="#parallel.execpol.general">[parallel.execpol.general]</a></span></header>
       
     
-      <p para_num="1" id="parallel.execpol.general.1">
-      <del>This clause describes classes that represent <dfn>execution policies</dfn>. An
+      <p para_num="1" id="parallel.execpol.general.1">This clause describes classes that represent <dfn>execution policies</dfn>. An
       <dfn>execution policy</dfn> is an object that expresses the requirements on the ordering
       of functions invoked as a consequence of the invocation of a standard
       algorithm. Execution policies afford standard algorithms the discretion to
-      execute in parallel.</del>
-      <ins>This clause describes classes that are <dfn>execution policy</dfn> types. An object
-      of an execution policy type indicates to an algorithm whether it is allowed to execute
-      in parallel and expresses the requirements on the element access functions.</ins>
-      </p>
+      execute in parallel.</p>
 
       <cxx-example>
     
@@ -955,18 +903,26 @@ ul li:before {
     <pre>std::vector&lt;int&gt; v = ...
 
 // standard sequential sort
-std::sort(vec.begin(), vec.end());
+<del>std::sort(vec.begin(), vec.end());</del>
+<insdel>std::sort(std::begin(vec), std::end(vec));</insdel>
+<ins2>std::sort(vec.begin(), vec.end());</ins2>
 
 using namespace std::experimental::parallel;
 
 // explicitly sequential sort
-sort(seq, v.begin(), v.end());
+<del>sort(seq, v.begin(), v.end());</del>
+<insdel>sort(seq, std::begin(v), std::end(v));</insdel>
+<ins2>sort(seq, v.begin(), v.end());</ins2>
 
 // permitting parallel execution
-sort(par, v.begin(), v.end());
+<del>sort(par, v.begin(), v.end());</del>
+<insdel>sort(par, std::begin(v), std::end(v));</insdel>
+<ins2>sort(par, v.begin(), v.end());</ins2>
 
 // permitting vectorization as well
-sort(par_vec, v.begin(), v.end());
+<del>sort(vec, v.begin(), v.end());</del>
+<insdel>sort(vec, std::begin(v), std::end(v));</insdel>
+<ins2>sort(par_vec, v.begin(), v.end());</ins2>
 
 // sort with dynamically-selected execution
 size_t threshold = ...
@@ -976,7 +932,9 @@ if (v.size() &gt; threshold)
   exec = par;
 }
 
-sort(exec, v.begin(), v.end());
+<del>sort(exec, v.begin(), v.end());</del>
+<insdel>sort(exec, std::begin(v), std::end(v));</insdel>
+<ins2>sort(exec, v.begin(), v.end());</ins2>
 </pre>
     
     <span class="nowrap">— <em>end example</em> ]</span>
@@ -985,7 +943,7 @@ sort(exec, v.begin(), v.end());
     
       Because different parallel architectures may require idiosyncratic
       parameters for efficient execution, implementations of the Standard Library 
-      may provide additional execution policies to those described in this
+      <del2>should</del2><ins2>may</ins2> provide additional execution policies to those described in this
       Technical Specification as extensions.
     
     <span class="nowrap">— <em>end note</em> ]</span>
@@ -1004,10 +962,10 @@ sort(exec, v.begin(), v.end());
 <pre>namespace std {
 namespace experimental {
 namespace parallel {
-inline namespace v1 {
+<ins2>inline namespace v1 {</ins2>
   <cxx-ref insynopsis="" to="parallel.execpol.type">// <i><a title="parallel.execpol.type" href="#parallel.execpol.type">2.3</a>, Execution policy type trait</i></cxx-ref>
   template&lt;class T&gt; struct is_execution_policy;
-  template&lt;class T&gt; constexpr bool is_execution_policy_v = is_execution_policy&lt;T&gt;::value;
+  <ins2>template&lt;class T&gt; constexpr bool is_execution_policy_v = is_execution_policy&lt;T&gt;::value;</ins2>
 
   <cxx-ref insynopsis="" to="parallel.execpol.seq">// <i><a title="parallel.execpol.seq" href="#parallel.execpol.seq">2.4</a>, Sequential execution policy</i></cxx-ref>
   class sequential_execution_policy;
@@ -1016,11 +974,11 @@ inline namespace v1 {
   class parallel_execution_policy;
 
   <cxx-ref insynopsis="" to="parallel.execpol.vec">// <i><a title="parallel.execpol.vec" href="#parallel.execpol.vec">2.6</a>, Parallel+Vector execution policy</i></cxx-ref>
-  class parallel_vector_execution_policy
+  class <del2>vector_execution_policy</del2><ins2>parallel_vector_execution_policy</ins2>;
 
   <cxx-ref insynopsis="" to="parallel.execpol.dynamic">// <i><a title="parallel.execpol.dynamic" href="#parallel.execpol.dynamic">2.7</a>, Dynamic execution policy</i></cxx-ref>
   class execution_policy;
-}
+<ins2>}</ins2>
 }
 }
 }
@@ -1036,8 +994,17 @@ inline namespace v1 {
       
     
 
-<pre>  template&lt;class T&gt; struct is_execution_policy { <em>see below</em> };
-    : integral_constant&lt;bool, <em>see below</em>&gt; { };
+<pre><del2>
+namespace std {
+namespace experimental {
+namespace parallel { </del2>
+  template&lt;class T&gt; struct is_execution_policy <ins2> { <em>see below</em> };</ins2>
+  <del2>  : integral_constant&lt;bool, <em>see below</em>&gt; { };</del2>
+<del2>
+}
+}
+}
+</del2>
 </pre>
 
     <p para_num="1" id="parallel.execpol.type.1"><code>is_execution_policy</code>
@@ -1045,10 +1012,12 @@ inline namespace v1 {
 excluding function signatures from otherwise ambiguous overload 
 resolution participation.</p>
     
-    <p para_num="2" id="parallel.execpol.type.2"><code>is_execution_policy&lt;T&gt;</code> shall be a UnaryTypeTrait with a BaseCharacteristic of <code>true_type</code> if <code>T</code> is the type of a standard or implementation-defined execution policy, otherwise <code>false_type</code>.
+    <del2><p>If <code>T</code> is the type of a standard or implementation-defined execution policy, <code>is_execution_policy&lt;T&gt;</code> shall be publicly derived from <code>integral_constant&lt;bool,true&gt;</code>,
+    otherwise from <code>integral_constant&lt;bool,false&gt;</code>.</p></del2>
+    <ins2><p><code>is_execution_policy&lt;T&gt;</code> shall be a UnaryTypeTrait with a BaseCharacteristic of <code>true_type</code> if <code>T</code> is the type of a standard or implementation-defined execution policy, otherwise <code>false_type</code>.
     
-    </p><p para_num="3" id="parallel.execpol.type.3">The behavior of a program that adds specializations for <code>is_execution_policy</code> is undefined.</p>
-  
+    </p><p>The behavior of a program that adds specializations for <code>is_execution_policy</code> is undefined.</p>
+  </ins2>
     </section>
   </cxx-section>
 
@@ -1060,7 +1029,17 @@ resolution participation.</p>
       
     
 
-    <pre>  class sequential_execution_policy{ <i>unspecified</i> };
+    <pre><del2>
+namespace std {
+namespace experimental {
+namespace parallel {
+</del2>
+  class sequential_execution_policy{ <ins2><i>unspecified</i></ins2> };
+<del2>
+}
+}
+}
+</del2>
 </pre>
 
     <p para_num="1" id="parallel.execpol.seq.1">The class <code>sequential_execution_policy</code>
@@ -1079,7 +1058,17 @@ execution may not be parallelized.</p>
       
     
 
-<pre>  class parallel_execution_policy{ <i>unspecified</i> };
+<pre><del2>
+namespace std {
+namespace experimental {
+namespace parallel {
+</del2>
+  class parallel_execution_policy{ <ins2><i>unspecified</i></ins2> };
+<del2>
+}
+}
+}
+</del2>
 </pre>
 
     <p para_num="1" id="parallel.execpol.par.1">The class <code>parallel_execution_policy</code>
@@ -1094,14 +1083,24 @@ execution may be parallelized.</p>
     
 
     <section>
-      <header><span class="section-number">2.6</span> <h1 data-bookmark-label="2.6 Parallel+Vector execution policy">Parallel+Vector execution policy</h1> <span style="float:right"><a href="#parallel.execpol.vec">[parallel.execpol.vec]</a></span></header>
+      <header><span class="section-number">2.6</span> <h1 data-bookmark-label="2.6 Parallel+Vector execution policy"><ins2>Parallel+</ins2>Vector execution policy</h1> <span style="float:right"><a href="#parallel.execpol.vec">[parallel.execpol.vec]</a></span></header>
       
     
 
-<pre>  class parallel_vector_execution_policy{ <i>unspecified</i> };
+<pre><del2>
+namespace std {
+namespace experimental {
+namespace parallel {
+</del2>
+  class <del2>vector_execution_policy</del2><ins2>parallel_vector_execution_policy</ins2>{ <ins2><i>unspecified</i></ins2> };
+<del2>
+}
+}
+}
+</del2>
 </pre>
 
-    <p para_num="1" id="parallel.execpol.vec.1">The class <code>class parallel_vector_execution_policy</code>
+    <p para_num="1" id="parallel.execpol.vec.1">The class <code>class <del2>vector_execution_policy</del2><ins2>parallel_vector_execution_policy</ins2></code>
  is an execution policy type used as a unique type to disambiguate 
 parallel algorithm overloading and indicate that a parallel algorithm's 
 execution may be vectorized and parallelized.</p>
@@ -1118,7 +1117,12 @@ execution may be vectorized and parallelized.</p>
       
     
 
-<pre>  class execution_policy
+<pre><del2>
+namespace std {
+namespace experimental {
+namespace parallel {
+</del2>
+  class execution_policy
   {
     public:
       <cxx-ref insynopsis="" to="parallel.execpol.con">// <i><a title="parallel.execpol.con" href="#parallel.execpol.con">2.7.1</a>, execution_policy construct/assign</i></cxx-ref>
@@ -1129,6 +1133,11 @@ execution may be vectorized and parallelized.</p>
       template&lt;class T&gt; T* get() noexcept;
       template&lt;class T&gt; const T* get() const noexcept;
   };
+<del2>
+}
+}
+}
+</del2>
 </pre>
 
     <p para_num="1" id="parallel.execpol.dynamic.1">The class <code>execution_policy</code> is a container for execution policy objects.
@@ -1140,15 +1149,16 @@ execution may be vectorized and parallelized.</p>
     
       <pre>std::vector&lt;float&gt; sort_me = ...
         
-using namespace std::experimental::parallel;
-execution_policy exec = seq;
+<ins>using namespace std::experimental::parallel;</ins>
+<del><code>std::</code></del>execution_policy exec = <del><code>std::</code></del>seq;
 
 if(sort_me.size() &gt; threshold)
 {
   exec = std::par;
 }
  
-std::sort(exec, std::begin(sort_me), std::end(sort_me));</pre>
+<del>std::sort(exec, sort_me.begin(), sort_me.end());</del>
+<ins>std::sort(exec, std::begin(sort_me), std::end(sort_me));</ins></pre>
     
     <span class="nowrap">— <em>end example</em> ]</span>
   </cxx-example>
@@ -1177,18 +1187,28 @@ std::sort(exec, std::begin(sort_me), std::end(sort_me));</pre>
     <dt>Effects:</dt><dd>Constructs an <code>execution_policy</code> object with a copy of <code>exec</code>'s state.</dd>
   </cxx-effects>
 
-        <cxx-remarks para_num="3" id="parallel.execpol.con.3">
+        <del>
+          <cxx-requires>
+    
+    <dt>Requires:</dt><dd>
+            <code>is_execution_policy&lt;T&gt;::value</code> is <code>true</code>.
+          </dd>
+  </cxx-requires>
+        </del>
+        <ins>
+          <cxx-remarks>
     
     <dt>Remarks:</dt><dd>
-          This constructor shall not participate in overload resolution unless
-          <code>is_execution_policy&lt;T&gt;::value</code> is <code>true</code>.
-        </dd>
+            This constructor shall not participate in overload resolution unless
+            <code>is_execution_policy&lt;T&gt;::value</code> is <code>true</code>.
+          </dd>
   </cxx-remarks>
+        </ins>
       
     </dl>
   </cxx-function>
 
-      <cxx-function para_num="4" id="parallel.execpol.con.4">
+      <cxx-function para_num="3" id="parallel.execpol.con.3">
     
     <pre><code><cxx-signature>template&lt;class T&gt; execution_policy&amp; operator=(const T&amp; exec);</cxx-signature></code></pre>
 
@@ -1196,15 +1216,33 @@ std::sort(exec, std::begin(sort_me), std::end(sort_me));</pre>
       
         
 
-        <cxx-effects para_num="5" id="parallel.execpol.con.5">
+        <cxx-effects para_num="4" id="parallel.execpol.con.4">
     
     <dt>Effects:</dt><dd>Assigns a copy of <code>exec</code>'s state to <code>*this</code>.</dd>
   </cxx-effects>
 
-        <cxx-returns para_num="6" id="parallel.execpol.con.6">
+        <cxx-returns para_num="5" id="parallel.execpol.con.5">
     
     <dt>Returns:</dt><dd><code>*this</code>.
-      </dd>
+
+        <del>
+          <cxx-requires>
+    
+    </cxx-requires></del></dd><dt>Requires:</dt><dd>
+            <code>is_execution_policy&lt;T&gt;::value</code> is <code>true</code>.
+          </dd>
+  
+        
+        <insdel>
+          <cxx-remarks>
+    
+    <dt>Remarks:</dt><dd>
+            This operator shall not partipate in overload resolution unless
+            <code>is_execution_policy&lt;T&gt;::value</code> is <code>true</code>.
+          </dd>
+  </cxx-remarks>
+        </insdel>
+      
   </cxx-returns>
     </dl>
   </cxx-function>
@@ -1242,7 +1280,7 @@ std::sort(exec, std::begin(sort_me), std::end(sort_me));</pre>
     
     <pre><code><cxx-signature>
           template&lt;class T&gt; T* get() noexcept;
-          template&lt;class T&gt; const T* get() const noexcept;
+          template&lt;class T&gt; const T* get() <ins2>const</ins2> noexcept;
         </cxx-signature></code></pre>
 
     <dl>
@@ -1254,12 +1292,23 @@ std::sort(exec, std::begin(sort_me), std::end(sort_me));</pre>
     <dt>Returns:</dt><dd>If <code>target_type() == typeid(T)</code>, a pointer to the stored execution policy object; otherwise a null pointer.</dd>
   </cxx-returns>
 
-        <cxx-requires para_num="5" id="parallel.execpol.access.5">
+        <ins2>
+          <cxx-requires>
     
     <dt>Requires:</dt><dd>
-          <code>is_execution_policy&lt;T&gt;::value</code> is <code>true</code>.
-        </dd>
+            <code>is_execution_policy&lt;T&gt;::value</code> is <code>true</code>.
+          </dd>
   </cxx-requires>
+        </ins2>
+        <insdel>
+          <cxx-remarks>
+    
+    <dt>Remarks:</dt><dd>
+            This function shall not participate in overload resolution unless
+            <code>is_execution_policy&lt;T&gt;</code> is <code>true</code>.
+          </dd>
+  </cxx-remarks>
+        </insdel>
       
     </dl>
   </cxx-function>
@@ -1279,12 +1328,29 @@ std::sort(exec, std::begin(sort_me), std::end(sort_me));</pre>
       
     
 
-<pre>  constexpr sequential_execution_policy      seq{};
+<pre><del2>
+namespace std {
+namespace experimental {
+namespace parallel {
+</del2>
+<del2>
+  constexpr sequential_execution_policy seq = sequential_execution_policy();
+  constexpr parallel_execution_policy   par = parallel_execution_policy();
+  constexpr vector_execution_policy     vec = vector_execution_policy();
+</del2>
+<ins2>
+  constexpr sequential_execution_policy      seq{};
   constexpr parallel_execution_policy        par{};
   constexpr parallel_vector_execution_policy par_vec{};
+</ins2>
+<del2>
+}
+}
+}
+</del2>
 </pre>
 
-    <p para_num="1" id="parallel.execpol.objects.1">The header <code>&lt;experimental/execution_policy&gt;</code> declares a global object associated with each type of execution policy defined by this Technical Specification.</p>
+    <p para_num="1" id="parallel.execpol.objects.1">The header <code>&lt;<ins2>experimental/</ins2>execution_policy&gt;</code> declares a global object associated with each type of execution policy defined by this Technical Specification.</p>
   
     </section>
   </cxx-section>
@@ -1307,27 +1373,26 @@ std::sort(exec, std::begin(sort_me), std::end(sort_me));</pre>
       
       
         <p para_num="1" id="parallel.exceptions.behavior.1">
-          During the execution of a standard parallel algorithm, 
-          if temporary memory resources are required and none are available,
+          <ins2>During the execution of a standard parallel algorithm, </ins2>
+          <del2>I</del2><ins2>i</ins2>f temporary memory resources are required <del2>by the algorithm</del2> and none are available,
           the algorithm throws a <code>std::bad_alloc</code> exception.
         </p>
         <p para_num="2" id="parallel.exceptions.behavior.2">
-          During the execution of a standard parallel algorithm, if the <del>application of a function
-          object</del><ins>invocation of an element access function</ins> terminates with an uncaught
-          exception, the behavior of the program is determined by the type of execution policy used to
-          invoke the algorithm:
+          During the execution of a standard parallel algorithm, if the application of a function
+          object terminates with an uncaught exception, the behavior of the program is determined
+          by the type of execution policy used to invoke the algorithm:
 
           </p><ul>
             <li>
-              If the execution policy object is of type <code>class parallel_vector_execution_policy</code>,
+              If the execution policy object is of type <code>class <del2>vector_execution_policy</del2><ins2>parallel_vector_execution_policy</ins2></code>,
               <code>std::terminate</code> shall be called.
             </li>
             <li>
               If the execution policy object is of type <code>sequential_execution_policy</code> or
               <code>parallel_execution_policy</code>, the execution of the algorithm terminates with an
               <code>exception_list</code> exception. All uncaught exceptions thrown during
-              the <del>application of user-provided function objects</del><ins>invocations of element access functions</ins>
-              shall be contained in the <code>exception_list</code>.<pre></pre>
+              the application of user-provided function objects shall be contained in the
+              <code>exception_list</code>.<pre></pre>
 
               <cxx-note><span class="nowrap">[ <em>Note:</em></span>
     
@@ -1381,28 +1446,41 @@ allocate memory while
       <pre>namespace std {
 namespace experimental {
 namespace parallel {
-inline namespace v1 {
+<ins2>inline namespace v1 {</ins2>
 
   class exception_list : public exception
   {
     public:
-      typedef <em>unspecified</em>                   iterator;
+      <del2>
+      typedef exception_ptr                                             value_type;
+      typedef const value_type&amp;                                         reference;
+      typedef const value_type&amp;                                         const_reference;
+      typedef <em>implementation-defined</em>                                    const_iterator;
+      typedef const_iterator                                            iterator;
+      typedef typename iterator_traits<ins2>&lt;const_iterator&gt;</ins2>::difference_type difference_type;
+      typedef size_t                                                    size_type;</del2>
+      <ins2>
+      typedef <em>unspecified</em>                   iterator;</ins2>
   
       size_t size() const noexcept;
       iterator begin() const noexcept;
       iterator end() const noexcept;
 
-      const char* what() const override noexcept;
+      <ins2>const char* what() const override noexcept;</ins2>
+  <del2>
+    private:
+      std::list&lt;exception_ptr&gt; exceptions_; // exposition only
+  </del2>
   };
-}
+<ins2>}</ins2>
 }
 }
 }
       </pre>
 
       <p para_num="1" id="parallel.exceptions.synopsis.1">
-        The class <code>exception_list</code> owns a sequence of <code>exception_ptr</code> objects. The parallel
-        algorithms may use the <code>exception_list</code> to communicate uncaught exceptions encountered during parallel execution to the
+        The class <code>exception_list</code> <del2>is a container</del2> <ins2>owns a sequence</ins2> of <code>exception_ptr</code> objects <ins2>.The</ins2> parallel
+        algorithms may use <ins2>the <code>exception_list</code></ins2> to communicate uncaught exceptions encountered during parallel execution to the
         caller of the algorithm.
       </p>
 
@@ -1441,7 +1519,7 @@ inline namespace v1 {
       <cxx-function para_num="6" id="parallel.exceptions.synopsis.6">
     
     <pre><code><cxx-signature>
-          iterator begin() const noexcept;
+          <del2>exception_list::</del2>iterator begin() const noexcept;
         </cxx-signature></code></pre>
 
     <dl>
@@ -1461,7 +1539,7 @@ inline namespace v1 {
       <cxx-function para_num="8" id="parallel.exceptions.synopsis.8">
     
     <pre><code><cxx-signature>
-          iterator end() const noexcept;
+          <del2>exception_list::</del2>iterator end() const noexcept;
         </cxx-signature></code></pre>
 
     <dl>
@@ -1471,7 +1549,7 @@ inline namespace v1 {
         <cxx-returns para_num="9" id="parallel.exceptions.synopsis.9">
     
     <dt>Returns:</dt><dd>
-          An iterator that is past the end of the owned sequence.
+          An iterator <del2>which is the past-the-end value for the <code>exception_list</code></del2> <ins2>that is past the end of the owned sequence.</ins2>
         </dd>
   </cxx-returns>
       
@@ -1481,7 +1559,7 @@ inline namespace v1 {
       <cxx-function para_num="10" id="parallel.exceptions.synopsis.10">
     
     <pre><code><cxx-signature>
-          const char* what() const noexcept override;
+          <ins2>const char* what() const noexcept;</ins2>
         </cxx-signature></code></pre>
 
     <dl>
@@ -1491,7 +1569,7 @@ inline namespace v1 {
         <cxx-returns para_num="11" id="parallel.exceptions.synopsis.11">
     
     <dt>Returns:</dt><dd>
-          An implementation-defined NTBS.
+          <ins2>An implementation-defined NTBS.</ins2>
         </dd>
   </cxx-returns>
       
@@ -1523,47 +1601,30 @@ inline namespace v1 {
     This clause describes components that C++ programs may use to perform operations on containers
     and other sequences in parallel.
 
-    <cxx-section id="parallel.alg.general.user">
-    
-
-    <section>
-      <header><span class="section-number">4.1.1</span> <h1 data-bookmark-label="4.1.1 Requirements on user-provided function objects">Requirements on user-provided function objects</h1> <span style="float:right"><a href="#parallel.alg.general.user">[parallel.alg.general.user]</a></span></header>
-      
-      
-      <p para_num="1" id="parallel.alg.general.user.1">
-        <ins>Function objects passed into parallel algorithms as objects of type <code>BinaryPredicate</code>,
-        <code>Compare</code>, and <code>BinaryOperation</code> shall not directly or indirectly modify
-        objects via their arguments.</ins>
-      </p>
-    
-    </section>
-  </cxx-section>
-
     <cxx-section id="parallel.alg.general.exec">
     
 
     <section>
-      <header><span class="section-number">4.1.2</span> <h1 data-bookmark-label="4.1.2 Effect of execution policies on algorithm execution">Effect of execution policies on algorithm execution</h1> <span style="float:right"><a href="#parallel.alg.general.exec">[parallel.alg.general.exec]</a></span></header>
+      <header><span class="section-number">4.1.1</span> <h1 data-bookmark-label="4.1.1 Effect of execution policies on algorithm execution">Effect of execution policies on algorithm execution</h1> <span style="float:right"><a href="#parallel.alg.general.exec">[parallel.alg.general.exec]</a></span></header>
       
       
 
       <p para_num="1" id="parallel.alg.general.exec.1">
         Parallel algorithms have template parameters named <code>ExecutionPolicy</code> which describe
         the manner in which the execution of these algorithms may be parallelized and the manner in
-        which they apply <del>user-provided function objects</del><ins>the element access functions</ins>.
+        which they apply user-provided function objects.
       </p>
 
       <p para_num="2" id="parallel.alg.general.exec.2">
-        The <del>applications of function objects</del><ins>invocations of element access functions</ins>
-        in parallel algorithms invoked with an execution policy object of type
-        <code>sequential_execution_policy</code> execute in sequential order in the calling thread.
+        The applications of function objects in parallel algorithms invoked with an execution policy
+        object of type <code>sequential_execution_policy</code> execute in sequential order in the
+        calling thread.
       </p>
 
       <p para_num="3" id="parallel.alg.general.exec.3">
-        The <del>applications of function objects</del><ins>invocations of element access functions</ins>
-        in parallel algorithms invoked with an execution policy object of type
-        <code>parallel_execution_policy</code> are permitted to execute in an unordered fashion in
-        unspecified threads, and indeterminately sequenced within each thread. 
+        The applications of function objects in parallel algorithms invoked with an execution policy
+        object of type <code>parallel_execution_policy</code> are permitted to execute in an unordered
+        fashion in unspecified threads, and indeterminately sequenced within each thread. 
 
         <cxx-note><span class="nowrap">[ <em>Note:</em></span>
     
@@ -1582,7 +1643,8 @@ int a[] = {0,1};
 std::vector&lt;int&gt; v;
 for_each(par, std::begin(a), std::end(a), [&amp;](int i) {
   v.push_back(i*2+1);
-});</pre>
+});
+<del2>foo bar</del2></pre>
 
         The program above has a data race because of the unsynchronized access to the container
         <code>v</code>.
@@ -1594,9 +1656,9 @@ for_each(par, std::begin(a), std::end(a), [&amp;](int i) {
     
     <span class="nowrap">[ <em>Example:</em></span>
     <pre>using namespace std::experimental::parallel;
-std::atomic&lt;int&gt; x = 0;
+std::atomic<ins2>&lt;int&gt;</ins2> x = 0;
 int a[] = {1,2};
-for_each(par, std::begin(a), std::end(a), [&amp;](int n) {
+for_each(par, std::begin(a), std::end(a), [<ins2>&amp;</ins2>](int n) {
   x.fetch_add(1, std::memory_order_relaxed);
   // spin wait for another iteration to change the value of x
   while (x.load(std::memory_order_relaxed) == 1) { }
@@ -1612,7 +1674,7 @@ for_each(par, std::begin(a), std::end(a), [&amp;](int n) {
     
     <span class="nowrap">[ <em>Example:</em></span>
     <pre>using namespace std::experimental::parallel;
-int x=0;
+int x<ins2>=0</ins2>;
 std::mutex m;
 int a[] = {1,2};
 for_each(par, std::begin(a), std::end(a), [&amp;](int) {
@@ -1628,63 +1690,31 @@ for_each(par, std::begin(a), std::end(a), [&amp;](int) {
   </cxx-example>
 
       <p para_num="4" id="parallel.alg.general.exec.4">
-        The <del>applications of function objects</del><ins>invocations of element access functions</ins>
-        in parallel algorithms invoked with an execution policy of type
-        <code>parallel_vector_execution_policy</code> are permitted to execute in an unordered fashion
-        in unspecified threads, and unsequenced <ins>with respect to one another</ins> within each thread.
-
+        The applications of function objects in parallel algorithms invoked with an execution policy
+        of type <code><del2>vector_execution_policy</del2><ins2>parallel_vector_execution_policy</ins2></code> are permitted to execute in an unordered fashion
+        in unspecified threads, and unsequenced within each thread.
+        <ins2>
         <cxx-note><span class="nowrap">[ <em>Note:</em></span>
     
           This means that multiple function object invocations may be interleaved on a single thread.
         
     <span class="nowrap">— <em>end note</em> ]</span>
-  </cxx-note></p><pre></pre>
-
-        <del>
+  </cxx-note>
+        </ins2>
         <cxx-note><span class="nowrap">[ <em>Note:</em></span>
     
-          As a consequence, function objects governed by the <code>parallel_vector_execution_policy</code>
+          As a consequence, function objects governed by the <code><del2>vector_execution_policy</del2><ins2>parallel_vector_execution_policy</ins2></code>
           policy must not synchronize with each other. Specifically, they must not acquire locks.
         
     <span class="nowrap">— <em>end note</em> ]</span>
   </cxx-note>
-        </del>
-        <ins>
-        <cxx-note><span class="nowrap">[ <em>Note:</em></span>
-    
-          <ins>This overrides the usual guarantee from the C++ standard, Section 1.9 [intro.execution] that
-          function executions do not interleave with one another.</ins>
-        
-    <span class="nowrap">— <em>end note</em> ]</span>
-  </cxx-note>
-        </ins>
-        <pre></pre>
-        
-        <ins>
-          Since <code>parallel_vector_execution_policy</code> allows the execution of such function objects to be
-          interleaved on a single thread, synchronization, including the use of mutexes, risks deadlock. Thus the
-          synchronization with <code>parallel_vector_execution_policy</code> is restricted as follows:<pre></pre>
-
-          A standard library function is <em>vectorization-unsafe</em> if it is specified to synchronize with
-          another function invocation, or another function invocation is specified to synchronize with it, and if
-          it is not a memory allocation or deallocation function. Vectorization-unsafe standard library functions
-          may not be invoked by user code called from <code>parallel_vector_execution_policy</code> algorithms.<pre></pre>
-
-          <cxx-note><span class="nowrap">[ <em>Note:</em></span>
-    
-            Implementations must ensure that internal synchronization inside standard library routines does not
-            induce deadlock.
-          
-    <span class="nowrap">— <em>end note</em> ]</span>
-  </cxx-note>
-        </ins>
-      <p para_num="5" id="parallel.alg.general.exec.5"></p>
+      </p>
 
       <cxx-example>
     
     <span class="nowrap">[ <em>Example:</em></span>
     <pre>using namespace std::experimental::parallel;
-int x=0;
+int x<ins2>=0</ins2>;
 std::mutex m;
 int a[] = {1,2};
 for_each(par_vec, std::begin(a), std::end(a), [&amp;](int) {
@@ -1710,21 +1740,48 @@ for_each(par_vec, std::begin(a), std::end(a), [&amp;](int) {
       <cxx-note><span class="nowrap">[ <em>Note:</em></span>
     
         The semantics of the <code>parallel_execution_policy</code> or the
-        <code>parallel_vector_execution_policy</code> invocation allow the implementation to fall back to
+        <code><del2>vector_execution_policy</del2><ins2>parallel_vector_execution_policy</ins2></code> invocation allow the implementation to fall back to
         sequential execution if the system cannot parallelize an algorithm invocation due to lack of
         resources.
       
     <span class="nowrap">— <em>end note</em> ]</span>
   </cxx-note>
 
-      <p para_num="6" id="parallel.alg.general.exec.6">
-        Algorithms invoked with an execution policy object of type <code>execution_policy</code>
-        execute internally as if invoked with the contained execution policy object.
+<!-- Update 6/20/14: this is OK: this is covered in N4063:
+"All operations of the categories of the iterators that the algorithm is instantiated with"
+So there is no problem, deletion is OK.
+-->
+<del2>
+      <p>
+        <ins2>A</ins2> parallel algorithm invoked with an execution policy object of type
+        <code>parallel_execution_policy</code> or <code><del2>vector_execution_policy</del2><ins2>parallel_vector_execution_policy</ins2></code> may apply
+        iterator member functions of a stronger category than its specification requires<ins2>, if such iterators exist</ins2>. In this
+        case, the application of these member functions are subject to provisions 3. and 4. above,
+        respectively.
       </p>
 
-      <p para_num="7" id="parallel.alg.general.exec.7">
+      <cxx-note><span class="nowrap">[ <em>Note:</em></span>
+    
+        For example, an algorithm whose specification requires <code>InputIterator</code> but
+        receives a concrete iterator of the category <code>RandomAccessIterator</code> may use
+        <code>operator[]</code>. In this case, it is the algorithm caller's responsibility to ensure
+        <code>operator[]</code> is race-free.
+      
+    <span class="nowrap">— <em>end note</em> ]</span>
+  </cxx-note>
+</del2>
+
+      <p para_num="5" id="parallel.alg.general.exec.5">
+        Algorithms invoked with an execution policy object of type <code>execution_policy</code>
+        execute internally as if invoked with <del>instances of type <code>sequential_execution_policy</code>,
+        <code>parallel_execution_policy</code>, or an implementation-defined execution policy type depending
+        on the dynamic value of the <code>execution_policy</code> object.</del>
+        <ins>the contained execution policy object.</ins>
+      </p>
+
+      <p para_num="6" id="parallel.alg.general.exec.6">
         The semantics of parallel algorithms invoked with an execution policy object of
-        implementation-defined type are implementation-defined.
+        implementation-defined type are <del2>unspecified</del2><ins2>implementation-defined</ins2>.
       </p>
     
     </section>
@@ -1734,22 +1791,33 @@ for_each(par_vec, std::begin(a), std::end(a), [&amp;](int) {
     
 
     <section>
-      <header><span class="section-number">4.1.3</span> <h1 data-bookmark-label="4.1.3 ExecutionPolicy algorithm overloads"><code>ExecutionPolicy</code> algorithm overloads</h1> <span style="float:right"><a href="#parallel.alg.overloads">[parallel.alg.overloads]</a></span></header>
+      <header><span class="section-number">4.1.2</span> <h1 data-bookmark-label="4.1.2 ExecutionPolicy algorithm overloads"><code>ExecutionPolicy</code> algorithm overloads</h1> <span style="float:right"><a href="#parallel.alg.overloads">[parallel.alg.overloads]</a></span></header>
       
       
 
       <p para_num="1" id="parallel.alg.overloads.1">
-        The Parallel Algorithms Library provides overloads for each of the algorithms named in
-        Table 1, corresponding to the algorithms with the same name in the C++ Standard Algorithms Library.
-        
-        For each algorithm in <cxx-ref to="tab.parallel.algorithms"><a title="tab.parallel.algorithms" href="#tab.parallel.algorithms">Table 1</a></cxx-ref>, if there are overloads for
-        corresponding algorithms with the same name
-        in the C++ Standard Algorithms Library,
-        the overloads shall have an additional template type parameter named
-        <code>ExecutionPolicy</code>, which shall be the first template parameter.
-        
-        In addition, each such overload shall have the new function parameter as the
-        first function parameter of type <code>ExecutionPolicy&amp;&amp;</code>.
+        <del2>
+        Parallel algorithms coexist alongside their sequential counterparts as overloads
+        distinguished by a formal template parameter named <code>ExecutionPolicy</code>. This
+        <del>template parameter corresponds to the parallel algorithm's first function parameter, whose
+        type is <code>ExecutionPolicy</code></del>
+        <insdel>is the first template parameter and corresponds to the parallel algorithm's first function
+        parameter, whose type is <code>ExecutionPolicy&amp;&amp;</code></insdel>.</del2>
+        <ins2>
+The Parallel Algorithms Library provides overloads for each of the algorithms named in
+Table 1, corresponding to the algorithms with the same name in the C++ Standard Algorithms Library.
+
+For each algorithm in <cxx-ref to="tab.parallel.algorithms"><a title="tab.parallel.algorithms" href="#tab.parallel.algorithms">Table 1</a></cxx-ref>, if there are overloads for
+corresponding algorithms with the same name
+in the C++ Standard Algorithms Library,
+the overloads shall have an additional template type parameter named
+<code>ExecutionPolicy</code>, which shall be the first template parameter.
+
+In addition, each such overload shall have the new function parameter as the
+first function parameter of type <code>ExecutionPolicy&amp;&amp;</code>.
+
+        </ins2>
+
       </p>
 
       <p para_num="2" id="parallel.alg.overloads.2">
@@ -1758,10 +1826,14 @@ for_each(par_vec, std::begin(a), std::end(a), [&amp;](int) {
       </p>
         
       <p para_num="3" id="parallel.alg.overloads.3">
-        Parallel algorithms shall not participate in overload resolution unless
-        <code>is_execution_policy&lt;decay_t&lt;ExecutionPolicy&gt;&gt;::value</code> is <code>true</code>.
+        Parallel algorithms
+        <del>have the requirement <code>is_execution_policy&lt;ExecutionPolicy&gt;::value</code> is <code>true</code></del>
+        <ins>shall not participate in overload resolution unless
+        <code>is_execution_policy&lt;decay_t&lt;ExecutionPolicy&gt;&gt;::value</code> is <code>true</code></ins>.
       </p>
         
+      <del2><p>The algorithms listed in <cxx-ref to="tab.parallel.algorithms"><a title="tab.parallel.algorithms" href="#tab.parallel.algorithms">Table 1</a></cxx-ref> shall have <code>ExecutionPolicy</code> overloads.</p></del2>
+
       <table is="cxx-table" id="tab.parallel.algorithms" class="list">
     
 
@@ -1769,7 +1841,7 @@ for_each(par_vec, std::begin(a), std::end(a), [&amp;](int) {
     
         
           <tbody><tr>
-            <td><code>adjacent_difference</code></td>
+            <td><ins><code>adjacent_difference</code></ins></td>
             <td><code>adjacent_find</code></td>
             <td><code>all_of</code></td>
             <td><code>any_of</code></td>
@@ -1805,7 +1877,7 @@ for_each(par_vec, std::begin(a), std::end(a), [&amp;](int) {
             <td><code>inclusive_scan</code></td>
           </tr>
           <tr>
-            <td><code>inner_product</code></td>
+            <td><ins><code>inner_product</code></ins></td>
             <td><code>inplace_merge</code></td>
             <td><code>is_heap</code></td>
             <td><code>is_heap_until</code></td>
@@ -1885,14 +1957,12 @@ for_each(par_vec, std::begin(a), std::end(a), [&amp;](int) {
       </tbody>
   </table>
 
-      <ins2>
       <cxx-note><span class="nowrap">[ <em>Note:</em></span>
     
       Not all algorithms in the Standard Library have counterparts in <cxx-ref to="tab.parallel.algorithms"><a title="tab.parallel.algorithms" href="#tab.parallel.algorithms">Table 1</a></cxx-ref>.
       
     <span class="nowrap">— <em>end note</em> ]</span>
   </cxx-note>
-      </ins2>
     
     </section>
   </cxx-section>
@@ -1915,11 +1985,13 @@ for_each(par_vec, std::begin(a), std::end(a), [&amp;](int) {
         <li><code>a1</code> when <code>N</code> is <code>1</code></li>
       
         <li>
-          <code>op(<em>GENERALIZED_SUM</em>(op, b1, ..., bK)</code>, <code><em>GENERALIZED_SUM</em>(op, bM, ..., bN))</code> where
+          <code>op(<em>GENERALIZED_SUM</em>(op, b1, ..., b<del2>M</del2><ins2>K</ins2>)</code>, <code><em>GENERALIZED_SUM</em>(op, bM, ..., bN))</code> where
            
           <ul>
             <li><code>b1, ..., bN</code> may be any permutation of <code>a1, ..., aN</code> and</li>
-            <li><code>1 &lt; K+1 = M ≤ N</code>.</li>
+
+            <del2><li><code>0 &lt; M &lt; N</code>.</li></del2>
+            <ins2><li><code>1 &lt; K+1 = M ≤ N</code>.</li></ins2>
           </ul>
         </li>
       </ul>
@@ -1932,7 +2004,7 @@ for_each(par_vec, std::begin(a), std::end(a), [&amp;](int) {
         <li><code>a1</code> when <code>N</code> is <code>1</code></li>
 
         <li>
-          <code>op(<em>GENERALIZED_NONCOMMUTATIVE_SUM</em>(op, a1, ..., aK), <em>GENERALIZED_NONCOMMUTATIVE_SUM</em>(op, aM, ..., aN)</code> where <code>1 &lt; K+1 = M ≤ N</code>.
+          <code>op(<em>GENERALIZED_NONCOMMUTATIVE_SUM</em>(op, a1, ..., a<del2>M</del2><ins2>K</ins2>), <em>GENERALIZED_NONCOMMUTATIVE_SUM</em>(op, aM, ..., aN)</code> where <del2><code>0 &lt; M &lt; N</code></del2> <ins2><code>1 &lt; K+1 = M ≤ N</code></ins2>.
         </li>
       </ul>
     <p para_num="4" id="parallel.alg.defns.4"></p>
@@ -1959,7 +2031,7 @@ for_each(par_vec, std::begin(a), std::end(a), [&amp;](int) {
       <pre>namespace std {
 namespace experimental {
 namespace parallel {
-inline namespace v1 {
+<ins2>inline namespace v1 {</ins2>
   template&lt;class ExecutionPolicy,
            class InputIterator, class Function&gt;
     void for_each(ExecutionPolicy&amp;&amp; exec,
@@ -1968,7 +2040,7 @@ inline namespace v1 {
   template&lt;class InputIterator, class Size, class Function&gt;
     InputIterator for_each_n(InputIterator first, Size n,
                              Function f);
-}
+<ins2>}</ins2>
 }
 }
 }
@@ -2039,8 +2111,11 @@ inline namespace v1 {
         <cxx-requires para_num="6" id="parallel.alg.foreach.6">
     
     <dt>Requires:</dt><dd>
-          Unlike its sequential form, the parallel overload of <code>for_each</code> requires
-          <code>Function</code> to meet the requirements of <code>CopyConstructible</code>.
+          <ins>
+            Unlike its sequential form, the parallel overload of <code>for_each</code> requires
+            <code>Function</code> to meet the requirements of <code>CopyConstructible</code><insdel>, but not
+            <code>MoveConstructible</code></insdel>.
+          </ins>
         </dd>
   </cxx-requires>
       
@@ -2092,7 +2167,7 @@ inline namespace v1 {
         <cxx-returns para_num="10" id="parallel.alg.foreach.10">
     
     <dt>Returns:</dt><dd>
-          <code>first + n</code> for non-negative values of <code>n</code> and <code>first</code> for negative values.
+          <code>first + n</code><ins> for non-negative values of <code>n</code> and <code>first</code> for negative values</ins>.
         </dd>
   </cxx-returns>
 
@@ -2106,60 +2181,63 @@ inline namespace v1 {
     </dl>
   </cxx-function>
 
-      <cxx-function para_num="12" id="parallel.alg.foreach.12">
+      <ins>
+        <cxx-function>
     
     <pre><code><cxx-signature>
-        template&lt;class ExecutionPolicy,
-                 class InputIterator, class Size, class Function&gt;
-                 InputIterator for_each_n(ExecutionPolicy &amp;&amp; exec,
-                                          InputIterator first, Size n,
-                                          Function f);
-        </cxx-signature></code></pre>
+          template&lt;class ExecutionPolicy,
+                   class InputIterator, class Size, class Function&gt;
+                   InputIterator for_each_n(ExecutionPolicy &amp;&amp; exec,
+                                            InputIterator first, Size n,
+                                            Function f);
+          </cxx-signature></code></pre>
 
     <dl>
       
-        
+          
 
-        <cxx-effects para_num="13" id="parallel.alg.foreach.13">
+          <cxx-effects>
     
     <dt>Effects:</dt><dd>
-          Applies <code>f</code> to the result of dereferencing every iterator in the range
-          <code>[first,first + n)</code>, starting from <code>first</code> and proceeding to <code>first + n - 1</code>.
+            Applies <code>f</code> to the result of dereferencing every iterator in the range
+            <code>[first,first + n)</code>, starting from <code>first</code> and proceeding to <code>first + n - 1</code>.
 
-          <cxx-note><span class="nowrap">[ <em>Note:</em></span>
+            <cxx-note><span class="nowrap">[ <em>Note:</em></span>
     
-            If the type of <code>first</code> satisfies the requirements of a mutable iterator,
-            <code>f</code> may apply nonconstant functions through the dereferenced iterator.
-          
+              If the type of <code>first</code> satisfies the requirements of a mutable iterator,
+              <code>f</code> may apply nonconstant functions through the dereferenced iterator.
+            
     <span class="nowrap">— <em>end note</em> ]</span>
   </cxx-note>
-        </dd>
+          </dd>
   </cxx-effects>
 
-        <cxx-returns para_num="14" id="parallel.alg.foreach.14">
+          <cxx-returns>
     
     <dt>Returns:</dt><dd>
-        <code>first + n</code> for non-negative values of <code>n</code> and <code>first</code> for negative values.
-        </dd>
+          <code>first + n</code><ins> for non-negative values of <code>n</code> and <code>first</code> for negative values.
+          </ins></dd>
   </cxx-returns>
 
-        <cxx-remarks para_num="15" id="parallel.alg.foreach.15">
+          <cxx-remarks>
     
     <dt>Remarks:</dt><dd>
-          If <code>f</code> returns a result, the result is ignored.
-        </dd>
+            If <code>f</code> returns a result, the result is ignored.
+          </dd>
   </cxx-remarks>
 
-        <cxx-notes para_num="16" id="parallel.alg.foreach.16">
+          <cxx-notes>
     
     <dt>Notes:</dt><dd>
-          Unlike its sequential form, the parallel overload of <code>for_each_n</code> requires
-          <code>Function</code> to meet the requirements of <code>CopyConstructible</code>.
-        </dd>
+            Unlike its sequential form, the parallel overload of <code>for_each_n</code> requires
+            <code>Function</code> to meet the requirements of <code>CopyConstructible</code><del2>, but not
+            <code>MoveConstructible</code></del2>.
+          </dd>
   </cxx-notes>
-      
+        
     </dl>
   </cxx-function>
+      </ins>
     
     </section>
   </cxx-section>
@@ -2179,23 +2257,29 @@ inline namespace v1 {
     
 
     <section>
-      <header><span class="section-number">4.4.1</span> <h1 data-bookmark-label="4.4.1 Header &lt;experimental/numeric&gt; synopsis">Header <code>&lt;experimental/numeric&gt;</code> synopsis</h1> <span style="float:right"><a href="#parallel.alg.numeric.synopsis">[parallel.alg.numeric.synopsis]</a></span></header>
+      <header><span class="section-number">4.4.1</span> <h1 data-bookmark-label="4.4.1 Header &lt;experimental/numeric&gt; synopsis">Header <code>&lt;experimental/numeric&gt;</code><ins2> synopsis</ins2></h1> <span style="float:right"><a href="#parallel.alg.numeric.synopsis">[parallel.alg.numeric.synopsis]</a></span></header>
       
       
 
       <pre>namespace std {
 namespace experimental {
 namespace parallel {
-inline namespace v1 {
+<ins2>inline namespace v1 {</ins2>
   template&lt;class InputIterator&gt;
     typename iterator_traits&lt;InputIterator&gt;::value_type
       reduce(InputIterator first, InputIterator last);
   template&lt;class InputIterator, class T&gt;
-    T reduce(InputIterator first, InputIterator last, T init);
+    T reduce(InputIterator first, InputIterator last<ins2>,</ins2> T init);
   template&lt;class InputIterator, class T, class BinaryOperation&gt;
     T reduce(InputIterator first, InputIterator last, T init,
              BinaryOperation binary_op);
 
+  <del2>
+  template&lt;class InputIterator, class OutputIterator&gt;
+    OutputIterator
+      exclusive_scan(InputIterator first, InputIterator last,
+                     OutputIterator result);
+  </del2>
   template&lt;class InputIterator, class OutputIterator,
            class T&gt;
     OutputIterator
@@ -2220,12 +2304,12 @@ inline namespace v1 {
                      OutputIterator result,
                      BinaryOperation binary_op);
   template&lt;class InputIterator, class OutputIterator,
-           class BinaryOperation, class T&gt;
+           <del2>class T, </del2>class BinaryOperation<ins2>, class T</ins2>&gt;
     OutputIterator
       inclusive_scan(InputIterator first, InputIterator last,
                      OutputIterator result,
-                     BinaryOperation binary_op, T init);
-}
+                     <del2>T init, </del2>BinaryOperation binary_op<ins2>, T init</ins2>);
+<ins2>}</ins2>
 }
 }
 }
@@ -2257,9 +2341,46 @@ inline namespace v1 {
         <cxx-effects para_num="2" id="parallel.alg.reduce.2">
     
     <dt>Effects:</dt><dd>
-          Same as <code>reduce(first, last, typename iterator_traits&lt;InputIterator&gt;::value_type{})</code>.
+          <ins2>
+            Same as <code>reduce(first, last, typename iterator_traits&lt;InputIterator&gt;::value_type{})</code>.
+          </ins2>
         </dd>
   </cxx-effects>
+
+        <del2>
+          <cxx-returns>
+    
+    <dt>Returns:</dt><dd>
+            <code>reduce(first, last, typename iterator_traits&lt;InputIterator&gt;::value_type{})</code>
+          </dd>
+  </cxx-returns>
+
+          <cxx-requires>
+    
+    <dt>Requires:</dt><dd>
+            <code>typename iterator_traits&lt;InputIterator&gt;::value_type{}</code>
+            shall be a valid expression. The <code>operator+</code> function associated with
+            <code>iterator_traits&lt;InputIterator&gt;::value_type</code> shall not invalidate iterators or
+            subranges, nor modify elements in the range <code>[first,last)</code>.
+          </dd>
+  </cxx-requires>
+
+          <cxx-complexity>
+    
+    <dt>Complexity:</dt><dd>
+            O(<code>last - first</code>) applications of <code>operator+</code>.
+          </dd>
+  </cxx-complexity>
+
+          <cxx-notes>
+    
+    <dt>Notes:</dt><dd>
+            The primary difference between <code>reduce</code> and <code>accumulate</code> is that the behavior
+            of <code>reduce</code> may be non-deterministic for non-associative or non-commutative
+            <code>operator+</code>.
+          </dd>
+  </cxx-notes>
+        </del2>
       
     </dl>
   </cxx-function>
@@ -2278,9 +2399,43 @@ inline namespace v1 {
         <cxx-effects para_num="4" id="parallel.alg.reduce.4">
     
     <dt>Effects:</dt><dd>
-          Same as <code>reduce(first, last, init, plus&lt;&gt;())</code>.
+          <ins2>
+            Same as <code>reduce(first, last, init, plus&lt;&gt;())</code>.
+          </ins2>
         </dd>
   </cxx-effects>
+
+        <del2>
+          <cxx-returns>
+    
+    <dt>Returns:</dt><dd>
+            <code>reduce(first, last, init, plus&lt;&gt;())</code>
+          </dd>
+  </cxx-returns>
+
+          <cxx-requires>
+    
+    <dt>Requires:</dt><dd>
+            The <code>operator+</code> function associated with <code>T</code> shall not invalidate iterators
+            or subranges, nor modify elements in the range <code>[first,last)</code>.
+          </dd>
+  </cxx-requires>
+
+          <cxx-complexity>
+    
+    <dt>Complexity:</dt><dd>
+            O(<code>last - first</code>) applications of <code>operator+</code>.
+          </dd>
+  </cxx-complexity>
+
+          <cxx-notes>
+    
+    <dt>Notes:</dt><dd>
+            The primary difference between <code>reduce</code> and <code>accumulate</code> is that the behavior
+            of <code>reduce</code> may be non-deterministic for non-associative or non-commutative <code>operator+</code>.
+          </dd>
+  </cxx-notes>
+        </del2>
       
     </dl>
   </cxx-function>
@@ -2300,7 +2455,7 @@ inline namespace v1 {
         <cxx-returns para_num="6" id="parallel.alg.reduce.6">
     
     <dt>Returns:</dt><dd>
-          <code><em>GENERALIZED_SUM</em>(binary_op, init, *first, ..., *(first + (last - first) - 1))</code>.
+          <code><em>GENERALIZED_SUM</em>(binary_op, init, *first, ..., <del2>*(first + last - first - 1)</del2><ins2>*(first + (last - first) - 1)</ins2>)</code>.
         </dd>
   </cxx-returns>
 
@@ -2323,7 +2478,7 @@ inline namespace v1 {
     
     <dt>Notes:</dt><dd>
           The primary difference between <code>reduce</code> and <code>accumulate</code> is that the behavior
-          of <code>reduce</code> may be non-deterministic for non-associative or non-commutative <code>binary_op</code>.
+          of <code>reduce</code> may be non-deterministic for non-associative or non-commutative <del><code>operator+</code></del><ins><code>binary_op</code></ins>.
         </dd>
   </cxx-notes>
       
@@ -2359,9 +2514,46 @@ inline namespace v1 {
         <cxx-effects para_num="2" id="parallel.alg.exclusive.scan.2">
     
     <dt>Effects:</dt><dd>
-          Same as <code>exclusive_scan(first, last, result, init, plus&lt;&gt;())</code>.
+          <ins2>
+            Same as <code>exclusive_scan(first, last, result, init, plus&lt;&gt;())</code>.
+          </ins2>
         </dd>
   </cxx-effects>
+
+        <del2>
+          <cxx-returns>
+    
+    <dt>Returns:</dt><dd>
+            <code>exclusive_scan(first, last, result, init, plus&lt;&gt;())</code>
+          </dd>
+  </cxx-returns>
+
+          <cxx-requires>
+    
+    <dt>Requires:</dt><dd>
+            The <code>operator+</code> function associated with <code>iterator_traits&lt;InputIterator&gt;::value_type</code> shall
+            not invalidate iterators or subranges, nor modify elements in the ranges <code>[first,last)</code> or
+            <code>[result,result + (last - first))</code>.
+          </dd>
+  </cxx-requires>
+
+          <cxx-complexity>
+    
+    <dt>Complexity:</dt><dd>
+          O(<code>last - first</code>) applications of <code>operator+</code>.
+          </dd>
+  </cxx-complexity>
+
+          <cxx-notes>
+    
+    <dt>Notes:</dt><dd>
+            The primary difference between <code>exclusive_scan</code> and <code>inclusive_scan</code> is that
+            <code>exclusive_scan</code> excludes the <code>i</code>th input element from the <code>i</code>th sum.
+            If the <code>operator+</code> function is not mathematically associative, the behavior of
+            <code>exclusive_scan</code> may be non-deterministic.
+          </dd>
+  </cxx-notes>
+        </del2>
       
     </dl>
   </cxx-function>
@@ -2385,7 +2577,7 @@ inline namespace v1 {
     
     <dt>Effects:</dt><dd>
           Assigns through each iterator <code>i</code> in <code>[result,result + (last - first))</code> the
-          value of <code><em>GENERALIZED_NONCOMMUTATIVE_SUM</em>(binary_op, init, *first, ..., *(first + (i - result) - 1))</code>.
+          value of <code><em>GENERALIZED_NONCOMMUTATIVE_SUM</em>(binary_op, init, *first, ..., <del2>(*first + i - result - 1)</del2><ins2>*(first + (i - result) - 1)</ins2>)</code>.
         </dd>
   </cxx-effects>
 
@@ -2414,7 +2606,7 @@ inline namespace v1 {
         <cxx-notes para_num="8" id="parallel.alg.exclusive.scan.8">
     
     <dt>Notes:</dt><dd>
-          The difference between <code>exclusive_scan</code> and <code>inclusive_scan</code> is that
+          The <del2>primary</del2> difference between <code>exclusive_scan</code> and <code>inclusive_scan</code> is that
           <code>exclusive_scan</code> excludes the <code>i</code>th input element from the <code>i</code>th
           sum. If <code>binary_op</code> is not mathematically associative, the behavior of
           <code>exclusive_scan</code> may be non-deterministic.
@@ -2451,9 +2643,47 @@ inline namespace v1 {
         <cxx-effects para_num="2" id="parallel.alg.inclusive.scan.2">
     
     <dt>Effects:</dt><dd>
-          Same as <code>inclusive_scan(first, last, result, plus&lt;&gt;())</code>.
+          <ins2>
+            Same as <code>inclusive_scan(first, last, result, plus&lt;&gt;())</code>.
+          </ins2>
         </dd>
   </cxx-effects>
+
+        <del2>
+          <cxx-returns>
+    
+    <dt>Returns:</dt><dd>
+            <code>inclusive_scan(first, last, result, plus&lt;&gt;())</code>
+          </dd>
+  </cxx-returns>
+
+          <cxx-requires>
+    
+    <dt>Requires:</dt><dd>
+            The <code>operator+</code> function associated with
+            <code>iterator_traits&lt;InputIterator&gt;::value_type</code> shall not invalidate iterators or
+            subranges, nor modify elements in the ranges <code>[first,last)</code> or
+            <code>[result,result + (last - first))</code>.
+          </dd>
+  </cxx-requires>
+
+          <cxx-complexity>
+    
+    <dt>Complexity:</dt><dd>
+            O(<code>last - first</code>) applications of <code>operator+</code>.
+          </dd>
+  </cxx-complexity>
+
+          <cxx-notes>
+    
+    <dt>Notes:</dt><dd>
+            The primary difference between <code>exclusive_scan</code> and <code>inclusive_scan</code> is that
+            <code>exclusive_scan</code> excludes the <code>i</code>th input element from the <code>i</code>th sum.
+            If the <code>operator+</code> function is not mathematically associative, the behavior of
+            <code>inclusive_scan</code> may be non-deterministic.
+          </dd>
+  </cxx-notes>
+        </del2>
       
     </dl>
   </cxx-function>
@@ -2469,11 +2699,11 @@ inline namespace v1 {
                              BinaryOperation binary_op);
           
           template&lt;class InputIterator, class OutputIterator,
-                   class BinaryOperation, class T&gt;
+                   <del2>class T, </del2>class BinaryOperation<ins2>, class T</ins2>&gt;
             OutputIterator
               inclusive_scan(InputIterator first, InputIterator last,
                              OutputIterator result,
-                             BinaryOperation binary_op, T init);
+                             <del2>T init, </del2>BinaryOperation binary_op<ins2>, T init</ins2>);
         </cxx-signature></code></pre>
 
     <dl>
@@ -2484,8 +2714,8 @@ inline namespace v1 {
     
     <dt>Effects:</dt><dd>
           Assigns through each iterator <code>i</code> in <code>[result,result + (last - first))</code> the value of
-          <code><em>GENERALIZED_NONCOMMUTATIVE_SUM</em>(binary_op, *first, ..., *(first + (i - result)))</code> or
-          <code><em>GENERALIZED_NONCOMMUTATIVE_SUM</em>(binary_op, init, *first, ..., *(first + (i - result)))</code>
+          <code><em>GENERALIZED_NONCOMMUTATIVE_SUM</em>(binary_op, *first, ..., <del2>(*first + i - result)</del2><ins2>*(first + (i - result))</ins2>)</code> or
+          <code><em>GENERALIZED_NONCOMMUTATIVE_SUM</em>(binary_op, init, *first, ..., <del2>(*first + i - result)</del2><ins2>*(first + (i - result))</ins2>)</code>
           if <code>init</code> is provided.
         </dd>
   </cxx-effects>
@@ -2515,7 +2745,7 @@ inline namespace v1 {
         <cxx-notes para_num="8" id="parallel.alg.inclusive.scan.8">
     
     <dt>Notes:</dt><dd>
-          The difference between <code>exclusive_scan</code> and <code>inclusive_scan</code> is that
+          The <del2>primary</del2> difference between <code>exclusive_scan</code> and <code>inclusive_scan</code> is that
           <code>inclusive_scan</code> includes the <code>i</code>th input element in the <code>i</code>th sum.
           If <code>binary_op</code> is not mathematically associative, the behavior of
           <code>inclusive_scan</code> may be non-deterministic.
