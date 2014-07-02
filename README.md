@@ -37,13 +37,13 @@ Various
 
 ## Acknowledgements
 
-Hans Boehm
-Beman Dawes
-Pablo Halpern
-Artur Laksberg
-Daniel Krügler
-Alisdair Meredith
-Clark Nelson
-Herb Sutter
-Jeffrey Yasskin
+* Hans Boehm
+* Beman Dawes
+* Pablo Halpern
+* Artur Laksberg
+* Daniel Krügler
+* Alisdair Meredith
+* Clark Nelson
+* Herb Sutter
+* Jeffrey Yasskin
 
