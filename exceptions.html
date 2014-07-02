@@ -3,27 +3,26 @@
     <cxx-section id="parallel.exceptions.behavior">
       <h1>Exception reporting behavior</h1>
         <p>
-          <ins>During the execution of a standard parallel algorithm, </ins>
-          <del>I</del><ins>i</ins>f temporary memory resources are required <del>by the algorithm</del> and none are available,
+          During the execution of a standard parallel algorithm, 
+          if temporary memory resources are required and none are available,
           the algorithm throws a <code>std::bad_alloc</code> exception.
         </p>
         <p>
-          During the execution of a standard parallel algorithm, if the <del>application of a function
-          object</del><ins>invocation of an element access function</ins> terminates with an uncaught
-          exception, the behavior of the program is determined by the type of execution policy used to
-          invoke the algorithm:
+          During the execution of a standard parallel algorithm, if the invocation of an element access
+          function terminates with an uncaught exception, the behavior of the program is determined by the
+          type of execution policy used to invoke the algorithm:
 
           <ul>
             <li>
-              If the execution policy object is of type <code>class <del>vector_execution_policy</del><ins>parallel_vector_execution_policy</ins></code>,
+              If the execution policy object is of type <code>class parallel_vector_execution_policy</code>,
               <code>std::terminate</code> shall be called.
             </li>
             <li>
               If the execution policy object is of type <code>sequential_execution_policy</code> or
               <code>parallel_execution_policy</code>, the execution of the algorithm terminates with an
               <code>exception_list</code> exception. All uncaught exceptions thrown during
-              the <del>application of user-provided function objects</del><ins>invocations of element
-              access functions</ins> shall be contained in the <code>exception_list</code>.<pre>
+              the invocations of element access functions shall be contained in the
+              <code>exception_list</code>.<pre>
 </pre>
 
               <cxx-note>
@@ -60,41 +59,28 @@
 namespace std {
 namespace experimental {
 namespace parallel {
-<ins>inline namespace v1 {</ins>
+inline namespace v1 {
 
   class exception_list : public exception
   {
     public:
-      <del>
-      typedef exception_ptr                                             value_type;
-      typedef const value_type&amp;                                         reference;
-      typedef const value_type&amp;                                         const_reference;
-      typedef <em>implementation-defined</em>                                    const_iterator;
-      typedef const_iterator                                            iterator;
-      typedef typename iterator_traits::difference_type difference_type;
-      typedef size_t                                                    size_type;</del>
-      <ins>
-      typedef <em>unspecified</em>                   iterator;</ins>
+      typedef <em>unspecified</em>                   iterator;
   
       size_t size() const noexcept;
       iterator begin() const noexcept;
       iterator end() const noexcept;
 
-      <ins>const char* what() const noexcept override;</ins>
-  <del>
-    private:
-      std::list&lt;exception_ptr&gt; exceptions_; // exposition only
-  </del>
+      const char* what() const noexcept override;
   };
-<ins>}</ins>
+}
 }
 }
 }
       </pre>
 
       <p>
-        The class <code>exception_list</code> <del>is a container</del> <ins>owns a sequence</ins> of <code>exception_ptr</code> objects<ins>. The</ins> parallel
-        algorithms may use <ins>the <code>exception_list</code></ins> to communicate uncaught exceptions encountered during parallel execution to the
+        The class <code>exception_list</code> owns a sequence of <code>exception_ptr</code> objects. The parallel
+        algorithms may use the <code>exception_list</code> to communicate uncaught exceptions encountered during parallel execution to the
         caller of the algorithm.
       </p>
 
@@ -119,7 +105,7 @@ namespace parallel {
 
       <cxx-function>
         <cxx-signature>
-          <del>exception_list::</del>iterator begin() const noexcept;
+          iterator begin() const noexcept;
         </cxx-signature>
 
         <cxx-returns>
@@ -129,21 +115,21 @@ namespace parallel {
 
       <cxx-function>
         <cxx-signature>
-          <del>exception_list::</del>iterator end() const noexcept;
+          iterator end() const noexcept;
         </cxx-signature>
 
         <cxx-returns>
-          An iterator <del>which is the past-the-end value for the <code>exception_list</code></del> <ins>that is past the end of the owned sequence.</ins>
+          An iterator that is past the end of the owned sequence.
         </cxx-returns>
       </cxx-function>
 
       <cxx-function>
         <cxx-signature>
-          <ins>const char* what() const noexcept override;</ins>
+          const char* what() const noexcept override;
         </cxx-signature>
 
         <cxx-returns>
-          <ins>An implementation-defined NTBS.</ins>
+          An implementation-defined NTBS.
         </cxx-returns>
       </cxx-function>
     </cxx-section>
