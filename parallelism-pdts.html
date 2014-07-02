@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <!-- Sources at https://github.com/cplusplus/parallelism-ts -->
 <html><head>
-<meta http-equiv="content-type" content="text/html; charset=UTF-8"><!--[if lte IE 8]><script>document.createElement("nav");document.createElement("section");document.createElement("time");document.createElement("CXX-TITLEPAGE");document.createElement("CXX-DOCNUM");document.createElement("CXX-REVISES");document.createElement("CXX-EDITOR");document.createElement("CXX-EMAIL");document.createElement("CXX-TOC");document.createElement("CXX-CLAUSE");document.createElement("CXX-SECTION");document.createElement("CXX-FOOTNOTE");document.createElement("CXX-FOREIGN-INDEX");document.createElement("CXX-REF");document.createElement("CXX-NOTE");document.createElement("CXX-EXAMPLE");document.createElement("CXX-FUNCTION");document.createElement("CXX-SIGNATURE");document.createElement("CXX-EFFECTS");document.createElement("CXX-REMARKS");document.createElement("CXX-RETURNS");document.createElement("CXX-REQUIRES");document.createElement("CXX-COMPLEXITY");document.createElement("CXX-NOTES");document.createElement("CXX-PUBLISH-BUTTON");</script><![endif]--><style>template {display: none !important;} /* injected by platform.js */</style><style>body {transition: opacity ease-in 0.2s; } 
+<meta http-equiv="content-type" content="text/html; charset=UTF-8"><!--[if lte IE 8]><script>document.createElement("nav");document.createElement("section");document.createElement("time");document.createElement("CXX-TITLEPAGE");document.createElement("CXX-DOCNUM");document.createElement("CXX-TSNUM");document.createElement("CXX-REVISES");document.createElement("CXX-EDITOR");document.createElement("CXX-EMAIL");document.createElement("CXX-TOC");document.createElement("CXX-CLAUSE");document.createElement("CXX-SECTION");document.createElement("CXX-FOOTNOTE");document.createElement("CXX-FOREIGN-INDEX");document.createElement("CXX-REF");document.createElement("CXX-NOTE");document.createElement("CXX-EXAMPLE");document.createElement("CXX-FUNCTION");document.createElement("CXX-SIGNATURE");document.createElement("CXX-EFFECTS");document.createElement("CXX-REMARKS");document.createElement("CXX-RETURNS");document.createElement("CXX-REQUIRES");document.createElement("CXX-COMPLEXITY");document.createElement("CXX-NOTES");document.createElement("CXX-PUBLISH-BUTTON");</script><![endif]--><style>template {display: none !important;} /* injected by platform.js */</style><style>body {transition: opacity ease-in 0.2s; } 
 body[unresolved] {opacity: 0; display: block; overflow: hidden; } 
 </style><style shim-shadowdom-css="">style { display: none !important; }
 cxx-function {
@@ -576,43 +576,78 @@ pre {
     cxx-toc  a[href]::after { content: leader(" . ") target-counter(attr(href), page); }
 
     cxx-footnote  aside { float: footnote; footnote-policy: line; }
-}</style><title>Technical Specification for C++ Extensions for Parallelism, Working Draft, </title></head>
+}</style><title>Technical Specification for C++ Extensions for Parallelism, undefined</title></head>
 <body>
 
-<cxx-titlepage stage="draft">
+<cxx-titlepage stage="pdts">
     
     
-      <table class="draft_header">
+    
+      <table class="pdts_header">
         
-          <tbody><tr><th>Document Number:</th><td><cxx-docnum>N4104</cxx-docnum></td></tr>
+          <tbody><tr><th>ISO/IEC JTC 1/SC 22/WG 21</th><td><cxx-docnum>N4104</cxx-docnum></td></tr>
         
         
           <tr><th>Date:</th><td><time pubdate="">2014-07-04</time></td></tr>
         
         
-          <tr><th>Revises:</th><td><cxx-revises><a href="http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2014/n3960.pdf">N3960</a></cxx-revises></td></tr>
+          <tr><th>ISO/IEC PDTS</th><td><cxx-tsnum>19570</cxx-tsnum></td></tr>
         
-        
-          <tr><th>Editor:</th><td><cxx-editor>
-    Jared Hoberock<br>
-    NVIDIA Corporation<br>
-    <cxx-email><a href="mailto:jhoberock@nvidia.com">jhoberock@nvidia.com</a></cxx-email>
-  </cxx-editor></td></tr>
-        
+        </tbody><tbody><tr><th>ISO/IEC JTC1 SC22</th></tr>
+        <tr><th>Secretariat:</th><td>ANSI</td></tr>
       </tbody></table>
     
     
     
-      <h1 class="draft_title">Working Draft, Technical Specification for C++ Extensions for Parallelism</h1>
+      <h1 class="pdts_title">Information technology – Programming 
+languages, their environments and system software interfaces – Technical
+ Specification for C++ Extensions for Parallelism</h1>
+    
+    
+      <table class="pdts_warning" style="border-collapse: collapse" border="1" bordercolor="#111111" cellpadding="10" cellspacing="0" width="100%">
+       <tbody><tr>
+         <td width="100%"><p align="center"><b>Warning</b></p>
+           <p>This document is not an ISO International Standard. It is distributed for review and comment. It is
+           subject to change without notice and may not be referred to as an International Standard.
+           </p>
+           <p>Recipients of this draft are invited to submit, with their comments, notification of any relevant
+           patent rights of which they are aware and to provide supporting documentation.</p>
+         </td>
+       </tr> 
+      </tbody></table>
     
     
     
-    
-      <p class="draft_warning"><strong>Note: this is an early draft. It’s known to be
-      incomplet and incorrekt, and it has lots of b<span style="margin-left: -1.2pt; margin-right: 1pt">a</span>d<span style="width:1.5em"> </span>for<span style="margin-left:-3pt; margin-right:0.6pt">mat</span>ti<span style="position:relative; top:-0.15ex">n</span>g.</strong></p>
-    
+      <table class="pdts_footer">
+        <tbody><tr><td>Document type:</td><td>Draft Technical Specification</td></tr>
+        <tr><td>Document subtype:</td></tr>
+        <tr><td>Document stage:</td><td>(10) Proposal</td></tr>
+        <tr><td>Document language:</td><td>E</td></tr>
+      </tbody></table>
     
   </cxx-titlepage>
+
+<table style="page-break-after:always" border="1" bordercolor="#111111" cellpadding="10" cellspacing="0" width="100%">
+  <tbody><tr>
+    <td width="100%"><p align="center"><b>Copyright notice</b></p>
+      <p>This ISO document is a working draft or committee draft and is copyright-protected by ISO. While
+      the reproduction of working drafts or committee drafts in any form for use by participants in the
+      ISO standards development process is permitted without prior permission from ISO, neither this
+      document nor any extract from it may be reproduced, stored or transmitted in any form for any
+      other purpose without prior written permission from ISO.</p>
+      <p>Requests for permission to reproduce this document for the purpose of selling it should be
+      addressed as shown below or to ISO’s member body in the country of the requester:</p>
+      <blockquote><p>ISO copyright officer<br>
+      Case postale 56, CH-1211 Geneva 20<br>
+      Tel. + 41 22 749 01 11<br>
+      Fax + 41 22 749 09 47<br>
+      E-mail copyright@iso.org<br>
+      Web www.iso.org
+      </p></blockquote>
+      <p>Reproduction may be subject to royalty payments or a licensing agreement.</p>
+      <p>Violators may be prosecuted.</p></td>
+  </tr>
+</tbody></table>
 
 <cxx-toc>
     
