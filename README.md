@@ -1,11 +1,11 @@
-Document Number: N4106
-Date:            2014-07-04
-Revises:
-Project:         Programming Language C++
-Project Number:  TS 19570
-Reply-to:        Jared Hoberock
-                 NVIDIA Corporation
-                 jhoberock@nvidia.com
+    Document Number: N4106
+    Date:            2014-07-04
+    Revises:
+    Project:         Programming Language C++
+    Project Number:  TS 19570
+    Reply-to:        Jared Hoberock
+                     NVIDIA Corporation
+                     jhoberock@nvidia.com
 
 # Parallelism TS Editor's Report, post-Rapperswil
 
