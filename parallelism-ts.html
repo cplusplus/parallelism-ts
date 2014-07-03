@@ -364,15 +364,31 @@ cxx-titlepage  {
 	position: relative;
 }
 
-cxx-titlepage table {
+cxx-titlepage table.draft_header {
 	position: absolute; right: 0px; top: 0px;
 }
 
-cxx-titlepage h1 {
+cxx-titlepage table.pdts_header {
+	position: absolute; right: 0px; top: 0px;
+}
+
+cxx-titlepage table.pdts_footer {
+	position: absolute; left: 0px; bottom: 5%;
+}
+
+cxx-titlepage table.pdts_warning {
+	position: absolute; bottom: 20%;
+}
+
+cxx-titlepage h1.draft_title {
 	position: absolute; top: 40%;
 }
 
-cxx-titlepage p.warning {
+cxx-titlepage h1.pdts_title {
+	position: absolute; top: 30%;
+}
+
+cxx-titlepage p.draft_warning {
 	position: absolute; bottom: 5%;
 }
 
@@ -560,33 +576,41 @@ pre {
     cxx-toc  a[href]::after { content: leader(" . ") target-counter(attr(href), page); }
 
     cxx-footnote  aside { float: footnote; footnote-policy: line; }
-}</style><title>Technical Specification for C++ Extensions for Parallelism, Working Draft</title></head>
+}</style><title>Technical Specification for C++ Extensions for Parallelism, Working Draft, </title></head>
 <body>
 
 <cxx-titlepage stage="draft">
     
-    <table>
-      
-        <tbody><tr><th>Document Number:</th><td><cxx-docnum>N4104</cxx-docnum></td></tr>
-      
-      
-        <tr><th>Date:</th><td><time pubdate="">2014-07-04</time></td></tr>
-      
-      
-        <tr><th>Revises:</th><td><cxx-revises><a href="http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2014/n3960.pdf">N3960</a></cxx-revises></td></tr>
-      
-      
-        <tr><th>Editor:</th><td><cxx-editor>
+    
+      <table class="draft_header">
+        
+          <tbody><tr><th>Document Number:</th><td><cxx-docnum>N4104</cxx-docnum></td></tr>
+        
+        
+          <tr><th>Date:</th><td><time pubdate="">2014-07-04</time></td></tr>
+        
+        
+          <tr><th>Revises:</th><td><cxx-revises><a href="http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2014/n3960.pdf">N3960</a></cxx-revises></td></tr>
+        
+        
+          <tr><th>Editor:</th><td><cxx-editor>
     Jared Hoberock<br>
     NVIDIA Corporation<br>
     <cxx-email><a href="mailto:jhoberock@nvidia.com">jhoberock@nvidia.com</a></cxx-email>
   </cxx-editor></td></tr>
-      
-    </tbody></table>
-    <h1>Working Draft, Technical Specification for C++ Extensions for Parallelism</h1>
+        
+      </tbody></table>
     
-      <p class="warning"><strong>Note: this is an early draft. It’s known to be
+    
+    
+      <h1 class="draft_title">Working Draft, Technical Specification for C++ Extensions for Parallelism</h1>
+    
+    
+    
+    
+      <p class="draft_warning"><strong>Note: this is an early draft. It’s known to be
       incomplet and incorrekt, and it has lots of b<span style="margin-left: -1.2pt; margin-right: 1pt">a</span>d<span style="width:1.5em"> </span>for<span style="margin-left:-3pt; margin-right:0.6pt">mat</span>ti<span style="position:relative; top:-0.15ex">n</span>g.</strong></p>
+    
     
   </cxx-titlepage>
 
@@ -987,7 +1011,7 @@ sort(seq, v.begin(), v.end());
 sort(par, v.begin(), v.end());
 
 // permitting vectorization as well
-sort(par_vec, v.begin(), v.end());
+sort(<del>vec</del><ins>par_vec</ins>, v.begin(), v.end());
 
 // sort with dynamically-selected execution
 size_t threshold = ...
@@ -1815,7 +1839,7 @@ for_each(par, std::begin(a), std::end(a), [&amp;](int) {
 int x<ins>=0</ins>;
 std::mutex m;
 int a[] = {1,2};
-for_each(par_vec, std::begin(a), std::end(a), [&amp;](int) {
+for_each(<del>vec</del><ins>par_vec</ins>, std::begin(a), std::end(a), [&amp;](int) {
   m.lock();
   ++x;
   m.unlock();

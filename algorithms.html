@@ -139,7 +139,7 @@ using namespace std::experimental::parallel;
 int x<ins>=0</ins>;
 std::mutex m;
 int a[] = {1,2};
-for_each(par_vec, std::begin(a), std::end(a), [&amp;](int) {
+for_each(<del>vec</del><ins>par_vec</ins>, std::begin(a), std::end(a), [&amp;](int) {
   m.lock();
   ++x;
   m.unlock();
