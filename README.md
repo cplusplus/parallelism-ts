@@ -19,7 +19,7 @@ N4105 is document N4104 reformatted as a PDTS ballot document.
 
 ## Technical Changes
 
-* D4070 - Improving the specification of the vector execution policy in Parallelism TS
+* N4070 - Improving the specification of the vector execution policy in Parallelism TS
     * Clarify which standard library functions are unsafe to call during `parallel_vector_execution_policy` algorithm execution
 
 * N4063 - On Parallel Invocations of Functions in Parallelism TS
@@ -27,7 +27,7 @@ N4105 is document N4104 reformatted as a PDTS ballot document.
     * Define parallel algorithm semantics in terms of invocations of *element access functions*
     * Prohibit `BinaryPredicate`, `Compare`, and `BinaryOperation` from modifying their arguments during parallel algorithm execution
 
-* D4060 - Changes to `vector_execution_policy`
+* N4060 - Changes to `vector_execution_policy`
     * Rename `vector_execution_policy` to `parallel_vector_execution_policy`
     * Rename `vec` to `par_vec`
 
