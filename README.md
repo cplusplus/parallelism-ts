@@ -1,5 +1,5 @@
-    Document Number: N4106
-    Date:            2014-07-04
+    Document Number: N4311
+    Date:            2014-11-21
     Revises:
     Project:         Programming Language C++
     Project Number:  TS 19570
@@ -7,43 +7,41 @@
                      NVIDIA Corporation
                      jhoberock@nvidia.com
 
-# Parallelism TS Editor's Report, post-Rapperswil
+# Parallelism TS Editor's Report, post-Urbana
 
-N4104 is the latest Parallelism TS Working Draft. It contains changes to the Parallelism TS as directed by the committee at the Rapperswil meeting.
+N4104 is the latest Parallelism TS Working Draft. It contains changes to the Parallelism TS as directed by the committee at the Urbana meeting.
 
-N4104 updates the two previous drafts, N4071 (published during the Rapperswil meeting) and N3989 (published in the pre-Rappersil mailing).
+N4310 updates the previous draft, N4104, published in the post-Rapperswil mailing.
 
-Like N3960, N4106 is presented as a revision to N3960 since it incorporates the following technical changes created during the Rapperswil meeting.
-
-N4105 is document N4104 reformatted as a PDTS ballot document.
+N4312 is document N$310 reformatted as a DTS ballot document.
 
 ## Technical Changes
 
-* N4070 - Improving the specification of the vector execution policy in Parallelism TS
-    * Clarify which standard library functions are unsafe to call during `parallel_vector_execution_policy` algorithm execution
+* N4275: Parallelism PDTS Comment Reponses
 
-* N4063 - On Parallel Invocations of Functions in Parallelism TS
-    * Define *element access function*
-    * Define parallel algorithm semantics in terms of invocations of *element access functions*
-    * Prohibit `BinaryPredicate`, `Compare`, and `BinaryOperation` from modifying their arguments during parallel algorithm execution
+  * CH1: Resurrect explicit permission for implementation-defined execution policies
+  
+    Resolution: implemented as a non-normative note in S 2.3 p2.
 
-* N4060 - Changes to `vector_execution_policy`
-    * Rename `vector_execution_policy` to `parallel_vector_execution_policy`
-    * Rename `vec` to `par_vec`
+  * DE1 & US4: Consider N4167 (`transform_reduce`)
+  
+    Resolution: N4311 adds the algorithms `transform_reduce`, `transform_exclusive_scan`, and `transform_inclusive_scan`.
+
+  * US1: Execution policy definition
+
+    Resolution: S 2.1 p1 refines the defintion of "execution policy".
+
+  * US3: Elemental access functions can interrupt user code:
+
+    Resolution: S 4.1.2 p3 refines the specification of which threads a parallel algorithm invocation may use.
 
 ## Editorial Changes
 
-Various
+Various typographical errors eliminated.
 
 ## Acknowledgements
 
 * Hans Boehm
-* Beman Dawes
-* Pablo Halpern
-* Artur Laksberg
-* Daniel Krügler
-* Alisdair Meredith
-* Clark Nelson
-* Herb Sutter
-* Jeffrey Yasskin
+* Agustín Bergé
+* Hartmut Kaiser
 
