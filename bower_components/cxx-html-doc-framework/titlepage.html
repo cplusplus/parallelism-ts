@@ -36,83 +36,36 @@ cxx-titlepage sets the document title based on its <h1> child.
       /* position:relative on :host makes position:absolute on its children work
          relative to :host's bounds. */
       :host { position: relative; }
-      table.draft_header { position: absolute; right: 0; top: 0; }
-      table.pdts_header { position: absolute; right: 0; top: 0; }
-      table.pdts_footer { position: absolute; left: 0; bottom: 5%; }
-      table.pdts_warning { position: absolute; bottom: 20%; }
-      h1.draft_title { position: absolute; top: 40%; }
-      h1.pdts_title { position: absolute; top: 30%; }
-      p.draft_warning { position: absolute; bottom: 5%; }
+      table { position: absolute; right: 0; top: 0; }
+      h1 { position: absolute; top: 40%; }
+      p.warning { position: absolute; bottom: 5%; }
 
       h1 {text-align: center;}
 
       th { text-align: left; vertical-align: top; }
     </style>
+    <table>
+      <template if="{{docnum}}">
+        <tr><th>Document Number:</th><td><content select="cxx-docnum"/></td></tr>
+      </template>
+      <template if="{{pubdate}}">
+        <tr><th>Date:</th><td><content select="time[pubdate]"/></td></tr>
+      </template>
+      <template if="{{revises}}">
+        <tr><th>Revises:</th><td><content select="cxx-revises"/></td></tr>
+      </template>
+      <template if="{{editor}}">
+        <tr><th>Editor:</th><td><content select="cxx-editor"/></td></tr>
+      </template>
+    </table>
+    <h1>{{stage_title}}, {{iso_title_prefix}}{{title}}</h1>
     <template if="{{stage == 'draft'}}">
-      <table class="draft_header">
-        <template if="{{docnum}}">
-          <tr><th>Document Number:</th><td><content select="cxx-docnum"/></td></tr>
-        </template>
-        <template if="{{pubdate}}">
-          <tr><th>Date:</th><td><content select="time[pubdate]"/></td></tr>
-        </template>
-        <template if="{{revises}}">
-          <tr><th>Revises:</th><td><content select="cxx-revises"/></td></tr>
-        </template>
-        <template if="{{editor}}">
-          <tr><th>Editor:</th><td><content select="cxx-editor"/></td></tr>
-        </template>
-      </table>
-    </template>
-    <template if="{{stage == 'pdts'}}">
-      <table class="pdts_header">
-        <template if="{{docnum}}">
-          <tr><th>ISO/IEC JTC 1/SC 22/WG 21</th><td><content select="cxx-docnum"/></td></tr>
-        </template>
-        <template if="{{pubdate}}">
-          <tr><th>Date:</th><td><content select="time[pubdate]"/></td></tr>
-        </template>
-        <template if="{{tsnum}}">
-          <tr><th>ISO/IEC PDTS</th><td><content select="cxx-tsnum"/></td></tr>
-        </template>
-        <tr><th>ISO/IEC JTC1 SC22</th></tr>
-        <tr><th>Secretariat:</th><td>ANSI</td></tr>
-      </table>
-    </template>
-    <template if="{{stage == 'draft'}}">
-      <h1 class="draft_title">{{stage_title}}{{iso_title_prefix}}{{title}}</h1>
-    </template>
-    <template if="{{stage == 'pdts'}}">
-      <h1 class="pdts_title">{{stage_title}}{{iso_title_prefix}}{{title}}</h1>
-    </template>
-    <template if="{{stage == 'pdts'}}">
-      <table class="pdts_warning" border="1" cellpadding="10" cellspacing="0" style="border-collapse: collapse" bordercolor="#111111" width="100%">
-       <tr>
-         <td width="100%"><p align="center"><b>Warning</b></p>
-           <p>This document is not an ISO International Standard. It is distributed for review and comment. It is
-           subject to change without notice and may not be referred to as an International Standard.
-           </p>
-           <p>Recipients of this draft are invited to submit, with their comments, notification of any relevant
-           patent rights of which they are aware and to provide supporting documentation.</p>
-         </td>
-       </tr> 
-      </table>
-    </template>
-    <template if="{{stage == 'draft'}}">
-      <p class="draft_warning"><strong>Note: this is an early draft. It’s known to be
+      <p class="warning"><strong>Note: this is an early draft. It’s known to be
       incomplet and incorrekt, and it has lots of b<span
       style="margin-left: -1.2pt; margin-right: 1pt">a</span>d<span
       style="width:1.5em"> </span>for<span
       style="margin-left:-3pt; margin-right:0.6pt">mat</span>ti<span
       style="position:relative; top:-0.15ex">n</span>g.</strong></p>
-    </template>
-    <template if="{{stage == 'pdts'}}">
-      <table class="pdts_footer">
-        <tr><td>Document type:</th><td>Draft Technical Specification</td></tr>
-        <tr><td>Document subtype:</th></tr>
-        <tr><td>Document stage:</td><td>(10) Proposal</td></tr>
-        <tr><td>Document language:</td><td>E</td></tr>
-      </table>
     </template>
   </template>
   <script src="titlepage.js"></script>
