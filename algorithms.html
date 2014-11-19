@@ -35,7 +35,10 @@
       <p>
         The invocations of element access functions in parallel algorithms invoked with an execution
         policy object of type <code>parallel_execution_policy</code> are permitted to execute in an
-        unordered fashion in unspecified threads, and indeterminately sequenced within each thread. 
+        unordered fashion in <del>unspecified threads</del><ins>either the invoking thread or in a
+        thread implicitly created by the library to support parallel algorithm execution.</ins>
+        <del>, and</del> <ins>Any such invocations executing in the same thread are</ins> indeterminately
+        sequenced <del>within each thread</del><ins>with respect to each other</ins>. 
 
         <cxx-note>
           It is the caller's responsibility to ensure correctness, for example that the invocation does
@@ -293,14 +296,20 @@ for_each(par_vec, std::begin(a), std::end(a), [&amp;](int) {
             <td><code>transform</code></td>
           </tr>
           <tr>
+            <td><code><ins>transform_exclusive_scan</ins></code></td>
+            <td><code><ins>transform_inclusive_scan</ins></code></td>
+            <td><code><ins>transform_reduce</ins></code></td>
             <td><code>uninitialized_copy</code></td>
+          </tr>
+          <tr>
             <td><code>uninitialized_copy_n</code></td>
             <td><code>uninitialized_fill</code></td>
             <td><code>uninitialized_fill_n</code></td>
+            <td><code>unique</code></td>
           </tr>
           <tr>
-            <td><code>unique</code></td>
             <td><code>unique_copy</code></td>
+            <td></td>
             <td></td>
             <td></td>
           </tr>
@@ -530,6 +539,38 @@ inline namespace v1 {
       inclusive_scan(InputIterator first, InputIterator last,
                      OutputIterator result,
                      BinaryOperation binary_op, T init);
+
+  <ins>
+  template&lt;class InputIterator, class UnaryOperation,
+           class T, class BinaryOperation&gt;
+    T transform_reduce(InputIterator first, InputIterator last,
+                       UnaryOperation unary_op,
+                       T init, BinaryOperation binary_op);
+
+  template&lt;class InputIterator, class OutputIterator,
+           class UnaryOperation, class T, class BinaryOperation&gt;
+    OutputIterator
+      transform_exclusive_scan(InputIterator first, InputIterator last,
+                               OutputIterator result,
+                               UnaryOperation unary_op,
+                               T init, BinaryOperation binary_op);
+
+  template&lt;class InputIterator, class OutputIterator,
+           class UnaryOperation, class BinaryOperation&gt;
+    OutputIterator
+      transform_inclusive_scan(InputIterator first, InputIterator last,
+                               OutputIterator result,
+                               UnaryOperation unary_op,
+                               BinaryOperation binary_op);
+
+  template&lt;class InputIterator, class OutputIterator,
+           class UnaryOperation, class BinaryOperation, class T&gt;
+    OutputIterator
+      transform_inclusive_scan(InputIterator first, InputIterator last,
+                               OutputIterator result,
+                               UnaryOperation unary_op,
+                               BinaryOperation binary_op, T init);
+  </ins>
 }
 }
 }
@@ -695,7 +736,7 @@ inline namespace v1 {
         </cxx-requires>
 
         <cxx-complexity>
-          O(<code>last - first)</code> applications of <code>binary_op</code>.
+          O(<code>last - first</code>) applications of <code>binary_op</code>.
         </cxx-complexity>
 
         <cxx-notes>
@@ -703,6 +744,161 @@ inline namespace v1 {
           <code>inclusive_scan</code> includes the <code>i</code>th input element in the <code>i</code>th sum.
           If <code>binary_op</code> is not mathematically associative, the behavior of
           <code>inclusive_scan</code> may be non-deterministic.
+        </cxx-notes>
+      </cxx-function>
+    </cxx-section>
+
+    <cxx-section id="parallel.alg.transform.reduce">
+      <h1>Transform reduce</h1>
+
+      <cxx-function>
+        <cxx-signature>
+        <ins>
+          template&lt;class InputIterator, class UnaryFunction, class T, class BinaryOperation&gt;
+          T transform_reduce(InputIterator first, InputIterator last,
+                             UnaryOperation unary_op, T init, BinaryOperation binary_op);
+        </ins>
+        </cxx-signature>
+
+        <cxx-returns>
+        <ins>
+          <code><em>GENERALIZED_SUM</em>(binary_op, init, unary_op(*first), ..., unary_op(*(first + (last - first) - 1)))</code>.
+        </ins>
+        </cxx-returns>
+
+        <cxx-requires>
+        <ins>
+          Neither <code>unary_op</code> nor <code>binary_op</code> shall invalidate subranges, or modify elements in the range <code>[first,last)</code>
+        </ins>
+        </cxx-requires>
+
+        <cxx-complexity>
+        <ins>
+          O(<code>last - first</code>) applications each of <code>unary_op</code> and <code>binary_op</code>.
+        </ins>
+        </cxx-complexity>
+
+        <cxx-notes>
+        <ins>
+          <code>transform_reduce</code> does not apply <code>unary_op</code> to <code>init</code>.
+        </ins>
+        </cxx-notes>
+      </cxx-function>
+    </cxx-section>
+
+    <cxx-section id="parallel.alg.transform.exclusive.scan">
+      <h1>Transform exclusive scan</h1>
+
+      <cxx-function>
+        <cxx-signature>
+        <ins>
+          template&lt;class InputIterator, class OutputIterator,
+                   class UnaryOperation,
+                   class T, class BinaryOperation&gt;
+            OutputIterator
+              transform_exclusive_scan(InputIterator first, InputIterator last,
+                                       OutputIterator result,
+                                       UnaryOperation unary_op,
+                                       T init, BinaryOperation binary_op);
+        </ins>
+        </cxx-signature>
+
+        <cxx-effects>
+        <ins>
+          Assigns through each iterator <code>i</code> in <code>[result,result + (last - first))</code> the value of
+          <code><em>GENERALIZED_NONCOMMUTATIVE_SUM</em>(binary_op, init, unary_op(*first), ..., unary_op(*(first + (i - result) - 1)))</code>.
+        </ins>
+        </cxx-effects>
+
+        <cxx-returns>
+        <ins>
+          The end of the resulting range beginning at <code>result</code>.
+        </ins>
+        </cxx-returns>
+
+        <cxx-requires>
+        <ins>
+          Neither <code>unary_op</code> nor <code>binary_op</code> shall invalidate iterators or subranges, or modify elements in the
+          ranges <code>[first,last)</code> or <code>[result,result + (last - first))</code>.
+        </ins>
+        </cxx-requires>
+
+        <cxx-complexity>
+        <ins>
+          O(<code>last - first</code>) applications each of <code>unary_op</code> and <code>binary_op</code>.
+        </ins>
+        </cxx-complexity>
+
+        <cxx-notes>
+        <ins>
+          The difference between <code>transform_exclusive_scan</code> and <code>transform_inclusive_scan</code> is that <code>transform_exclusive_scan</code>
+          excludes the ith input element from the ith sum. If <code>binary_op</code> is not mathematically associative, the behavior of
+          <code>transform_exclusive_scan</code> may be non-deterministic. <code>transform_exclusive_scan</code> does not apply <code>unary_op</code> to <code>init</code>.
+        </ins>
+        </cxx-notes>
+      </cxx-function>
+    </cxx-section>
+
+    <cxx-section id="parallel.alg.transform.inclusive.scan">
+      <h1>Transform inclusive scan</h1>
+
+      <cxx-function>
+        <cxx-signature>
+        <ins>
+          template&lt;class InputIterator, class OutputIterator,
+                   class UnaryOperation,
+                   class BinaryOperation&gt;
+            OutputIterator
+              transform_inclusive_scan(InputIterator first, InputIterator last,
+                                       OutputIterator result,
+                                       UnaryOperation unary_op,
+                                       BinaryOperation binary_op);
+
+          template&lt;class InputIterator, class OutputIterator,
+                   class UnaryOperation,
+                   class BinaryOperation, class T&gt;
+            OutputIterator
+              transform_inclusive_scan(InputIterator first, InputIterator last,
+                                       OutputIterator result,
+                                       UnaryOperation unary_op,
+                                       BinaryOperation binary_op, T init);
+        </ins>
+        </cxx-signature>
+
+        <cxx-effects>
+        <ins>
+          Assigns through each iterator <code>i</code> in <code>[result,result + (last - first))</code> the value of
+          <code><em>GENERALIZED_NONCOMMUTATIVE_SUM</em>(binary_op, unary_op(*first), ..., unary_op(*(first + (i - result))))</code> or
+          <code><em>GENERALIZED_NONCOMMUTATIVE_SUM</em>(binary_op, init, unary_op(*first), ..., unary_op(*(first + (i - result))))</code>
+          if <code>init</code> is provided.
+        </ins>
+        </cxx-effects>
+
+        <cxx-returns>
+        <ins>
+          The end of the resulting range beginning at <code>result</code>.
+        </ins>
+        </cxx-returns>
+
+        <cxx-requires>
+        <ins>
+          Neither <code>unary_op</code> nor <code>binary_op</code> shall invalidate iterators or subranges, or modify elements in the ranges <code>[first,last)</code>
+          or <code>[result,result + (last - first))</code>.
+        </ins>
+        </cxx-requires>
+
+        <cxx-complexity>
+        <ins>
+          O(<code>last - first</code>) applications each of <code>unary_op</code> and <code>binary_op</code>.
+        </ins>
+        </cxx-complexity>
+
+        <cxx-notes>
+        <ins>
+            The difference between <code>transform_exclusive_scan</code> and <code>transform_inclusive_scan</code> is that <code>transform_inclusive_scan</code>
+            includes the ith input element from the ith sum. If <code>binary_op</code> is not mathematically associative, the behavior of
+            <code>transform_inclusive_scan</code> may be non-deterministic. <code>transform_inclusive_scan</code> does not apply <code>unary_op</code> to <code>init</code>.
+        </ins>
         </cxx-notes>
       </cxx-function>
     </cxx-section>

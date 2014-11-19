@@ -4,15 +4,17 @@
     <h1>In general</h1>
       <p>
         This clause describes classes that are <dfn>execution policy</dfn> types. An object
-        of an execution policy type indicates to an algorithm whether it is allowed to execute
-        in parallel and expresses the requirements on the element access functions.
+        of an execution policy type indicates <ins>the kinds of parallelism allowed in the execution
+        of</ins> <del>to</del> an algorithm <del>whether it is allowed to execute
+        in parallel</del> and expresses the <ins>consequent</ins> requirements on the element
+        access functions.
       </p>
 
       <cxx-example>
     <pre>std::vector&lt;int&gt; v = ...
 
 // standard sequential sort
-std::sort(vec.begin(), vec.end());
+std::sort(v<del>ec</del>.begin(), v<del>ec</del>.end());
 
 using namespace std::experimental::parallel;
 
@@ -83,6 +85,15 @@ template&lt;class T&gt; struct is_execution_policy { <em>see below</em> };
     <p><code>is_execution_policy</code> can be used to detect parallel execution policies for the purpose of excluding function signatures from otherwise ambiguous overload resolution participation.</p>
     
     <p><code>is_execution_policy&lt;T&gt;</code> shall be a UnaryTypeTrait with a BaseCharacteristic of <code>true_type</code> if <code>T</code> is the type of a standard or implementation-defined execution policy, otherwise <code>false_type</code>.
+
+    <pre>
+</pre>
+
+    <ins>
+      <cxx-note>
+        This provision reserves the privilege of creating non-standard execution policies to the library implementation.
+      </cxx-note>
+    </ins>
     
     <p>The behavior of a program that adds specializations for <code>is_execution_policy</code> is undefined.</p>
   </cxx-section>
