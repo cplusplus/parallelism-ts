@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <!-- Sources at https://github.com/cplusplus/parallelism-ts -->
 <html><head>
-<meta http-equiv="content-type" content="text/html; charset=UTF-8"><!--[if lte IE 8]><script>document.createElement("nav");document.createElement("section");document.createElement("time");document.createElement("CXX-TITLEPAGE");document.createElement("CXX-DOCNUM");document.createElement("CXX-REVISES");document.createElement("CXX-EDITOR");document.createElement("CXX-EMAIL");document.createElement("CXX-TOC");document.createElement("CXX-CLAUSE");document.createElement("CXX-SECTION");document.createElement("CXX-FOOTNOTE");document.createElement("CXX-FOREIGN-INDEX");document.createElement("CXX-REF");document.createElement("CXX-NOTE");document.createElement("CXX-EXAMPLE");document.createElement("CXX-FUNCTION");document.createElement("CXX-SIGNATURE");document.createElement("CXX-EFFECTS");document.createElement("CXX-REMARKS");document.createElement("CXX-RETURNS");document.createElement("CXX-REQUIRES");document.createElement("CXX-COMPLEXITY");document.createElement("CXX-NOTES");document.createElement("CXX-PUBLISH-BUTTON");</script><![endif]--><style>template {display: none !important;} /* injected by platform.js */</style><style>body {transition: opacity ease-in 0.2s; } 
+<meta http-equiv="content-type" content="text/html; charset=UTF-8"><!--[if lte IE 8]><script>document.createElement("nav");document.createElement("section");document.createElement("time");document.createElement("CXX-TITLEPAGE");document.createElement("CXX-DOCNUM");document.createElement("CXX-PROJECT-NUMBER");document.createElement("CXX-REVISES");document.createElement("CXX-EDITOR");document.createElement("CXX-EMAIL");document.createElement("CXX-TOC");document.createElement("CXX-CLAUSE");document.createElement("CXX-SECTION");document.createElement("CXX-FOOTNOTE");document.createElement("CXX-FOREIGN-INDEX");document.createElement("CXX-REF");document.createElement("CXX-NOTE");document.createElement("CXX-EXAMPLE");document.createElement("CXX-FUNCTION");document.createElement("CXX-SIGNATURE");document.createElement("CXX-EFFECTS");document.createElement("CXX-REMARKS");document.createElement("CXX-RETURNS");document.createElement("CXX-REQUIRES");document.createElement("CXX-COMPLEXITY");document.createElement("CXX-NOTES");document.createElement("CXX-PUBLISH-BUTTON");</script><![endif]--><style>template {display: none !important;} /* injected by platform.js */</style><style>body {transition: opacity ease-in 0.2s; } 
 body[unresolved] {opacity: 0; display: block; overflow: hidden; } 
 </style><style shim-shadowdom-css="">style { display: none !important; }
 cxx-function {
@@ -274,12 +274,24 @@ cxx-clause header:after {
 	border-bottom: medium double;
 }
 
+[is=cxx-table].single-border th {
+	border-bottom: thin solid;
+}
+
 [is=cxx-table].center td {
 	text-align: center;
 }
 
 [is=cxx-table].list td {
-	border: medium none;
+	border: medium none; vertical-align: top;
+}
+
+[is=cxx-table].list ul {
+	padding-left: 0px; margin: 0px;
+}
+
+[is=cxx-table].list ul li:before {
+	content: "";
 }cxx-figure {
 	margin-left: auto; margin-right: auto;
 }
@@ -348,52 +360,136 @@ cxx-toc li li li li .marker {
 	display: none;
 }cxx-foreign-index {
 	display: none;
-}cxx-titlepage {
+}cxx-titlepage, cxx-titlepage .page {
 	display: block; min-height: 100%;
 }
 
+cxx-titlepage .page {
+	page-break-before: always; page-break-after: always; min-height: 100vh; margin-bottom: 2em;
+}
+
 @media print {
-cxx-titlepage {
+cxx-titlepage .page {
 	height: 8.8in;
 }
 
 
 }
 
-cxx-titlepage  {
+cxx-titlepage .page {
 	position: relative;
 }
 
-cxx-titlepage table.draft_header {
+cxx-titlepage table td, cxx-titlepage table th {
+	border: medium none;
+}
+
+cxx-titlepagebody.cxx-draft .header, body.cxx-draft cxx-titlepage .header {
 	position: absolute; right: 0px; top: 0px;
 }
 
-cxx-titlepage table.pdts_header {
-	position: absolute; right: 0px; top: 0px;
+cxx-titlepagebody.cxx-draft h1, body.cxx-draft cxx-titlepage h1 {
+	position: absolute; top: 40%; text-align: center;
 }
 
-cxx-titlepage table.pdts_footer {
-	position: absolute; left: 0px; bottom: 5%;
-}
-
-cxx-titlepage table.pdts_warning {
-	position: absolute; bottom: 20%;
-}
-
-cxx-titlepage h1.draft_title {
-	position: absolute; top: 40%;
-}
-
-cxx-titlepage h1.pdts_title {
-	position: absolute; top: 30%;
-}
-
-cxx-titlepage p.draft_warning {
+cxx-titlepagebody.cxx-draft p.warning, body.cxx-draft cxx-titlepage p.warning {
 	position: absolute; bottom: 5%;
 }
 
-cxx-titlepage h1 {
-	text-align: center;
+cxx-titlepagebody.cxx-pdts .header, body.cxx-pdts cxx-titlepage .header {
+	position: absolute; right: 0px; top: 0px; text-align: right;
+}
+
+cxx-titlepagebody.cxx-pdts .header cxx-docnum, body.cxx-pdts cxx-titlepage .header cxx-docnum {
+	font-size: 150%;
+}
+
+cxx-titlepagebody.cxx-pdts hgroup, body.cxx-pdts cxx-titlepage hgroup {
+	position: absolute; top: 30%;
+}
+
+cxx-titlepagebody.cxx-pdts hgroup *, body.cxx-pdts cxx-titlepage hgroup * {
+	margin: 0px;
+}
+
+cxx-titlepagebody.cxx-pdts hgroup h1, body.cxx-pdts cxx-titlepage hgroup h1 {
+	font-size: 150%; font-weight: bold;
+}
+
+cxx-titlepagebody.cxx-pdts hgroup h2, body.cxx-pdts cxx-titlepage hgroup h2 {
+	font-size: 100%; font-weight: normal;
+}
+
+cxx-titlepagebody.cxx-pdts .footer, body.cxx-pdts cxx-titlepage .footer {
+	position: absolute; left: 0px; bottom: 5%;
+}
+
+cxx-titlepagebody.cxx-pdts figure, body.cxx-pdts cxx-titlepage figure {
+	border: 1px solid rgb(17, 17, 17); padding: 10px; margin-left: auto; margin-right: auto;
+}
+
+cxx-titlepagebody.cxx-pdts figcaption, body.cxx-pdts cxx-titlepage figcaption {
+	text-align: center; font-weight: bold;
+}
+
+cxx-titlepagebody.cxx-pdts .warning, body.cxx-pdts cxx-titlepage .warning {
+	position: absolute; bottom: 20%;
+}
+
+cxx-titlepagebody.cxx-pdts .copyright address, body.cxx-pdts cxx-titlepage .copyright address {
+	font-style: normal; margin-left: 2em;
+}
+
+cxx-titlepagebody.cxx-pdts .copyright address a, body.cxx-pdts cxx-titlepage .copyright address a {
+	color: inherit; text-decoration: inherit;
+}
+
+cxx-titlepagebody.cxx-dts .header, body.cxx-dts cxx-titlepage .header {
+	position: absolute; right: 0px; top: 0px; text-align: right;
+}
+
+cxx-titlepagebody.cxx-dts .header cxx-docnum, body.cxx-dts cxx-titlepage .header cxx-docnum {
+	font-size: 150%;
+}
+
+cxx-titlepagebody.cxx-dts hgroup, body.cxx-dts cxx-titlepage hgroup {
+	position: absolute; top: 30%;
+}
+
+cxx-titlepagebody.cxx-dts hgroup *, body.cxx-dts cxx-titlepage hgroup * {
+	margin: 0px;
+}
+
+cxx-titlepagebody.cxx-dts hgroup h1, body.cxx-dts cxx-titlepage hgroup h1 {
+	font-size: 150%; font-weight: bold;
+}
+
+cxx-titlepagebody.cxx-dts hgroup h2, body.cxx-dts cxx-titlepage hgroup h2 {
+	font-size: 100%; font-weight: normal;
+}
+
+cxx-titlepagebody.cxx-dts .footer, body.cxx-dts cxx-titlepage .footer {
+	position: absolute; left: 0px; bottom: 5%;
+}
+
+cxx-titlepagebody.cxx-dts figure, body.cxx-dts cxx-titlepage figure {
+	border: 1px solid rgb(17, 17, 17); padding: 10px; margin-left: auto; margin-right: auto;
+}
+
+cxx-titlepagebody.cxx-dts figcaption, body.cxx-dts cxx-titlepage figcaption {
+	text-align: center; font-weight: bold;
+}
+
+cxx-titlepagebody.cxx-dts .warning, body.cxx-dts cxx-titlepage .warning {
+	position: absolute; bottom: 20%;
+}
+
+cxx-titlepagebody.cxx-dts .copyright address, body.cxx-dts cxx-titlepage .copyright address {
+	font-style: normal; margin-left: 2em;
+}
+
+cxx-titlepagebody.cxx-dts .copyright address a, body.cxx-dts cxx-titlepage .copyright address a {
+	color: inherit; text-decoration: inherit;
 }
 
 cxx-titlepage th {
@@ -402,8 +498,16 @@ cxx-titlepage th {
 	display: block;
 }
 
+cxx-ednotebody.cxx-pdts, body.cxx-pdts cxx-ednote {
+	display: none;
+}
+
 cxx-ednote aside {
 	float: right; max-width: 40%; margin: 1ex; border: 1px dashed rgb(136, 136, 136); padding: 1ex; background-color: rgb(238, 238, 238);
+}
+
+cxx-ednote.para aside {
+	float: none; max-width: none;
 }cxx-note .nowrap {
 	white-space: nowrap;
 }cxx-footnote {
@@ -448,6 +552,12 @@ cxx-example .nowrap {
 	display: block; margin-left: 1.2in;
 }bnf-terminal {
 	font-style: normal;
+}w-br {
+	white-space: normal;
+}
+
+w-br:after {
+	content: "​";
 }</style>
   <meta charset="utf-8">
   
@@ -474,13 +584,14 @@ limitations under the License.
     @bottom-left { content: string(current-section, last); font-size: 10pt; }
     @bottom-right { content: counter(page); font-size: 10pt; }
 }
-cxx-titlepage { page: title; page-break-after: always; }
-@page title {
+@page :first {
     @top-left { content: "© ISO 2014 — All rights reserved"; }
     @top-right { content: normal; }
     @bottom-left { content: normal; }
     @bottom-right { content: normal; }
 }
+
+body { margin: 0; }
 
 @media screen {
     body { max-width: 7in;
@@ -519,6 +630,8 @@ cxx-toc  h1 { bookmark-level: 2; }
 cxx-clause h1 { bookmark-level: 2; }
 cxx-clause cxx-section h1 { bookmark-level: 3; }
 cxx-clause cxx-section cxx-section h1 { bookmark-level: 4; }
+/* The <h2> is a subtitle, which shouldn't get a PDF bookmark. */
+cxx-titlepage  h2 { bookmark-level: none; }
 
 *  .section-number { string-set: current-section "§ " content(); }
 
@@ -531,21 +644,32 @@ p:first-child, ul, ol {margin-top: 0}
 del {text-decoration: line-through; color: #8B0040;}
 ins {text-decoration: underline; color: #005100;}
 
-del2 {text-decoration: line-through; color: #FF0040; font-size:100%;}
-ins2 {text-decoration: underline; color: #FF0040; font-size:100%;}
-/* inserted in TS and then deleted for LWG */
-insdel {text-decoration: line-through; color: #FF4440; font-size:100%;}
-
-del3 {text-decoration: line-through; color: #006666; font-size:100%;}
-ins3 {text-decoration: underline; color: #00CC66; font-size:100%;}
-
-/* inserted in Rappersil and then deleted by another paper */
-insdel2 {text-decoration: line-through; color: #003366; font-size:100%;}
-
 pre {
     margin-left: 1em;
     margin-top: .5em;
     margin-bottom: .5em;
+}
+
+*   wbr::after {
+    white-space: normal;
+    content: '\200B';
+}
+*   code {
+    /* Make inline code avoid line wraps unless we override it with <wbr>. */
+    white-space: nowrap;
+}
+*   pre code {
+    /* Keep block-code wrapping according to its context. */
+    white-space: inherit;
+}
+
+*   table {
+    border-collapse: collapse;
+}
+*   td, th {
+    padding-left: .2em;
+    padding-right: .2em;
+    border: thin solid black;
 }
 
 /* Use an em-dash for the list bullet.
@@ -566,6 +690,9 @@ pre {
     ul li::marker {
         content: "\2014";
     }
+    [is=cxx-table].list ul li::marker {
+        content: none;
+    }
 }
 
 /* This is here rather than inside elements/toc.html because browsers
@@ -576,41 +703,39 @@ pre {
     cxx-toc  a[href]::after { content: leader(" . ") target-counter(attr(href), page); }
 
     cxx-footnote  aside { float: footnote; footnote-policy: line; }
-}</style><title>Technical Specification for C++ Extensions for Parallelism, Working Draft, </title></head>
-<body>
+}</style><title>Technical Specification for C++ Extensions for Parallelism, Working Draft</title></head>
+<body class="cxx-draft">
 
 <cxx-titlepage stage="draft">
     
     
-      <table class="draft_header">
-        
-          <tbody><tr><th>Document Number:</th><td><cxx-docnum>N4310</cxx-docnum></td></tr>
-        
-        
-          <tr><th>Date:</th><td><time pubdate="">2014-11-21</time></td></tr>
-        
-        
-          <tr><th>Revises:</th><td><cxx-revises><a href="http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2014/n4104.html">N4104</a></cxx-revises></td></tr>
-        
-        
-          <tr><th>Editor:</th><td><cxx-editor>
+      <div class="page">
+        <table class="header">
+          
+            <tbody><tr><th>Document Number:</th><td><cxx-docnum>N4310</cxx-docnum></td></tr>
+          
+          
+            <tr><th>Date:</th><td><time pubdate="">2014-11-21</time></td></tr>
+          
+          
+            <tr><th>Revises:</th><td><cxx-revises><a href="http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2014/n4104.html">N4104</a></cxx-revises></td></tr>
+          
+          
+            <tr><th>Editor:</th><td><cxx-editor>
     Jared Hoberock<br>
     NVIDIA Corporation<br>
     <cxx-email><a href="mailto:jhoberock@nvidia.com">jhoberock@nvidia.com</a></cxx-email>
   </cxx-editor></td></tr>
-        
-      </tbody></table>
+          
+        </tbody></table>
+        <h1>Working Draft, Technical Specification for C++ Extensions for Parallelism</h1>
+        <p class="warning"><strong>Note: this is an early draft. It’s known to be
+        incomplet and incorrekt, and it has lots of b<span style="margin-left: -1.2pt; margin-right: 1pt">a</span>d<span style="width:1.5em"> </span>for<span style="margin-left:-3pt; margin-right:0.6pt">mat</span>ti<span style="position:relative; top:-0.15ex">n</span>g.</strong></p>
+      </div>
     
+
     
-    
-      <h1 class="draft_title">Working Draft, Technical Specification for C++ Extensions for Parallelism</h1>
-    
-    
-    
-    
-      <p class="draft_warning"><strong>Note: this is an early draft. It’s known to be
-      incomplet and incorrekt, and it has lots of b<span style="margin-left: -1.2pt; margin-right: 1pt">a</span>d<span style="width:1.5em"> </span>for<span style="margin-left:-3pt; margin-right:0.6pt">mat</span>ti<span style="position:relative; top:-0.15ex">n</span>g.</strong></p>
-    
+
     
   </cxx-titlepage>
 
@@ -1814,7 +1939,7 @@ for_each(par_vec, std::begin(a), std::end(a), [&amp;](int) {
         <code>is_execution_policy&lt;decay_t&lt;ExecutionPolicy&gt;&gt;::value</code> is <code>true</code>.
       </p>
         
-      <table is="cxx-table" id="tab.parallel.algorithms" class="list">
+      <table role="presentation" is="cxx-table" id="tab.parallel.algorithms" class="list">
     
 
     <caption>Table 1 — <wbr><span>Table of parallel algorithms</span></caption>
