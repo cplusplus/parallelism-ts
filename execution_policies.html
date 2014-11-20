@@ -4,9 +4,8 @@
     <h1>In general</h1>
       <p>
         This clause describes classes that are <dfn>execution policy</dfn> types. An object
-        of an execution policy type indicates <ins>the kinds of parallelism allowed in the execution
-        of</ins> <del>to</del> an algorithm <del>whether it is allowed to execute
-        in parallel</del> and expresses the <ins>consequent</ins> requirements on the element
+        of an execution policy type indicates the kinds of parallelism allowed in the execution
+        of an algorithm and expresses the consequent requirements on the element
         access functions.
       </p>
 
@@ -14,7 +13,7 @@
     <pre>std::vector&lt;int&gt; v = ...
 
 // standard sequential sort
-std::sort(v<del>ec</del>.begin(), v<del>ec</del>.end());
+std::sort(v.begin(), v.end());
 
 using namespace std::experimental::parallel;
 
@@ -89,11 +88,9 @@ template&lt;class T&gt; struct is_execution_policy { <em>see below</em> };
     <pre>
 </pre>
 
-    <ins>
-      <cxx-note>
-        This provision reserves the privilege of creating non-standard execution policies to the library implementation.
-      </cxx-note>
-    </ins>
+    <cxx-note>
+      This provision reserves the privilege of creating non-standard execution policies to the library implementation.
+    </cxx-note>
     
     <p>The behavior of a program that adds specializations for <code>is_execution_policy</code> is undefined.</p>
   </cxx-section>

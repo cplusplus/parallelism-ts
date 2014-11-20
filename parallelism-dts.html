@@ -1,0 +1,3019 @@
+<!DOCTYPE html>
+<!-- Sources at https://github.com/cplusplus/parallelism-ts -->
+<html><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8"><!--[if lte IE 8]><script>document.createElement("nav");document.createElement("section");document.createElement("time");document.createElement("CXX-TITLEPAGE");document.createElement("CXX-DOCNUM");document.createElement("CXX-PROJECT-NUMBER");document.createElement("CXX-REVISES");document.createElement("CXX-EDITOR");document.createElement("CXX-EMAIL");document.createElement("CXX-TOC");document.createElement("CXX-CLAUSE");document.createElement("CXX-SECTION");document.createElement("CXX-FOOTNOTE");document.createElement("CXX-FOREIGN-INDEX");document.createElement("CXX-REF");document.createElement("CXX-NOTE");document.createElement("CXX-EXAMPLE");document.createElement("CXX-FUNCTION");document.createElement("CXX-SIGNATURE");document.createElement("CXX-EFFECTS");document.createElement("CXX-REMARKS");document.createElement("CXX-RETURNS");document.createElement("CXX-REQUIRES");document.createElement("CXX-COMPLEXITY");document.createElement("CXX-NOTES");document.createElement("CXX-PUBLISH-BUTTON");</script><![endif]--><style>template {display: none !important;} /* injected by platform.js */</style><style>body {transition: opacity ease-in 0.2s; } 
+body[unresolved] {opacity: 0; display: block; overflow: hidden; } 
+</style><style shim-shadowdom-css="">style { display: none !important; }
+cxx-function {
+	display: block; page-break-inside: avoid;
+}
+
+cxx-function:not(:last-child) {
+	margin-bottom: 3ex;
+}
+
+cxx-function > dl {
+	margin: 0px 0px 0px 2em;
+}
+
+cxx-function > pre {
+	margin: 0px;
+}cxx-signature {
+	padding-left: 2em; display: block; text-indent: -2em;
+}
+
+cxx-signature.formatted {
+	text-indent: 0px;
+}cxx-attribute {
+	display: block; margin-top: 0.5em; margin-bottom: 0.5em;
+}
+
+cxx-attribute dt {
+	float: left; font-style: italic; font-weight: normal; padding-right: 1ex;
+}
+
+cxx-attribute dd {
+	margin-left: 0em;
+}
+
+cxx-attribute dd > ul, cxx-attribute dd > ol {
+	clear: left;
+}cxx-requires {
+	display: block; margin-top: 0.5em; margin-bottom: 0.5em;
+}
+
+cxx-requires dt {
+	float: left; font-style: italic; font-weight: normal; padding-right: 1ex;
+}
+
+cxx-requires dd {
+	margin-left: 0em;
+}
+
+cxx-requires dd > ul, cxx-requires dd > ol {
+	clear: left;
+}cxx-preconditions {
+	display: block; margin-top: 0.5em; margin-bottom: 0.5em;
+}
+
+cxx-preconditions dt {
+	float: left; font-style: italic; font-weight: normal; padding-right: 1ex;
+}
+
+cxx-preconditions dd {
+	margin-left: 0em;
+}
+
+cxx-preconditions dd > ul, cxx-preconditions dd > ol {
+	clear: left;
+}cxx-effects {
+	display: block; margin-top: 0.5em; margin-bottom: 0.5em;
+}
+
+cxx-effects dt {
+	float: left; font-style: italic; font-weight: normal; padding-right: 1ex;
+}
+
+cxx-effects dd {
+	margin-left: 0em;
+}
+
+cxx-effects dd > ul, cxx-effects dd > ol {
+	clear: left;
+}cxx-synchronization {
+	display: block; margin-top: 0.5em; margin-bottom: 0.5em;
+}
+
+cxx-synchronization dt {
+	float: left; font-style: italic; font-weight: normal; padding-right: 1ex;
+}
+
+cxx-synchronization dd {
+	margin-left: 0em;
+}
+
+cxx-synchronization dd > ul, cxx-synchronization dd > ol {
+	clear: left;
+}cxx-postconditions {
+	display: block; margin-top: 0.5em; margin-bottom: 0.5em;
+}
+
+cxx-postconditions dt {
+	float: left; font-style: italic; font-weight: normal; padding-right: 1ex;
+}
+
+cxx-postconditions dd {
+	margin-left: 0em;
+}
+
+cxx-postconditions dd > ul, cxx-postconditions dd > ol {
+	clear: left;
+}cxx-returns {
+	display: block; margin-top: 0.5em; margin-bottom: 0.5em;
+}
+
+cxx-returns dt {
+	float: left; font-style: italic; font-weight: normal; padding-right: 1ex;
+}
+
+cxx-returns dd {
+	margin-left: 0em;
+}
+
+cxx-returns dd > ul, cxx-returns dd > ol {
+	clear: left;
+}cxx-throws {
+	display: block; margin-top: 0.5em; margin-bottom: 0.5em;
+}
+
+cxx-throws dt {
+	float: left; font-style: italic; font-weight: normal; padding-right: 1ex;
+}
+
+cxx-throws dd {
+	margin-left: 0em;
+}
+
+cxx-throws dd > ul, cxx-throws dd > ol {
+	clear: left;
+}cxx-complexity {
+	display: block; margin-top: 0.5em; margin-bottom: 0.5em;
+}
+
+cxx-complexity dt {
+	float: left; font-style: italic; font-weight: normal; padding-right: 1ex;
+}
+
+cxx-complexity dd {
+	margin-left: 0em;
+}
+
+cxx-complexity dd > ul, cxx-complexity dd > ol {
+	clear: left;
+}cxx-exception-safety {
+	display: block; margin-top: 0.5em; margin-bottom: 0.5em;
+}
+
+cxx-exception-safety dt {
+	float: left; font-style: italic; font-weight: normal; padding-right: 1ex;
+}
+
+cxx-exception-safety dd {
+	margin-left: 0em;
+}
+
+cxx-exception-safety dd > ul, cxx-exception-safety dd > ol {
+	clear: left;
+}cxx-remarks {
+	display: block; margin-top: 0.5em; margin-bottom: 0.5em;
+}
+
+cxx-remarks dt {
+	float: left; font-style: italic; font-weight: normal; padding-right: 1ex;
+}
+
+cxx-remarks dd {
+	margin-left: 0em;
+}
+
+cxx-remarks dd > ul, cxx-remarks dd > ol {
+	clear: left;
+}cxx-error-conditions {
+	display: block; margin-top: 0.5em; margin-bottom: 0.5em;
+}
+
+cxx-error-conditions dt {
+	float: left; font-style: italic; font-weight: normal; padding-right: 1ex;
+}
+
+cxx-error-conditions dd {
+	margin-left: 0em;
+}
+
+cxx-error-conditions dd > ul, cxx-error-conditions dd > ol {
+	clear: left;
+}cxx-notes {
+	display: block; margin-top: 0.5em; margin-bottom: 0.5em;
+}
+
+cxx-notes dt {
+	float: left; font-style: italic; font-weight: normal; padding-right: 1ex;
+}
+
+cxx-notes dd {
+	margin-left: 0em;
+}
+
+cxx-notes dd > ul, cxx-notes dd > ol {
+	clear: left;
+}cxx-section {
+	display: block;
+}
+
+cxx-section:target {
+	background-color: inherit;
+}
+
+cxx-section:target > section > h1 {
+	background-color: rgb(255, 238, 221);
+}
+
+cxx-section header > h1 {
+	display: inline; font-size: 100%;
+}
+
+cxx-section header {
+	font-weight: bold; margin-top: 20px; margin-bottom: 20px; page-break-inside: avoid; page-break-after: avoid;
+}
+
+cxx-section header:after {
+	clear: both; display: block; content: " "; height: 0px;
+}cxx-clause {
+	display: block;
+}
+
+cxx-clause:target {
+	background-color: inherit;
+}
+
+cxx-clause:target > section > h1 {
+	background-color: rgb(255, 238, 221);
+}
+
+cxx-clause header > h1 {
+	display: inline; font-size: 100%;
+}
+
+cxx-clause header {
+	font-weight: bold; margin-top: 20px; margin-bottom: 20px; page-break-inside: avoid; page-break-after: avoid;
+}
+
+cxx-clause header:after {
+	clear: both; display: block; content: " "; height: 0px;
+}[is=cxx-table] {
+	margin-left: auto; margin-right: auto; border-collapse: collapse; border: thin solid black;
+}
+
+[is=cxx-table] caption {
+	white-space: nowrap;
+}
+
+[is=cxx-table] caption caption {
+	display: inline;
+}
+
+[is=cxx-table] th, [is=cxx-table] td {
+	border-style: solid none; border-color: black; border-width: thin; padding: 0px 0.25em;
+}
+
+[is=cxx-table].column-rules th, [is=cxx-table].column-rules td {
+	border-left-style: solid; border-right-style: solid;
+}
+
+[is=cxx-table] th {
+	border-bottom: medium double;
+}
+
+[is=cxx-table].single-border th {
+	border-bottom: thin solid;
+}
+
+[is=cxx-table].center td {
+	text-align: center;
+}
+
+[is=cxx-table].list td {
+	border: medium none; vertical-align: top;
+}
+
+[is=cxx-table].list ul {
+	padding-left: 0px; margin: 0px;
+}
+
+[is=cxx-table].list ul li:before {
+	content: "";
+}cxx-figure {
+	margin-left: auto; margin-right: auto;
+}
+
+cxx-figure figcaption {
+	white-space: nowrap; text-align: center;
+}
+
+cxx-figure figcaption figcaption {
+	display: inline;
+}[is=cxx-definition-section] dt {
+	font-weight: bold;
+}
+
+[is=cxx-definition-section] dd {
+	margin-left: 0px;
+}cxx-toc {
+	display: block;
+}
+
+cxx-toc nav > ol {
+	font-weight: bold;
+}
+
+cxx-toc ol {
+	font-weight: normal; padding-left: 0px; margin-left: 0px;
+}
+
+cxx-toc li {
+	list-style-type: none;
+}
+
+cxx-toc .marker {
+	display: inline-block;
+}
+
+cxx-toc li .marker {
+	width: 2em; text-align: left;
+}
+
+cxx-toc ol ol {
+	margin-left: 2em;
+}
+
+cxx-toc li li .marker {
+	width: 3em;
+}
+
+cxx-toc ol ol ol {
+	margin-left: 3em;
+}
+
+cxx-toc li li li .marker {
+	width: 3.5em;
+}
+
+cxx-toc ol ol ol ol {
+	margin-left: 3.5em;
+}
+
+cxx-toc li li li li .marker {
+	width: 4.5em;
+}cxx-get-element-by-id {
+	display: none;
+}core-xhr {
+	display: none;
+}cxx-foreign-index {
+	display: none;
+}cxx-titlepage, cxx-titlepage .page {
+	display: block; min-height: 100%;
+}
+
+cxx-titlepage .page {
+	page-break-before: always; page-break-after: always; min-height: 100vh; margin-bottom: 2em;
+}
+
+@media print {
+cxx-titlepage .page {
+	height: 8.8in;
+}
+
+
+}
+
+cxx-titlepage .page {
+	position: relative;
+}
+
+cxx-titlepage table td, cxx-titlepage table th {
+	border: medium none;
+}
+
+cxx-titlepagebody.cxx-draft .header, body.cxx-draft cxx-titlepage .header {
+	position: absolute; right: 0px; top: 0px;
+}
+
+cxx-titlepagebody.cxx-draft h1, body.cxx-draft cxx-titlepage h1 {
+	position: absolute; top: 40%; text-align: center;
+}
+
+cxx-titlepagebody.cxx-draft p.warning, body.cxx-draft cxx-titlepage p.warning {
+	position: absolute; bottom: 5%;
+}
+
+cxx-titlepagebody.cxx-pdts .header, body.cxx-pdts cxx-titlepage .header {
+	position: absolute; right: 0px; top: 0px; text-align: right;
+}
+
+cxx-titlepagebody.cxx-pdts .header cxx-docnum, body.cxx-pdts cxx-titlepage .header cxx-docnum {
+	font-size: 150%;
+}
+
+cxx-titlepagebody.cxx-pdts hgroup, body.cxx-pdts cxx-titlepage hgroup {
+	position: absolute; top: 30%;
+}
+
+cxx-titlepagebody.cxx-pdts hgroup *, body.cxx-pdts cxx-titlepage hgroup * {
+	margin: 0px;
+}
+
+cxx-titlepagebody.cxx-pdts hgroup h1, body.cxx-pdts cxx-titlepage hgroup h1 {
+	font-size: 150%; font-weight: bold;
+}
+
+cxx-titlepagebody.cxx-pdts hgroup h2, body.cxx-pdts cxx-titlepage hgroup h2 {
+	font-size: 100%; font-weight: normal;
+}
+
+cxx-titlepagebody.cxx-pdts .footer, body.cxx-pdts cxx-titlepage .footer {
+	position: absolute; left: 0px; bottom: 5%;
+}
+
+cxx-titlepagebody.cxx-pdts figure, body.cxx-pdts cxx-titlepage figure {
+	border: 1px solid rgb(17, 17, 17); padding: 10px; margin-left: auto; margin-right: auto;
+}
+
+cxx-titlepagebody.cxx-pdts figcaption, body.cxx-pdts cxx-titlepage figcaption {
+	text-align: center; font-weight: bold;
+}
+
+cxx-titlepagebody.cxx-pdts .warning, body.cxx-pdts cxx-titlepage .warning {
+	position: absolute; bottom: 20%;
+}
+
+cxx-titlepagebody.cxx-pdts .copyright address, body.cxx-pdts cxx-titlepage .copyright address {
+	font-style: normal; margin-left: 2em;
+}
+
+cxx-titlepagebody.cxx-pdts .copyright address a, body.cxx-pdts cxx-titlepage .copyright address a {
+	color: inherit; text-decoration: inherit;
+}
+
+cxx-titlepagebody.cxx-dts .header, body.cxx-dts cxx-titlepage .header {
+	position: absolute; right: 0px; top: 0px; text-align: right;
+}
+
+cxx-titlepagebody.cxx-dts .header cxx-docnum, body.cxx-dts cxx-titlepage .header cxx-docnum {
+	font-size: 150%;
+}
+
+cxx-titlepagebody.cxx-dts hgroup, body.cxx-dts cxx-titlepage hgroup {
+	position: absolute; top: 30%;
+}
+
+cxx-titlepagebody.cxx-dts hgroup *, body.cxx-dts cxx-titlepage hgroup * {
+	margin: 0px;
+}
+
+cxx-titlepagebody.cxx-dts hgroup h1, body.cxx-dts cxx-titlepage hgroup h1 {
+	font-size: 150%; font-weight: bold;
+}
+
+cxx-titlepagebody.cxx-dts hgroup h2, body.cxx-dts cxx-titlepage hgroup h2 {
+	font-size: 100%; font-weight: normal;
+}
+
+cxx-titlepagebody.cxx-dts .footer, body.cxx-dts cxx-titlepage .footer {
+	position: absolute; left: 0px; bottom: 5%;
+}
+
+cxx-titlepagebody.cxx-dts figure, body.cxx-dts cxx-titlepage figure {
+	border: 1px solid rgb(17, 17, 17); padding: 10px; margin-left: auto; margin-right: auto;
+}
+
+cxx-titlepagebody.cxx-dts figcaption, body.cxx-dts cxx-titlepage figcaption {
+	text-align: center; font-weight: bold;
+}
+
+cxx-titlepagebody.cxx-dts .warning, body.cxx-dts cxx-titlepage .warning {
+	position: absolute; bottom: 20%;
+}
+
+cxx-titlepagebody.cxx-dts .copyright address, body.cxx-dts cxx-titlepage .copyright address {
+	font-style: normal; margin-left: 2em;
+}
+
+cxx-titlepagebody.cxx-dts .copyright address a, body.cxx-dts cxx-titlepage .copyright address a {
+	color: inherit; text-decoration: inherit;
+}
+
+cxx-titlepage th {
+	text-align: left; vertical-align: top;
+}cxx-ednote {
+	display: block;
+}
+
+cxx-ednotebody.cxx-pdts, body.cxx-pdts cxx-ednote {
+	display: none;
+}
+
+cxx-ednote aside {
+	float: right; max-width: 40%; margin: 1ex; border: 1px dashed rgb(136, 136, 136); padding: 1ex; background-color: rgb(238, 238, 238);
+}
+
+cxx-ednote.para aside {
+	float: none; max-width: none;
+}cxx-note .nowrap {
+	white-space: nowrap;
+}cxx-footnote {
+	font-family: serif; white-space: normal; text-indent: initial;textIndent: initial; 
+}
+
+@media screen {
+cxx-footnote aside {
+	float: right; max-width: 30%; margin-left: 1em;
+}
+
+
+}
+
+@media print {
+cxx-footnote sup, cxx-footnote .marker {
+	display: none;
+}
+
+aside {  }
+
+
+}cxx-example {
+	display: block;
+}
+
+cxx-example.inline {
+	display: inline;
+}
+
+cxx-example .nowrap {
+	white-space: nowrap;
+}cxx-publish-button {
+	display: block;
+}cxx-codeblock {
+	display: block;
+}bnf-grammar {
+	display: block; font-style: italic; margin-left: 0.35in;
+}bnf-rule {
+	display: block; margin-left: 0.6in;
+}bnf-alt {
+	display: block; margin-left: 1.2in;
+}bnf-terminal {
+	font-style: normal;
+}w-br {
+	white-space: normal;
+}
+
+w-br:after {
+	content: "​";
+}</style>
+  <meta charset="utf-8">
+  
+  
+<style shim-shadowdom-css="">/* Copyright 2014 Google Inc. All rights reserved.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/
+
+@page {
+    margin: 10%;
+    @top-left { content: "© ISO/IEC"; font-size: 10pt; }
+    @top-right { content: string(docnum); font-weight: bold; font-size: 10pt; }
+    @bottom-left { content: string(current-section, last); font-size: 10pt; }
+    @bottom-right { content: counter(page); font-size: 10pt; }
+}
+@page :first {
+    @top-left { content: "© ISO 2014 — All rights reserved"; }
+    @top-right { content: normal; }
+    @bottom-left { content: normal; }
+    @bottom-right { content: normal; }
+}
+
+body { margin: 0; }
+
+@media screen {
+    body { max-width: 7in;
+           /* Make room for paragraph numbers. */
+           margin-left: 2em }
+}
+
+@media print {
+    html { font-size: 10pt; }
+    *   code { font-size: 80%; }
+    /* Note that only Prince generates clickable links. */
+    *   a[href] { text-decoration:none; }
+}
+
+@media screen {
+    /* Needed to make the <cxx-titlepage>'s vertical spacing work.
+       For print see the <cxx-titlepage> definition. */
+    html, body {height: 100%}
+}
+
+cxx-docnum { string-set: docnum content(); }
+
+cxx-clause { page-break-before: always; }
+@media screen {
+    cxx-clause, cxx-toc { margin-top: 3em; }
+}
+
+cxx-clause  header { font-size: 150%; }
+cxx-toc  h1 { font-size: 150%; }
+cxx-clause cxx-section  header { font-size: 117%; }
+cxx-clause cxx-section cxx-section  header { font-size: 100%; }
+
+[data-bookmark-label] { bookmark-label: attr(data-bookmark-label); }
+h1 { bookmark-level: 1; }
+cxx-toc  h1 { bookmark-level: 2; }
+cxx-clause h1 { bookmark-level: 2; }
+cxx-clause cxx-section h1 { bookmark-level: 3; }
+cxx-clause cxx-section cxx-section h1 { bookmark-level: 4; }
+/* The <h2> is a subtitle, which shouldn't get a PDF bookmark. */
+cxx-titlepage  h2 { bookmark-level: none; }
+
+*  .section-number { string-set: current-section "§ " content(); }
+
+p {margin-top: .5em; margin-bottom: .5em}
+p:first-child, ul, ol {margin-top: 0}
+
+[para_num]::before { content: attr(para_num); float: left;
+                     font-size: 70%; margin-left: -2.5em; width: 1.5em; text-align: right; }
+
+del {text-decoration: line-through; color: #8B0040;}
+ins {text-decoration: underline; color: #005100;}
+
+pre {
+    margin-left: 1em;
+    margin-top: .5em;
+    margin-bottom: .5em;
+}
+
+*   wbr::after {
+    white-space: normal;
+    content: '\200B';
+}
+*   code {
+    /* Make inline code avoid line wraps unless we override it with <wbr>. */
+    white-space: nowrap;
+}
+*   pre code {
+    /* Keep block-code wrapping according to its context. */
+    white-space: inherit;
+}
+
+*   table {
+    border-collapse: collapse;
+}
+*   td, th {
+    padding-left: .2em;
+    padding-right: .2em;
+    border: thin solid black;
+}
+
+/* Use an em-dash for the list bullet.
+   'print' is a proxy for supporting ::marker. */
+@media screen {
+    ul {
+        list-style: none;
+        /* Relative positioning on the 'ul' lets the absolutely-positioned
+           marker align relative to it.*/
+        position: relative;
+    }
+    ul li:before {
+        content: "\2014";
+        position: absolute; left: 10px;
+    }
+}
+@media print {
+    ul li::marker {
+        content: "\2014";
+    }
+    [is=cxx-table].list ul li::marker {
+        content: none;
+    }
+}
+
+/* This is here rather than inside elements/toc.html because browsers
+   don't understand leader() or target-counter(), so they drop them
+   inside the CSSOM. */
+@media print {
+    /* Generate page numbers in the table of contents. */
+    cxx-toc  a[href]::after { content: leader(" . ") target-counter(attr(href), page); }
+
+    cxx-footnote  aside { float: footnote; footnote-policy: line; }
+}</style><title>Technical Specification for C++ Extensions for Parallelism, DTS</title></head>
+<body class="cxx-dts">
+
+<cxx-titlepage stage="dts">
+    
+    
+
+    
+
+    
+      <div class="page">
+        <div class="header">
+          <strong>ISO/IEC JTC1 SC22 WG21 <cxx-docnum>N4310</cxx-docnum></strong><br>
+          Date: <time pubdate="">2014-11-21</time><br>
+          ISO/IEC DTS <cxx-project-number>19570</cxx-project-number><br>
+          ISO/IEC JTC1 SC22<br>
+          Secretariat: ANSI
+        </div>
+        <hgroup>
+          <h1>Programming Languages — Technical Specification for C++ Extensions for Parallelism</h1>
+          
+        </hgroup>
+        <figure class="warning">
+          <figcaption>Warning</figcaption>
+          <p>This document is not an ISO International Standard. It is distributed for review and comment. It is
+          subject to change without notice and may not be referred to as an International Standard.
+          </p>
+          <p>Recipients of this draft are invited to submit, with their comments, notification of any relevant
+          patent rights of which they are aware and to provide supporting documentation.</p>
+        </figure>
+        <div class="footer">
+          Document type: Draft Technical Specification<br>
+          Document stage: (40) Enquiry<br>
+          Document language: E
+        </div>
+      </div>
+      <div class="page">
+        <figure class="copyright">
+          <figcaption>Copyright notice</figcaption>
+          <p>This ISO document is a working draft or committee draft and is copyright-protected by ISO. While
+          the reproduction of working drafts or committee drafts in any form for use by participants in the
+          ISO standards development process is permitted without prior permission from ISO, neither this
+          document nor any extract from it may be reproduced, stored or transmitted in any form for any
+          other purpose without prior written permission from ISO.</p>
+          <p>Requests for permission to reproduce this document for the purpose of selling it should be
+          addressed as shown below or to ISO’s member body in the country of the requester:</p>
+          <address>
+            ISO copyright officer<br>
+            Case postale 56, CH-1211 Geneva 20<br>
+            Tel. + 41 22 749 01 11<br>
+            Fax + 41 22 749 09 47<br>
+            E-mail <a href="mailto:copyright@iso.org">copyright@iso.org</a><br>
+            Web <a href="http://www.iso.org/">www.iso.org</a>
+          </address>
+          <p>Reproduction may be subject to royalty payments or a licensing agreement.</p>
+          <p>Violators may be prosecuted.</p>
+        </figure>
+      </div>
+    
+  </cxx-titlepage>
+
+<cxx-toc>
+    
+    <nav>
+      <h1>Contents</h1>
+      
+        
+          <ol>
+            
+              <li><span class="marker">1</span><a href="#parallel.general">General</a>
+        
+          <ol>
+            
+              <li><span class="marker">1.1</span><a href="#parallel.general.scope">Scope</a>
+        
+      </li>
+            
+              <li><span class="marker">1.2</span><a href="#parallel.general.references">Normative references</a>
+        
+      </li>
+            
+              <li><span class="marker">1.3</span><a href="#parallel.general.namespaces">Namespaces and headers</a>
+        
+          <ol>
+            
+              <li><span class="marker">1.3.1</span><a href="#parallel.general.defns">Terms and definitions</a>
+        
+      </li>
+            
+          </ol>
+        
+      </li>
+            
+          </ol>
+        
+      </li>
+            
+              <li><span class="marker">2</span><a href="#parallel.execpol">Execution policies</a>
+        
+          <ol>
+            
+              <li><span class="marker">2.1</span><a href="#parallel.execpol.general">In general</a>
+        
+      </li>
+            
+              <li><span class="marker">2.2</span><a href="#parallel.execpol.synopsis">Header &lt;experimental/execution_policy&gt; synopsis</a>
+        
+      </li>
+            
+              <li><span class="marker">2.3</span><a href="#parallel.execpol.type">Execution policy type trait</a>
+        
+      </li>
+            
+              <li><span class="marker">2.4</span><a href="#parallel.execpol.seq">Sequential execution policy</a>
+        
+      </li>
+            
+              <li><span class="marker">2.5</span><a href="#parallel.execpol.par">Parallel execution policy</a>
+        
+      </li>
+            
+              <li><span class="marker">2.6</span><a href="#parallel.execpol.vec">Parallel+Vector execution policy</a>
+        
+      </li>
+            
+              <li><span class="marker">2.7</span><a href="#parallel.execpol.dynamic">Dynamic execution policy</a>
+        
+          <ol>
+            
+              <li><span class="marker">2.7.1</span><a href="#parallel.execpol.con">execution_policy construct/assign</a>
+        
+      </li>
+            
+              <li><span class="marker">2.7.2</span><a href="#parallel.execpol.access">execution_policy object access</a>
+        
+      </li>
+            
+          </ol>
+        
+      </li>
+            
+              <li><span class="marker">2.8</span><a href="#parallel.execpol.objects">Execution policy objects</a>
+        
+      </li>
+            
+          </ol>
+        
+      </li>
+            
+              <li><span class="marker">3</span><a href="#parallel.exceptions">Parallel exceptions</a>
+        
+          <ol>
+            
+              <li><span class="marker">3.1</span><a href="#parallel.exceptions.behavior">Exception reporting behavior</a>
+        
+      </li>
+            
+              <li><span class="marker">3.2</span><a href="#parallel.exceptions.synopsis">Header &lt;experimental/exception_list&gt; synopsis</a>
+        
+      </li>
+            
+          </ol>
+        
+      </li>
+            
+              <li><span class="marker">4</span><a href="#parallel.alg">Parallel algorithms</a>
+        
+          <ol>
+            
+              <li><span class="marker">4.1</span><a href="#parallel.alg.general">In general</a>
+        
+          <ol>
+            
+              <li><span class="marker">4.1.1</span><a href="#parallel.alg.general.user">Requirements on user-provided function objects</a>
+        
+      </li>
+            
+              <li><span class="marker">4.1.2</span><a href="#parallel.alg.general.exec">Effect of execution policies on algorithm execution</a>
+        
+      </li>
+            
+              <li><span class="marker">4.1.3</span><a href="#parallel.alg.overloads">ExecutionPolicy algorithm overloads</a>
+        
+      </li>
+            
+          </ol>
+        
+      </li>
+            
+              <li><span class="marker">4.2</span><a href="#parallel.alg.defns">Definitions</a>
+        
+      </li>
+            
+              <li><span class="marker">4.3</span><a href="#parallel.alg.ops">Non-Numeric Parallel Algorithms</a>
+        
+          <ol>
+            
+              <li><span class="marker">4.3.1</span><a href="#parallel.alg.ops.synopsis">Header &lt;experimental/algorithm&gt; synopsis</a>
+        
+      </li>
+            
+              <li><span class="marker">4.3.2</span><a href="#parallel.alg.foreach">For each</a>
+        
+      </li>
+            
+          </ol>
+        
+      </li>
+            
+              <li><span class="marker">4.4</span><a href="#parallel.alg.numeric">Numeric Parallel Algorithms</a>
+        
+          <ol>
+            
+              <li><span class="marker">4.4.1</span><a href="#parallel.alg.numeric.synopsis">Header &lt;experimental/numeric&gt; synopsis</a>
+        
+      </li>
+            
+              <li><span class="marker">4.4.2</span><a href="#parallel.alg.reduce">Reduce</a>
+        
+      </li>
+            
+              <li><span class="marker">4.4.3</span><a href="#parallel.alg.exclusive.scan">Exclusive scan</a>
+        
+      </li>
+            
+              <li><span class="marker">4.4.4</span><a href="#parallel.alg.inclusive.scan">Inclusive scan</a>
+        
+      </li>
+            
+              <li><span class="marker">4.4.5</span><a href="#parallel.alg.transform.reduce">Transform reduce</a>
+        
+      </li>
+            
+              <li><span class="marker">4.4.6</span><a href="#parallel.alg.transform.exclusive.scan">Transform exclusive scan</a>
+        
+      </li>
+            
+              <li><span class="marker">4.4.7</span><a href="#parallel.alg.transform.inclusive.scan">Transform inclusive scan</a>
+        
+      </li>
+            
+          </ol>
+        
+      </li>
+            
+          </ol>
+        
+      </li>
+            
+          </ol>
+        
+      
+    </nav>
+  </cxx-toc>
+
+
+<cxx-clause id="parallel.general">
+    
+
+    <section>
+      <header><span class="section-number">1</span> <h1 data-bookmark-label="1 General">General</h1> <span style="float:right"><a href="#parallel.general">[parallel.general]</a></span></header>
+      
+  
+  <cxx-section id="parallel.general.scope">
+    
+
+    <section>
+      <header><span class="section-number">1.1</span> <h1 data-bookmark-label="1.1 Scope">Scope</h1> <span style="float:right"><a href="#parallel.general.scope">[parallel.general.scope]</a></span></header>
+      
+    
+      <p para_num="1" id="parallel.general.scope.1">This Technical Specification describes requirements for implementations of an
+      interface that computer programs written in the C++ programming language may
+      use to invoke algorithms with parallel execution. The algorithms described by
+      this Technical Specification are realizable across a broad class of
+      computer architectures.</p>
+      
+      <p para_num="2" id="parallel.general.scope.2">This Technical Specification is non-normative. Some of the functionality
+      described by this Technical Specification may be considered for standardization
+      in a future version of C++, but it is not currently part of any C++ standard.
+      Some of the functionality in this Technical Specification may never be
+      standardized, and other functionality may be standardized in a substantially
+      changed form.</p>
+      
+      <p para_num="3" id="parallel.general.scope.3">The goal of this Technical Specification is to build widespread existing
+      practice for parallelism in the C++ standard algorithms library. It gives
+      advice on extensions to those vendors who wish to provide them.</p>
+  
+    </section>
+  </cxx-section>
+
+  <cxx-section id="parallel.general.references">
+    
+
+    <section>
+      <header><span class="section-number">1.2</span> <h1 data-bookmark-label="1.2 Normative references">Normative references</h1> <span style="float:right"><a href="#parallel.general.references">[parallel.general.references]</a></span></header>
+      
+    
+
+    <p para_num="1" id="parallel.general.references.1">The following referenced document is indispensable for the
+    application of this document. For dated references, only the
+    edition cited applies. For undated references, the latest edition
+    of the referenced document (including any amendments) applies.</p>
+
+    <ul>
+      <li>ISO/IEC 14882:—<cxx-footnote><!--
+    Be sure not to introduce whitespace here, as it appears around the footnote.
+  --><sup id="footnote-call-1"><a href="#footnote-body-1">1</a></sup><aside class="footnote" id="footnote-body-1"><span class="marker"><a href="#footnote-call-1">1</a>) </span>To be published. Section references are relative to <a href="http://www.open-std.org/jtc1/sc22/wg21/prot/14882fdis/n3937.pdf">N3937</a>.</aside></cxx-footnote>,
+      <cite>Programming Languages — C++</cite>
+      </li>
+    </ul>
+
+    <p para_num="2" id="parallel.general.references.2">ISO/IEC 14882:— is herein called the <dfn>C++ Standard</dfn>.
+    The library described in ISO/IEC 14882:— clauses 17-30 is herein called
+    the <dfn>C++ Standard Library</dfn>. The C++ Standard Library components described in
+    ISO/IEC 14882:— clauses 25, 26.7 and 20.7.2 are herein called the <dfn>C++ Standard
+    Algorithms Library</dfn>.</p>
+
+    <p para_num="3" id="parallel.general.references.3">Unless otherwise specified, the whole of the C++ Standard's Library
+    introduction (<cxx-ref in="cxx" to="library">C++14 <span title="library">§17</span></cxx-ref>) is included into this
+    Technical Specification by reference.</p>
+  
+    </section>
+  </cxx-section>
+
+  <cxx-section id="parallel.general.namespaces">
+    
+
+    <section>
+      <header><span class="section-number">1.3</span> <h1 data-bookmark-label="1.3 Namespaces and headers">Namespaces and headers</h1> <span style="float:right"><a href="#parallel.general.namespaces">[parallel.general.namespaces]</a></span></header>
+      
+    
+
+    <p para_num="1" id="parallel.general.namespaces.1">Since the <del>the</del> extensions described in this Technical Specification are
+    experimental and not part of the C++ Standard Library, they should not be
+    declared directly within namespace <code>std</code>. Unless otherwise specified, all
+    components described in this Technical Specification are declared in namespace 
+    <code>std::experimental::parallel::v1</code>.</p>
+
+    <cxx-note><span class="nowrap">[ <em>Note:</em></span>
+    
+    Once standardized, the components described by this Technical Specification are expected to be promoted to namespace <code>std</code>. 
+    
+    <span class="nowrap">— <em>end note</em> ]</span>
+  </cxx-note>
+
+    <p para_num="2" id="parallel.general.namespaces.2">Unless otherwise specified, references to such entities described in this
+    Technical Specification are assumed to be qualified with
+    <code>std::experimental::parallel::v1</code>, and references to entities described in the C++
+    Standard Library are assumed to be qualified with <code>std::</code>.</p>
+
+    <p para_num="3" id="parallel.general.namespaces.3">Extensions that are expected to eventually be added to an existing header
+    <code>&lt;meow&gt;</code> are provided inside the <code>&lt;experimental/meow&gt;</code> header,
+    which shall include the standard contents of <code>&lt;meow&gt;</code> as if by</p>
+
+<pre><code>    #include &lt;meow&gt;</code>
+</pre>
+
+    <cxx-section id="parallel.general.defns">
+    
+
+    <section>
+      <header><span class="section-number">1.3.1</span> <h1 data-bookmark-label="1.3.1 Terms and definitions">Terms and definitions</h1> <span style="float:right"><a href="#parallel.general.defns">[parallel.general.defns]</a></span></header>
+      
+      
+  
+      <p para_num="1" id="parallel.general.defns.1">For the purposes of this document, the terms and definitions given in the C++ Standard and the following apply.</p>
+  
+      <p para_num="2" id="parallel.general.defns.2">A <dfn>parallel algorithm</dfn> is a function template described by this Technical Specification declared in namespace <code>std::experimental::parallel::v1</code> with a formal template parameter named <code>ExecutionPolicy</code>.</p>
+  
+  
+      <p para_num="3" id="parallel.general.defns.3">
+        Parallel algorithms access objects indirectly accessible via their arguments by invoking the following functions:
+  
+        </p><ul>
+          <li>
+            All operations of the categories of the iterators that the algorithm is instantiated with.
+          </li>
+  
+          <li>
+            Functions on those sequence elements that are required by its specification.
+          </li>
+  
+          <li>
+            User-provided function objects to be applied during the 
+execution of the algorithm, if required by the specification.
+          </li>
+        </ul>
+  
+        These functions are herein called <em>element access functions</em>.<pre></pre>
+  
+        <cxx-example>
+    
+    <span class="nowrap">[ <em>Example:</em></span>
+    
+          The <code>sort</code> function may invoke the following element access functions:
+  
+          <ul>
+            <li>
+              Methods of the random-access iterator of the actual 
+template argument, as per 24.2.7, as implied by the name of the
+              template parameters <code>RandomAccessIterator</code>.
+            </li>
+  
+            <li>
+              The <code>swap</code> function on the elements of the sequence (as per 25.4.1.1 [sort]/2).
+            </li>
+  
+            <li>
+              The user-provided <code>Compare</code> function object.
+            </li>
+          </ul>
+        
+    <span class="nowrap">— <em>end example</em> ]</span>
+  </cxx-example>
+      <p para_num="4" id="parallel.general.defns.4"></p>
+    
+    </section>
+  </cxx-section>
+
+    </section>
+  </cxx-section>
+    </section>
+  </cxx-clause>
+
+
+<cxx-clause id="parallel.execpol">
+    
+
+    <section>
+      <header><span class="section-number">2</span> <h1 data-bookmark-label="2 Execution policies">Execution policies</h1> <span style="float:right"><a href="#parallel.execpol">[parallel.execpol]</a></span></header>
+      
+  
+  <cxx-section id="parallel.execpol.general">
+    
+
+    <section>
+      <header><span class="section-number">2.1</span> <h1 data-bookmark-label="2.1 In general">In general</h1> <span style="float:right"><a href="#parallel.execpol.general">[parallel.execpol.general]</a></span></header>
+      
+    
+      <p para_num="1" id="parallel.execpol.general.1">
+        This clause describes classes that are <dfn>execution policy</dfn> types. An object
+        of an execution policy type indicates <ins>the kinds of parallelism allowed in the execution
+        of</ins> <del>to</del> an algorithm <del>whether it is allowed to execute
+        in parallel</del> and expresses the <ins>consequent</ins> requirements on the element
+        access functions.
+      </p>
+
+      <cxx-example>
+    
+    <span class="nowrap">[ <em>Example:</em></span>
+    
+    <pre>std::vector&lt;int&gt; v = ...
+
+// standard sequential sort
+std::sort(v<del>ec</del>.begin(), v<del>ec</del>.end());
+
+using namespace std::experimental::parallel;
+
+// explicitly sequential sort
+sort(seq, v.begin(), v.end());
+
+// permitting parallel execution
+sort(par, v.begin(), v.end());
+
+// permitting vectorization as well
+sort(par_vec, v.begin(), v.end());
+
+// sort with dynamically-selected execution
+size_t threshold = ...
+execution_policy exec = seq;
+if (v.size() &gt; threshold)
+{
+  exec = par;
+}
+
+sort(exec, v.begin(), v.end());
+</pre>
+    
+    <span class="nowrap">— <em>end example</em> ]</span>
+  </cxx-example><pre></pre> 
+    <cxx-note><span class="nowrap">[ <em>Note:</em></span>
+    
+      Because different parallel architectures may require idiosyncratic
+      parameters for efficient execution, implementations of the Standard Library 
+      may provide additional execution policies to those described in this
+      Technical Specification as extensions.
+    
+    <span class="nowrap">— <em>end note</em> ]</span>
+  </cxx-note>
+  
+    </section>
+  </cxx-section>
+  <cxx-section id="parallel.execpol.synopsis">
+    
+
+    <section>
+      <header><span class="section-number">2.2</span> <h1 data-bookmark-label="2.2 Header &lt;experimental/execution_policy&gt; synopsis">Header <code>&lt;experimental/execution_policy&gt;</code> synopsis</h1> <span style="float:right"><a href="#parallel.execpol.synopsis">[parallel.execpol.synopsis]</a></span></header>
+      
+  
+
+<pre>namespace std {
+namespace experimental {
+namespace parallel {
+inline namespace v1 {
+  <cxx-ref insynopsis="" to="parallel.execpol.type">// <i><a title="parallel.execpol.type" href="#parallel.execpol.type">2.3</a>, Execution policy type trait</i></cxx-ref>
+  template&lt;class T&gt; struct is_execution_policy;
+  template&lt;class T&gt; constexpr bool is_execution_policy_v = is_execution_policy&lt;T&gt;::value;
+
+  <cxx-ref insynopsis="" to="parallel.execpol.seq">// <i><a title="parallel.execpol.seq" href="#parallel.execpol.seq">2.4</a>, Sequential execution policy</i></cxx-ref>
+  class sequential_execution_policy;
+
+  <cxx-ref insynopsis="" to="parallel.execpol.par">// <i><a title="parallel.execpol.par" href="#parallel.execpol.par">2.5</a>, Parallel execution policy</i></cxx-ref>
+  class parallel_execution_policy;
+
+  <cxx-ref insynopsis="" to="parallel.execpol.vec">// <i><a title="parallel.execpol.vec" href="#parallel.execpol.vec">2.6</a>, Parallel+Vector execution policy</i></cxx-ref>
+  class parallel_vector_execution_policy;
+
+  <cxx-ref insynopsis="" to="parallel.execpol.dynamic">// <i><a title="parallel.execpol.dynamic" href="#parallel.execpol.dynamic">2.7</a>, Dynamic execution policy</i></cxx-ref>
+  class execution_policy;
+}
+}
+}
+}
+</pre>
+  
+    </section>
+  </cxx-section>
+  <cxx-section id="parallel.execpol.type">
+    
+
+    <section>
+      <header><span class="section-number">2.3</span> <h1 data-bookmark-label="2.3 Execution policy type trait">Execution policy type trait</h1> <span style="float:right"><a href="#parallel.execpol.type">[parallel.execpol.type]</a></span></header>
+      
+    
+
+<pre>template&lt;class T&gt; struct is_execution_policy { <em>see below</em> };
+</pre>
+
+    <p para_num="1" id="parallel.execpol.type.1"><code>is_execution_policy</code>
+ can be used to detect parallel execution policies for the purpose of 
+excluding function signatures from otherwise ambiguous overload 
+resolution participation.</p>
+    
+    <p para_num="2" id="parallel.execpol.type.2"><code>is_execution_policy&lt;T&gt;</code> shall be a UnaryTypeTrait with a BaseCharacteristic of <code>true_type</code> if <code>T</code> is the type of a standard or implementation-defined execution policy, otherwise <code>false_type</code>.
+
+    </p><pre></pre>
+
+    <ins>
+      <cxx-note><span class="nowrap">[ <em>Note:</em></span>
+    
+        This provision reserves the privilege of creating non-standard execution policies to the library implementation.
+      
+    <span class="nowrap">— <em>end note</em> ]</span>
+  </cxx-note>
+    </ins>
+    
+    <p para_num="3" id="parallel.execpol.type.3">The behavior of a program that adds specializations for <code>is_execution_policy</code> is undefined.</p>
+  
+    </section>
+  </cxx-section>
+
+  <cxx-section id="parallel.execpol.seq">
+    
+
+    <section>
+      <header><span class="section-number">2.4</span> <h1 data-bookmark-label="2.4 Sequential execution policy">Sequential execution policy</h1> <span style="float:right"><a href="#parallel.execpol.seq">[parallel.execpol.seq]</a></span></header>
+      
+    
+
+    <pre>class sequential_execution_policy{ <i>unspecified</i> };
+</pre>
+
+    <p para_num="1" id="parallel.execpol.seq.1">The class <code>sequential_execution_policy</code>
+ is an execution policy type used as a unique type to disambiguate 
+parallel algorithm overloading and require that a parallel algorithm's 
+execution may not be parallelized.</p>
+
+  
+    </section>
+  </cxx-section>
+  <cxx-section id="parallel.execpol.par">
+    
+
+    <section>
+      <header><span class="section-number">2.5</span> <h1 data-bookmark-label="2.5 Parallel execution policy">Parallel execution policy</h1> <span style="float:right"><a href="#parallel.execpol.par">[parallel.execpol.par]</a></span></header>
+      
+    
+
+<pre>class parallel_execution_policy{ <i>unspecified</i> };
+</pre>
+
+    <p para_num="1" id="parallel.execpol.par.1">The class <code>parallel_execution_policy</code>
+ is an execution policy type used as a unique type to disambiguate 
+parallel algorithm overloading and indicate that a parallel algorithm's 
+execution may be parallelized.</p>
+
+  
+    </section>
+  </cxx-section>
+  <cxx-section id="parallel.execpol.vec">
+    
+
+    <section>
+      <header><span class="section-number">2.6</span> <h1 data-bookmark-label="2.6 Parallel+Vector execution policy">Parallel+Vector execution policy</h1> <span style="float:right"><a href="#parallel.execpol.vec">[parallel.execpol.vec]</a></span></header>
+      
+    
+
+<pre>class parallel_vector_execution_policy{ <i>unspecified</i> };
+</pre>
+
+    <p para_num="1" id="parallel.execpol.vec.1">The class <code>class parallel_vector_execution_policy</code>
+ is an execution policy type used as a unique type to disambiguate 
+parallel algorithm overloading and indicate that a parallel algorithm's 
+execution may be vectorized and parallelized.</p>
+
+  
+    </section>
+  </cxx-section>
+
+  <cxx-section id="parallel.execpol.dynamic">
+    
+
+    <section>
+      <header><span class="section-number">2.7</span> <h1 data-bookmark-label="2.7 Dynamic execution policy">Dynamic execution policy</h1> <span style="float:right"><a href="#parallel.execpol.dynamic">[parallel.execpol.dynamic]</a></span></header>
+      
+    
+
+<pre>class execution_policy
+{
+  public:
+    <cxx-ref insynopsis="" to="parallel.execpol.con">// <i><a title="parallel.execpol.con" href="#parallel.execpol.con">2.7.1</a>, execution_policy construct/assign</i></cxx-ref>
+    template&lt;class T&gt; execution_policy(const T&amp; exec);
+    template&lt;class T&gt; execution_policy&amp; operator=(const T&amp; exec);
+
+    <cxx-ref insynopsis="" to="parallel.execpol.access">// <i><a title="parallel.execpol.access" href="#parallel.execpol.access">2.7.2</a>, execution_policy object access</i></cxx-ref>
+    template&lt;class T&gt; T* get() noexcept;
+    template&lt;class T&gt; const T* get() const noexcept;
+};
+</pre>
+
+    <p para_num="1" id="parallel.execpol.dynamic.1">The class <code>execution_policy</code> is a container for execution policy objects.
+    <code>execution_policy</code> allows dynamic control over standard algorithm execution.</p>
+
+    <cxx-example>
+    
+    <span class="nowrap">[ <em>Example:</em></span>
+    
+      <pre>std::vector&lt;float&gt; sort_me = ...
+        
+using namespace std::experimental::parallel;
+execution_policy exec = seq;
+
+if(sort_me.size() &gt; threshold)
+{
+  exec = std::par;
+}
+ 
+std::sort(exec, std::begin(sort_me), std::end(sort_me));</pre>
+    
+    <span class="nowrap">— <em>end example</em> ]</span>
+  </cxx-example>
+
+    <p para_num="2" id="parallel.execpol.dynamic.2">Objects of type <code>execution_policy</code> shall be constructible and assignable from objects of
+    type <code>T</code> for which <code>is_execution_policy&lt;T&gt;::value</code> is <code>true</code>.</p>
+
+    <cxx-section id="parallel.execpol.con">
+    
+
+    <section>
+      <header><span class="section-number">2.7.1</span> <h1 data-bookmark-label="2.7.1 execution_policy construct/assign"><code>execution_policy</code> construct/assign</h1> <span style="float:right"><a href="#parallel.execpol.con">[parallel.execpol.con]</a></span></header>
+      
+      
+
+      <cxx-function para_num="1" id="parallel.execpol.con.1">
+    
+    <pre><code><cxx-signature>template&lt;class T&gt; execution_policy(const T&amp; exec);</cxx-signature></code></pre>
+
+    <dl>
+      
+        
+
+        <cxx-effects para_num="2" id="parallel.execpol.con.2">
+    
+    <dt>Effects:</dt><dd>Constructs an <code>execution_policy</code> object with a copy of <code>exec</code>'s state.</dd>
+  </cxx-effects>
+
+        <cxx-remarks para_num="3" id="parallel.execpol.con.3">
+    
+    <dt>Remarks:</dt><dd>
+          This constructor shall not participate in overload resolution unless
+          <code>is_execution_policy&lt;T&gt;::value</code> is <code>true</code>.
+        </dd>
+  </cxx-remarks>
+      
+    </dl>
+  </cxx-function>
+
+      <cxx-function para_num="4" id="parallel.execpol.con.4">
+    
+    <pre><code><cxx-signature>template&lt;class T&gt; execution_policy&amp; operator=(const T&amp; exec);</cxx-signature></code></pre>
+
+    <dl>
+      
+        
+
+        <cxx-effects para_num="5" id="parallel.execpol.con.5">
+    
+    <dt>Effects:</dt><dd>Assigns a copy of <code>exec</code>'s state to <code>*this</code>.</dd>
+  </cxx-effects>
+
+        <cxx-returns para_num="6" id="parallel.execpol.con.6">
+    
+    <dt>Returns:</dt><dd><code>*this</code>.
+      </dd>
+  </cxx-returns>
+    </dl>
+  </cxx-function>
+    
+    </section>
+  </cxx-section>
+
+    <cxx-section id="parallel.execpol.access">
+    
+
+    <section>
+      <header><span class="section-number">2.7.2</span> <h1 data-bookmark-label="2.7.2 execution_policy object access"><code>execution_policy</code> object access</h1> <span style="float:right"><a href="#parallel.execpol.access">[parallel.execpol.access]</a></span></header>
+      
+      
+
+      <cxx-function para_num="1" id="parallel.execpol.access.1">
+    
+    <pre><code><cxx-signature>
+          const type_info&amp; type() const noexcept;
+        </cxx-signature></code></pre>
+
+    <dl>
+      
+        
+
+        <cxx-returns para_num="2" id="parallel.execpol.access.2">
+    
+    <dt>Returns:</dt><dd><code>typeid(T)</code>, such that <code>T</code> is the type of the execution policy object contained by <code>*this</code>.</dd>
+  </cxx-returns>
+      
+    </dl>
+  </cxx-function>
+
+      <cxx-function para_num="3" id="parallel.execpol.access.3">
+    
+    <pre><code><cxx-signature>
+          template&lt;class T&gt; T* get() noexcept;
+          template&lt;class T&gt; const T* get() const noexcept;
+        </cxx-signature></code></pre>
+
+    <dl>
+      
+        
+
+        <cxx-returns para_num="4" id="parallel.execpol.access.4">
+    
+    <dt>Returns:</dt><dd>If <code>target_type() == typeid(T)</code>, a pointer to the stored execution policy object; otherwise a null pointer.</dd>
+  </cxx-returns>
+
+        <cxx-requires para_num="5" id="parallel.execpol.access.5">
+    
+    <dt>Requires:</dt><dd>
+          <code>is_execution_policy&lt;T&gt;::value</code> is <code>true</code>.
+        </dd>
+  </cxx-requires>
+      
+    </dl>
+  </cxx-function>
+
+    
+    </section>
+  </cxx-section>
+  
+    </section>
+  </cxx-section>
+
+  <cxx-section id="parallel.execpol.objects">
+    
+
+    <section>
+      <header><span class="section-number">2.8</span> <h1 data-bookmark-label="2.8 Execution policy objects">Execution policy objects</h1> <span style="float:right"><a href="#parallel.execpol.objects">[parallel.execpol.objects]</a></span></header>
+      
+    
+
+<pre>constexpr sequential_execution_policy      seq{};
+constexpr parallel_execution_policy        par{};
+constexpr parallel_vector_execution_policy par_vec{};
+</pre>
+
+    <p para_num="1" id="parallel.execpol.objects.1">The header <code>&lt;experimental/execution_policy&gt;</code> declares a global object associated with each type of execution policy defined by this Technical Specification.</p>
+  
+    </section>
+  </cxx-section>
+
+    </section>
+  </cxx-clause>
+
+<cxx-clause id="parallel.exceptions">
+    
+
+    <section>
+      <header><span class="section-number">3</span> <h1 data-bookmark-label="3 Parallel exceptions">Parallel exceptions</h1> <span style="float:right"><a href="#parallel.exceptions">[parallel.exceptions]</a></span></header>
+      
+  
+    <cxx-section id="parallel.exceptions.behavior">
+    
+
+    <section>
+      <header><span class="section-number">3.1</span> <h1 data-bookmark-label="3.1 Exception reporting behavior">Exception reporting behavior</h1> <span style="float:right"><a href="#parallel.exceptions.behavior">[parallel.exceptions.behavior]</a></span></header>
+      
+      
+        <p para_num="1" id="parallel.exceptions.behavior.1">
+          During the execution of a standard parallel algorithm, 
+          if temporary memory resources are required and none are available,
+          the algorithm throws a <code>std::bad_alloc</code> exception.
+        </p>
+        <p para_num="2" id="parallel.exceptions.behavior.2">
+          During the execution of a standard parallel algorithm, if the invocation of an element access function
+          terminates with an uncaught exception, the behavior of the program is determined by the type of
+          execution policy used to invoke the algorithm:
+
+          </p><ul>
+            <li>
+              If the execution policy object is of type <code>class parallel_vector_execution_policy</code>,
+              <code>std::terminate</code> shall be called.
+            </li>
+            <li>
+              If the execution policy object is of type <code>sequential_execution_policy</code> or
+              <code>parallel_execution_policy</code>, the execution of the algorithm terminates with an
+              <code>exception_list</code> exception. All uncaught exceptions thrown during
+              the invocations of element access functions shall be contained in the
+              <code>exception_list</code>.<pre></pre>
+
+              <cxx-note><span class="nowrap">[ <em>Note:</em></span>
+    
+                For example, the number of invocations of the user-provided function object in
+                <code>for_each</code> is unspecified. When <code>for_each</code> is executed sequentially,
+                only one exception will be contained in the <code>exception_list</code> object.
+              
+    <span class="nowrap">— <em>end note</em> ]</span>
+  </cxx-note><pre></pre>
+
+              <cxx-note><span class="nowrap">[ <em>Note:</em></span>
+    
+                These guarantees imply that, unless the algorithm has failed to allocate memory and
+                terminated with <code>std::bad_alloc</code>, all 
+exceptions thrown during the execution of
+                the algorithm are communicated to the caller. It is 
+unspecified whether an algorithm implementation will "forge ahead" after
+ 
+                encountering and capturing a user exception.
+              
+    <span class="nowrap">— <em>end note</em> ]</span>
+  </cxx-note><pre></pre>
+              <cxx-note><span class="nowrap">[ <em>Note:</em></span>
+    
+                The algorithm may terminate with the <code>std::bad_alloc</code>
+ exception even if one or more
+                user-provided function objects have terminated with an 
+exception. For example, this can happen when an algorithm fails to 
+allocate memory while
+                creating or adding elements to the <code>exception_list</code> object.
+              
+    <span class="nowrap">— <em>end note</em> ]</span>
+  </cxx-note>
+            </li>
+
+            <li>
+              If the execution policy object is of any other type, the behavior is implementation-defined.
+            </li>
+          </ul>
+        <p para_num="3" id="parallel.exceptions.behavior.3"></p>
+    
+    </section>
+  </cxx-section>
+    <cxx-section id="parallel.exceptions.synopsis">
+    
+
+    <section>
+      <header><span class="section-number">3.2</span> <h1 data-bookmark-label="3.2 Header &lt;experimental/exception_list&gt; synopsis">Header <code>&lt;experimental/exception_list&gt;</code> synopsis</h1> <span style="float:right"><a href="#parallel.exceptions.synopsis">[parallel.exceptions.synopsis]</a></span></header>
+      
+      
+      <pre>namespace std {
+namespace experimental {
+namespace parallel {
+inline namespace v1 {
+
+  class exception_list : public exception
+  {
+    public:
+      typedef <em>unspecified</em> iterator;
+  
+      size_t size() const noexcept;
+      iterator begin() const noexcept;
+      iterator end() const noexcept;
+
+      const char* what() const noexcept override;
+  };
+}
+}
+}
+}
+      </pre>
+
+      <p para_num="1" id="parallel.exceptions.synopsis.1">
+        The class <code>exception_list</code> owns a sequence of <code>exception_ptr</code> objects. The parallel
+        algorithms may use the <code>exception_list</code> to communicate uncaught exceptions encountered during parallel execution to the
+        caller of the algorithm.
+      </p>
+
+      <p para_num="2" id="parallel.exceptions.synopsis.2">
+        The type <code>exception_list::iterator</code> shall fulfill the requirements of
+        <code>ForwardIterator</code>.
+      </p>
+
+      <cxx-function para_num="3" id="parallel.exceptions.synopsis.3">
+    
+    <pre><code><cxx-signature>
+          size_t size() const noexcept;
+        </cxx-signature></code></pre>
+
+    <dl>
+      
+        
+
+        <cxx-returns para_num="4" id="parallel.exceptions.synopsis.4">
+    
+    <dt>Returns:</dt><dd>
+          The number of <code>exception_ptr</code> objects contained within the <code>exception_list</code>.
+        </dd>
+  </cxx-returns>
+
+        <cxx-complexity para_num="5" id="parallel.exceptions.synopsis.5">
+    
+    <dt>Complexity:</dt><dd>
+          Constant time.
+        </dd>
+  </cxx-complexity>
+      
+    </dl>
+  </cxx-function>
+
+      <cxx-function para_num="6" id="parallel.exceptions.synopsis.6">
+    
+    <pre><code><cxx-signature>
+          iterator begin() const noexcept;
+        </cxx-signature></code></pre>
+
+    <dl>
+      
+        
+
+        <cxx-returns para_num="7" id="parallel.exceptions.synopsis.7">
+    
+    <dt>Returns:</dt><dd>
+          An iterator referring to the first <code>exception_ptr</code> object contained within the <code>exception_list</code>.
+        </dd>
+  </cxx-returns>
+      
+    </dl>
+  </cxx-function>
+
+      <cxx-function para_num="8" id="parallel.exceptions.synopsis.8">
+    
+    <pre><code><cxx-signature>
+          iterator end() const noexcept;
+        </cxx-signature></code></pre>
+
+    <dl>
+      
+        
+
+        <cxx-returns para_num="9" id="parallel.exceptions.synopsis.9">
+    
+    <dt>Returns:</dt><dd>
+          An iterator that is past the end of the owned sequence.
+        </dd>
+  </cxx-returns>
+      
+    </dl>
+  </cxx-function>
+
+      <cxx-function para_num="10" id="parallel.exceptions.synopsis.10">
+    
+    <pre><code><cxx-signature>
+          const char* what() const noexcept override;
+        </cxx-signature></code></pre>
+
+    <dl>
+      
+        
+
+        <cxx-returns para_num="11" id="parallel.exceptions.synopsis.11">
+    
+    <dt>Returns:</dt><dd>
+          An implementation-defined NTBS.
+        </dd>
+  </cxx-returns>
+      
+    </dl>
+  </cxx-function>
+    
+    </section>
+  </cxx-section>
+
+    </section>
+  </cxx-clause>
+
+<cxx-clause id="parallel.alg">
+    
+
+    <section>
+      <header><span class="section-number">4</span> <h1 data-bookmark-label="4 Parallel algorithms">Parallel algorithms</h1> <span style="float:right"><a href="#parallel.alg">[parallel.alg]</a></span></header>
+      
+  
+
+  <cxx-section id="parallel.alg.general">
+    
+
+    <section>
+      <header><span class="section-number">4.1</span> <h1 data-bookmark-label="4.1 In general">In general</h1> <span style="float:right"><a href="#parallel.alg.general">[parallel.alg.general]</a></span></header>
+      
+    
+
+    This clause describes components that C++ programs may use to perform operations on containers
+    and other sequences in parallel.
+
+    <cxx-section id="parallel.alg.general.user">
+    
+
+    <section>
+      <header><span class="section-number">4.1.1</span> <h1 data-bookmark-label="4.1.1 Requirements on user-provided function objects">Requirements on user-provided function objects</h1> <span style="float:right"><a href="#parallel.alg.general.user">[parallel.alg.general.user]</a></span></header>
+      
+      
+
+     <p para_num="1" id="parallel.alg.general.user.1">
+        Function objects passed into parallel algorithms as objects of type <code>BinaryPredicate</code>,
+        <code>Compare</code>, and <code>BinaryOperation</code> shall not directly or indirectly modify
+        objects via their arguments.
+      </p>
+    
+    </section>
+  </cxx-section>
+
+    <cxx-section id="parallel.alg.general.exec">
+    
+
+    <section>
+      <header><span class="section-number">4.1.2</span> <h1 data-bookmark-label="4.1.2 Effect of execution policies on algorithm execution">Effect of execution policies on algorithm execution</h1> <span style="float:right"><a href="#parallel.alg.general.exec">[parallel.alg.general.exec]</a></span></header>
+      
+      
+
+      <p para_num="1" id="parallel.alg.general.exec.1">
+        Parallel algorithms have template parameters named <code>ExecutionPolicy</code> which describe
+        the manner in which the execution of these algorithms may be parallelized and the manner in
+        which they apply the element access functions.
+      </p>
+
+      <p para_num="2" id="parallel.alg.general.exec.2">
+        The invocations of element access functions in parallel algorithms invoked with an execution
+        policy object of type <code>sequential_execution_policy</code> execute in sequential order in
+        the calling thread.
+      </p>
+
+      <p para_num="3" id="parallel.alg.general.exec.3">
+        The invocations of element access functions in parallel algorithms invoked with an execution
+        policy object of type <code>parallel_execution_policy</code> are permitted to execute in an
+        unordered fashion in <del>unspecified threads</del><ins>either the invoking thread or in a
+        thread implicitly created by the library to support parallel algorithm execution.</ins>
+        <del>, and</del> <ins>Any such invocations executing in the same thread are</ins> indeterminately
+        sequenced <del>within each thread</del><ins>with respect to each other</ins>. 
+
+        <cxx-note><span class="nowrap">[ <em>Note:</em></span>
+    
+          It is the caller's responsibility to ensure correctness, for example that the invocation does
+          not introduce data races or deadlocks.
+        
+    <span class="nowrap">— <em>end note</em> ]</span>
+  </cxx-note>
+      </p>
+
+      <cxx-example>
+    
+    <span class="nowrap">[ <em>Example:</em></span>
+    <pre>using namespace std::experimental::parallel;
+int a[] = {0,1};
+std::vector&lt;int&gt; v;
+for_each(par, std::begin(a), std::end(a), [&amp;](int i) {
+  v.push_back(i*2+1);
+});
+</pre>
+
+        The program above has a data race because of the unsynchronized access to the container
+        <code>v</code>.
+      
+    <span class="nowrap">— <em>end example</em> ]</span>
+  </cxx-example><pre></pre>
+
+      <cxx-example>
+    
+    <span class="nowrap">[ <em>Example:</em></span>
+    <pre>using namespace std::experimental::parallel;
+std::atomic&lt;int&gt; x = 0;
+int a[] = {1,2};
+for_each(par, std::begin(a), std::end(a), [&amp;](int n) {
+  x.fetch_add(1, std::memory_order_relaxed);
+  // spin wait for another iteration to change the value of x
+  while (x.load(std::memory_order_relaxed) == 1) { }
+});</pre>
+
+        The above example depends on the order of execution of the iterations, and is therefore
+        undefined (may deadlock).
+      
+    <span class="nowrap">— <em>end example</em> ]</span>
+  </cxx-example><pre></pre>
+
+      <cxx-example>
+    
+    <span class="nowrap">[ <em>Example:</em></span>
+    <pre>using namespace std::experimental::parallel;
+int x=0;
+std::mutex m;
+int a[] = {1,2};
+for_each(par, std::begin(a), std::end(a), [&amp;](int) {
+  m.lock();
+  ++x;
+  m.unlock();
+});</pre>
+
+        The above example synchronizes access to object <code>x</code> ensuring that it is
+        incremented correctly.
+      
+    <span class="nowrap">— <em>end example</em> ]</span>
+  </cxx-example>
+
+      <p para_num="4" id="parallel.alg.general.exec.4">
+        The invocations of element access functions in parallel algorithms invoked with an execution
+        policy of type <code>parallel_vector_execution_policy</code>
+        are permitted to execute in an unordered fashion in unspecified threads, and unsequenced
+        with respect to one another within each thread.
+        <cxx-note><span class="nowrap">[ <em>Note:</em></span>
+    
+          This means that multiple function object invocations may be interleaved on a single thread.
+        
+    <span class="nowrap">— <em>end note</em> ]</span>
+  </cxx-note>
+        </p><pre></pre>
+
+        <cxx-note><span class="nowrap">[ <em>Note:</em></span>
+    
+          This overrides the usual guarantee from the C++ standard, Section 1.9 [intro.execution] that
+          function executions do not interleave with one another.
+        
+    <span class="nowrap">— <em>end note</em> ]</span>
+  </cxx-note>
+        <pre></pre>
+
+          Since <code>parallel_vector_execution_policy</code> allows the execution of element access functions to be
+          interleaved on a single thread, synchronization, including the use of mutexes, risks deadlock. Thus the
+          synchronization with <code>parallel_vector_execution_policy</code> is restricted as follows:<pre></pre>
+
+          A standard library function is <em>vectorization-unsafe</em> if it is specified to synchronize with
+          another function invocation, or another function invocation is specified to synchronize with it, and if
+          it is not a memory allocation or deallocation function. Vectorization-unsafe standard library functions
+          may not be invoked by user code called from <code>parallel_vector_execution_policy</code> algorithms.<pre></pre>
+
+          <cxx-note><span class="nowrap">[ <em>Note:</em></span>
+    
+            Implementations must ensure that internal synchronization inside standard library routines does not
+            induce deadlock.
+          
+    <span class="nowrap">— <em>end note</em> ]</span>
+  </cxx-note>
+      <p para_num="5" id="parallel.alg.general.exec.5"></p>
+
+      <cxx-example>
+    
+    <span class="nowrap">[ <em>Example:</em></span>
+    <pre>using namespace std::experimental::parallel;
+int x=0;
+std::mutex m;
+int a[] = {1,2};
+for_each(par_vec, std::begin(a), std::end(a), [&amp;](int) {
+  m.lock();
+  ++x;
+  m.unlock();
+});</pre>
+
+        The above program is invalid because the applications of the function object are not
+        guaranteed to run on different threads.
+      
+    <span class="nowrap">— <em>end example</em> ]</span>
+  </cxx-example><pre></pre>
+
+      <cxx-note><span class="nowrap">[ <em>Note:</em></span>
+    
+        The application of the function object may result in two consecutive calls to
+        <code>m.lock</code> on the same thread, which may deadlock.
+      
+    <span class="nowrap">— <em>end note</em> ]</span>
+  </cxx-note><pre></pre>
+
+      <cxx-note><span class="nowrap">[ <em>Note:</em></span>
+    
+        The semantics of the <code>parallel_execution_policy</code> or the
+        <code>parallel_vector_execution_policy</code> invocation allow the implementation to fall back to
+        sequential execution if the system cannot parallelize an algorithm invocation due to lack of
+        resources.
+      
+    <span class="nowrap">— <em>end note</em> ]</span>
+  </cxx-note>
+
+      <p para_num="6" id="parallel.alg.general.exec.6">
+        Algorithms invoked with an execution policy object of type <code>execution_policy</code>
+        execute internally as if invoked with the contained execution policy object.
+      </p>
+
+      <p para_num="7" id="parallel.alg.general.exec.7">
+        The semantics of parallel algorithms invoked with an execution policy object of
+        implementation-defined type are implementation-defined.
+      </p>
+    
+    </section>
+  </cxx-section>
+
+    <cxx-section id="parallel.alg.overloads">
+    
+
+    <section>
+      <header><span class="section-number">4.1.3</span> <h1 data-bookmark-label="4.1.3 ExecutionPolicy algorithm overloads"><code>ExecutionPolicy</code> algorithm overloads</h1> <span style="float:right"><a href="#parallel.alg.overloads">[parallel.alg.overloads]</a></span></header>
+      
+      
+
+      <p para_num="1" id="parallel.alg.overloads.1">
+        The Parallel Algorithms Library provides overloads for each of the algorithms named in
+        Table 1, corresponding to the algorithms with the same name in the C++ Standard Algorithms Library.
+        
+        For each algorithm in <cxx-ref to="tab.parallel.algorithms"><a title="tab.parallel.algorithms" href="#tab.parallel.algorithms">Table 1</a></cxx-ref>, if there are overloads for
+        corresponding algorithms with the same name
+        in the C++ Standard Algorithms Library,
+        the overloads shall have an additional template type parameter named
+        <code>ExecutionPolicy</code>, which shall be the first template parameter.
+        
+        In addition, each such overload shall have the new function parameter as the
+        first function parameter of type <code>ExecutionPolicy&amp;&amp;</code>.
+      </p>
+
+      <p para_num="2" id="parallel.alg.overloads.2">
+        Unless otherwise specified, the semantics of <code>ExecutionPolicy</code> algorithm overloads
+        are identical to their overloads without.
+      </p>
+        
+      <p para_num="3" id="parallel.alg.overloads.3">
+        Parallel algorithms shall not participate in overload resolution unless
+        <code>is_execution_policy&lt;decay_t&lt;ExecutionPolicy&gt;&gt;::value</code> is <code>true</code>.
+      </p>
+        
+      <table role="presentation" is="cxx-table" id="tab.parallel.algorithms" class="list">
+    
+
+    <caption>Table 1 — <wbr><span>Table of parallel algorithms</span></caption>
+    
+        
+          <tbody><tr>
+            <td><code>adjacent_difference</code></td>
+            <td><code>adjacent_find</code></td>
+            <td><code>all_of</code></td>
+            <td><code>any_of</code></td>
+          </tr>
+          <tr>
+            <td><code>copy</code></td>
+            <td><code>copy_if</code></td>
+            <td><code>copy_n</code></td>
+            <td><code>count</code></td>
+          </tr>
+          <tr>
+            <td><code>count_if</code></td>
+            <td><code>equal</code></td>
+            <td><code>exclusive_scan</code></td>
+            <td><code>fill</code></td>
+          </tr>
+          <tr>
+            <td><code>fill_n</code></td>
+            <td><code>find</code></td>
+            <td><code>find_end</code></td>
+            <td><code>find_first_of</code></td>
+          </tr>
+          <tr>
+            <td><code>find_if</code></td>
+            <td><code>find_if_not</code></td>
+            <td><code>for_each</code></td>
+            <td><code>for_each_n</code></td>
+          </tr>
+          <tr>
+            <td><code>generate</code></td>
+            <td><code>generate_n</code></td>
+            <td><code>includes</code></td>
+            <td><code>inclusive_scan</code></td>
+          </tr>
+          <tr>
+            <td><code>inner_product</code></td>
+            <td><code>inplace_merge</code></td>
+            <td><code>is_heap</code></td>
+            <td><code>is_heap_until</code></td>
+          </tr>
+          <tr>
+            <td><code>is_partitioned</code></td>
+            <td><code>is_sorted</code></td>
+            <td><code>is_sorted_until</code></td>
+            <td><code>lexicographical_compare</code></td>
+          </tr>
+          <tr>
+            <td><code>max_element</code></td>
+            <td><code>merge</code></td>
+            <td><code>min_element</code></td>
+            <td><code>minmax_element</code></td>
+          </tr>
+          <tr>
+            <td><code>mismatch</code></td>
+            <td><code>move</code></td>
+            <td><code>none_of</code></td>
+            <td><code>nth_element</code></td>
+          </tr>
+          <tr>
+            <td><code>partial_sort</code></td>
+            <td><code>partial_sort_copy</code></td>
+            <td><code>partition</code></td>
+            <td><code>partition_copy</code></td>
+          </tr>
+          <tr>
+            <td><code>reduce</code></td>
+            <td><code>remove</code></td>
+            <td><code>remove_copy</code></td>
+            <td><code>remove_copy_if</code></td>
+          </tr>
+          <tr>
+            <td><code>remove_if</code></td>
+            <td><code>replace</code></td>
+            <td><code>replace_copy</code></td>
+            <td><code>replace_copy_if</code></td>
+          </tr>
+          <tr>
+            <td><code>replace_if</code></td>
+            <td><code>reverse</code></td>
+            <td><code>reverse_copy</code></td>
+            <td><code>rotate</code></td>
+          </tr>
+          <tr>
+            <td><code>rotate_copy</code></td>
+            <td><code>search</code></td>
+            <td><code>search_n</code></td>
+            <td><code>set_difference</code></td>
+          </tr>
+          <tr>
+            <td><code>set_intersection</code></td>
+            <td><code>set_symmetric_difference</code></td>
+            <td><code>set_union</code></td>
+            <td><code>sort</code></td>
+          </tr>
+          <tr>
+            <td><code>stable_partition</code></td>
+            <td><code>stable_sort</code></td>
+            <td><code>swap_ranges</code></td>
+            <td><code>transform</code></td>
+          </tr>
+          <tr>
+            <td><code><ins>transform_exclusive_scan</ins></code></td>
+            <td><code><ins>transform_inclusive_scan</ins></code></td>
+            <td><code><ins>transform_reduce</ins></code></td>
+            <td><code>uninitialized_copy</code></td>
+          </tr>
+          <tr>
+            <td><code>uninitialized_copy_n</code></td>
+            <td><code>uninitialized_fill</code></td>
+            <td><code>uninitialized_fill_n</code></td>
+            <td><code>unique</code></td>
+          </tr>
+          <tr>
+            <td><code>unique_copy</code></td>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+      </tbody>
+  </table>
+
+      <cxx-note><span class="nowrap">[ <em>Note:</em></span>
+    
+      Not all algorithms in the Standard Library have counterparts in <cxx-ref to="tab.parallel.algorithms"><a title="tab.parallel.algorithms" href="#tab.parallel.algorithms">Table 1</a></cxx-ref>.
+      
+    <span class="nowrap">— <em>end note</em> ]</span>
+  </cxx-note>
+    
+    </section>
+  </cxx-section>
+  
+    </section>
+  </cxx-section>
+
+  <cxx-section id="parallel.alg.defns">
+    
+
+    <section>
+      <header><span class="section-number">4.2</span> <h1 data-bookmark-label="4.2 Definitions">Definitions</h1> <span style="float:right"><a href="#parallel.alg.defns">[parallel.alg.defns]</a></span></header>
+      
+    
+
+    <p para_num="1" id="parallel.alg.defns.1">
+      Define <code><em>GENERALIZED_SUM</em>(op, a1, ..., aN)</code> as follows:
+
+      </p><ul>
+        <li><code>a1</code> when <code>N</code> is <code>1</code></li>
+      
+        <li>
+          <code>op(<em>GENERALIZED_SUM</em>(op, b1, ..., bK)</code>, <code><em>GENERALIZED_SUM</em>(op, bM, ..., bN))</code> where
+           
+          <ul>
+            <li><code>b1, ..., bN</code> may be any permutation of <code>a1, ..., aN</code> and</li>
+
+            <li><code>1 &lt; K+1 = M ≤ N</code>.</li>
+          </ul>
+        </li>
+      </ul>
+    <p para_num="2" id="parallel.alg.defns.2"></p>
+
+    <p para_num="3" id="parallel.alg.defns.3">
+      Define <code><em>GENERALIZED_NONCOMMUTATIVE_SUM</em>(op, a1, ..., aN)</code> as follows:
+
+      </p><ul>
+        <li><code>a1</code> when <code>N</code> is <code>1</code></li>
+
+        <li>
+          <code>op(<em>GENERALIZED_NONCOMMUTATIVE_SUM</em>(op, a1, ..., aK), <em>GENERALIZED_NONCOMMUTATIVE_SUM</em>(op, aM, ..., aN)</code> where <code>1 &lt; K+1 = M ≤ N</code>.
+        </li>
+      </ul>
+    <p para_num="4" id="parallel.alg.defns.4"></p>
+  
+    </section>
+  </cxx-section>
+
+  <cxx-section id="parallel.alg.ops">
+    
+
+    <section>
+      <header><span class="section-number">4.3</span> <h1 data-bookmark-label="4.3 Non-Numeric Parallel Algorithms">Non-Numeric Parallel Algorithms</h1> <span style="float:right"><a href="#parallel.alg.ops">[parallel.alg.ops]</a></span></header>
+      
+    
+
+    <cxx-section id="parallel.alg.ops.synopsis">
+    
+
+    <section>
+      <header><span class="section-number">4.3.1</span> <h1 data-bookmark-label="4.3.1 Header &lt;experimental/algorithm&gt; synopsis">Header <code>&lt;experimental/algorithm&gt;</code> synopsis</h1> <span style="float:right"><a href="#parallel.alg.ops.synopsis">[parallel.alg.ops.synopsis]</a></span></header>
+      
+      
+
+      <pre>namespace std {
+namespace experimental {
+namespace parallel {
+inline namespace v1 {
+  template&lt;class ExecutionPolicy,
+           class InputIterator, class Function&gt;
+    void for_each(ExecutionPolicy&amp;&amp; exec,
+                  InputIterator first, InputIterator last,
+                  Function f);
+  template&lt;class InputIterator, class Size, class Function&gt;
+    InputIterator for_each_n(InputIterator first, Size n,
+                             Function f);
+}
+}
+}
+}
+</pre>
+    
+    </section>
+  </cxx-section>
+
+    <cxx-section id="parallel.alg.foreach">
+    
+
+    <section>
+      <header><span class="section-number">4.3.2</span> <h1 data-bookmark-label="4.3.2 For each">For each</h1> <span style="float:right"><a href="#parallel.alg.foreach">[parallel.alg.foreach]</a></span></header>
+      
+      
+
+      <cxx-function para_num="1" id="parallel.alg.foreach.1">
+    
+    <pre><code><cxx-signature>
+          template&lt;class ExecutionPolicy,
+                   class InputIterator, class Function&gt;
+            void for_each(ExecutionPolicy&amp;&amp; exec,
+                          InputIterator first, InputIterator last,
+                          Function f);
+        </cxx-signature></code></pre>
+
+    <dl>
+      
+        
+
+        <cxx-effects para_num="2" id="parallel.alg.foreach.2">
+    
+    <dt>Effects:</dt><dd>
+          Applies <code>f</code> to the result of dereferencing every iterator in the range <code>[first,last)</code>.
+
+          <cxx-note><span class="nowrap">[ <em>Note:</em></span>
+    
+            If the type of <code>first</code> satisfies the requirements of a mutable iterator, <code>f</code> may
+            apply nonconstant functions through the dereferenced iterator.
+          
+    <span class="nowrap">— <em>end note</em> ]</span>
+  </cxx-note>
+        </dd>
+  </cxx-effects>
+
+        <cxx-complexity para_num="3" id="parallel.alg.foreach.3">
+    
+    <dt>Complexity:</dt><dd>
+          Applies <code>f</code> exactly <code>last - first</code> times.
+        </dd>
+  </cxx-complexity>
+        
+        <cxx-remarks para_num="4" id="parallel.alg.foreach.4">
+    
+    <dt>Remarks:</dt><dd>
+          If <code>f</code> returns a result, the result is ignored.
+        </dd>
+  </cxx-remarks>
+
+        <cxx-notes para_num="5" id="parallel.alg.foreach.5">
+    
+    <dt>Notes:</dt><dd>
+          Unlike its sequential form, the parallel overload of <code>for_each</code> does not return a copy of
+          its <code>Function</code> parameter, since parallelization may not permit efficient state
+          accumulation.
+        </dd>
+  </cxx-notes>
+        <cxx-requires para_num="6" id="parallel.alg.foreach.6">
+    
+    <dt>Requires:</dt><dd>
+          Unlike its sequential form, the parallel overload of <code>for_each</code> requires
+          <code>Function</code> to meet the requirements of <code>CopyConstructible</code>.
+        </dd>
+  </cxx-requires>
+      
+    </dl>
+  </cxx-function>
+
+      <cxx-function para_num="7" id="parallel.alg.foreach.7">
+    
+    <pre><code><cxx-signature>
+          template&lt;class InputIterator, class Size, class Function&gt;
+            InputIterator for_each_n(InputIterator first, Size n,
+                                     Function f);
+        </cxx-signature></code></pre>
+
+    <dl>
+      
+        
+
+        <cxx-requires para_num="8" id="parallel.alg.foreach.8">
+    
+    <dt>Requires:</dt><dd>
+          <code>Function</code> shall meet the requirements of <code>MoveConstructible</code>
+          
+          <cxx-note><span class="nowrap">[ <em>Note:</em></span>
+    
+            <code>Function</code> need not meet the requirements of <code>CopyConstructible</code>.
+          
+    <span class="nowrap">— <em>end note</em> ]</span>
+  </cxx-note>
+        </dd>
+  </cxx-requires>
+
+        <cxx-effects para_num="9" id="parallel.alg.foreach.9">
+    
+    <dt>Effects:</dt><dd>
+          Applies <code>f</code> to the result of dereferencing every iterator in the range
+          <code>[first,first + n)</code>, starting from <code>first</code> and proceeding to <code>first + n - 1</code>.
+
+          <cxx-note><span class="nowrap">[ <em>Note:</em></span>
+    
+            If the type of <code>first</code> satisfies the requirements of a mutable iterator,
+            <code>f</code> may apply nonconstant functions through the dereferenced iterator.
+          
+    <span class="nowrap">— <em>end note</em> ]</span>
+  </cxx-note>
+        </dd>
+  </cxx-effects>
+
+        <cxx-returns para_num="10" id="parallel.alg.foreach.10">
+    
+    <dt>Returns:</dt><dd>
+          <code>first + n</code> for non-negative values of <code>n</code> and <code>first</code> for negative values.
+        </dd>
+  </cxx-returns>
+
+        <cxx-remarks para_num="11" id="parallel.alg.foreach.11">
+    
+    <dt>Remarks:</dt><dd>
+          If <code>f</code> returns a result, the result is ignored.
+        </dd>
+  </cxx-remarks>
+      
+    </dl>
+  </cxx-function>
+
+      <cxx-function para_num="12" id="parallel.alg.foreach.12">
+    
+    <pre><code><cxx-signature>
+        template&lt;class ExecutionPolicy,
+                 class InputIterator, class Size, class Function&gt;
+                 InputIterator for_each_n(ExecutionPolicy &amp;&amp; exec,
+                                          InputIterator first, Size n,
+                                          Function f);
+        </cxx-signature></code></pre>
+
+    <dl>
+      
+        
+
+        <cxx-effects para_num="13" id="parallel.alg.foreach.13">
+    
+    <dt>Effects:</dt><dd>
+          Applies <code>f</code> to the result of dereferencing every iterator in the range
+          <code>[first,first + n)</code>, starting from <code>first</code> and proceeding to <code>first + n - 1</code>.
+
+          <cxx-note><span class="nowrap">[ <em>Note:</em></span>
+    
+            If the type of <code>first</code> satisfies the requirements of a mutable iterator,
+            <code>f</code> may apply nonconstant functions through the dereferenced iterator.
+          
+    <span class="nowrap">— <em>end note</em> ]</span>
+  </cxx-note>
+        </dd>
+  </cxx-effects>
+
+        <cxx-returns para_num="14" id="parallel.alg.foreach.14">
+    
+    <dt>Returns:</dt><dd>
+        <code>first + n</code> for non-negative values of <code>n</code> and <code>first</code> for negative values.
+        </dd>
+  </cxx-returns>
+
+        <cxx-remarks para_num="15" id="parallel.alg.foreach.15">
+    
+    <dt>Remarks:</dt><dd>
+          If <code>f</code> returns a result, the result is ignored.
+        </dd>
+  </cxx-remarks>
+
+        <cxx-notes para_num="16" id="parallel.alg.foreach.16">
+    
+    <dt>Notes:</dt><dd>
+          Unlike its sequential form, the parallel overload of <code>for_each_n</code> requires
+          <code>Function</code> to meet the requirements of <code>CopyConstructible</code>.
+        </dd>
+  </cxx-notes>
+      
+    </dl>
+  </cxx-function>
+    
+    </section>
+  </cxx-section>
+  
+    </section>
+  </cxx-section>
+
+    <cxx-section id="parallel.alg.numeric">
+    
+
+    <section>
+      <header><span class="section-number">4.4</span> <h1 data-bookmark-label="4.4 Numeric Parallel Algorithms">Numeric Parallel Algorithms</h1> <span style="float:right"><a href="#parallel.alg.numeric">[parallel.alg.numeric]</a></span></header>
+      
+    
+
+    <cxx-section id="parallel.alg.numeric.synopsis">
+    
+
+    <section>
+      <header><span class="section-number">4.4.1</span> <h1 data-bookmark-label="4.4.1 Header &lt;experimental/numeric&gt; synopsis">Header <code>&lt;experimental/numeric&gt;</code> synopsis</h1> <span style="float:right"><a href="#parallel.alg.numeric.synopsis">[parallel.alg.numeric.synopsis]</a></span></header>
+      
+      
+
+      <pre>namespace std {
+namespace experimental {
+namespace parallel {
+inline namespace v1 {
+  template&lt;class InputIterator&gt;
+    typename iterator_traits&lt;InputIterator&gt;::value_type
+      reduce(InputIterator first, InputIterator last);
+  template&lt;class InputIterator, class T&gt;
+    T reduce(InputIterator first, InputIterator last<ins>,</ins> T init);
+  template&lt;class InputIterator, class T, class BinaryOperation&gt;
+    T reduce(InputIterator first, InputIterator last, T init,
+             BinaryOperation binary_op);
+
+  template&lt;class InputIterator, class OutputIterator,
+           class T&gt;
+    OutputIterator
+      exclusive_scan(InputIterator first, InputIterator last,
+                     OutputIterator result,
+                     T init);
+  template&lt;class InputIterator, class OutputIterator,
+           class T, class BinaryOperation&gt;
+    OutputIterator
+      exclusive_scan(InputIterator first, InputIterator last,
+                     OutputIterator result,
+                     T init, BinaryOperation binary_op);
+
+  template&lt;class InputIterator, class OutputIterator&gt;
+    OutputIterator
+      inclusive_scan(InputIterator first, InputIterator last,
+                     OutputIterator result);
+  template&lt;class InputIterator, class OutputIterator,
+           class BinaryOperation&gt;
+    OutputIterator
+      inclusive_scan(InputIterator first, InputIterator last,
+                     OutputIterator result,
+                     BinaryOperation binary_op);
+  template&lt;class InputIterator, class OutputIterator,
+           class BinaryOperation, class T&gt;
+    OutputIterator
+      inclusive_scan(InputIterator first, InputIterator last,
+                     OutputIterator result,
+                     BinaryOperation binary_op, T init);
+
+  <ins>
+  template&lt;class InputIterator, class UnaryOperation,
+           class T, class BinaryOperation&gt;
+    T transform_reduce(InputIterator first, InputIterator last,
+                       UnaryOperation unary_op,
+                       T init, BinaryOperation binary_op);
+
+  template&lt;class InputIterator, class OutputIterator,
+           class UnaryOperation, class T, class BinaryOperation&gt;
+    OutputIterator
+      transform_exclusive_scan(InputIterator first, InputIterator last,
+                               OutputIterator result,
+                               UnaryOperation unary_op,
+                               T init, BinaryOperation binary_op);
+
+  template&lt;class InputIterator, class OutputIterator,
+           class UnaryOperation, class BinaryOperation&gt;
+    OutputIterator
+      transform_inclusive_scan(InputIterator first, InputIterator last,
+                               OutputIterator result,
+                               UnaryOperation unary_op,
+                               BinaryOperation binary_op);
+
+  template&lt;class InputIterator, class OutputIterator,
+           class UnaryOperation, class BinaryOperation, class T&gt;
+    OutputIterator
+      transform_inclusive_scan(InputIterator first, InputIterator last,
+                               OutputIterator result,
+                               UnaryOperation unary_op,
+                               BinaryOperation binary_op, T init);
+  </ins>
+}
+}
+}
+}
+</pre>
+    
+    </section>
+  </cxx-section>
+
+    <cxx-section id="parallel.alg.reduce">
+    
+
+    <section>
+      <header><span class="section-number">4.4.2</span> <h1 data-bookmark-label="4.4.2 Reduce">Reduce</h1> <span style="float:right"><a href="#parallel.alg.reduce">[parallel.alg.reduce]</a></span></header>
+      
+      
+
+      <cxx-function para_num="1" id="parallel.alg.reduce.1">
+    
+    <pre><code><cxx-signature>
+          template&lt;class InputIterator&gt;
+            typename iterator_traits&lt;InputIterator&gt;::value_type
+              reduce(InputIterator first, InputIterator last);
+        </cxx-signature></code></pre>
+
+    <dl>
+      
+        
+
+        <cxx-effects para_num="2" id="parallel.alg.reduce.2">
+    
+    <dt>Effects:</dt><dd>
+          Same as <code>reduce(first, last, typename iterator_traits&lt;InputIterator&gt;::value_type{})</code>.
+        </dd>
+  </cxx-effects>
+      
+    </dl>
+  </cxx-function>
+
+      <cxx-function para_num="3" id="parallel.alg.reduce.3">
+    
+    <pre><code><cxx-signature>
+          template&lt;class InputIterator, class T&gt;
+            T reduce(InputIterator first, InputIterator last, T init);
+        </cxx-signature></code></pre>
+
+    <dl>
+      
+        
+
+        <cxx-effects para_num="4" id="parallel.alg.reduce.4">
+    
+    <dt>Effects:</dt><dd>
+          Same as <code>reduce(first, last, init, plus&lt;&gt;())</code>.
+        </dd>
+  </cxx-effects>
+      
+    </dl>
+  </cxx-function>
+
+      <cxx-function para_num="5" id="parallel.alg.reduce.5">
+    
+    <pre><code><cxx-signature>
+          template&lt;class InputIterator, class T, class BinaryOperation&gt;
+            T reduce(InputIterator first, InputIterator last, T init,
+                     BinaryOperation binary_op);
+        </cxx-signature></code></pre>
+
+    <dl>
+      
+        
+
+        <cxx-returns para_num="6" id="parallel.alg.reduce.6">
+    
+    <dt>Returns:</dt><dd>
+          <code><em>GENERALIZED_SUM</em>(binary_op, init, *first, ..., *(first + (last - first) - 1))</code>.
+        </dd>
+  </cxx-returns>
+
+        <cxx-requires para_num="7" id="parallel.alg.reduce.7">
+    
+    <dt>Requires:</dt><dd>
+          <code>binary_op</code> shall not invalidate iterators or subranges, nor modify elements in the
+          range <code>[first,last)</code>.
+        </dd>
+  </cxx-requires>
+
+        <cxx-complexity para_num="8" id="parallel.alg.reduce.8">
+    
+    <dt>Complexity:</dt><dd>
+          O(<code>last - first</code>) applications of <code>binary_op</code>.
+        </dd>
+  </cxx-complexity>
+
+        <cxx-notes para_num="9" id="parallel.alg.reduce.9">
+    
+    <dt>Notes:</dt><dd>
+          The primary difference between <code>reduce</code> and <code>accumulate</code> is that the behavior
+          of <code>reduce</code> may be non-deterministic for non-associative or non-commutative <code>binary_op</code>.
+        </dd>
+  </cxx-notes>
+      
+    </dl>
+  </cxx-function>
+    
+    </section>
+  </cxx-section>
+
+    <cxx-section id="parallel.alg.exclusive.scan">
+    
+
+    <section>
+      <header><span class="section-number">4.4.3</span> <h1 data-bookmark-label="4.4.3 Exclusive scan">Exclusive scan</h1> <span style="float:right"><a href="#parallel.alg.exclusive.scan">[parallel.alg.exclusive.scan]</a></span></header>
+      
+      
+
+      <cxx-function para_num="1" id="parallel.alg.exclusive.scan.1">
+    
+    <pre><code><cxx-signature>
+          template&lt;class InputIterator, class OutputIterator,
+                   class T&gt;
+            OutputIterator
+              exclusive_scan(InputIterator first, InputIterator last,
+                             OutputIterator result,
+                             T init);
+        </cxx-signature></code></pre>
+
+    <dl>
+      
+        
+
+        <cxx-effects para_num="2" id="parallel.alg.exclusive.scan.2">
+    
+    <dt>Effects:</dt><dd>
+          Same as <code>exclusive_scan(first, last, result, init, plus&lt;&gt;())</code>.
+        </dd>
+  </cxx-effects>
+      
+    </dl>
+  </cxx-function>
+
+      <cxx-function para_num="3" id="parallel.alg.exclusive.scan.3">
+    
+    <pre><code><cxx-signature>
+          template&lt;class InputIterator, class OutputIterator,
+                   class T, class BinaryOperation&gt;
+            OutputIterator
+              exclusive_scan(InputIterator first, InputIterator last,
+                             OutputIterator result,
+                             T init, BinaryOperation binary_op);
+        </cxx-signature></code></pre>
+
+    <dl>
+      
+        
+
+        <cxx-effects para_num="4" id="parallel.alg.exclusive.scan.4">
+    
+    <dt>Effects:</dt><dd>
+          Assigns through each iterator <code>i</code> in <code>[result,result + (last - first))</code> the
+          value of <code><em>GENERALIZED_NONCOMMUTATIVE_SUM</em>(binary_op, init, *first, ..., *(first + (i - result) - 1))</code>.
+        </dd>
+  </cxx-effects>
+
+        <cxx-returns para_num="5" id="parallel.alg.exclusive.scan.5">
+    
+    <dt>Returns:</dt><dd>
+          The end of the resulting range beginning at <code>result</code>.
+        </dd>
+  </cxx-returns>
+
+        <cxx-requires para_num="6" id="parallel.alg.exclusive.scan.6">
+    
+    <dt>Requires:</dt><dd>
+          <code>binary_op</code> shall not invalidate iterators or subranges, nor modify elements in the
+          ranges <code>[first,last)</code> or <code>[result,result + (last - first))</code>.
+        </dd>
+  </cxx-requires>
+
+        <cxx-complexity para_num="7" id="parallel.alg.exclusive.scan.7">
+    
+    <dt>Complexity:</dt><dd>
+          O(<code>last - first</code>) applications of <code>binary_op</code>.
+        </dd>
+  </cxx-complexity>
+
+        <cxx-notes para_num="8" id="parallel.alg.exclusive.scan.8">
+    
+    <dt>Notes:</dt><dd>
+          The difference between <code>exclusive_scan</code> and <code>inclusive_scan</code> is that
+          <code>exclusive_scan</code> excludes the <code>i</code>th input element from the <code>i</code>th
+          sum. If <code>binary_op</code> is not mathematically associative, the behavior of
+          <code>exclusive_scan</code> may be non-deterministic.
+        </dd>
+  </cxx-notes>
+      
+    </dl>
+  </cxx-function>
+    
+    </section>
+  </cxx-section>
+
+    <cxx-section id="parallel.alg.inclusive.scan">
+    
+
+    <section>
+      <header><span class="section-number">4.4.4</span> <h1 data-bookmark-label="4.4.4 Inclusive scan">Inclusive scan</h1> <span style="float:right"><a href="#parallel.alg.inclusive.scan">[parallel.alg.inclusive.scan]</a></span></header>
+      
+      
+
+      <cxx-function para_num="1" id="parallel.alg.inclusive.scan.1">
+    
+    <pre><code><cxx-signature>
+          template&lt;class InputIterator, class OutputIterator&gt;
+            OutputIterator
+              inclusive_scan(InputIterator first, InputIterator last,
+                             OutputIterator result);
+        </cxx-signature></code></pre>
+
+    <dl>
+      
+        
+
+        <cxx-effects para_num="2" id="parallel.alg.inclusive.scan.2">
+    
+    <dt>Effects:</dt><dd>
+          Same as <code>inclusive_scan(first, last, result, plus&lt;&gt;())</code>.
+        </dd>
+  </cxx-effects>
+      
+    </dl>
+  </cxx-function>
+
+      <cxx-function para_num="3" id="parallel.alg.inclusive.scan.3">
+    
+    <pre><code><cxx-signature>
+          template&lt;class InputIterator, class OutputIterator,
+                   class BinaryOperation&gt;
+            OutputIterator
+              inclusive_scan(InputIterator first, InputIterator last,
+                             OutputIterator result,
+                             BinaryOperation binary_op);
+          
+          template&lt;class InputIterator, class OutputIterator,
+                   class BinaryOperation&gt;
+            OutputIterator
+              inclusive_scan(InputIterator first, InputIterator last,
+                             OutputIterator result,
+                             BinaryOperation binary_op, T init);
+        </cxx-signature></code></pre>
+
+    <dl>
+      
+        
+
+        <cxx-effects para_num="4" id="parallel.alg.inclusive.scan.4">
+    
+    <dt>Effects:</dt><dd>
+          Assigns through each iterator <code>i</code> in <code>[result,result + (last - first))</code> the value of
+          <code><em>GENERALIZED_NONCOMMUTATIVE_SUM</em>(binary_op, *first, ..., *(first + (i - result)))</code> or
+          <code><em>GENERALIZED_NONCOMMUTATIVE_SUM</em>(binary_op, init, *first, ..., *(first + (i - result)))</code>
+          if <code>init</code> is provided.
+        </dd>
+  </cxx-effects>
+
+        <cxx-returns para_num="5" id="parallel.alg.inclusive.scan.5">
+    
+    <dt>Returns:</dt><dd>
+          The end of the resulting range beginning at <code>result</code>.
+        </dd>
+  </cxx-returns>
+
+        <cxx-requires para_num="6" id="parallel.alg.inclusive.scan.6">
+    
+    <dt>Requires:</dt><dd>
+          <code>binary_op</code> shall not invalidate iterators or subranges, nor modify elements in the 
+          ranges <code>[first,last)</code> or <code>[result,result + (last - first))</code>.
+        </dd>
+  </cxx-requires>
+
+        <cxx-complexity para_num="7" id="parallel.alg.inclusive.scan.7">
+    
+    <dt>Complexity:</dt><dd>
+          O(<code>last - first</code>) applications of <code>binary_op</code>.
+        </dd>
+  </cxx-complexity>
+
+        <cxx-notes para_num="8" id="parallel.alg.inclusive.scan.8">
+    
+    <dt>Notes:</dt><dd>
+          The difference between <code>exclusive_scan</code> and <code>inclusive_scan</code> is that
+          <code>inclusive_scan</code> includes the <code>i</code>th input element in the <code>i</code>th sum.
+          If <code>binary_op</code> is not mathematically associative, the behavior of
+          <code>inclusive_scan</code> may be non-deterministic.
+        </dd>
+  </cxx-notes>
+      
+    </dl>
+  </cxx-function>
+    
+    </section>
+  </cxx-section>
+
+    <cxx-section id="parallel.alg.transform.reduce">
+    
+
+    <section>
+      <header><span class="section-number">4.4.5</span> <h1 data-bookmark-label="4.4.5 Transform reduce">Transform reduce</h1> <span style="float:right"><a href="#parallel.alg.transform.reduce">[parallel.alg.transform.reduce]</a></span></header>
+      
+      
+
+      <cxx-function para_num="1" id="parallel.alg.transform.reduce.1">
+    
+    <pre><code><cxx-signature>
+        <ins>
+          template&lt;class InputIterator, class UnaryFunction, class T, class BinaryOperation&gt;
+          T transform_reduce(InputIterator first, InputIterator last,
+                             UnaryOperation unary_op, T init, BinaryOperation binary_op);
+        </ins>
+        </cxx-signature></code></pre>
+
+    <dl>
+      
+        
+
+        <cxx-returns para_num="2" id="parallel.alg.transform.reduce.2">
+    
+    <dt>Returns:</dt><dd>
+        <ins>
+          <code><em>GENERALIZED_SUM</em>(binary_op, init, unary_op(*first), ..., unary_op(*(first + (last - first) - 1)))</code>.
+        </ins>
+        </dd>
+  </cxx-returns>
+
+        <cxx-requires para_num="3" id="parallel.alg.transform.reduce.3">
+    
+    <dt>Requires:</dt><dd>
+        <ins>
+          Neither <code>unary_op</code> nor <code>binary_op</code> shall invalidate subranges, or modify elements in the range <code>[first,last)</code>
+        </ins>
+        </dd>
+  </cxx-requires>
+
+        <cxx-complexity para_num="4" id="parallel.alg.transform.reduce.4">
+    
+    <dt>Complexity:</dt><dd>
+        <ins>
+          O(<code>last - first</code>) applications each of <code>unary_op</code> and <code>binary_op</code>.
+        </ins>
+        </dd>
+  </cxx-complexity>
+
+        <cxx-notes para_num="5" id="parallel.alg.transform.reduce.5">
+    
+    <dt>Notes:</dt><dd>
+        <ins>
+          <code>transform_reduce</code> does not apply <code>unary_op</code> to <code>init</code>.
+        </ins>
+        </dd>
+  </cxx-notes>
+      
+    </dl>
+  </cxx-function>
+    
+    </section>
+  </cxx-section>
+
+    <cxx-section id="parallel.alg.transform.exclusive.scan">
+    
+
+    <section>
+      <header><span class="section-number">4.4.6</span> <h1 data-bookmark-label="4.4.6 Transform exclusive scan">Transform exclusive scan</h1> <span style="float:right"><a href="#parallel.alg.transform.exclusive.scan">[parallel.alg.transform.exclusive.scan]</a></span></header>
+      
+      
+
+      <cxx-function para_num="1" id="parallel.alg.transform.exclusive.scan.1">
+    
+    <pre><code><cxx-signature>
+        <ins>
+          template&lt;class InputIterator, class OutputIterator,
+                   class UnaryOperation,
+                   class T, class BinaryOperation&gt;
+            OutputIterator
+              transform_exclusive_scan(InputIterator first, InputIterator last,
+                                       OutputIterator result,
+                                       UnaryOperation unary_op,
+                                       T init, BinaryOperation binary_op);
+        </ins>
+        </cxx-signature></code></pre>
+
+    <dl>
+      
+        
+
+        <cxx-effects para_num="2" id="parallel.alg.transform.exclusive.scan.2">
+    
+    <dt>Effects:</dt><dd>
+        <ins>
+          Assigns through each iterator <code>i</code> in <code>[result,result + (last - first))</code> the value of
+          <code><em>GENERALIZED_NONCOMMUTATIVE_SUM</em>(binary_op, init, unary_op(*first), ..., unary_op(*(first + (i - result) - 1)))</code>.
+        </ins>
+        </dd>
+  </cxx-effects>
+
+        <cxx-returns para_num="3" id="parallel.alg.transform.exclusive.scan.3">
+    
+    <dt>Returns:</dt><dd>
+        <ins>
+          The end of the resulting range beginning at <code>result</code>.
+        </ins>
+        </dd>
+  </cxx-returns>
+
+        <cxx-requires para_num="4" id="parallel.alg.transform.exclusive.scan.4">
+    
+    <dt>Requires:</dt><dd>
+        <ins>
+          Neither <code>unary_op</code> nor <code>binary_op</code> shall invalidate iterators or subranges, or modify elements in the
+          ranges <code>[first,last)</code> or <code>[result,result + (last - first))</code>.
+        </ins>
+        </dd>
+  </cxx-requires>
+
+        <cxx-complexity para_num="5" id="parallel.alg.transform.exclusive.scan.5">
+    
+    <dt>Complexity:</dt><dd>
+        <ins>
+          O(<code>last - first</code>) applications each of <code>unary_op</code> and <code>binary_op</code>.
+        </ins>
+        </dd>
+  </cxx-complexity>
+
+        <cxx-notes para_num="6" id="parallel.alg.transform.exclusive.scan.6">
+    
+    <dt>Notes:</dt><dd>
+        <ins>
+          The difference between <code>transform_exclusive_scan</code> and <code>transform_inclusive_scan</code> is that <code>transform_exclusive_scan</code>
+          excludes the ith input element from the ith sum. If <code>binary_op</code> is not mathematically associative, the behavior of
+          <code>transform_exclusive_scan</code> may be non-deterministic. <code>transform_exclusive_scan</code> does not apply <code>unary_op</code> to <code>init</code>.
+        </ins>
+        </dd>
+  </cxx-notes>
+      
+    </dl>
+  </cxx-function>
+    
+    </section>
+  </cxx-section>
+
+    <cxx-section id="parallel.alg.transform.inclusive.scan">
+    
+
+    <section>
+      <header><span class="section-number">4.4.7</span> <h1 data-bookmark-label="4.4.7 Transform inclusive scan">Transform inclusive scan</h1> <span style="float:right"><a href="#parallel.alg.transform.inclusive.scan">[parallel.alg.transform.inclusive.scan]</a></span></header>
+      
+      
+
+      <cxx-function para_num="1" id="parallel.alg.transform.inclusive.scan.1">
+    
+    <pre><code><cxx-signature>
+        <ins>
+          template&lt;class InputIterator, class OutputIterator,
+                   class UnaryOperation,
+                   class BinaryOperation&gt;
+            OutputIterator
+              transform_inclusive_scan(InputIterator first, InputIterator last,
+                                       OutputIterator result,
+                                       UnaryOperation unary_op,
+                                       BinaryOperation binary_op);
+
+          template&lt;class InputIterator, class OutputIterator,
+                   class UnaryOperation,
+                   class BinaryOperation, class T&gt;
+            OutputIterator
+              transform_inclusive_scan(InputIterator first, InputIterator last,
+                                       OutputIterator result,
+                                       UnaryOperation unary_op,
+                                       BinaryOperation binary_op, T init);
+        </ins>
+        </cxx-signature></code></pre>
+
+    <dl>
+      
+        
+
+        <cxx-effects para_num="2" id="parallel.alg.transform.inclusive.scan.2">
+    
+    <dt>Effects:</dt><dd>
+        <ins>
+          Assigns through each iterator <code>i</code> in <code>[result,result + (last - first))</code> the value of
+          <code><em>GENERALIZED_NONCOMMUTATIVE_SUM</em>(binary_op, unary_op(*first), ..., unary_op(*(first + (i - result))))</code> or
+          <code><em>GENERALIZED_NONCOMMUTATIVE_SUM</em>(binary_op, init, unary_op(*first), ..., unary_op(*(first + (i - result))))</code>
+          if <code>init</code> is provided.
+        </ins>
+        </dd>
+  </cxx-effects>
+
+        <cxx-returns para_num="3" id="parallel.alg.transform.inclusive.scan.3">
+    
+    <dt>Returns:</dt><dd>
+        <ins>
+          The end of the resulting range beginning at <code>result</code>.
+        </ins>
+        </dd>
+  </cxx-returns>
+
+        <cxx-requires para_num="4" id="parallel.alg.transform.inclusive.scan.4">
+    
+    <dt>Requires:</dt><dd>
+        <ins>
+          Neither <code>unary_op</code> nor <code>binary_op</code> shall invalidate iterators or subranges, or modify elements in the ranges <code>[first,last)</code>
+          or <code>[result,result + (last - first))</code>.
+        </ins>
+        </dd>
+  </cxx-requires>
+
+        <cxx-complexity para_num="5" id="parallel.alg.transform.inclusive.scan.5">
+    
+    <dt>Complexity:</dt><dd>
+        <ins>
+          O(<code>last - first</code>) applications each of <code>unary_op</code> and <code>binary_op</code>.
+        </ins>
+        </dd>
+  </cxx-complexity>
+
+        <cxx-notes para_num="6" id="parallel.alg.transform.inclusive.scan.6">
+    
+    <dt>Notes:</dt><dd>
+        <ins>
+            The difference between <code>transform_exclusive_scan</code> and <code>transform_inclusive_scan</code> is that <code>transform_inclusive_scan</code>
+            includes the ith input element from the ith sum. If <code>binary_op</code> is not mathematically associative, the behavior of
+            <code>transform_inclusive_scan</code> may be non-deterministic. <code>transform_inclusive_scan</code> does not apply <code>unary_op</code> to <code>init</code>.
+        </ins>
+        </dd>
+  </cxx-notes>
+      
+    </dl>
+  </cxx-function>
+    
+    </section>
+  </cxx-section>
+  
+    </section>
+  </cxx-section>
+
+    </section>
+  </cxx-clause>
+
+
+
+
+
+</body></html>
