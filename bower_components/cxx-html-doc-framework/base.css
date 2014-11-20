@@ -20,13 +20,14 @@ limitations under the License.
     @bottom-left { content: string(current-section, last); font-size: 10pt; }
     @bottom-right { content: counter(page); font-size: 10pt; }
 }
-cxx-titlepage { page: title; page-break-after: always; }
-@page title {
+@page :first {
     @top-left { content: "© ISO 2014 — All rights reserved"; }
     @top-right { content: normal; }
     @bottom-left { content: normal; }
     @bottom-right { content: normal; }
 }
+
+body { margin: 0; }
 
 @media screen {
     body { max-width: 7in;
@@ -65,6 +66,8 @@ cxx-toc::shadow h1 { bookmark-level: 2; }
 cxx-clause h1 { bookmark-level: 2; }
 cxx-clause cxx-section h1 { bookmark-level: 3; }
 cxx-clause cxx-section cxx-section h1 { bookmark-level: 4; }
+/* The <h2> is a subtitle, which shouldn't get a PDF bookmark. */
+cxx-titlepage::shadow h2 { bookmark-level: none; }
 
 *::shadow .section-number { string-set: current-section "§ " content(); }
 
@@ -81,6 +84,28 @@ pre {
     margin-left: 1em;
     margin-top: .5em;
     margin-bottom: .5em;
+}
+
+* /deep/ wbr::after {
+    white-space: normal;
+    content: '\200B';
+}
+* /deep/ code {
+    /* Make inline code avoid line wraps unless we override it with <wbr>. */
+    white-space: nowrap;
+}
+* /deep/ pre code {
+    /* Keep block-code wrapping according to its context. */
+    white-space: inherit;
+}
+
+* /deep/ table {
+    border-collapse: collapse;
+}
+* /deep/ td, th {
+    padding-left: .2em;
+    padding-right: .2em;
+    border: thin solid black;
 }
 
 /* Use an em-dash for the list bullet.
@@ -100,6 +125,9 @@ pre {
 @media print {
     ul li::marker {
         content: "\2014";
+    }
+    [is=cxx-table].list ul li::marker {
+        content: none;
     }
 }
 

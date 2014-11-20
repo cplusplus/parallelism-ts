@@ -52,6 +52,10 @@ Wraps the title page of an ISO document. The title page takes a
 them) `CD`, `DTS`, `TS`, etc.  The title page recognizes several
 nested elements that describe the document.
 
+#### `<cxx-project-number>`
+
+The ISO project number for this TS or IS.  Find this on https://isocpp.org/std/status.
+
 #### `<cxx-docnum>`
 
 The D or N number for the document.
@@ -94,13 +98,19 @@ number, and formats and links the `id`.
 ### `<cxx-ednote>`
 
 An editor's note that won't appear in the final published document.
-This is formatted as a separate box on the side of the document.
+This is formatted as a separate box on the side of the document,
+unless it's marked with class="para", in which case it's formatted as a normal paragraph in a box.
 
 
 ### `<cxx-email>`
 
 Must contain an email address as text, and wraps it into an
 appropriate `mailto:` link.
+
+### `<w-br>`
+
+Introduces a soft line-break inside an otherwise-nowrap context. This works in
+Firefox and Prince, where <wbr> fails, in addition to other browsers.
 
 ### `<cxx-function>`
 
