@@ -13,18 +13,13 @@ See the License for the specific language governing permissions and
 limitations under the License.
 -->
 
-<polymer-element name="cxx-ednote" noscript>
-  <template>
-    <style>
-      :host { display: block; }
-      :host-context(body.cxx-pdts) { display: none; }
-      aside { float: right; max-width: 40%;
-              margin: 1ex;
-              border: 1px dashed #888;
-              padding: 1ex;
-              background-color: #eee; }
-      :host(.para) aside { float: none; max-width: none; }
-    </style>
-    <aside><strong>Editor's note:</strong> <content></content></aside>
-  </template>
+<!-- <wbr> doesn't work inside white-space:nowrap in Firefox, and
+     white-space:normal with a U+200B (zero-width space) doesn't work in Chrome.
+     So this element uses both. -->
+
+<polymer-element name="w-br" noscript>
+  <template><style>
+      :host { white-space: normal;}
+      :host::after { content: '\200b';}
+    </style><wbr></template>
 </polymer-element>

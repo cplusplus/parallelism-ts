@@ -66,6 +66,9 @@ stable_partition
 stable_sort
 swap_ranges
 transform
+transform_exclusive_scan
+transform_inclusive_scan
+transform_reduce
 uninitialized_copy
 uninitialized_copy_n
 uninitialized_fill

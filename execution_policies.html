@@ -3,25 +3,18 @@
   <cxx-section id="parallel.execpol.general">
     <h1>In general</h1>
       <p>
-      <del>
-        This clause describes classes that represent <dfn>execution policies</dfn>. An
-        <dfn>execution policy</dfn> is an object that expresses the requirements on the ordering
-        of functions invoked as a consequence of the invocation of a standard
-        algorithm. Execution policies afford standard algorithms the discretion to
-        execute in parallel.
-      </del>
-      <ins>
         This clause describes classes that are <dfn>execution policy</dfn> types. An object
-        of an execution policy type indicates to an algorithm whether it is allowed to execute
-        in parallel and expresses the requirements on the element access functions.
-      </ins>
+        of an execution policy type indicates <ins>the kinds of parallelism allowed in the execution
+        of</ins> <del>to</del> an algorithm <del>whether it is allowed to execute
+        in parallel</del> and expresses the <ins>consequent</ins> requirements on the element
+        access functions.
       </p>
 
       <cxx-example>
     <pre>std::vector&lt;int&gt; v = ...
 
 // standard sequential sort
-std::sort(vec.begin(), vec.end());
+std::sort(v<del>ec</del>.begin(), v<del>ec</del>.end());
 
 using namespace std::experimental::parallel;
 
@@ -32,7 +25,7 @@ sort(seq, v.begin(), v.end());
 sort(par, v.begin(), v.end());
 
 // permitting vectorization as well
-sort(<del>vec</del><ins>par_vec</ins>, v.begin(), v.end());
+sort(par_vec, v.begin(), v.end());
 
 // sort with dynamically-selected execution
 size_t threshold = ...
@@ -49,7 +42,7 @@ sort(exec, v.begin(), v.end());
     <cxx-note>
       Because different parallel architectures may require idiosyncratic
       parameters for efficient execution, implementations of the Standard Library 
-      <del>should</del><ins>may</ins> provide additional execution policies to those described in this
+      may provide additional execution policies to those described in this
       Technical Specification as extensions.
     </cxx-note>
   </cxx-section>
@@ -60,10 +53,10 @@ sort(exec, v.begin(), v.end());
 namespace std {
 namespace experimental {
 namespace parallel {
-<ins>inline namespace v1 {</ins>
+inline namespace v1 {
   <cxx-ref insynopsis="" to="parallel.execpol.type"></cxx-ref>
   template&lt;class T&gt; struct is_execution_policy;
-  <ins>template&lt;class T&gt; constexpr bool is_execution_policy_v = is_execution_policy&lt;T&gt;::value;</ins>
+  template&lt;class T&gt; constexpr bool is_execution_policy_v = is_execution_policy&lt;T&gt;::value;
 
   <cxx-ref insynopsis="" to="parallel.execpol.seq"></cxx-ref>
   class sequential_execution_policy;
@@ -72,11 +65,11 @@ namespace parallel {
   class parallel_execution_policy;
 
   <cxx-ref insynopsis="" to="parallel.execpol.vec"></cxx-ref>
-  class <del>vector_execution_policy</del><ins>parallel_vector_execution_policy</ins>;
+  class parallel_vector_execution_policy;
 
   <cxx-ref insynopsis="" to="parallel.execpol.dynamic"></cxx-ref>
   class execution_policy;
-<ins>}</ins>
+}
 }
 }
 }
@@ -86,24 +79,21 @@ namespace parallel {
     <h1>Execution policy type trait</h1>
 
 <pre>
-<del>
-namespace std {
-namespace experimental {
-namespace parallel { </del>
-  template&lt;class T&gt; struct is_execution_policy <ins> { <em>see below</em> };</ins>
-  <del>  : integral_constant&lt;bool, <em>see below</em>&gt; { };</del>
-<del>
-}
-}
-}
-</del>
+template&lt;class T&gt; struct is_execution_policy { <em>see below</em> };
 </pre>
 
     <p><code>is_execution_policy</code> can be used to detect parallel execution policies for the purpose of excluding function signatures from otherwise ambiguous overload resolution participation.</p>
     
-    <del><p>If <code>T</code> is the type of a standard or implementation-defined execution policy, <code>is_execution_policy&lt;T&gt;</code> shall be publicly derived from <code>integral_constant&lt;bool,true&gt;</code>,
-    otherwise from <code>integral_constant&lt;bool,false&gt;</code>.</p></del>
-    <ins><p><code>is_execution_policy&lt;T&gt;</code> shall be a UnaryTypeTrait with a BaseCharacteristic of <code>true_type</code> if <code>T</code> is the type of a standard or implementation-defined execution policy, otherwise <code>false_type</code>.</ins>
+    <p><code>is_execution_policy&lt;T&gt;</code> shall be a UnaryTypeTrait with a BaseCharacteristic of <code>true_type</code> if <code>T</code> is the type of a standard or implementation-defined execution policy, otherwise <code>false_type</code>.
+
+    <pre>
+</pre>
+
+    <ins>
+      <cxx-note>
+        This provision reserves the privilege of creating non-standard execution policies to the library implementation.
+      </cxx-note>
+    </ins>
     
     <p>The behavior of a program that adds specializations for <code>is_execution_policy</code> is undefined.</p>
   </cxx-section>
@@ -112,17 +102,7 @@ namespace parallel { </del>
     <h1>Sequential execution policy</h1>
 
     <pre>
-<del>
-namespace std {
-namespace experimental {
-namespace parallel {
-</del>
-  class sequential_execution_policy{ <ins><i>unspecified</i></ins> };
-<del>
-}
-}
-}
-</del>
+class sequential_execution_policy{ <i>unspecified</i> };
 </pre>
 
     <p>The class <code>sequential_execution_policy</code> is an execution policy type used as a unique type to disambiguate parallel algorithm overloading and require that a parallel algorithm's execution may not be parallelized.</p>
@@ -132,40 +112,20 @@ namespace parallel {
     <h1>Parallel execution policy</h1>
 
 <pre>
-<del>
-namespace std {
-namespace experimental {
-namespace parallel {
-</del>
-  class parallel_execution_policy{ <ins><i>unspecified</i></ins> };
-<del>
-}
-}
-}
-</del>
+class parallel_execution_policy{ <i>unspecified</i> };
 </pre>
 
     <p>The class <code>parallel_execution_policy</code> is an execution policy type used as a unique type to disambiguate parallel algorithm overloading and indicate that a parallel algorithm's execution may be parallelized.</p>
 
   </cxx-section>
   <cxx-section id="parallel.execpol.vec">
-    <h1><ins>Parallel+</ins>Vector execution policy</h1>
+    <h1>Parallel+Vector execution policy</h1>
 
 <pre>
-<del>
-namespace std {
-namespace experimental {
-namespace parallel {
-</del>
-  class <del>vector_execution_policy</del><ins>parallel_vector_execution_policy</ins>{ <ins><i>unspecified</i></ins> };
-<del>
-}
-}
-}
-</del>
+class parallel_vector_execution_policy{ <i>unspecified</i> };
 </pre>
 
-    <p>The class <code>class <del>vector_execution_policy</del><ins>parallel_vector_execution_policy</ins></code> is an execution policy type used as a unique type to disambiguate parallel algorithm overloading and indicate that a parallel algorithm's execution may be vectorized and parallelized.</p>
+    <p>The class <code>class parallel_vector_execution_policy</code> is an execution policy type used as a unique type to disambiguate parallel algorithm overloading and indicate that a parallel algorithm's execution may be vectorized and parallelized.</p>
 
   </cxx-section>
 
@@ -173,27 +133,17 @@ namespace parallel {
     <h1>Dynamic execution policy</h1>
 
 <pre>
-<del>
-namespace std {
-namespace experimental {
-namespace parallel {
-</del>
-  class execution_policy
-  {
-    public:
-      <cxx-ref insynopsis="" to="parallel.execpol.con"></cxx-ref>
-      template&lt;class T&gt; execution_policy(const T&amp; exec);
-      template&lt;class T&gt; execution_policy&amp; operator=(const T&amp; exec);
+class execution_policy
+{
+  public:
+    <cxx-ref insynopsis="" to="parallel.execpol.con"></cxx-ref>
+    template&lt;class T&gt; execution_policy(const T&amp; exec);
+    template&lt;class T&gt; execution_policy&amp; operator=(const T&amp; exec);
 
-      <cxx-ref insynopsis="" to="parallel.execpol.access"></cxx-ref>
-      template&lt;class T&gt; T* get() noexcept;
-      template&lt;class T&gt; const T* get() const noexcept;
-  };
-<del>
-}
-}
-}
-</del>
+    <cxx-ref insynopsis="" to="parallel.execpol.access"></cxx-ref>
+    template&lt;class T&gt; T* get() noexcept;
+    template&lt;class T&gt; const T* get() const noexcept;
+};
 </pre>
 
     <p>The class <code>execution_policy</code> is a container for execution policy objects.
@@ -202,16 +152,15 @@ namespace parallel {
     <cxx-example>
       <pre>std::vector&lt;float&gt; sort_me = ...
         
-<ins>using namespace std::experimental::parallel;</ins>
-<del><code>std::</code></del>execution_policy exec = <del><code>std::</code></del>seq;
+using namespace std::experimental::parallel;
+execution_policy exec = seq;
 
 if(sort_me.size() &gt; threshold)
 {
   exec = std::par;
 }
  
-<del>std::sort(exec, sort_me.begin(), sort_me.end());</del>
-<ins>std::sort(exec, std::begin(sort_me), std::end(sort_me));</ins></pre>
+std::sort(exec, std::begin(sort_me), std::end(sort_me));</pre>
     </cxx-example>
 
     <p>Objects of type <code>execution_policy</code> shall be constructible and assignable from objects of
@@ -225,17 +174,10 @@ if(sort_me.size() &gt; threshold)
 
         <cxx-effects>Constructs an <code>execution_policy</code> object with a copy of <code>exec</code>'s state.</cxx-effects>
 
-        <del>
-          <cxx-requires>
-            <code>is_execution_policy&lt;T&gt;::value</code> is <code>true</code>.
-          </cxx-requires>
-        </del>
-        <ins>
-          <cxx-remarks>
-            This constructor shall not participate in overload resolution unless
-            <code>is_execution_policy&lt;T&gt;::value</code> is <code>true</code>.
-          </cxx-remarks>
-        </ins>
+        <cxx-remarks>
+          This constructor shall not participate in overload resolution unless
+          <code>is_execution_policy&lt;T&gt;::value</code> is <code>true</code>.
+        </cxx-remarks>
       </cxx-function>
 
       <cxx-function>
@@ -244,12 +186,6 @@ if(sort_me.size() &gt; threshold)
         <cxx-effects>Assigns a copy of <code>exec</code>'s state to <code>*this</code>.</cxx-effects>
 
         <cxx-returns><code>*this</code>.
-
-        <del>
-          <cxx-requires>
-            <code>is_execution_policy&lt;T&gt;::value</code> is <code>true</code>.
-          </cxx-requires>
-        </del>
       </cxx-function>
     </cxx-section>
 
@@ -267,16 +203,14 @@ if(sort_me.size() &gt; threshold)
       <cxx-function>
         <cxx-signature>
           template&lt;class T&gt; T* get() noexcept;
-          template&lt;class T&gt; const T* get() <ins>const</ins> noexcept;
+          template&lt;class T&gt; const T* get() const noexcept;
         </cxx-signature>
 
         <cxx-returns>If <code>target_type() == typeid(T)</code>, a pointer to the stored execution policy object; otherwise a null pointer.</cxx-returns>
 
-        <ins>
-          <cxx-requires>
-            <code>is_execution_policy&lt;T&gt;::value</code> is <code>true</code>.
-          </cxx-requires>
-        </ins>
+        <cxx-requires>
+          <code>is_execution_policy&lt;T&gt;::value</code> is <code>true</code>.
+        </cxx-requires>
       </cxx-function>
 
     </cxx-section>
@@ -286,28 +220,11 @@ if(sort_me.size() &gt; threshold)
     <h1>Execution policy objects</h1>
 
 <pre>
-<del>
-namespace std {
-namespace experimental {
-namespace parallel {
-</del>
-<del>
-  constexpr sequential_execution_policy seq = sequential_execution_policy();
-  constexpr parallel_execution_policy   par = parallel_execution_policy();
-  constexpr vector_execution_policy     vec = vector_execution_policy();
-</del>
-<ins>
-  constexpr sequential_execution_policy      seq{};
-  constexpr parallel_execution_policy        par{};
-  constexpr parallel_vector_execution_policy par_vec{};
-</ins>
-<del>
-}
-}
-}
-</del>
+constexpr sequential_execution_policy      seq{};
+constexpr parallel_execution_policy        par{};
+constexpr parallel_vector_execution_policy par_vec{};
 </pre>
 
-    <p>The header <code>&lt;<ins>experimental/</ins>execution_policy&gt;</code> declares a global object associated with each type of execution policy defined by this Technical Specification.</p>
+    <p>The header <code>&lt;experimental/execution_policy&gt;</code> declares a global object associated with each type of execution policy defined by this Technical Specification.</p>
   </cxx-section>
 </cxx-clause>

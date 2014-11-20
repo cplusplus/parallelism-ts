@@ -37,7 +37,7 @@
     <p>ISO/IEC 14882:— is herein called the <dfn>C++ Standard</dfn>.
     The library described in ISO/IEC 14882:— clauses 17-30 is herein called
     the <dfn>C++ Standard Library</dfn>. The C++ Standard Library components described in
-    ISO/IEC 14882:— clauses 25 <del>and</del><ins>,</ins> 26.7<ins> and 20.7.2</ins> are herein called the <dfn>C++ Standard
+    ISO/IEC 14882:— clauses 25, 26.7 and 20.7.2 are herein called the <dfn>C++ Standard
     Algorithms Library</dfn>.</p>
 
     <p>Unless otherwise specified, the whole of the C++ Standard's Library
@@ -48,11 +48,11 @@
   <cxx-section id="parallel.general.namespaces">
     <h1>Namespaces and headers</h1>
 
-    <p>Since the the extensions described in this Technical Specification are
+    <p>Since the <del>the</del> extensions described in this Technical Specification are
     experimental and not part of the C++ Standard Library, they should not be
     declared directly within namespace <code>std</code>. Unless otherwise specified, all
     components described in this Technical Specification are declared in namespace 
-    <code>std::experimental::parallel<ins>::v1</ins></code>.</p>
+    <code>std::experimental::parallel::v1</code>.</p>
 
     <cxx-note>
     Once standardized, the components described by this Technical Specification are expected to be promoted to namespace <code>std</code>. 
@@ -60,7 +60,7 @@
 
     <p>Unless otherwise specified, references to such entities described in this
     Technical Specification are assumed to be qualified with
-    <code>std::experimental::parallel<ins>::v1</ins></code>, and references to entities described in the C++
+    <code>std::experimental::parallel::v1</code>, and references to entities described in the C++
     Standard Library are assumed to be qualified with <code>std::</code>.</p>
 
     <p>Extensions that are expected to eventually be added to an existing header
@@ -76,44 +76,44 @@
   
       <p>For the purposes of this document, the terms and definitions given in the C++ Standard and the following apply.</p>
   
-      <p>A <dfn>parallel algorithm</dfn> is a function template described by this Technical Specification declared in namespace <code>std::experimental::parallel<ins>::v1</ins></code> with a formal template parameter named <code>ExecutionPolicy</code>.</p>
+      <p>A <dfn>parallel algorithm</dfn> is a function template described by this Technical Specification declared in namespace <code>std::experimental::parallel::v1</code> with a formal template parameter named <code>ExecutionPolicy</code>.</p>
   
   
       <p>
-        <ins>Parallel algorithms access objects indirectly accessible via their arguments by invoking the following functions:</ins>
+        Parallel algorithms access objects indirectly accessible via their arguments by invoking the following functions:
   
         <ul>
           <li>
-            <ins>All operations of the categories of the iterators that the algorithm is instantiated with.</ins>
+            All operations of the categories of the iterators that the algorithm is instantiated with.
           </li>
   
           <li>
-            <ins>Functions on those sequence elements that are required by its specification.</ins>
+            Functions on those sequence elements that are required by its specification.
           </li>
   
           <li>
-            <ins>User-provided function objects to be applied during the execution of the algorithm, if required by the specification.</ins>
+            User-provided function objects to be applied during the execution of the algorithm, if required by the specification.
           </li>
         </ul>
   
-        <ins>These functions are herein called <em>element access functions</em>.</ins><pre>
+        These functions are herein called <em>element access functions</em>.<pre>
 </pre>
   
         <cxx-example>
-          <ins>The <code>sort</code> function may invoke the following element access functions:</ins>
+          The <code>sort</code> function may invoke the following element access functions:
   
           <ul>
             <li>
-              <ins>Methods of the random-access iterator of the actual template argument, as per 24.2.7, as implied by the name of the
-              template parameters <code>RandomAccessIterator</code>.</ins>
+              Methods of the random-access iterator of the actual template argument, as per 24.2.7, as implied by the name of the
+              template parameters <code>RandomAccessIterator</code>.
             </li>
   
             <li>
-              <ins>The <code>swap</code> function on the elements of the sequence (as per 25.4.1.1 [sort]/2).</ins>
+              The <code>swap</code> function on the elements of the sequence (as per 25.4.1.1 [sort]/2).
             </li>
   
             <li>
-              <ins>The user-provided <code>Compare</code> function object.</ins>
+              The user-provided <code>Compare</code> function object.
             </li>
           </ul>
         </cxx-example>
