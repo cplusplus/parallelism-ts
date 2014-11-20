@@ -13,7 +13,7 @@ N4104 is the latest Parallelism TS Working Draft. It contains changes to the Par
 
 N4310 updates the previous draft, N4104, published in the post-Rapperswil mailing.
 
-N4312 is document N$310 reformatted as a DTS ballot document.
+N4312 is document N4310 reformatted as a DTS ballot document.
 
 ## Technical Changes
 
