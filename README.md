@@ -29,7 +29,7 @@ N4312 is document N4310 reformatted as a DTS ballot document.
 
   * US1: Execution policy definition
 
-    Resolution: S 2.1 p1 refines the defintion of "execution policy".
+    Resolution: S 2.1 p1 refines the definition of "execution policy".
 
   * US3: Elemental access functions can interrupt user code:
 
