@@ -9,7 +9,7 @@
 
 # Parallelism TS Editor's Report, post-Urbana
 
-N4104 is the latest Parallelism TS Working Draft. It contains changes to the Parallelism TS as directed by the committee at the Urbana meeting.
+N4310 is the latest Parallelism TS Working Draft. It contains changes to the Parallelism TS as directed by the committee at the Urbana meeting.
 
 N4310 updates the previous draft, N4104, published in the post-Rapperswil mailing.
 
