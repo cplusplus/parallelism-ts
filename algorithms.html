@@ -615,6 +615,15 @@ inline namespace v1 {
                                OutputIterator result,
                                UnaryOperation unary_op,
                                T init, BinaryOperation binary_op);
+  <ins>template&lt;class ExecutionPolicy,
+           class InputIterator, class OutputIterator,
+           class UnaryOperation, class T, class BinaryOperation&gt;
+    OutputIterator
+      transform_exclusive_scan(ExecutionPolicy&amp;&amp; exec,
+                               InputIterator first, InputIterator last,
+                               OutputIterator result,
+                               UnaryOperation unary_op,
+                               T init, BinaryOperation binary_op);</ins>
 
   template&lt;class InputIterator, class OutputIterator,
            class UnaryOperation, class BinaryOperation&gt;
