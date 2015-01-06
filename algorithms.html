@@ -373,6 +373,11 @@ inline namespace v1 {
   template&lt;class InputIterator, class Size, class Function&gt;
     InputIterator for_each_n(InputIterator first, Size n,
                              Function f);
+  <ins>template&lt;class ExecutionPolicy,
+           class InputIterator, class Size, class Function&gt;
+    InputIterator for_each_n(ExecutionPolicy&amp;&amp; exec,
+                             InputIterator first, Size n,
+                             Function f);</ins>
 }
 }
 }
