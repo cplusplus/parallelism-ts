@@ -560,18 +560,40 @@ inline namespace v1 {
     OutputIterator
       inclusive_scan(InputIterator first, InputIterator last,
                      OutputIterator result);
+  <ins>template&lt;class ExecutionPolicy,
+           class InputIterator, class OutputIterator&gt;
+    OutputIterator
+      inclusive_scan(ExecutionPolicy&amp;&amp; exec,
+                     InputIterator first, InputIterator last,
+                     OutputIterator result);</ins>
   template&lt;class InputIterator, class OutputIterator,
            class BinaryOperation&gt;
     OutputIterator
       inclusive_scan(InputIterator first, InputIterator last,
                      OutputIterator result,
                      BinaryOperation binary_op);
+  <ins>template&lt;class ExecutionPolicy,
+           class InputIterator, class OutputIterator,
+           class BinaryOperation&gt;
+    OutputIterator
+      inclusive_scan(ExecutionPolicy&amp;&amp; exec,
+                     InputIterator first, InputIterator last,
+                     OutputIterator result,
+                     BinaryOperation binary_op);</ins>
   template&lt;class InputIterator, class OutputIterator,
            class BinaryOperation, class T&gt;
     OutputIterator
       inclusive_scan(InputIterator first, InputIterator last,
                      OutputIterator result,
                      BinaryOperation binary_op, T init);
+  <ins>template&lt;class ExecutionPolicy,
+           class InputIterator, class OutputIterator,
+           class BinaryOperation, class T&gt;
+    OutputIterator
+      inclusive_scan(ExecutionPolicy&amp;&amp; exec,
+                     InputIterator first, InputIterator last,
+                     OutputIterator result,
+                     BinaryOperation binary_op, T init);</ins>
 
   template&lt;class InputIterator, class UnaryOperation,
            class T, class BinaryOperation&gt;
