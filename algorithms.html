@@ -533,12 +533,28 @@ inline namespace v1 {
       exclusive_scan(InputIterator first, InputIterator last,
                      OutputIterator result,
                      T init);
+  <ins>template&lt;class ExecutionPolicy,
+           class InputIterator, class OutputIterator,
+           class T&gt;
+    OutputIterator
+      exclusive_scan(ExecutionPolicy&amp;&amp; exec,
+                     InputIterator first, InputIterator last,
+                     OutputIterator result,
+                     T init);</ins>
   template&lt;class InputIterator, class OutputIterator,
            class T, class BinaryOperation&gt;
     OutputIterator
       exclusive_scan(InputIterator first, InputIterator last,
                      OutputIterator result,
                      T init, BinaryOperation binary_op);
+  <ins>template&lt;class ExecutionPolicy,
+           class InputIterator, class OutputIterator,
+           class T, class BinaryOperation&gt;
+    OutputIterator
+      exclusive_scan(ExecutionPolicy&amp;&amp; exec,
+                     InputIterator first, InputIterator last,
+                     OutputIterator result,
+                     T init, BinaryOperation binary_op);</ins>
 
   template&lt;class InputIterator, class OutputIterator&gt;
     OutputIterator
