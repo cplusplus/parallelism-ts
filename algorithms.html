@@ -632,6 +632,15 @@ inline namespace v1 {
                                OutputIterator result,
                                UnaryOperation unary_op,
                                BinaryOperation binary_op);
+  <ins>template&lt;class ExecutionPolicy,
+           class InputIterator, class OutputIterator,
+           class UnaryOperation, class BinaryOperation&gt;
+    OutputIterator
+      transform_inclusive_scan(ExecutionPolicy&amp;&amp; exec,
+                               InputIterator first, InputIterator last,
+                               OutputIterator result,
+                               UnaryOperation unary_op,
+                               BinaryOperation binary_op);</ins>
 
   template&lt;class InputIterator, class OutputIterator,
            class UnaryOperation, class BinaryOperation, class T&gt;
@@ -640,6 +649,15 @@ inline namespace v1 {
                                OutputIterator result,
                                UnaryOperation unary_op,
                                BinaryOperation binary_op, T init);
+  <ins>template&lt;class ExecutionPolicy,
+           class InputIterator, class OutputIterator,
+           class UnaryOperation, class BinaryOperation, class T&gt;
+    OutputIterator
+      transform_inclusive_scan(ExecutionPolicy&amp;&amp; exec,
+                               InputIterator first, InputIterator last,
+                               OutputIterator result,
+                               UnaryOperation unary_op,
+                               BinaryOperation binary_op, T init);</ins>
 }
 }
 }
