@@ -600,6 +600,13 @@ inline namespace v1 {
     T transform_reduce(InputIterator first, InputIterator last,
                        UnaryOperation unary_op,
                        T init, BinaryOperation binary_op);
+  <ins>template&lt;class ExecutionPolicy,
+           class InputIterator, class UnaryOperation,
+           class T, class BinaryOperation&gt;
+    T transform_reduce(ExecutionPolicy&amp;&amp; exec,
+                       InputIterator first, InputIterator last,
+                       UnaryOperation unary_op,
+                       T init, BinaryOperation binary_op);</ins>
 
   template&lt;class InputIterator, class OutputIterator,
            class UnaryOperation, class T, class BinaryOperation&gt;
