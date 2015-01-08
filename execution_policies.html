@@ -138,6 +138,7 @@ class execution_policy
     template&lt;class T&gt; execution_policy&amp; operator=(const T&amp; exec);
 
     <cxx-ref insynopsis="" to="parallel.execpol.access"></cxx-ref>
+    const type_info&amp; type() const noexcept;
     template&lt;class T&gt; T* get() noexcept;
     template&lt;class T&gt; const T* get() const noexcept;
 };
