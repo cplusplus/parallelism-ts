@@ -1,5 +1,5 @@
-    Document Number: N4311
-    Date:            2014-11-21
+    Document Number: N4353
+    Date:            2015-01-06
     Revises:
     Project:         Programming Language C++
     Project Number:  TS 19570
@@ -7,41 +7,25 @@
                      NVIDIA Corporation
                      jhoberock@nvidia.com
 
-# Parallelism TS Editor's Report, post-Urbana
+# Parallelism TS Editor's Report, pre-DTS ballot 
 
-N4310 is the latest Parallelism TS Working Draft. It contains changes to the Parallelism TS as directed by the committee at the Urbana meeting.
+N4352 is the latest Parallelism TS Working Draft. It contains editorial changes to the Parallelism TS as directed by an editing committee appointed during the Urbana meeting to approve the correctness of the Parallelism TS working paper.
 
-N4310 updates the previous draft, N4104, published in the post-Rapperswil mailing.
+N4352 updates the previous draft, N4310, published in the post-Urbana mailing.
 
-N4312 is document N4310 reformatted as a DTS ballot document.
-
-## Technical Changes
-
-* N4275: Parallelism PDTS Comment Reponses
-
-  * CH1: Resurrect explicit permission for implementation-defined execution policies
-  
-    Resolution: implemented as a non-normative note in S 2.3 p2.
-
-  * DE1 & US4: Consider N4167 (`transform_reduce`)
-  
-    Resolution: N4311 adds the algorithms `transform_reduce`, `transform_exclusive_scan`, and `transform_inclusive_scan`.
-
-  * US1: Execution policy definition
-
-    Resolution: S 2.1 p1 refines the definition of "execution policy".
-
-  * US3: Elemental access functions can interrupt user code:
-
-    Resolution: S 4.1.2 p3 refines the specification of which threads a parallel algorithm invocation may use.
+N4354 is document N4352 reformatted as a DTS ballot document. It updates N4312, which was published in the post-Urbana mailing.
 
 ## Editorial Changes
 
-Various typographical errors eliminated.
+1. A missing signature for `execution_policy::type` was added to the synopsis in Section 2.7.
+2. A missing `ExecutionPolicy` overload signature for `for_each_n` was added to the synopsis in Section 4.3.1.
+3. Missing `ExecutionPolicy` overload signatures for `reduce`, `exclusive_scan`, `inclusive_scan`, `transform_reduce`, `transform_exclusive_scan`, and `transform_inclusive_scan` were added to the synopsis in Section 4.4.1.
 
 ## Acknowledgements
 
+Thanks to the review committee, who identified these issues.
+
 * Hans Boehm
-* Agustín Bergé
-* Hartmut Kaiser
+* Lawrence Crowl
+* Alisdair Meredith
 
