@@ -715,8 +715,8 @@ pre {
     
       <div class="page">
         <div class="header">
-          <strong>ISO/IEC JTC1 SC22 WG21 <cxx-docnum>N4312</cxx-docnum></strong><br>
-          Date: <time pubdate="">2014-11-21</time><br>
+          <strong>ISO/IEC JTC1 SC22 WG21 <cxx-docnum>N4354</cxx-docnum></strong><br>
+          Date: <time pubdate="">2015-01-08</time><br>
           ISO/IEC DTS <cxx-project-number>19570</cxx-project-number><br>
           ISO/IEC JTC1 SC22<br>
           Secretariat: ANSI
@@ -1335,6 +1335,7 @@ execution may be vectorized and parallelized.</p>
     template&lt;class T&gt; execution_policy&amp; operator=(const T&amp; exec);
 
     <cxx-ref insynopsis="" to="parallel.execpol.access">// <i><a title="parallel.execpol.access" href="#parallel.execpol.access">2.7.2</a>, execution_policy object access</i></cxx-ref>
+    const type_info&amp; type() const noexcept;
     template&lt;class T&gt; T* get() noexcept;
     template&lt;class T&gt; const T* get() const noexcept;
 };
@@ -2171,6 +2172,11 @@ inline namespace v1 {
   template&lt;class InputIterator, class Size, class Function&gt;
     InputIterator for_each_n(InputIterator first, Size n,
                              Function f);
+  template&lt;class ExecutionPolicy,
+           class InputIterator, class Size, class Function&gt;
+    InputIterator for_each_n(ExecutionPolicy&amp;&amp; exec,
+                             InputIterator first, Size n,
+                             Function f);
 }
 }
 }
@@ -2393,10 +2399,23 @@ inline namespace v1 {
   template&lt;class InputIterator&gt;
     typename iterator_traits&lt;InputIterator&gt;::value_type
       reduce(InputIterator first, InputIterator last);
+  template&lt;class ExecutionPolicy,
+           InputIterator&gt;
+    typename iterator_traits&lt;InputIterator&gt;::value_type
+      reduce(ExecutionPolicy&amp;&amp; exec,
+             InputIterator first, InputIterator last);
   template&lt;class InputIterator, class T&gt;
-    T reduce(InputIterator first, InputIterator last<ins>,</ins> T init);
+    T reduce(InputIterator first, InputIterator last, T init);
+  template&lt;class ExecutionPolicy,
+           class InputIterator, class T&gt;
+    T reduce(ExecutionPolicy&amp;&amp; exec,
+             InputIterator first, InputIterator last, T init);
   template&lt;class InputIterator, class T, class BinaryOperation&gt;
     T reduce(InputIterator first, InputIterator last, T init,
+             BinaryOperation binary_op);
+  template&lt;class ExecutionPolicy, class InputIterator, class T, class BinaryOperation&gt;
+    T reduce(ExecutionPolicy&amp;&amp; exec,
+             InputIterator first, InputIterator last, T init,
              BinaryOperation binary_op);
 
   template&lt;class InputIterator, class OutputIterator,
@@ -2405,10 +2424,26 @@ inline namespace v1 {
       exclusive_scan(InputIterator first, InputIterator last,
                      OutputIterator result,
                      T init);
+  template&lt;class ExecutionPolicy,
+           class InputIterator, class OutputIterator,
+           class T&gt;
+    OutputIterator
+      exclusive_scan(ExecutionPolicy&amp;&amp; exec,
+                     InputIterator first, InputIterator last,
+                     OutputIterator result,
+                     T init);
   template&lt;class InputIterator, class OutputIterator,
            class T, class BinaryOperation&gt;
     OutputIterator
       exclusive_scan(InputIterator first, InputIterator last,
+                     OutputIterator result,
+                     T init, BinaryOperation binary_op);
+  template&lt;class ExecutionPolicy,
+           class InputIterator, class OutputIterator,
+           class T, class BinaryOperation&gt;
+    OutputIterator
+      exclusive_scan(ExecutionPolicy&amp;&amp; exec,
+                     InputIterator first, InputIterator last,
                      OutputIterator result,
                      T init, BinaryOperation binary_op);
 
@@ -2416,10 +2451,24 @@ inline namespace v1 {
     OutputIterator
       inclusive_scan(InputIterator first, InputIterator last,
                      OutputIterator result);
+  template&lt;class ExecutionPolicy,
+           class InputIterator, class OutputIterator&gt;
+    OutputIterator
+      inclusive_scan(ExecutionPolicy&amp;&amp; exec,
+                     InputIterator first, InputIterator last,
+                     OutputIterator result);
   template&lt;class InputIterator, class OutputIterator,
            class BinaryOperation&gt;
     OutputIterator
       inclusive_scan(InputIterator first, InputIterator last,
+                     OutputIterator result,
+                     BinaryOperation binary_op);
+  template&lt;class ExecutionPolicy,
+           class InputIterator, class OutputIterator,
+           class BinaryOperation&gt;
+    OutputIterator
+      inclusive_scan(ExecutionPolicy&amp;&amp; exec,
+                     InputIterator first, InputIterator last,
                      OutputIterator result,
                      BinaryOperation binary_op);
   template&lt;class InputIterator, class OutputIterator,
@@ -2428,10 +2477,25 @@ inline namespace v1 {
       inclusive_scan(InputIterator first, InputIterator last,
                      OutputIterator result,
                      BinaryOperation binary_op, T init);
+  template&lt;class ExecutionPolicy,
+           class InputIterator, class OutputIterator,
+           class BinaryOperation, class T&gt;
+    OutputIterator
+      inclusive_scan(ExecutionPolicy&amp;&amp; exec,
+                     InputIterator first, InputIterator last,
+                     OutputIterator result,
+                     BinaryOperation binary_op, T init);
 
   template&lt;class InputIterator, class UnaryOperation,
            class T, class BinaryOperation&gt;
     T transform_reduce(InputIterator first, InputIterator last,
+                       UnaryOperation unary_op,
+                       T init, BinaryOperation binary_op);
+  template&lt;class ExecutionPolicy,
+           class InputIterator, class UnaryOperation,
+           class T, class BinaryOperation&gt;
+    T transform_reduce(ExecutionPolicy&amp;&amp; exec,
+                       InputIterator first, InputIterator last,
                        UnaryOperation unary_op,
                        T init, BinaryOperation binary_op);
 
@@ -2439,6 +2503,15 @@ inline namespace v1 {
            class UnaryOperation, class T, class BinaryOperation&gt;
     OutputIterator
       transform_exclusive_scan(InputIterator first, InputIterator last,
+                               OutputIterator result,
+                               UnaryOperation unary_op,
+                               T init, BinaryOperation binary_op);
+  template&lt;class ExecutionPolicy,
+           class InputIterator, class OutputIterator,
+           class UnaryOperation, class T, class BinaryOperation&gt;
+    OutputIterator
+      transform_exclusive_scan(ExecutionPolicy&amp;&amp; exec,
+                               InputIterator first, InputIterator last,
                                OutputIterator result,
                                UnaryOperation unary_op,
                                T init, BinaryOperation binary_op);
@@ -2450,11 +2523,29 @@ inline namespace v1 {
                                OutputIterator result,
                                UnaryOperation unary_op,
                                BinaryOperation binary_op);
+  template&lt;class ExecutionPolicy,
+           class InputIterator, class OutputIterator,
+           class UnaryOperation, class BinaryOperation&gt;
+    OutputIterator
+      transform_inclusive_scan(ExecutionPolicy&amp;&amp; exec,
+                               InputIterator first, InputIterator last,
+                               OutputIterator result,
+                               UnaryOperation unary_op,
+                               BinaryOperation binary_op);
 
   template&lt;class InputIterator, class OutputIterator,
            class UnaryOperation, class BinaryOperation, class T&gt;
     OutputIterator
       transform_inclusive_scan(InputIterator first, InputIterator last,
+                               OutputIterator result,
+                               UnaryOperation unary_op,
+                               BinaryOperation binary_op, T init);
+  template&lt;class ExecutionPolicy,
+           class InputIterator, class OutputIterator,
+           class UnaryOperation, class BinaryOperation, class T&gt;
+    OutputIterator
+      transform_inclusive_scan(ExecutionPolicy&amp;&amp; exec,
+                               InputIterator first, InputIterator last,
                                OutputIterator result,
                                UnaryOperation unary_op,
                                BinaryOperation binary_op, T init);
