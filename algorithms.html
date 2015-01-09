@@ -508,8 +508,8 @@ inline namespace v1 {
   template&lt;class InputIterator&gt;
     typename iterator_traits&lt;InputIterator&gt;::value_type
       reduce(InputIterator first, InputIterator last);
-  template&lt;class ExecutionPolicy,
-           InputIterator&gt;
+  <ins>template&lt;class ExecutionPolicy,
+           class InputIterator&gt;
     typename iterator_traits&lt;InputIterator&gt;::value_type
       reduce(ExecutionPolicy&amp;&amp; exec,
              InputIterator first, InputIterator last);
