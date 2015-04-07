@@ -1047,7 +1047,6 @@ pre {
   
       <p para_num="2" id="parallel.general.defns.2">A <dfn>parallel algorithm</dfn> is a function template described by this Technical Specification declared in namespace <code>std::experimental::parallel::v1</code> with a formal template parameter named <code>ExecutionPolicy</code>.</p>
   
-  
       <p para_num="3" id="parallel.general.defns.3">
         Parallel algorithms access objects indirectly accessible via their arguments by invoking the following functions:
   
@@ -1066,7 +1065,7 @@ execution of the algorithm, if required by the specification.
           </li>
         </ul>
   
-        These functions are herein called <em>element access functions</em>.<pre></pre>
+        These functions are herein called <em>element access functions</em>.
   
         <cxx-example>
     
@@ -1092,7 +1091,6 @@ template argument, as per 24.2.7, as implied by the name of the
         
     <span class="nowrap">— <em>end example</em> ]</span>
   </cxx-example>
-      <p para_num="4" id="parallel.general.defns.4"></p>
     
     </section>
   </cxx-section>
@@ -1407,9 +1405,7 @@ std::sort(exec, std::begin(sort_me), std::end(sort_me));</pre>
 
       <cxx-function para_num="1" id="parallel.execpol.access.1">
     
-    <pre><code><cxx-signature>
-          const type_info&amp; type() const noexcept;
-        </cxx-signature></code></pre>
+    <pre><code><cxx-signature>const type_info&amp; type() const noexcept;</cxx-signature></code></pre>
 
     <dl>
       
@@ -1425,14 +1421,12 @@ std::sort(exec, std::begin(sort_me), std::end(sort_me));</pre>
 
       <cxx-function para_num="3" id="parallel.execpol.access.3">
     
-    <pre><code><cxx-signature>
-          template&lt;class T&gt; T* get() noexcept;
-          template&lt;class T&gt; const T* get() const noexcept;
-        </cxx-signature></code></pre>
+    <pre><code><cxx-signature>template&lt;class T&gt; T* get() noexcept;</cxx-signature><cxx-signature>template&lt;class T&gt; const T* get() const noexcept;</cxx-signature></code></pre>
 
     <dl>
       
-        
+      
+      
 
         <cxx-returns para_num="4" id="parallel.execpol.access.4">
     
@@ -1597,9 +1591,7 @@ inline namespace v1 {
 
       <cxx-function para_num="3" id="parallel.exceptions.synopsis.3">
     
-    <pre><code><cxx-signature>
-          size_t size() const noexcept;
-        </cxx-signature></code></pre>
+    <pre><code><cxx-signature>size_t size() const noexcept;</cxx-signature></code></pre>
 
     <dl>
       
@@ -1624,9 +1616,7 @@ inline namespace v1 {
 
       <cxx-function para_num="6" id="parallel.exceptions.synopsis.6">
     
-    <pre><code><cxx-signature>
-          iterator begin() const noexcept;
-        </cxx-signature></code></pre>
+    <pre><code><cxx-signature>iterator begin() const noexcept;</cxx-signature></code></pre>
 
     <dl>
       
@@ -1644,9 +1634,7 @@ inline namespace v1 {
 
       <cxx-function para_num="8" id="parallel.exceptions.synopsis.8">
     
-    <pre><code><cxx-signature>
-          iterator end() const noexcept;
-        </cxx-signature></code></pre>
+    <pre><code><cxx-signature>iterator end() const noexcept;</cxx-signature></code></pre>
 
     <dl>
       
@@ -1664,9 +1652,7 @@ inline namespace v1 {
 
       <cxx-function para_num="10" id="parallel.exceptions.synopsis.10">
     
-    <pre><code><cxx-signature>
-          const char* what() const noexcept override;
-        </cxx-signature></code></pre>
+    <pre><code><cxx-signature>const char* what() const noexcept override;</cxx-signature></code></pre>
 
     <dl>
       
@@ -2171,13 +2157,11 @@ inline namespace v1 {
 
       <cxx-function para_num="1" id="parallel.alg.foreach.1">
     
-    <pre><code><cxx-signature>
-          template&lt;class ExecutionPolicy,
-                   class InputIterator, class Function&gt;
-            void for_each(ExecutionPolicy&amp;&amp; exec,
-                          InputIterator first, InputIterator last,
-                          Function f);
-        </cxx-signature></code></pre>
+    <pre><code><cxx-signature>template&lt;class ExecutionPolicy,
+      class InputIterator, class Function&gt;
+void for_each(ExecutionPolicy&amp;&amp; exec,
+              InputIterator first, InputIterator last,
+              Function f);</cxx-signature></code></pre>
 
     <dl>
       
@@ -2233,11 +2217,9 @@ inline namespace v1 {
 
       <cxx-function para_num="7" id="parallel.alg.foreach.7">
     
-    <pre><code><cxx-signature>
-          template&lt;class InputIterator, class Size, class Function&gt;
-            InputIterator for_each_n(InputIterator first, Size n,
-                                     Function f);
-        </cxx-signature></code></pre>
+    <pre><code><cxx-signature>template&lt;class InputIterator, class Size, class Function&gt;
+InputIterator for_each_n(InputIterator first, Size n,
+                         Function f);</cxx-signature></code></pre>
 
     <dl>
       
@@ -2292,13 +2274,11 @@ inline namespace v1 {
 
       <cxx-function para_num="12" id="parallel.alg.foreach.12">
     
-    <pre><code><cxx-signature>
-        template&lt;class ExecutionPolicy,
-                 class InputIterator, class Size, class Function&gt;
-                 InputIterator for_each_n(ExecutionPolicy &amp;&amp; exec,
-                                          InputIterator first, Size n,
-                                          Function f);
-        </cxx-signature></code></pre>
+    <pre><code><cxx-signature>template&lt;class ExecutionPolicy,
+      class InputIterator, class Size, class Function&gt;
+InputIterator for_each_n(ExecutionPolicy &amp;&amp; exec,
+                         InputIterator first, Size n,
+                         Function f);</cxx-signature></code></pre>
 
     <dl>
       
@@ -2543,11 +2523,9 @@ inline namespace v1 {
 
       <cxx-function para_num="1" id="parallel.alg.reduce.1">
     
-    <pre><code><cxx-signature>
-          template&lt;class InputIterator&gt;
-            typename iterator_traits&lt;InputIterator&gt;::value_type
-              reduce(InputIterator first, InputIterator last);
-        </cxx-signature></code></pre>
+    <pre><code><cxx-signature>template&lt;class InputIterator&gt;
+typename iterator_traits&lt;InputIterator&gt;::value_type
+    reduce(InputIterator first, InputIterator last);</cxx-signature></code></pre>
 
     <dl>
       
@@ -2565,10 +2543,8 @@ inline namespace v1 {
 
       <cxx-function para_num="3" id="parallel.alg.reduce.3">
     
-    <pre><code><cxx-signature>
-          template&lt;class InputIterator, class T&gt;
-            T reduce(InputIterator first, InputIterator last, T init);
-        </cxx-signature></code></pre>
+    <pre><code><cxx-signature>template&lt;class InputIterator, class T&gt;
+T reduce(InputIterator first, InputIterator last, T init);</cxx-signature></code></pre>
 
     <dl>
       
@@ -2586,11 +2562,9 @@ inline namespace v1 {
 
       <cxx-function para_num="5" id="parallel.alg.reduce.5">
     
-    <pre><code><cxx-signature>
-          template&lt;class InputIterator, class T, class BinaryOperation&gt;
-            T reduce(InputIterator first, InputIterator last, T init,
-                     BinaryOperation binary_op);
-        </cxx-signature></code></pre>
+    <pre><code><cxx-signature>template&lt;class InputIterator, class T, class BinaryOperation&gt;
+T reduce(InputIterator first, InputIterator last, T init,
+         BinaryOperation binary_op);</cxx-signature></code></pre>
 
     <dl>
       
@@ -2642,14 +2616,10 @@ inline namespace v1 {
 
       <cxx-function para_num="1" id="parallel.alg.exclusive.scan.1">
     
-    <pre><code><cxx-signature>
-          template&lt;class InputIterator, class OutputIterator,
-                   class T&gt;
-            OutputIterator
-              exclusive_scan(InputIterator first, InputIterator last,
-                             OutputIterator result,
-                             T init);
-        </cxx-signature></code></pre>
+    <pre><code><cxx-signature>template&lt;class InputIterator, class OutputIterator, class T&gt;
+OutputIterator exclusive_scan(InputIterator first, InputIterator last,
+                              OutputIterator result,
+                              T init);</cxx-signature></code></pre>
 
     <dl>
       
@@ -2667,14 +2637,10 @@ inline namespace v1 {
 
       <cxx-function para_num="3" id="parallel.alg.exclusive.scan.3">
     
-    <pre><code><cxx-signature>
-          template&lt;class InputIterator, class OutputIterator,
-                   class T, class BinaryOperation&gt;
-            OutputIterator
-              exclusive_scan(InputIterator first, InputIterator last,
-                             OutputIterator result,
-                             T init, BinaryOperation binary_op);
-        </cxx-signature></code></pre>
+    <pre><code><cxx-signature>template&lt;class InputIterator, class OutputIterator, class T, class BinaryOperation&gt;
+OutputIterator exclusive_scan(InputIterator first, InputIterator last,
+                              OutputIterator result,
+                              T init, BinaryOperation binary_op);</cxx-signature></code></pre>
 
     <dl>
       
@@ -2736,12 +2702,9 @@ inline namespace v1 {
 
       <cxx-function para_num="1" id="parallel.alg.inclusive.scan.1">
     
-    <pre><code><cxx-signature>
-          template&lt;class InputIterator, class OutputIterator&gt;
-            OutputIterator
-              inclusive_scan(InputIterator first, InputIterator last,
-                             OutputIterator result);
-        </cxx-signature></code></pre>
+    <pre><code><cxx-signature>template&lt;class InputIterator, class OutputIterator&gt;
+OutputIterator inclusive_scan(InputIterator first, InputIterator last,
+                              OutputIterator result);</cxx-signature></code></pre>
 
     <dl>
       
@@ -2759,24 +2722,17 @@ inline namespace v1 {
 
       <cxx-function para_num="3" id="parallel.alg.inclusive.scan.3">
     
-    <pre><code><cxx-signature>
-          template&lt;class InputIterator, class OutputIterator,
-                   class BinaryOperation&gt;
-            OutputIterator
-              inclusive_scan(InputIterator first, InputIterator last,
-                             OutputIterator result,
-                             BinaryOperation binary_op);
-          
-          template&lt;class InputIterator, class OutputIterator,
-                   class BinaryOperation&gt;
-            OutputIterator
-              inclusive_scan(InputIterator first, InputIterator last,
-                             OutputIterator result,
-                             BinaryOperation binary_op, T init);
-        </cxx-signature></code></pre>
+    <pre><code><cxx-signature>template&lt;class InputIterator, class OutputIterator, class BinaryOperation&gt;
+OutputIterator inclusive_scan(InputIterator first, InputIterator last,
+                              OutputIterator result,
+                              BinaryOperation binary_op);</cxx-signature><cxx-signature>template&lt;class InputIterator, class OutputIterator, class BinaryOperation&gt;
+OutputIterator inclusive_scan(InputIterator first, InputIterator last,
+                              OutputIterator result,
+                              BinaryOperation binary_op, T init);</cxx-signature></code></pre>
 
     <dl>
       
+        
         
 
         <cxx-effects para_num="4" id="parallel.alg.inclusive.scan.4">
@@ -2837,11 +2793,9 @@ inline namespace v1 {
 
       <cxx-function para_num="1" id="parallel.alg.transform.reduce.1">
     
-    <pre><code><cxx-signature>
-          template&lt;class InputIterator, class UnaryFunction, class T, class BinaryOperation&gt;
-          T transform_reduce(InputIterator first, InputIterator last,
-                             UnaryOperation unary_op, T init, BinaryOperation binary_op);
-        </cxx-signature></code></pre>
+    <pre><code><cxx-signature>template&lt;class InputIterator, class UnaryFunction, class T, class BinaryOperation&gt;
+T transform_reduce(InputIterator first, InputIterator last,
+                   UnaryOperation unary_op, T init, BinaryOperation binary_op);</cxx-signature></code></pre>
 
     <dl>
       
@@ -2891,16 +2845,13 @@ inline namespace v1 {
 
       <cxx-function para_num="1" id="parallel.alg.transform.exclusive.scan.1">
     
-    <pre><code><cxx-signature>
-          template&lt;class InputIterator, class OutputIterator,
-                   class UnaryOperation,
-                   class T, class BinaryOperation&gt;
-            OutputIterator
-              transform_exclusive_scan(InputIterator first, InputIterator last,
-                                       OutputIterator result,
-                                       UnaryOperation unary_op,
-                                       T init, BinaryOperation binary_op);
-        </cxx-signature></code></pre>
+    <pre><code><cxx-signature>template&lt;class InputIterator, class OutputIterator,
+      class UnaryOperation,
+      class T, class BinaryOperation&gt;
+OutputIterator transform_exclusive_scan(InputIterator first, InputIterator last,
+                                        OutputIterator result,
+                                        UnaryOperation unary_op,
+                                        T init, BinaryOperation binary_op);</cxx-signature></code></pre>
 
     <dl>
       
@@ -2961,28 +2912,24 @@ inline namespace v1 {
 
       <cxx-function para_num="1" id="parallel.alg.transform.inclusive.scan.1">
     
-    <pre><code><cxx-signature>
-          template&lt;class InputIterator, class OutputIterator,
-                   class UnaryOperation,
-                   class BinaryOperation&gt;
-            OutputIterator
-              transform_inclusive_scan(InputIterator first, InputIterator last,
-                                       OutputIterator result,
-                                       UnaryOperation unary_op,
-                                       BinaryOperation binary_op);
-
-          template&lt;class InputIterator, class OutputIterator,
-                   class UnaryOperation,
-                   class BinaryOperation, class T&gt;
-            OutputIterator
-              transform_inclusive_scan(InputIterator first, InputIterator last,
-                                       OutputIterator result,
-                                       UnaryOperation unary_op,
-                                       BinaryOperation binary_op, T init);
-        </cxx-signature></code></pre>
+    <pre><code><cxx-signature>template&lt;class InputIterator, class OutputIterator,
+      class UnaryOperation,
+      class BinaryOperation&gt;
+OutputIterator transform_inclusive_scan(InputIterator first, InputIterator last,
+                                        OutputIterator result,
+                                        UnaryOperation unary_op,
+                                        BinaryOperation binary_op);</cxx-signature><cxx-signature>template&lt;class InputIterator, class OutputIterator,
+      class UnaryOperation,
+      class BinaryOperation, class T&gt;
+OutputIterator transform_inclusive_scan(InputIterator first, InputIterator last,
+                                        OutputIterator result,
+                                        UnaryOperation unary_op,
+                                        BinaryOperation binary_op, T init);</cxx-signature></code></pre>
 
     <dl>
       
+        
+
         
 
         <cxx-effects para_num="2" id="parallel.alg.transform.inclusive.scan.2">

@@ -389,13 +389,11 @@ inline namespace v1 {
       <h1>For each</h1>
 
       <cxx-function>
-        <cxx-signature>
-          template&lt;class ExecutionPolicy,
-                   class InputIterator, class Function&gt;
-            void for_each(ExecutionPolicy&amp;&amp; exec,
-                          InputIterator first, InputIterator last,
-                          Function f);
-        </cxx-signature>
+        <cxx-signature>template&lt;class ExecutionPolicy,
+      class InputIterator, class Function&gt;
+void for_each(ExecutionPolicy&amp;&amp; exec,
+              InputIterator first, InputIterator last,
+              Function f);</cxx-signature>
 
         <cxx-effects>
           Applies <code>f</code> to the result of dereferencing every iterator in the range <code>[first,last)</code>.
@@ -426,11 +424,9 @@ inline namespace v1 {
       </cxx-function>
 
       <cxx-function>
-        <cxx-signature>
-          template&lt;class InputIterator, class Size, class Function&gt;
-            InputIterator for_each_n(InputIterator first, Size n,
-                                     Function f);
-        </cxx-signature>
+        <cxx-signature>template&lt;class InputIterator, class Size, class Function&gt;
+InputIterator for_each_n(InputIterator first, Size n,
+                         Function f);</cxx-signature>
 
         <cxx-requires>
           <code>Function</code> shall meet the requirements of <code>MoveConstructible</code>
@@ -460,13 +456,11 @@ inline namespace v1 {
       </cxx-function>
 
       <cxx-function>
-        <cxx-signature>
-        template&lt;class ExecutionPolicy,
-                 class InputIterator, class Size, class Function&gt;
-                 InputIterator for_each_n(ExecutionPolicy &amp;&amp; exec,
-                                          InputIterator first, Size n,
-                                          Function f);
-        </cxx-signature>
+        <cxx-signature>template&lt;class ExecutionPolicy,
+      class InputIterator, class Size, class Function&gt;
+InputIterator for_each_n(ExecutionPolicy &amp;&amp; exec,
+                         InputIterator first, Size n,
+                         Function f);</cxx-signature>
 
         <cxx-effects>
           Applies <code>f</code> to the result of dereferencing every iterator in the range
@@ -669,11 +663,9 @@ inline namespace v1 {
       <h1>Reduce</h1>
 
       <cxx-function>
-        <cxx-signature>
-          template&lt;class InputIterator&gt;
-            typename iterator_traits&lt;InputIterator&gt;::value_type
-              reduce(InputIterator first, InputIterator last);
-        </cxx-signature>
+        <cxx-signature>template&lt;class InputIterator&gt;
+typename iterator_traits&lt;InputIterator&gt;::value_type
+    reduce(InputIterator first, InputIterator last);</cxx-signature>
 
         <cxx-effects>
           Same as <code>reduce(first, last, typename iterator_traits&lt;InputIterator&gt;::value_type{})</code>.
@@ -681,10 +673,8 @@ inline namespace v1 {
       </cxx-function>
 
       <cxx-function>
-        <cxx-signature>
-          template&lt;class InputIterator, class T&gt;
-            T reduce(InputIterator first, InputIterator last, T init);
-        </cxx-signature>
+        <cxx-signature>template&lt;class InputIterator, class T&gt;
+T reduce(InputIterator first, InputIterator last, T init);</cxx-signature>
 
         <cxx-effects>
           Same as <code>reduce(first, last, init, plus&lt;&gt;())</code>.
@@ -692,11 +682,9 @@ inline namespace v1 {
       </cxx-function>
 
       <cxx-function>
-        <cxx-signature>
-          template&lt;class InputIterator, class T, class BinaryOperation&gt;
-            T reduce(InputIterator first, InputIterator last, T init,
-                     BinaryOperation binary_op);
-        </cxx-signature>
+        <cxx-signature>template&lt;class InputIterator, class T, class BinaryOperation&gt;
+T reduce(InputIterator first, InputIterator last, T init,
+         BinaryOperation binary_op);</cxx-signature>
 
         <cxx-returns>
           <code><em>GENERALIZED_SUM</em>(binary_op, init, *first, ..., *(first + (last - first) - 1))</code>.
@@ -722,14 +710,10 @@ inline namespace v1 {
       <h1>Exclusive scan</h1>
 
       <cxx-function>
-        <cxx-signature>
-          template&lt;class InputIterator, class OutputIterator,
-                   class T&gt;
-            OutputIterator
-              exclusive_scan(InputIterator first, InputIterator last,
-                             OutputIterator result,
-                             T init);
-        </cxx-signature>
+        <cxx-signature>template&lt;class InputIterator, class OutputIterator, class T&gt;
+OutputIterator exclusive_scan(InputIterator first, InputIterator last,
+                              OutputIterator result,
+                              T init);</cxx-signature>
 
         <cxx-effects>
           Same as <code>exclusive_scan(first, last, result, init, plus&lt;&gt;())</code>.
@@ -737,14 +721,10 @@ inline namespace v1 {
       </cxx-function>
 
       <cxx-function>
-        <cxx-signature>
-          template&lt;class InputIterator, class OutputIterator,
-                   class T, class BinaryOperation&gt;
-            OutputIterator
-              exclusive_scan(InputIterator first, InputIterator last,
-                             OutputIterator result,
-                             T init, BinaryOperation binary_op);
-        </cxx-signature>
+        <cxx-signature>template&lt;class InputIterator, class OutputIterator, class T, class BinaryOperation&gt;
+OutputIterator exclusive_scan(InputIterator first, InputIterator last,
+                              OutputIterator result,
+                              T init, BinaryOperation binary_op);</cxx-signature>
 
         <cxx-effects>
           Assigns through each iterator <code>i</code> in <code>[result,result + (last - first))</code> the
@@ -777,12 +757,9 @@ inline namespace v1 {
       <h1>Inclusive scan</h1>
 
       <cxx-function>
-        <cxx-signature>
-          template&lt;class InputIterator, class OutputIterator&gt;
-            OutputIterator
-              inclusive_scan(InputIterator first, InputIterator last,
-                             OutputIterator result);
-        </cxx-signature>
+        <cxx-signature>template&lt;class InputIterator, class OutputIterator&gt;
+OutputIterator inclusive_scan(InputIterator first, InputIterator last,
+                              OutputIterator result);</cxx-signature>
 
         <cxx-effects>
           Same as <code>inclusive_scan(first, last, result, plus&lt;&gt;())</code>.
@@ -790,21 +767,14 @@ inline namespace v1 {
       </cxx-function>
 
       <cxx-function>
-        <cxx-signature>
-          template&lt;class InputIterator, class OutputIterator,
-                   class BinaryOperation&gt;
-            OutputIterator
-              inclusive_scan(InputIterator first, InputIterator last,
-                             OutputIterator result,
-                             BinaryOperation binary_op);
-          
-          template&lt;class InputIterator, class OutputIterator,
-                   class BinaryOperation&gt;
-            OutputIterator
-              inclusive_scan(InputIterator first, InputIterator last,
-                             OutputIterator result,
-                             BinaryOperation binary_op, T init);
-        </cxx-signature>
+        <cxx-signature>template&lt;class InputIterator, class OutputIterator, class BinaryOperation&gt;
+OutputIterator inclusive_scan(InputIterator first, InputIterator last,
+                              OutputIterator result,
+                              BinaryOperation binary_op);</cxx-signature>
+        <cxx-signature>template&lt;class InputIterator, class OutputIterator, class BinaryOperation&gt;
+OutputIterator inclusive_scan(InputIterator first, InputIterator last,
+                              OutputIterator result,
+                              BinaryOperation binary_op, T init);</cxx-signature>
 
         <cxx-effects>
           Assigns through each iterator <code>i</code> in <code>[result,result + (last - first))</code> the value of
@@ -839,11 +809,9 @@ inline namespace v1 {
       <h1>Transform reduce</h1>
 
       <cxx-function>
-        <cxx-signature>
-          template&lt;class InputIterator, class UnaryFunction, class T, class BinaryOperation&gt;
-          T transform_reduce(InputIterator first, InputIterator last,
-                             UnaryOperation unary_op, T init, BinaryOperation binary_op);
-        </cxx-signature>
+        <cxx-signature>template&lt;class InputIterator, class UnaryFunction, class T, class BinaryOperation&gt;
+T transform_reduce(InputIterator first, InputIterator last,
+                   UnaryOperation unary_op, T init, BinaryOperation binary_op);</cxx-signature>
 
         <cxx-returns>
           <code><em>GENERALIZED_SUM</em>(binary_op, init, unary_op(*first), ..., unary_op(*(first + (last - first) - 1)))</code>.
@@ -867,16 +835,13 @@ inline namespace v1 {
       <h1>Transform exclusive scan</h1>
 
       <cxx-function>
-        <cxx-signature>
-          template&lt;class InputIterator, class OutputIterator,
-                   class UnaryOperation,
-                   class T, class BinaryOperation&gt;
-            OutputIterator
-              transform_exclusive_scan(InputIterator first, InputIterator last,
-                                       OutputIterator result,
-                                       UnaryOperation unary_op,
-                                       T init, BinaryOperation binary_op);
-        </cxx-signature>
+        <cxx-signature>template&lt;class InputIterator, class OutputIterator,
+      class UnaryOperation,
+      class T, class BinaryOperation&gt;
+OutputIterator transform_exclusive_scan(InputIterator first, InputIterator last,
+                                        OutputIterator result,
+                                        UnaryOperation unary_op,
+                                        T init, BinaryOperation binary_op);</cxx-signature>
 
         <cxx-effects>
           Assigns through each iterator <code>i</code> in <code>[result,result + (last - first))</code> the value of
@@ -908,25 +873,21 @@ inline namespace v1 {
       <h1>Transform inclusive scan</h1>
 
       <cxx-function>
-        <cxx-signature>
-          template&lt;class InputIterator, class OutputIterator,
-                   class UnaryOperation,
-                   class BinaryOperation&gt;
-            OutputIterator
-              transform_inclusive_scan(InputIterator first, InputIterator last,
-                                       OutputIterator result,
-                                       UnaryOperation unary_op,
-                                       BinaryOperation binary_op);
+        <cxx-signature>template&lt;class InputIterator, class OutputIterator,
+      class UnaryOperation,
+      class BinaryOperation&gt;
+OutputIterator transform_inclusive_scan(InputIterator first, InputIterator last,
+                                        OutputIterator result,
+                                        UnaryOperation unary_op,
+                                        BinaryOperation binary_op);</cxx-signature>
 
-          template&lt;class InputIterator, class OutputIterator,
-                   class UnaryOperation,
-                   class BinaryOperation, class T&gt;
-            OutputIterator
-              transform_inclusive_scan(InputIterator first, InputIterator last,
-                                       OutputIterator result,
-                                       UnaryOperation unary_op,
-                                       BinaryOperation binary_op, T init);
-        </cxx-signature>
+        <cxx-signature>template&lt;class InputIterator, class OutputIterator,
+      class UnaryOperation,
+      class BinaryOperation, class T&gt;
+OutputIterator transform_inclusive_scan(InputIterator first, InputIterator last,
+                                        OutputIterator result,
+                                        UnaryOperation unary_op,
+                                        BinaryOperation binary_op, T init);</cxx-signature>
 
         <cxx-effects>
           Assigns through each iterator <code>i</code> in <code>[result,result + (last - first))</code> the value of
