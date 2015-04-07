@@ -712,13 +712,13 @@ pre {
       <div class="page">
         <table class="header">
           
-            <tbody><tr><th>Document Number:</th><td><cxx-docnum>N4352</cxx-docnum></td></tr>
+            <tbody><tr><th>Document Number:</th><td><cxx-docnum>N4407</cxx-docnum></td></tr>
           
           
-            <tr><th>Date:</th><td><time pubdate="">2015-01-08</time></td></tr>
+            <tr><th>Date:</th><td><time pubdate="">2015-04-10</time></td></tr>
           
           
-            <tr><th>Revises:</th><td><cxx-revises><a href="http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2014/n4310.html">N4310</a></cxx-revises></td></tr>
+            <tr><th>Revises:</th><td><cxx-revises><a href="http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2015/n4352.html">N4352</a></cxx-revises></td></tr>
           
           
             <tr><th>Editor:</th><td><cxx-editor>
@@ -2097,7 +2097,8 @@ for_each(par_vec, std::begin(a), std::end(a), [&amp;](int) {
         <li><code>a1</code> when <code>N</code> is <code>1</code></li>
 
         <li>
-          <code>op(<em>GENERALIZED_NONCOMMUTATIVE_SUM</em>(op, a1, ..., aK), <em>GENERALIZED_NONCOMMUTATIVE_SUM</em>(op, aM, ..., aN)</code> where <code>1 &lt; K+1 = M ≤ N</code>.
+          <code>op(<em>GENERALIZED_NONCOMMUTATIVE_SUM</em>(op, a1, ..., aK), <em>GENERALIZED_NONCOMMUTATIVE_SUM</em>(op, aM, </code><br>
+          <code>..., aN)</code> where <code>1 &lt; K+1 = M ≤ N</code>.
         </li>
       </ul>
     <p para_num="4" id="parallel.alg.defns.4"></p>
@@ -2804,7 +2805,8 @@ T transform_reduce(InputIterator first, InputIterator last,
         <cxx-returns para_num="2" id="parallel.alg.transform.reduce.2">
     
     <dt>Returns:</dt><dd>
-          <code><em>GENERALIZED_SUM</em>(binary_op, init, unary_op(*first), ..., unary_op(*(first + (last - first) - 1)))</code>.
+          <code><em>GENERALIZED_SUM</em>(binary_op, init, unary_op(*first), ..., unary_op(*(first + (last - first) -</code><br>
+          <code>1)))</code>.
         </dd>
   </cxx-returns>
 
@@ -2861,7 +2863,8 @@ OutputIterator transform_exclusive_scan(InputIterator first, InputIterator last,
     
     <dt>Effects:</dt><dd>
           Assigns through each iterator <code>i</code> in <code>[result,result + (last - first))</code> the value of
-          <code><em>GENERALIZED_NONCOMMUTATIVE_SUM</em>(binary_op, init, unary_op(*first), ..., unary_op(*(first + (i - result) - 1)))</code>.
+          <code><em>GENERALIZED_NONCOMMUTATIVE_SUM</em>(binary_op, init, unary_op(*first), ..., unary_op(*(first + (i</code><br>
+          <code>- result) - 1)))</code>.
         </dd>
   </cxx-effects>
 
@@ -2936,8 +2939,10 @@ OutputIterator transform_inclusive_scan(InputIterator first, InputIterator last,
     
     <dt>Effects:</dt><dd>
           Assigns through each iterator <code>i</code> in <code>[result,result + (last - first))</code> the value of
-          <code><em>GENERALIZED_NONCOMMUTATIVE_SUM</em>(binary_op, unary_op(*first), ..., unary_op(*(first + (i - result))))</code> or
-          <code><em>GENERALIZED_NONCOMMUTATIVE_SUM</em>(binary_op, init, unary_op(*first), ..., unary_op(*(first + (i - result))))</code>
+          <code><em>GENERALIZED_NONCOMMUTATIVE_SUM</em>(binary_op, unary_op(*first), ..., unary_op(*(first + (i -</code><br>
+          <code>result))))</code> or
+          <code><em>GENERALIZED_NONCOMMUTATIVE_SUM</em>(binary_op, init, unary_op(*first), ..., unary_op(*(first + (i</code><br>
+          <code>- result))))</code>
           if <code>init</code> is provided.
         </dd>
   </cxx-effects>

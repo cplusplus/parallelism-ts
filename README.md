@@ -17,5 +17,5 @@ N4409 is document N4407 reformatted as a TS document. It updates N4354, which wa
 
 ## Editorial Changes
 
-Eliminated spurious whitespace and superfluous paragraph numbers.
+Eliminated spurious whitespace and paragraph numbers and manually broke code lines which were spilling into the margin.
 

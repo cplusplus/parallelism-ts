@@ -348,7 +348,8 @@ for_each(par_vec, std::begin(a), std::end(a), [&amp;](int) {
         <li><code>a1</code> when <code>N</code> is <code>1</code></li>
 
         <li>
-          <code>op(<em>GENERALIZED_NONCOMMUTATIVE_SUM</em>(op, a1, ..., aK), <em>GENERALIZED_NONCOMMUTATIVE_SUM</em>(op, aM, ..., aN)</code> where <code>1 &lt; K+1 = M &le; N</code>.
+          <code>op(<em>GENERALIZED_NONCOMMUTATIVE_SUM</em>(op, a1, ..., aK), <em>GENERALIZED_NONCOMMUTATIVE_SUM</em>(op, aM, </code><br>
+          <code>..., aN)</code> where <code>1 &lt; K+1 = M &le; N</code>.
         </li>
       </ul>
     </p>
@@ -814,7 +815,8 @@ T transform_reduce(InputIterator first, InputIterator last,
                    UnaryOperation unary_op, T init, BinaryOperation binary_op);</cxx-signature>
 
         <cxx-returns>
-          <code><em>GENERALIZED_SUM</em>(binary_op, init, unary_op(*first), ..., unary_op(*(first + (last - first) - 1)))</code>.
+          <code><em>GENERALIZED_SUM</em>(binary_op, init, unary_op(*first), ..., unary_op(*(first + (last - first) -</code><br>
+          <code>1)))</code>.
         </cxx-returns>
 
         <cxx-requires>
@@ -845,7 +847,8 @@ OutputIterator transform_exclusive_scan(InputIterator first, InputIterator last,
 
         <cxx-effects>
           Assigns through each iterator <code>i</code> in <code>[result,result + (last - first))</code> the value of
-          <code><em>GENERALIZED_NONCOMMUTATIVE_SUM</em>(binary_op, init, unary_op(*first), ..., unary_op(*(first + (i - result) - 1)))</code>.
+          <code><em>GENERALIZED_NONCOMMUTATIVE_SUM</em>(binary_op, init, unary_op(*first), ..., unary_op(*(first + (i</code><br>
+          <code>- result) - 1)))</code>.
         </cxx-effects>
 
         <cxx-returns>
@@ -891,8 +894,10 @@ OutputIterator transform_inclusive_scan(InputIterator first, InputIterator last,
 
         <cxx-effects>
           Assigns through each iterator <code>i</code> in <code>[result,result + (last - first))</code> the value of
-          <code><em>GENERALIZED_NONCOMMUTATIVE_SUM</em>(binary_op, unary_op(*first), ..., unary_op(*(first + (i - result))))</code> or
-          <code><em>GENERALIZED_NONCOMMUTATIVE_SUM</em>(binary_op, init, unary_op(*first), ..., unary_op(*(first + (i - result))))</code>
+          <code><em>GENERALIZED_NONCOMMUTATIVE_SUM</em>(binary_op, unary_op(*first), ..., unary_op(*(first + (i -</code><br>
+          <code>result))))</code> or
+          <code><em>GENERALIZED_NONCOMMUTATIVE_SUM</em>(binary_op, init, unary_op(*first), ..., unary_op(*(first + (i</code><br>
+          <code>- result))))</code>
           if <code>init</code> is provided.
         </cxx-effects>
 
