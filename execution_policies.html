@@ -191,18 +191,14 @@ std::sort(exec, std::begin(sort_me), std::end(sort_me));</pre>
       <h1><code>execution_policy</code> object access</h1>
 
       <cxx-function>
-        <cxx-signature>
-          const type_info&amp; type() const noexcept;
-        </cxx-signature>
+        <cxx-signature>const type_info&amp; type() const noexcept;</cxx-signature>
 
         <cxx-returns><code>typeid(T)</code>, such that <code>T</code> is the type of the execution policy object contained by <code>*this</code>.</cxx-returns>
       </cxx-function>
 
       <cxx-function>
-        <cxx-signature>
-          template&lt;class T&gt; T* get() noexcept;
-          template&lt;class T&gt; const T* get() const noexcept;
-        </cxx-signature>
+      <cxx-signature>template&lt;class T&gt; T* get() noexcept;</cxx-signature>
+      <cxx-signature>template&lt;class T&gt; const T* get() const noexcept;</cxx-signature>
 
         <cxx-returns>If <code>target_type() == typeid(T)</code>, a pointer to the stored execution policy object; otherwise a null pointer.</cxx-returns>
 
