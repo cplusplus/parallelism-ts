@@ -226,7 +226,7 @@ cxx-section header {
 	font-weight: bold; margin-top: 20px; margin-bottom: 20px; page-break-inside: avoid; page-break-after: avoid;
 }
 
-cxx-section header:after {
+cxx-section header::after {
 	clear: both; display: block; content: " "; height: 0px;
 }cxx-clause {
 	display: block;
@@ -248,7 +248,7 @@ cxx-clause header {
 	font-weight: bold; margin-top: 20px; margin-bottom: 20px; page-break-inside: avoid; page-break-after: avoid;
 }
 
-cxx-clause header:after {
+cxx-clause header::after {
 	clear: both; display: block; content: " "; height: 0px;
 }[is=cxx-table] {
 	margin-left: auto; margin-right: auto; border-collapse: collapse; border: thin solid black;
@@ -290,7 +290,7 @@ cxx-clause header:after {
 	padding-left: 0px; margin: 0px;
 }
 
-[is=cxx-table].list ul li:before {
+[is=cxx-table].list ul li::before {
 	content: "";
 }cxx-figure {
 	margin-left: auto; margin-right: auto;
@@ -556,7 +556,7 @@ cxx-example .nowrap {
 	white-space: normal;
 }
 
-w-br:after {
+w-br::after {
 	content: "​";
 }</style>
   <meta charset="utf-8">
@@ -712,13 +712,13 @@ pre {
       <div class="page">
         <table class="header">
           
-            <tbody><tr><th>Document Number:</th><td><cxx-docnum>N4407</cxx-docnum></td></tr>
+            <tbody><tr><th>Document Number:</th><td><cxx-docnum>D4505</cxx-docnum></td></tr>
           
           
-            <tr><th>Date:</th><td><time pubdate="">2015-04-10</time></td></tr>
+            <tr><th>Date:</th><td><time pubdate="">2015-05-05</time></td></tr>
           
           
-            <tr><th>Revises:</th><td><cxx-revises><a href="http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2015/n4352.html">N4352</a></cxx-revises></td></tr>
+            <tr><th>Revises:</th><td><cxx-revises><a href="http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2015/n4407.html">N4407</a></cxx-revises></td></tr>
           
           
             <tr><th>Editor:</th><td><cxx-editor>
@@ -1063,6 +1063,17 @@ pre {
             User-provided function objects to be applied during the 
 execution of the algorithm, if required by the specification.
           </li>
+
+          <ins><li>
+            Operations on those function objects required by the specification.
+
+            <cxx-note><span class="nowrap">[ <em>Note:</em></span>
+    
+              See clause 25.1 of <em>C++ Standard Algorithms Library</em>.
+            
+    <span class="nowrap">— <em>end note</em> ]</span>
+  </cxx-note>
+          </li></ins>
         </ul>
   
         These functions are herein called <em>element access functions</em>.
@@ -1492,7 +1503,7 @@ constexpr parallel_vector_execution_policy par_vec{};
         </p>
         <p para_num="2" id="parallel.exceptions.behavior.2">
           During the execution of a standard parallel algorithm, if the invocation of an element access function
-          terminates with an uncaught exception, the behavior of the program is determined by the type of
+          <ins>exits via</ins><del>terminates with</del> an uncaught exception, the behavior of the program is determined by the type of
           execution policy used to invoke the algorithm:
 
           </p><ul>
@@ -1502,25 +1513,26 @@ constexpr parallel_vector_execution_policy par_vec{};
             </li>
             <li>
               If the execution policy object is of type <code>sequential_execution_policy</code> or
-              <code>parallel_execution_policy</code>, the execution of the algorithm terminates with an
-              <code>exception_list</code> exception. All uncaught exceptions thrown during
-              the invocations of element access functions shall be contained in the
-              <code>exception_list</code>.<pre></pre>
+              <code>parallel_execution_policy</code>, the execution of the algorithm <ins>exits via</ins><del>terminates with</del> an
+              <del><code>exception_list</code></del> exception. <ins>The exception shall be an <code>exception_list</code> containing all</ins><del>All</del> uncaught exceptions thrown during
+              the invocations of element access functions<ins>, or optionally the uncaught exception if there was only one</ins><del>shall be contained in the
+              <code>exception_list</code></del>.<pre></pre>
 
               <cxx-note><span class="nowrap">[ <em>Note:</em></span>
     
-                For example, the number of invocations of the user-provided function object in
-                <code>for_each</code> is unspecified. When <code>for_each</code> is executed sequentially,
-                only one exception will be contained in the <code>exception_list</code> object.
-              
+                For example, <del>the number of invocations of the user-provided function object in
+                <code>for_each</code> is unspecified. W</del><ins>w</ins>hen <code>for_each</code> is executed sequentially,
+                <ins>if an invocation of the user-provided function object throws an exception, <code>for_each</code> can exit via the uncaught exception, or throw an <code>exception_list</code> containing the original exception.
+                <del>only one exception will be contained in the <code>exception_list</code> object.</del>
+              </ins>
     <span class="nowrap">— <em>end note</em> ]</span>
   </cxx-note><pre></pre>
 
               <cxx-note><span class="nowrap">[ <em>Note:</em></span>
     
                 These guarantees imply that, unless the algorithm has failed to allocate memory and
-                terminated with <code>std::bad_alloc</code>, all 
-exceptions thrown during the execution of
+                <ins>exits via</ins><del>terminated with</del> <code>std::bad_alloc</code>,
+ all exceptions thrown during the execution of
                 the algorithm are communicated to the caller. It is 
 unspecified whether an algorithm implementation will "forge ahead" after
  
@@ -1530,11 +1542,8 @@ unspecified whether an algorithm implementation will "forge ahead" after
   </cxx-note><pre></pre>
               <cxx-note><span class="nowrap">[ <em>Note:</em></span>
     
-                The algorithm may terminate with the <code>std::bad_alloc</code>
- exception even if one or more
-                user-provided function objects have terminated with an 
-exception. For example, this can happen when an algorithm fails to 
-allocate memory while
+                The algorithm may <ins>exit via</ins><del>terminate with</del> the <code>std::bad_alloc</code> exception even if one or more
+                user-provided function objects have <ins>exited via</ins><del>terminated with</del> an exception. For example, this can happen when an algorithm fails to allocate memory while
                 creating or adding elements to the <code>exception_list</code> object.
               
     <span class="nowrap">— <em>end note</em> ]</span>
