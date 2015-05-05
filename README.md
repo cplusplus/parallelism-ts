@@ -1,5 +1,5 @@
-    Document Number: N4408
-    Date:            2015-04-10
+    Document Number: D4506
+    Date:            2015-05-05
     Revises:
     Project:         Programming Language C++
     Project Number:  TS 19570
@@ -7,15 +7,24 @@
                      NVIDIA Corporation
                      jhoberock@nvidia.com
 
-# Parallelism TS Editor's Report, pre-Lenexa mailing 
+# Parallelism TS Editor's Report, Lenexa meeting 
 
-N4407 is the latest Parallelism TS Working Draft. It contains editorial changes to the Parallelism TS to address whitespace and other formatting issues.
+D4505 is the latest Parallelism TS Working Draft. It contains editorial changes to the Parallelism TS to apply the following revisions:
 
-N4407 updates the previous draft, N4352, published in the midterm mailing.
+  * N4274 - Relaxing Packing Rules for Exceptions Thrown by Parallel Algorithms - Proposed Wording (Revision 1)
+  * D???? - Feature Test Macros for the Parallelism TS
 
-N4409 is document N4407 reformatted as a TS document. It updates N4354, which was published in the midterm mailing.
+D4505 updates the previous draft, N4407, published in the pre-Lenexa mailing.
+
+N4507 is document N4505 reformatted as a TS document. It updates N4409, which was published in the pre-Lenexa mailing.
+
+## Technical Changes
+
+* Applied N4274, which relaxes the exception packaging rules for exceptions thrown by parallel algorithms. Additionally, changed instances of "terminates with (exception)" phrasing to "exits via (exception)", as directed by the Library Working Group.
+
+* Applied D????, which introduces feature test macros for the functionality of the Parallelism TS. 
 
 ## Editorial Changes
 
-Eliminated spurious whitespace and paragraph numbers and manually broke code lines which were spilling into the margin.
+None.
 
