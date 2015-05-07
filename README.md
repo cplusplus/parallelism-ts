@@ -7,7 +7,7 @@
                      NVIDIA Corporation
                      jhoberock@nvidia.com
 
-# Parallelism TS Editor's Report, Lenexa meeting 
+# Parallelism TS Editor's Report, post-Lenexa mailing 
 
 D4505 is the latest Parallelism TS Working Draft. It contains editorial and technical changes to the Parallelism TS to apply the following revisions:
 
