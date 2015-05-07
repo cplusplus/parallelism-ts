@@ -70,59 +70,89 @@
 <pre>
 <code>    #include &lt;meow&gt;</code>
 </pre>
+  </cxx-section>
 
-    <cxx-section id="parallel.general.defns">
-      <h1>Terms and definitions</h1>
+  <cxx-section id="parallel.general.defns">
+    <h1>Terms and definitions</h1>
   
-      <p>For the purposes of this document, the terms and definitions given in the C++ Standard and the following apply.</p>
+    <p>For the purposes of this document, the terms and definitions given in the C++ Standard and the following apply.</p>
   
-      <p>A <dfn>parallel algorithm</dfn> is a function template described by this Technical Specification declared in namespace <code>std::experimental::parallel::v1</code> with a formal template parameter named <code>ExecutionPolicy</code>.</p>
+    <p>A <dfn>parallel algorithm</dfn> is a function template described by this Technical Specification declared in namespace <code>std::experimental::parallel::v1</code> with a formal template parameter named <code>ExecutionPolicy</code>.</p>
   
-      <p>
-        Parallel algorithms access objects indirectly accessible via their arguments by invoking the following functions:
+    <p>
+      Parallel algorithms access objects indirectly accessible via their arguments by invoking the following functions:
+  
+      <ul>
+        <li>
+          All operations of the categories of the iterators that the algorithm is instantiated with.
+        </li>
+  
+        <li>
+          Functions on those sequence elements that are required by its specification.
+        </li>
+  
+        <li>
+          User-provided function objects to be applied during the execution of the algorithm, if required by the specification.
+        </li>
+
+        <ins><li>
+          Operations on those function objects required by the specification.
+
+          <cxx-note>
+            See clause 25.1 of <em>C++ Standard Algorithms Library</em>.
+          </cxx-note>
+        </li></ins>
+      </ul>
+  
+      These functions are herein called <em>element access functions</em>.
+  
+      <cxx-example>
+        The <code>sort</code> function may invoke the following element access functions:
   
         <ul>
           <li>
-            All operations of the categories of the iterators that the algorithm is instantiated with.
+            Methods of the random-access iterator of the actual template argument, as per 24.2.7, as implied by the name of the
+            template parameters <code>RandomAccessIterator</code>.
           </li>
   
           <li>
-            Functions on those sequence elements that are required by its specification.
+            The <code>swap</code> function on the elements of the sequence (as per 25.4.1.1 [sort]/2).
           </li>
   
           <li>
-            User-provided function objects to be applied during the execution of the algorithm, if required by the specification.
+            The user-provided <code>Compare</code> function object.
           </li>
-
-          <ins><li>
-            Operations on those function objects required by the specification.
-
-            <cxx-note>
-              See clause 25.1 of <em>C++ Standard Algorithms Library</em>.
-            </cxx-note>
-          </li></ins>
         </ul>
-  
-        These functions are herein called <em>element access functions</em>.
-  
-        <cxx-example>
-          The <code>sort</code> function may invoke the following element access functions:
-  
-          <ul>
-            <li>
-              Methods of the random-access iterator of the actual template argument, as per 24.2.7, as implied by the name of the
-              template parameters <code>RandomAccessIterator</code>.
-            </li>
-  
-            <li>
-              The <code>swap</code> function on the elements of the sequence (as per 25.4.1.1 [sort]/2).
-            </li>
-  
-            <li>
-              The user-provided <code>Compare</code> function object.
-            </li>
-          </ul>
-        </cxx-example>
-    </cxx-section>
+      </cxx-example>
+  </cxx-section>
+
+  <cxx-section id="parallel.general.features">
+  <ins>
+    <h1>Feature-testing recommendations</h1>     
+    <p>An implementation that provides support for this Technical Specification shall define the feature test macro(s) in Table 1.</p>
+
+    <table is="cxx-table" class="column-rules">
+      <caption>Feature Test Macro(s)</caption>
+
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Value</th>
+          <th>Header</th>
+        </tr>
+        <tr>
+          <td><code>__cpp_lib_experimental_parallel_algorithm</code></td>
+          <td>201505</td>
+          <td>
+            <code>&lt;experimental/algorithm&gt;</code><br>
+            <code>&lt;experimental/exception_list&gt;</code><br>
+            <code>&lt;experimental/execution_policy&gt;</code><br>
+            <code>&lt;experimental/numeric&gt;</code>
+          </td>
+        </tr>
+      </thead>
+    </table>
+  </ins>
+  </cxx-section>
 </cxx-clause>
 

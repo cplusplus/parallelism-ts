@@ -761,13 +761,13 @@ pre {
             
               <li><span class="marker">1.3</span><a href="#parallel.general.namespaces">Namespaces and headers</a>
         
-          <ol>
+      </li>
             
-              <li><span class="marker">1.3.1</span><a href="#parallel.general.defns">Terms and definitions</a>
+              <li><span class="marker">1.4</span><a href="#parallel.general.defns">Terms and definitions</a>
         
       </li>
             
-          </ol>
+              <li><span class="marker">1.5</span><a href="#parallel.general.features">Feature-testing recommendations</a>
         
       </li>
             
@@ -1034,80 +1034,120 @@ pre {
 
 <pre><code>    #include &lt;meow&gt;</code>
 </pre>
+  
+    </section>
+  </cxx-section>
 
-    <cxx-section id="parallel.general.defns">
+  <cxx-section id="parallel.general.defns">
     
 
     <section>
-      <header><span class="section-number">1.3.1</span> <h1 data-bookmark-label="1.3.1 Terms and definitions">Terms and definitions</h1> <span style="float:right"><a href="#parallel.general.defns">[parallel.general.defns]</a></span></header>
+      <header><span class="section-number">1.4</span> <h1 data-bookmark-label="1.4 Terms and definitions">Terms and definitions</h1> <span style="float:right"><a href="#parallel.general.defns">[parallel.general.defns]</a></span></header>
       
-      
-  
-      <p para_num="1" id="parallel.general.defns.1">For the purposes of this document, the terms and definitions given in the C++ Standard and the following apply.</p>
-  
-      <p para_num="2" id="parallel.general.defns.2">A <dfn>parallel algorithm</dfn> is a function template described by this Technical Specification declared in namespace <code>std::experimental::parallel::v1</code> with a formal template parameter named <code>ExecutionPolicy</code>.</p>
-  
-      <p para_num="3" id="parallel.general.defns.3">
-        Parallel algorithms access objects indirectly accessible via their arguments by invoking the following functions:
-  
-        </p><ul>
-          <li>
-            All operations of the categories of the iterators that the algorithm is instantiated with.
-          </li>
-  
-          <li>
-            Functions on those sequence elements that are required by its specification.
-          </li>
-  
-          <li>
-            User-provided function objects to be applied during the 
-execution of the algorithm, if required by the specification.
-          </li>
-
-          <ins><li>
-            Operations on those function objects required by the specification.
-
-            <cxx-note><span class="nowrap">[ <em>Note:</em></span>
     
-              See clause 25.1 of <em>C++ Standard Algorithms Library</em>.
-            
+  
+    <p para_num="1" id="parallel.general.defns.1">For the purposes of this document, the terms and definitions given in the C++ Standard and the following apply.</p>
+  
+    <p para_num="2" id="parallel.general.defns.2">A <dfn>parallel algorithm</dfn> is a function template described by this Technical Specification declared in namespace <code>std::experimental::parallel::v1</code> with a formal template parameter named <code>ExecutionPolicy</code>.</p>
+  
+    <p para_num="3" id="parallel.general.defns.3">
+      Parallel algorithms access objects indirectly accessible via their arguments by invoking the following functions:
+  
+      </p><ul>
+        <li>
+          All operations of the categories of the iterators that the algorithm is instantiated with.
+        </li>
+  
+        <li>
+          Functions on those sequence elements that are required by its specification.
+        </li>
+  
+        <li>
+          User-provided function objects to be applied during the execution of the algorithm, if required by the specification.
+        </li>
+
+        <ins><li>
+          Operations on those function objects required by the specification.
+
+          <cxx-note><span class="nowrap">[ <em>Note:</em></span>
+    
+            See clause 25.1 of <em>C++ Standard Algorithms Library</em>.
+          
     <span class="nowrap">— <em>end note</em> ]</span>
   </cxx-note>
-          </li></ins>
-        </ul>
+        </li></ins>
+      </ul>
   
-        These functions are herein called <em>element access functions</em>.
+      These functions are herein called <em>element access functions</em>.
   
-        <cxx-example>
+      <cxx-example>
     
     <span class="nowrap">[ <em>Example:</em></span>
     
-          The <code>sort</code> function may invoke the following element access functions:
+        The <code>sort</code> function may invoke the following element access functions:
   
-          <ul>
-            <li>
-              Methods of the random-access iterator of the actual 
-template argument, as per 24.2.7, as implied by the name of the
-              template parameters <code>RandomAccessIterator</code>.
-            </li>
+        <ul>
+          <li>
+            Methods of the random-access iterator of the actual template argument, as per 24.2.7, as implied by the name of the
+            template parameters <code>RandomAccessIterator</code>.
+          </li>
   
-            <li>
-              The <code>swap</code> function on the elements of the sequence (as per 25.4.1.1 [sort]/2).
-            </li>
+          <li>
+            The <code>swap</code> function on the elements of the sequence (as per 25.4.1.1 [sort]/2).
+          </li>
   
-            <li>
-              The user-provided <code>Compare</code> function object.
-            </li>
-          </ul>
-        
+          <li>
+            The user-provided <code>Compare</code> function object.
+          </li>
+        </ul>
+      
     <span class="nowrap">— <em>end example</em> ]</span>
   </cxx-example>
-    
+  
     </section>
   </cxx-section>
 
+  <cxx-section id="parallel.general.features">
+    
+
+    <section>
+      <header><span class="section-number">1.5</span>  <span style="float:right"><a href="#parallel.general.features">[parallel.general.features]</a></span></header>
+      
+  <ins>
+    <h1>Feature-testing recommendations</h1>     
+    <p>An implementation that provides support for this Technical Specification shall define the feature test macro(s) in table 1.</p>
+
+    <table is="cxx-table" class="column-rules">
+    
+
+    <caption>Table 1 — <wbr><span>Feature Test Macro(s)</span></caption>
+    
+      
+
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Value</th>
+          <th>Header</th>
+        </tr>
+        <tr>
+          <td><code>__cpp_lib_experimental_parallel_algorithm</code></td>
+          <td>201505</td>
+          <td>
+            <code>&lt;experimental/algorithm&gt;</code><br>
+            <code>&lt;experimental/exception_list&gt;</code><br>
+            <code>&lt;experimental/execution_policy&gt;</code><br>
+            <code>&lt;experimental/numeric&gt;</code>
+          </td>
+        </tr>
+      </thead>
+    
+  </table>
+  </ins>
+  
     </section>
   </cxx-section>
+
     </section>
   </cxx-clause>
 
@@ -1911,7 +1951,7 @@ for_each(par_vec, std::begin(a), std::end(a), [&amp;](int) {
         The Parallel Algorithms Library provides overloads for each of the algorithms named in
         Table 1, corresponding to the algorithms with the same name in the C++ Standard Algorithms Library.
         
-        For each algorithm in <cxx-ref to="tab.parallel.algorithms"><a title="tab.parallel.algorithms" href="#tab.parallel.algorithms">Table 1</a></cxx-ref>, if there are overloads for
+        For each algorithm in <cxx-ref to="tab.parallel.algorithms"><a title="tab.parallel.algorithms" href="#tab.parallel.algorithms">Table 2</a></cxx-ref>, if there are overloads for
         corresponding algorithms with the same name
         in the C++ Standard Algorithms Library,
         the overloads shall have an additional template type parameter named
@@ -1934,7 +1974,7 @@ for_each(par_vec, std::begin(a), std::end(a), [&amp;](int) {
       <table role="presentation" is="cxx-table" id="tab.parallel.algorithms" class="list">
     
 
-    <caption>Table 1 — <wbr><span>Table of parallel algorithms</span></caption>
+    <caption>Table 2 — <wbr><span>Table of parallel algorithms</span></caption>
     
         
           <tbody><tr>
@@ -2062,7 +2102,7 @@ for_each(par_vec, std::begin(a), std::end(a), [&amp;](int) {
 
       <cxx-note><span class="nowrap">[ <em>Note:</em></span>
     
-      Not all algorithms in the Standard Library have counterparts in <cxx-ref to="tab.parallel.algorithms"><a title="tab.parallel.algorithms" href="#tab.parallel.algorithms">Table 1</a></cxx-ref>.
+      Not all algorithms in the Standard Library have counterparts in <cxx-ref to="tab.parallel.algorithms"><a title="tab.parallel.algorithms" href="#tab.parallel.algorithms">Table 2</a></cxx-ref>.
       
     <span class="nowrap">— <em>end note</em> ]</span>
   </cxx-note>
