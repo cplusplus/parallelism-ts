@@ -9,12 +9,12 @@
 
 # Parallelism TS Editor's Report, post-Lenexa mailing 
 
-D4505 is the latest Parallelism TS Working Draft. It contains editorial and technical changes to the Parallelism TS to apply the following revisions:
+N4505 is the latest Parallelism TS Working Draft. It contains editorial and technical changes to the Parallelism TS to apply the following revisions:
 
   * N4274 - Relaxing Packing Rules for Exceptions Thrown by Parallel Algorithms - Proposed Wording (Revision 1)
   * Feature test macro for the Parallelism TS
 
-D4505 updates the previous draft, N4407, published in the pre-Lenexa mailing.
+N4505 updates the previous draft, N4407, published in the pre-Lenexa mailing.
 
 N4507 is document N4505 reformatted as a TS document. It updates N4409, which was published in the pre-Lenexa mailing.
 
