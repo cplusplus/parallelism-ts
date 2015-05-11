@@ -226,7 +226,7 @@ cxx-section header {
 	font-weight: bold; margin-top: 20px; margin-bottom: 20px; page-break-inside: avoid; page-break-after: avoid;
 }
 
-cxx-section header:after {
+cxx-section header::after {
 	clear: both; display: block; content: " "; height: 0px;
 }cxx-clause {
 	display: block;
@@ -248,7 +248,7 @@ cxx-clause header {
 	font-weight: bold; margin-top: 20px; margin-bottom: 20px; page-break-inside: avoid; page-break-after: avoid;
 }
 
-cxx-clause header:after {
+cxx-clause header::after {
 	clear: both; display: block; content: " "; height: 0px;
 }[is=cxx-table] {
 	margin-left: auto; margin-right: auto; border-collapse: collapse; border: thin solid black;
@@ -290,7 +290,7 @@ cxx-clause header:after {
 	padding-left: 0px; margin: 0px;
 }
 
-[is=cxx-table].list ul li:before {
+[is=cxx-table].list ul li::before {
 	content: "";
 }cxx-figure {
 	margin-left: auto; margin-right: auto;
@@ -511,7 +511,7 @@ cxx-ednote.para aside {
 }cxx-note .nowrap {
 	white-space: nowrap;
 }cxx-footnote {
-	font-family: serif; white-space: normal; text-indent: initial;textIndent: initial; 
+	font-family: serif; white-space: normal; text-indent: initial;textIndent: initial; text-indent: initial; 
 }
 
 @media screen {
@@ -556,7 +556,7 @@ cxx-example .nowrap {
 	white-space: normal;
 }
 
-w-br:after {
+w-br::after {
 	content: "​";
 }</style>
   <meta charset="utf-8">
@@ -715,8 +715,8 @@ pre {
     
       <div class="page">
         <div class="header">
-          <strong>ISO/IEC JTC1 SC22 WG21 <cxx-docnum>N4354</cxx-docnum></strong><br>
-          Date: <time pubdate="">2015-01-08</time><br>
+          <strong>ISO/IEC JTC1 SC22 WG21 <cxx-docnum>N4507</cxx-docnum></strong><br>
+          Date: <time pubdate="">2015-05-05</time><br>
           ISO/IEC DTS <cxx-project-number>19570</cxx-project-number><br>
           ISO/IEC JTC1 SC22<br>
           Secretariat: ANSI
@@ -786,13 +786,13 @@ pre {
             
               <li><span class="marker">1.3</span><a href="#parallel.general.namespaces">Namespaces and headers</a>
         
-          <ol>
+      </li>
             
-              <li><span class="marker">1.3.1</span><a href="#parallel.general.defns">Terms and definitions</a>
+              <li><span class="marker">1.4</span><a href="#parallel.general.defns">Terms and definitions</a>
         
       </li>
             
-          </ol>
+              <li><span class="marker">1.5</span><a href="#parallel.general.features">Feature-testing recommendations</a>
         
       </li>
             
@@ -1059,71 +1059,118 @@ pre {
 
 <pre><code>    #include &lt;meow&gt;</code>
 </pre>
+  
+    </section>
+  </cxx-section>
 
-    <cxx-section id="parallel.general.defns">
+  <cxx-section id="parallel.general.defns">
     
 
     <section>
-      <header><span class="section-number">1.3.1</span> <h1 data-bookmark-label="1.3.1 Terms and definitions">Terms and definitions</h1> <span style="float:right"><a href="#parallel.general.defns">[parallel.general.defns]</a></span></header>
+      <header><span class="section-number">1.4</span> <h1 data-bookmark-label="1.4 Terms and definitions">Terms and definitions</h1> <span style="float:right"><a href="#parallel.general.defns">[parallel.general.defns]</a></span></header>
       
-      
+    
   
-      <p para_num="1" id="parallel.general.defns.1">For the purposes of this document, the terms and definitions given in the C++ Standard and the following apply.</p>
+    <p para_num="1" id="parallel.general.defns.1">For the purposes of this document, the terms and definitions given in the C++ Standard and the following apply.</p>
   
-      <p para_num="2" id="parallel.general.defns.2">A <dfn>parallel algorithm</dfn> is a function template described by this Technical Specification declared in namespace <code>std::experimental::parallel::v1</code> with a formal template parameter named <code>ExecutionPolicy</code>.</p>
+    <p para_num="2" id="parallel.general.defns.2">A <dfn>parallel algorithm</dfn> is a function template described by this Technical Specification declared in namespace <code>std::experimental::parallel::v1</code> with a formal template parameter named <code>ExecutionPolicy</code>.</p>
   
+    <p para_num="3" id="parallel.general.defns.3">
+      Parallel algorithms access objects indirectly accessible via their arguments by invoking the following functions:
   
-      <p para_num="3" id="parallel.general.defns.3">
-        Parallel algorithms access objects indirectly accessible via their arguments by invoking the following functions:
+      </p><ul>
+        <li>
+          All operations of the categories of the iterators that the algorithm is instantiated with.
+        </li>
   
-        </p><ul>
-          <li>
-            All operations of the categories of the iterators that the algorithm is instantiated with.
-          </li>
+        <li>
+          Functions on those sequence elements that are required by its specification.
+        </li>
   
-          <li>
-            Functions on those sequence elements that are required by its specification.
-          </li>
+        <li>
+          User-provided function objects to be applied during the execution of the algorithm, if required by the specification.
+        </li>
+
+        <li>
+          Operations on those function objects required by the specification.
+
+          <cxx-note><span class="nowrap">[ <em>Note:</em></span>
+    
+            See clause 25.1 of <em>C++ Standard Algorithms Library</em>.
+          
+    <span class="nowrap">— <em>end note</em> ]</span>
+  </cxx-note>
+        </li>
+      </ul>
   
-          <li>
-            User-provided function objects to be applied during the 
-execution of the algorithm, if required by the specification.
-          </li>
-        </ul>
+      These functions are herein called <em>element access functions</em>.
   
-        These functions are herein called <em>element access functions</em>.<pre></pre>
-  
-        <cxx-example>
+      <cxx-example>
     
     <span class="nowrap">[ <em>Example:</em></span>
     
-          The <code>sort</code> function may invoke the following element access functions:
+        The <code>sort</code> function may invoke the following element access functions:
   
-          <ul>
-            <li>
-              Methods of the random-access iterator of the actual 
-template argument, as per 24.2.7, as implied by the name of the
-              template parameters <code>RandomAccessIterator</code>.
-            </li>
+        <ul>
+          <li>
+            Methods of the random-access iterator of the actual template argument, as per 24.2.7, as implied by the name of the
+            template parameters <code>RandomAccessIterator</code>.
+          </li>
   
-            <li>
-              The <code>swap</code> function on the elements of the sequence (as per 25.4.1.1 [sort]/2).
-            </li>
+          <li>
+            The <code>swap</code> function on the elements of the sequence (as per 25.4.1.1 [sort]/2).
+          </li>
   
-            <li>
-              The user-provided <code>Compare</code> function object.
-            </li>
-          </ul>
-        
+          <li>
+            The user-provided <code>Compare</code> function object.
+          </li>
+        </ul>
+      
     <span class="nowrap">— <em>end example</em> ]</span>
   </cxx-example>
-      <p para_num="4" id="parallel.general.defns.4"></p>
-    
+  
     </section>
   </cxx-section>
 
+  <cxx-section id="parallel.general.features">
+    
+
+    <section>
+      <header><span class="section-number">1.5</span> <h1 data-bookmark-label="1.5 Feature-testing recommendations">Feature-testing recommendations</h1> <span style="float:right"><a href="#parallel.general.features">[parallel.general.features]</a></span></header>
+      
+         
+    <p para_num="1" id="parallel.general.features.1">An implementation that provides support for this Technical Specification shall define the feature test macro(s) in Table 1.</p>
+
+    <table is="cxx-table" class="column-rules">
+    
+
+    <caption>Table 1 — <wbr><span>Feature Test Macro(s)</span></caption>
+    
+      
+
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Value</th>
+          <th>Header</th>
+        </tr>
+        <tr>
+          <td><code>__cpp_lib_experimental_parallel_algorithm</code></td>
+          <td>201505</td>
+          <td>
+            <code>&lt;experimental/algorithm&gt;</code><br>
+            <code>&lt;experimental/exception_list&gt;</code><br>
+            <code>&lt;experimental/execution_policy&gt;</code><br>
+            <code>&lt;experimental/numeric&gt;</code>
+          </td>
+        </tr>
+      </thead>
+    
+  </table>
+  
     </section>
   </cxx-section>
+
     </section>
   </cxx-clause>
 
@@ -1432,9 +1479,7 @@ std::sort(exec, std::begin(sort_me), std::end(sort_me));</pre>
 
       <cxx-function para_num="1" id="parallel.execpol.access.1">
     
-    <pre><code><cxx-signature>
-          const type_info&amp; type() const noexcept;
-        </cxx-signature></code></pre>
+    <pre><code><cxx-signature>const type_info&amp; type() const noexcept;</cxx-signature></code></pre>
 
     <dl>
       
@@ -1450,14 +1495,12 @@ std::sort(exec, std::begin(sort_me), std::end(sort_me));</pre>
 
       <cxx-function para_num="3" id="parallel.execpol.access.3">
     
-    <pre><code><cxx-signature>
-          template&lt;class T&gt; T* get() noexcept;
-          template&lt;class T&gt; const T* get() const noexcept;
-        </cxx-signature></code></pre>
+    <pre><code><cxx-signature>template&lt;class T&gt; T* get() noexcept;</cxx-signature><cxx-signature>template&lt;class T&gt; const T* get() const noexcept;</cxx-signature></code></pre>
 
     <dl>
       
-        
+      
+      
 
         <cxx-returns para_num="4" id="parallel.execpol.access.4">
     
@@ -1523,7 +1566,7 @@ constexpr parallel_vector_execution_policy par_vec{};
         </p>
         <p para_num="2" id="parallel.exceptions.behavior.2">
           During the execution of a standard parallel algorithm, if the invocation of an element access function
-          terminates with an uncaught exception, the behavior of the program is determined by the type of
+          exits via an uncaught exception, the behavior of the program is determined by the type of
           execution policy used to invoke the algorithm:
 
           </p><ul>
@@ -1533,16 +1576,15 @@ constexpr parallel_vector_execution_policy par_vec{};
             </li>
             <li>
               If the execution policy object is of type <code>sequential_execution_policy</code> or
-              <code>parallel_execution_policy</code>, the execution of the algorithm terminates with an
-              <code>exception_list</code> exception. All uncaught exceptions thrown during
-              the invocations of element access functions shall be contained in the
-              <code>exception_list</code>.<pre></pre>
+              <code>parallel_execution_policy</code>, the execution of the algorithm exits via an
+              exception. The exception shall be an <code>exception_list</code> containing all uncaught exceptions thrown during
+              the invocations of element access functions, or optionally the uncaught exception if there was only one.<pre></pre>
 
               <cxx-note><span class="nowrap">[ <em>Note:</em></span>
     
-                For example, the number of invocations of the user-provided function object in
-                <code>for_each</code> is unspecified. When <code>for_each</code> is executed sequentially,
-                only one exception will be contained in the <code>exception_list</code> object.
+                For example, when <code>for_each</code> is executed sequentially,
+                if an invocation of the user-provided function object throws an exception, <code>for_each</code> can exit via
+                the uncaught exception, or throw an <code>exception_list</code> containing the original exception.
               
     <span class="nowrap">— <em>end note</em> ]</span>
   </cxx-note><pre></pre>
@@ -1550,8 +1592,8 @@ constexpr parallel_vector_execution_policy par_vec{};
               <cxx-note><span class="nowrap">[ <em>Note:</em></span>
     
                 These guarantees imply that, unless the algorithm has failed to allocate memory and
-                terminated with <code>std::bad_alloc</code>, all 
-exceptions thrown during the execution of
+                exits via <code>std::bad_alloc</code>, all exceptions 
+thrown during the execution of
                 the algorithm are communicated to the caller. It is 
 unspecified whether an algorithm implementation will "forge ahead" after
  
@@ -1561,9 +1603,9 @@ unspecified whether an algorithm implementation will "forge ahead" after
   </cxx-note><pre></pre>
               <cxx-note><span class="nowrap">[ <em>Note:</em></span>
     
-                The algorithm may terminate with the <code>std::bad_alloc</code>
+                The algorithm may exit via the <code>std::bad_alloc</code>
  exception even if one or more
-                user-provided function objects have terminated with an 
+                user-provided function objects have exited via an 
 exception. For example, this can happen when an algorithm fails to 
 allocate memory while
                 creating or adding elements to the <code>exception_list</code> object.
@@ -1622,9 +1664,7 @@ inline namespace v1 {
 
       <cxx-function para_num="3" id="parallel.exceptions.synopsis.3">
     
-    <pre><code><cxx-signature>
-          size_t size() const noexcept;
-        </cxx-signature></code></pre>
+    <pre><code><cxx-signature>size_t size() const noexcept;</cxx-signature></code></pre>
 
     <dl>
       
@@ -1649,9 +1689,7 @@ inline namespace v1 {
 
       <cxx-function para_num="6" id="parallel.exceptions.synopsis.6">
     
-    <pre><code><cxx-signature>
-          iterator begin() const noexcept;
-        </cxx-signature></code></pre>
+    <pre><code><cxx-signature>iterator begin() const noexcept;</cxx-signature></code></pre>
 
     <dl>
       
@@ -1669,9 +1707,7 @@ inline namespace v1 {
 
       <cxx-function para_num="8" id="parallel.exceptions.synopsis.8">
     
-    <pre><code><cxx-signature>
-          iterator end() const noexcept;
-        </cxx-signature></code></pre>
+    <pre><code><cxx-signature>iterator end() const noexcept;</cxx-signature></code></pre>
 
     <dl>
       
@@ -1689,9 +1725,7 @@ inline namespace v1 {
 
       <cxx-function para_num="10" id="parallel.exceptions.synopsis.10">
     
-    <pre><code><cxx-signature>
-          const char* what() const noexcept override;
-        </cxx-signature></code></pre>
+    <pre><code><cxx-signature>const char* what() const noexcept override;</cxx-signature></code></pre>
 
     <dl>
       
@@ -1941,7 +1975,7 @@ for_each(par_vec, std::begin(a), std::end(a), [&amp;](int) {
         The Parallel Algorithms Library provides overloads for each of the algorithms named in
         Table 1, corresponding to the algorithms with the same name in the C++ Standard Algorithms Library.
         
-        For each algorithm in <cxx-ref to="tab.parallel.algorithms"><a title="tab.parallel.algorithms" href="#tab.parallel.algorithms">Table 1</a></cxx-ref>, if there are overloads for
+        For each algorithm in <cxx-ref to="tab.parallel.algorithms"><a title="tab.parallel.algorithms" href="#tab.parallel.algorithms">Table 2</a></cxx-ref>, if there are overloads for
         corresponding algorithms with the same name
         in the C++ Standard Algorithms Library,
         the overloads shall have an additional template type parameter named
@@ -1964,7 +1998,7 @@ for_each(par_vec, std::begin(a), std::end(a), [&amp;](int) {
       <table role="presentation" is="cxx-table" id="tab.parallel.algorithms" class="list">
     
 
-    <caption>Table 1 — <wbr><span>Table of parallel algorithms</span></caption>
+    <caption>Table 2 — <wbr><span>Table of parallel algorithms</span></caption>
     
         
           <tbody><tr>
@@ -2092,7 +2126,7 @@ for_each(par_vec, std::begin(a), std::end(a), [&amp;](int) {
 
       <cxx-note><span class="nowrap">[ <em>Note:</em></span>
     
-      Not all algorithms in the Standard Library have counterparts in <cxx-ref to="tab.parallel.algorithms"><a title="tab.parallel.algorithms" href="#tab.parallel.algorithms">Table 1</a></cxx-ref>.
+      Not all algorithms in the Standard Library have counterparts in <cxx-ref to="tab.parallel.algorithms"><a title="tab.parallel.algorithms" href="#tab.parallel.algorithms">Table 2</a></cxx-ref>.
       
     <span class="nowrap">— <em>end note</em> ]</span>
   </cxx-note>
@@ -2136,7 +2170,8 @@ for_each(par_vec, std::begin(a), std::end(a), [&amp;](int) {
         <li><code>a1</code> when <code>N</code> is <code>1</code></li>
 
         <li>
-          <code>op(<em>GENERALIZED_NONCOMMUTATIVE_SUM</em>(op, a1, ..., aK), <em>GENERALIZED_NONCOMMUTATIVE_SUM</em>(op, aM, ..., aN)</code> where <code>1 &lt; K+1 = M ≤ N</code>.
+          <code>op(<em>GENERALIZED_NONCOMMUTATIVE_SUM</em>(op, a1, ..., aK), <em>GENERALIZED_NONCOMMUTATIVE_SUM</em>(op, aM, </code><br>
+          <code>..., aN)</code> where <code>1 &lt; K+1 = M ≤ N</code>.
         </li>
       </ul>
     <p para_num="4" id="parallel.alg.defns.4"></p>
@@ -2196,13 +2231,11 @@ inline namespace v1 {
 
       <cxx-function para_num="1" id="parallel.alg.foreach.1">
     
-    <pre><code><cxx-signature>
-          template&lt;class ExecutionPolicy,
-                   class InputIterator, class Function&gt;
-            void for_each(ExecutionPolicy&amp;&amp; exec,
-                          InputIterator first, InputIterator last,
-                          Function f);
-        </cxx-signature></code></pre>
+    <pre><code><cxx-signature>template&lt;class ExecutionPolicy,
+      class InputIterator, class Function&gt;
+void for_each(ExecutionPolicy&amp;&amp; exec,
+              InputIterator first, InputIterator last,
+              Function f);</cxx-signature></code></pre>
 
     <dl>
       
@@ -2258,11 +2291,9 @@ inline namespace v1 {
 
       <cxx-function para_num="7" id="parallel.alg.foreach.7">
     
-    <pre><code><cxx-signature>
-          template&lt;class InputIterator, class Size, class Function&gt;
-            InputIterator for_each_n(InputIterator first, Size n,
-                                     Function f);
-        </cxx-signature></code></pre>
+    <pre><code><cxx-signature>template&lt;class InputIterator, class Size, class Function&gt;
+InputIterator for_each_n(InputIterator first, Size n,
+                         Function f);</cxx-signature></code></pre>
 
     <dl>
       
@@ -2317,13 +2348,11 @@ inline namespace v1 {
 
       <cxx-function para_num="12" id="parallel.alg.foreach.12">
     
-    <pre><code><cxx-signature>
-        template&lt;class ExecutionPolicy,
-                 class InputIterator, class Size, class Function&gt;
-                 InputIterator for_each_n(ExecutionPolicy &amp;&amp; exec,
-                                          InputIterator first, Size n,
-                                          Function f);
-        </cxx-signature></code></pre>
+    <pre><code><cxx-signature>template&lt;class ExecutionPolicy,
+      class InputIterator, class Size, class Function&gt;
+InputIterator for_each_n(ExecutionPolicy &amp;&amp; exec,
+                         InputIterator first, Size n,
+                         Function f);</cxx-signature></code></pre>
 
     <dl>
       
@@ -2568,11 +2597,9 @@ inline namespace v1 {
 
       <cxx-function para_num="1" id="parallel.alg.reduce.1">
     
-    <pre><code><cxx-signature>
-          template&lt;class InputIterator&gt;
-            typename iterator_traits&lt;InputIterator&gt;::value_type
-              reduce(InputIterator first, InputIterator last);
-        </cxx-signature></code></pre>
+    <pre><code><cxx-signature>template&lt;class InputIterator&gt;
+typename iterator_traits&lt;InputIterator&gt;::value_type
+    reduce(InputIterator first, InputIterator last);</cxx-signature></code></pre>
 
     <dl>
       
@@ -2590,10 +2617,8 @@ inline namespace v1 {
 
       <cxx-function para_num="3" id="parallel.alg.reduce.3">
     
-    <pre><code><cxx-signature>
-          template&lt;class InputIterator, class T&gt;
-            T reduce(InputIterator first, InputIterator last, T init);
-        </cxx-signature></code></pre>
+    <pre><code><cxx-signature>template&lt;class InputIterator, class T&gt;
+T reduce(InputIterator first, InputIterator last, T init);</cxx-signature></code></pre>
 
     <dl>
       
@@ -2611,11 +2636,9 @@ inline namespace v1 {
 
       <cxx-function para_num="5" id="parallel.alg.reduce.5">
     
-    <pre><code><cxx-signature>
-          template&lt;class InputIterator, class T, class BinaryOperation&gt;
-            T reduce(InputIterator first, InputIterator last, T init,
-                     BinaryOperation binary_op);
-        </cxx-signature></code></pre>
+    <pre><code><cxx-signature>template&lt;class InputIterator, class T, class BinaryOperation&gt;
+T reduce(InputIterator first, InputIterator last, T init,
+         BinaryOperation binary_op);</cxx-signature></code></pre>
 
     <dl>
       
@@ -2667,14 +2690,10 @@ inline namespace v1 {
 
       <cxx-function para_num="1" id="parallel.alg.exclusive.scan.1">
     
-    <pre><code><cxx-signature>
-          template&lt;class InputIterator, class OutputIterator,
-                   class T&gt;
-            OutputIterator
-              exclusive_scan(InputIterator first, InputIterator last,
-                             OutputIterator result,
-                             T init);
-        </cxx-signature></code></pre>
+    <pre><code><cxx-signature>template&lt;class InputIterator, class OutputIterator, class T&gt;
+OutputIterator exclusive_scan(InputIterator first, InputIterator last,
+                              OutputIterator result,
+                              T init);</cxx-signature></code></pre>
 
     <dl>
       
@@ -2692,14 +2711,10 @@ inline namespace v1 {
 
       <cxx-function para_num="3" id="parallel.alg.exclusive.scan.3">
     
-    <pre><code><cxx-signature>
-          template&lt;class InputIterator, class OutputIterator,
-                   class T, class BinaryOperation&gt;
-            OutputIterator
-              exclusive_scan(InputIterator first, InputIterator last,
-                             OutputIterator result,
-                             T init, BinaryOperation binary_op);
-        </cxx-signature></code></pre>
+    <pre><code><cxx-signature>template&lt;class InputIterator, class OutputIterator, class T, class BinaryOperation&gt;
+OutputIterator exclusive_scan(InputIterator first, InputIterator last,
+                              OutputIterator result,
+                              T init, BinaryOperation binary_op);</cxx-signature></code></pre>
 
     <dl>
       
@@ -2761,12 +2776,9 @@ inline namespace v1 {
 
       <cxx-function para_num="1" id="parallel.alg.inclusive.scan.1">
     
-    <pre><code><cxx-signature>
-          template&lt;class InputIterator, class OutputIterator&gt;
-            OutputIterator
-              inclusive_scan(InputIterator first, InputIterator last,
-                             OutputIterator result);
-        </cxx-signature></code></pre>
+    <pre><code><cxx-signature>template&lt;class InputIterator, class OutputIterator&gt;
+OutputIterator inclusive_scan(InputIterator first, InputIterator last,
+                              OutputIterator result);</cxx-signature></code></pre>
 
     <dl>
       
@@ -2784,24 +2796,17 @@ inline namespace v1 {
 
       <cxx-function para_num="3" id="parallel.alg.inclusive.scan.3">
     
-    <pre><code><cxx-signature>
-          template&lt;class InputIterator, class OutputIterator,
-                   class BinaryOperation&gt;
-            OutputIterator
-              inclusive_scan(InputIterator first, InputIterator last,
-                             OutputIterator result,
-                             BinaryOperation binary_op);
-          
-          template&lt;class InputIterator, class OutputIterator,
-                   class BinaryOperation&gt;
-            OutputIterator
-              inclusive_scan(InputIterator first, InputIterator last,
-                             OutputIterator result,
-                             BinaryOperation binary_op, T init);
-        </cxx-signature></code></pre>
+    <pre><code><cxx-signature>template&lt;class InputIterator, class OutputIterator, class BinaryOperation&gt;
+OutputIterator inclusive_scan(InputIterator first, InputIterator last,
+                              OutputIterator result,
+                              BinaryOperation binary_op);</cxx-signature><cxx-signature>template&lt;class InputIterator, class OutputIterator, class BinaryOperation&gt;
+OutputIterator inclusive_scan(InputIterator first, InputIterator last,
+                              OutputIterator result,
+                              BinaryOperation binary_op, T init);</cxx-signature></code></pre>
 
     <dl>
       
+        
         
 
         <cxx-effects para_num="4" id="parallel.alg.inclusive.scan.4">
@@ -2862,11 +2867,9 @@ inline namespace v1 {
 
       <cxx-function para_num="1" id="parallel.alg.transform.reduce.1">
     
-    <pre><code><cxx-signature>
-          template&lt;class InputIterator, class UnaryFunction, class T, class BinaryOperation&gt;
-          T transform_reduce(InputIterator first, InputIterator last,
-                             UnaryOperation unary_op, T init, BinaryOperation binary_op);
-        </cxx-signature></code></pre>
+    <pre><code><cxx-signature>template&lt;class InputIterator, class UnaryFunction, class T, class BinaryOperation&gt;
+T transform_reduce(InputIterator first, InputIterator last,
+                   UnaryOperation unary_op, T init, BinaryOperation binary_op);</cxx-signature></code></pre>
 
     <dl>
       
@@ -2875,7 +2878,8 @@ inline namespace v1 {
         <cxx-returns para_num="2" id="parallel.alg.transform.reduce.2">
     
     <dt>Returns:</dt><dd>
-          <code><em>GENERALIZED_SUM</em>(binary_op, init, unary_op(*first), ..., unary_op(*(first + (last - first) - 1)))</code>.
+          <code><em>GENERALIZED_SUM</em>(binary_op, init, unary_op(*first), ..., unary_op(*(first + (last - first) -</code><br>
+          <code>1)))</code>.
         </dd>
   </cxx-returns>
 
@@ -2916,16 +2920,13 @@ inline namespace v1 {
 
       <cxx-function para_num="1" id="parallel.alg.transform.exclusive.scan.1">
     
-    <pre><code><cxx-signature>
-          template&lt;class InputIterator, class OutputIterator,
-                   class UnaryOperation,
-                   class T, class BinaryOperation&gt;
-            OutputIterator
-              transform_exclusive_scan(InputIterator first, InputIterator last,
-                                       OutputIterator result,
-                                       UnaryOperation unary_op,
-                                       T init, BinaryOperation binary_op);
-        </cxx-signature></code></pre>
+    <pre><code><cxx-signature>template&lt;class InputIterator, class OutputIterator,
+      class UnaryOperation,
+      class T, class BinaryOperation&gt;
+OutputIterator transform_exclusive_scan(InputIterator first, InputIterator last,
+                                        OutputIterator result,
+                                        UnaryOperation unary_op,
+                                        T init, BinaryOperation binary_op);</cxx-signature></code></pre>
 
     <dl>
       
@@ -2935,7 +2936,8 @@ inline namespace v1 {
     
     <dt>Effects:</dt><dd>
           Assigns through each iterator <code>i</code> in <code>[result,result + (last - first))</code> the value of
-          <code><em>GENERALIZED_NONCOMMUTATIVE_SUM</em>(binary_op, init, unary_op(*first), ..., unary_op(*(first + (i - result) - 1)))</code>.
+          <code><em>GENERALIZED_NONCOMMUTATIVE_SUM</em>(binary_op, init, unary_op(*first), ..., unary_op(*(first + (i</code><br>
+          <code>- result) - 1)))</code>.
         </dd>
   </cxx-effects>
 
@@ -2986,36 +2988,34 @@ inline namespace v1 {
 
       <cxx-function para_num="1" id="parallel.alg.transform.inclusive.scan.1">
     
-    <pre><code><cxx-signature>
-          template&lt;class InputIterator, class OutputIterator,
-                   class UnaryOperation,
-                   class BinaryOperation&gt;
-            OutputIterator
-              transform_inclusive_scan(InputIterator first, InputIterator last,
-                                       OutputIterator result,
-                                       UnaryOperation unary_op,
-                                       BinaryOperation binary_op);
-
-          template&lt;class InputIterator, class OutputIterator,
-                   class UnaryOperation,
-                   class BinaryOperation, class T&gt;
-            OutputIterator
-              transform_inclusive_scan(InputIterator first, InputIterator last,
-                                       OutputIterator result,
-                                       UnaryOperation unary_op,
-                                       BinaryOperation binary_op, T init);
-        </cxx-signature></code></pre>
+    <pre><code><cxx-signature>template&lt;class InputIterator, class OutputIterator,
+      class UnaryOperation,
+      class BinaryOperation&gt;
+OutputIterator transform_inclusive_scan(InputIterator first, InputIterator last,
+                                        OutputIterator result,
+                                        UnaryOperation unary_op,
+                                        BinaryOperation binary_op);</cxx-signature><cxx-signature>template&lt;class InputIterator, class OutputIterator,
+      class UnaryOperation,
+      class BinaryOperation, class T&gt;
+OutputIterator transform_inclusive_scan(InputIterator first, InputIterator last,
+                                        OutputIterator result,
+                                        UnaryOperation unary_op,
+                                        BinaryOperation binary_op, T init);</cxx-signature></code></pre>
 
     <dl>
       
+        
+
         
 
         <cxx-effects para_num="2" id="parallel.alg.transform.inclusive.scan.2">
     
     <dt>Effects:</dt><dd>
           Assigns through each iterator <code>i</code> in <code>[result,result + (last - first))</code> the value of
-          <code><em>GENERALIZED_NONCOMMUTATIVE_SUM</em>(binary_op, unary_op(*first), ..., unary_op(*(first + (i - result))))</code> or
-          <code><em>GENERALIZED_NONCOMMUTATIVE_SUM</em>(binary_op, init, unary_op(*first), ..., unary_op(*(first + (i - result))))</code>
+          <code><em>GENERALIZED_NONCOMMUTATIVE_SUM</em>(binary_op, unary_op(*first), ..., unary_op(*(first + (i -</code><br>
+          <code>result))))</code> or
+          <code><em>GENERALIZED_NONCOMMUTATIVE_SUM</em>(binary_op, init, unary_op(*first), ..., unary_op(*(first + (i</code><br>
+          <code>- result))))</code>
           if <code>init</code> is provided.
         </dd>
   </cxx-effects>
