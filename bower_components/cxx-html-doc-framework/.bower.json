@@ -10,17 +10,18 @@
     "tests"
   ],
   "dependencies": {
-    "platform": "Polymer/platform#0.2.4",
-    "polymer": "Polymer/polymer#0.2.4",
-    "core-ajax": "Polymer/core-ajax#0.2.4"
+    "polymer": "Polymer/polymer#0.5.2",
+    "core-ajax": "Polymer/core-ajax#0.5.2"
   },
-  "_release": "8044bdba33",
+  "version": "0.3.2",
+  "_release": "0.3.2",
   "_resolution": {
-    "type": "commit",
-    "commit": "8044bdba330e9c22060f7bfe084f2c108f988c3d"
+    "type": "version",
+    "tag": "0.3.2",
+    "commit": "9604bb1ff78b2f33fbcbcb941ea0fbae2e65d943"
   },
-  "_source": "git@github.com:jaredhoberock/html-doc-framework.git",
-  "_target": "8044bdba330e9c22060f7bfe084f2c108f988c3d",
-  "_originalSource": "git@github.com:jaredhoberock/html-doc-framework",
+  "_source": "git://github.com/cplusplus/html-doc-framework.git",
+  "_target": "~0.3.2",
+  "_originalSource": "cplusplus/html-doc-framework",
   "_direct": true
 }
