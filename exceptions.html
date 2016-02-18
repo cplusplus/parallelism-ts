@@ -9,7 +9,7 @@
         </p>
         <p>
           During the execution of a standard parallel algorithm, if the invocation of an element access function
-          <ins>exits via</ins><del>terminates with</del> an uncaught exception, the behavior of the program is determined by the type of
+          exits via an uncaught exception, the behavior of the program is determined by the type of
           execution policy used to invoke the algorithm:
 
           <ul>
@@ -19,30 +19,27 @@
             </li>
             <li>
               If the execution policy object is of type <code>sequential_execution_policy</code> or
-              <code>parallel_execution_policy</code>, the execution of the algorithm <ins>exits via</ins><del>terminates with</del> an
-              <del><code>exception_list</code></del> exception. <ins>The exception shall be an <code>exception_list</code> containing all</ins><del>All</del> uncaught exceptions thrown during
-              the invocations of element access functions<ins>, or optionally the uncaught exception if there was only one</ins><del>shall be contained in the
-              <code>exception_list</code></del>.<pre>
+              <code>parallel_execution_policy</code>, the execution of the algorithm exits via an
+               exception. The exception shall be an <code>exception_list</code> containing all uncaught exceptions thrown during
+              the invocations of element access functions, or optionally the uncaught exception if there was only one.<pre>
 </pre>
 
               <cxx-note>
-                For example, <del>the number of invocations of the user-provided function object in
-                <code>for_each</code> is unspecified. W</del><ins>w</ins>hen <code>for_each</code> is executed sequentially,
-                <ins>if an invocation of the user-provided function object throws an exception, <code>for_each</code> can exit via the uncaught exception, or throw an <code>exception_list</code> containing the original exception.
-                <del>only one exception will be contained in the <code>exception_list</code> object.</del>
+                For example, when <code>for_each</code> is executed sequentially,
+                if an invocation of the user-provided function object throws an exception, <code>for_each</code> can exit via the uncaught exception, or throw an <code>exception_list</code> containing the original exception.
               </cxx-note><pre>
 </pre>
 
               <cxx-note>
                 These guarantees imply that, unless the algorithm has failed to allocate memory and
-                <ins>exits via</ins><del>terminated with</del> <code>std::bad_alloc</code>, all exceptions thrown during the execution of
+                exits via <code>std::bad_alloc</code>, all exceptions thrown during the execution of
                 the algorithm are communicated to the caller. It is unspecified whether an algorithm implementation will "forge ahead" after 
                 encountering and capturing a user exception.
               </cxx-note><pre>
 </pre>
               <cxx-note>
-                The algorithm may <ins>exit via</ins><del>terminate with</del> the <code>std::bad_alloc</code> exception even if one or more
-                user-provided function objects have <ins>exited via</ins><del>terminated with</del> an exception. For example, this can happen when an algorithm fails to allocate memory while
+                The algorithm may exit via the <code>std::bad_alloc</code> exception even if one or more
+                user-provided function objects have exited via an exception. For example, this can happen when an algorithm fails to allocate memory while
                 creating or adding elements to the <code>exception_list</code> object.
               </cxx-note>
             </li>
@@ -60,7 +57,7 @@
 namespace std {
 namespace experimental {
 namespace parallel {
-inline namespace v1 {
+inline namespace <ins>v2</ins><del>v1</del> {
 
   class exception_list : public exception
   {

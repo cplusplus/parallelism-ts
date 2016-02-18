@@ -52,7 +52,7 @@
     experimental and not part of the C++ Standard Library, they should not be
     declared directly within namespace <code>std</code>. Unless otherwise specified, all
     components described in this Technical Specification are declared in namespace 
-    <code>std::experimental::parallel::v1</code>.</p>
+    <code>std::experimental::parallel::<ins>v2</ins><del>v1</del></code>.</p>
 
     <cxx-note>
     Once standardized, the components described by this Technical Specification are expected to be promoted to namespace <code>std</code>. 
@@ -60,7 +60,7 @@
 
     <p>Unless otherwise specified, references to such entities described in this
     Technical Specification are assumed to be qualified with
-    <code>std::experimental::parallel::v1</code>, and references to entities described in the C++
+    <code>std::experimental::parallel::<ins>v2</ins><del>v1</del></code>, and references to entities described in the C++
     Standard Library are assumed to be qualified with <code>std::</code>.</p>
 
     <p>Extensions that are expected to eventually be added to an existing header
@@ -77,7 +77,7 @@
   
     <p>For the purposes of this document, the terms and definitions given in the C++ Standard and the following apply.</p>
   
-    <p>A <dfn>parallel algorithm</dfn> is a function template described by this Technical Specification declared in namespace <code>std::experimental::parallel::v1</code> with a formal template parameter named <code>ExecutionPolicy</code>.</p>
+    <p>A <dfn>parallel algorithm</dfn> is a function template described by this Technical Specification declared in namespace <code>std::experimental::parallel::<ins>v2</ins><del>v1</del></code> with a formal template parameter named <code>ExecutionPolicy</code>.</p>
   
     <p>
       Parallel algorithms access objects indirectly accessible via their arguments by invoking the following functions:
@@ -95,13 +95,13 @@
           User-provided function objects to be applied during the execution of the algorithm, if required by the specification.
         </li>
 
-        <ins><li>
+        <li>
           Operations on those function objects required by the specification.
 
           <cxx-note>
             See clause 25.1 of <em>C++ Standard Algorithms Library</em>.
           </cxx-note>
-        </li></ins>
+        </li>
       </ul>
   
       These functions are herein called <em>element access functions</em>.
@@ -127,7 +127,6 @@
   </cxx-section>
 
   <cxx-section id="parallel.general.features">
-  <ins>
     <h1>Feature-testing recommendations</h1>     
     <p>An implementation that provides support for this Technical Specification shall define the feature test macro(s) in Table 1.</p>
 
@@ -152,7 +151,6 @@
         </tr>
       </thead>
     </table>
-  </ins>
   </cxx-section>
 </cxx-clause>
 

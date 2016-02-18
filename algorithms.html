@@ -365,7 +365,7 @@ for_each(par_vec, std::begin(a), std::end(a), [&amp;](int) {
 namespace std {
 namespace experimental {
 namespace parallel {
-inline namespace v1 {
+inline namespace <ins>v2</ins><del>v1</del> {
   template&lt;class ExecutionPolicy,
            class InputIterator, class Function&gt;
     void for_each(ExecutionPolicy&amp;&amp; exec,
@@ -499,7 +499,7 @@ InputIterator for_each_n(ExecutionPolicy &amp;&amp; exec,
 namespace std {
 namespace experimental {
 namespace parallel {
-inline namespace v1 {
+inline namespace <ins>v2</ins><del>v1</del> {
   template&lt;class InputIterator&gt;
     typename iterator_traits&lt;InputIterator&gt;::value_type
       reduce(InputIterator first, InputIterator last);

@@ -52,7 +52,7 @@ sort(exec, v.begin(), v.end());
 namespace std {
 namespace experimental {
 namespace parallel {
-inline namespace v1 {
+inline namespace <ins>v2</ins><del>v1</del> {
   <cxx-ref insynopsis="" to="parallel.execpol.type"></cxx-ref>
   template&lt;class T&gt; struct is_execution_policy;
   template&lt;class T&gt; constexpr bool is_execution_policy_v = is_execution_policy&lt;T&gt;::value;
