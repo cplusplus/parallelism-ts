@@ -1,0 +1,300 @@
+<ins>
+<cxx-clause id="parallel.task_block">
+  <h1>Task Block</h1>
+
+   <cxx-section id="parallel.task_block.synopsis">
+     <h1>Header <code>&lt;experimental/task_block&gt;</code> synopsis</h1>
+
+     <pre>
+namespace std {
+namespace experimental {
+namespace parallel {
+inline namespace v2 {
+  class task_cancelled_exception;
+
+  class task_block;
+
+  template&lt;class F&gt;
+    void define_task_block(F&& f);
+
+  template&lt;class f&gt;
+    void define_task_block_restore_thread(F&& f);
+}
+}
+}
+}
+     </pre>
+   </cxx-section>
+
+   <cxx-section id="parallel.task_block.task_cancelled_exception">
+     <h1>Class <code>task_cancelled_exception</code></h1>
+     <pre>
+
+namespace std {
+namespace experimental {
+namespace parallel
+inline namespace v2 {
+
+  class task_cancelled_exception : public exception
+  {
+    public:
+      task_cancelled_exception() noexcept;
+      virtual const char* what() const noexcept;
+  };
+}
+}
+}
+}
+     </pre>
+
+     <p>
+       The class <code>task_cancelled_exception</code> defines the type of objects thrown by
+       <code>task_block::run</code> or <code>task_block::wait</code> if they detect than an
+       exception is pending within the current parallel block. See <cxx-ref to="parallel.task_block.exceptions"></cxx-ref>, below.
+     </p>
+
+     <cxx-section id="parallel.task_block.task_cancelled_exception.what">
+       <h1><code>task_cancelled_exception</code> member function <code>what</code></h1>
+
+       <cxx-function>
+         <cxx-signature>virtual const char* what() const noexcept</cxx-signature>
+
+         <cxx-returns>
+           An implementation-defined NTBS.
+         </cxx-returns>
+       </cxx-function>
+     </cxx-section>
+   </cxx-section>
+
+   <cxx-section id="parallel.task_block.class">
+     <h1>Class <code>task_block</code></h1>
+     <pre>
+
+namespace std {
+namespace experimental {
+namespace parallel {
+inline namespace v2 {
+
+  class task_block
+  {
+    private:
+      ~task_block();
+
+    public:
+      task_block(const task_block&) = delete;
+      task_block& operator=(const task_block&) = delete;
+      void operator&() const = delete;
+
+      template&lt;class F&gt;
+        void run(F&& f);
+
+      void wait();
+  };
+}
+}
+}
+}
+     </pre>
+
+     <p>
+       The class <code>task_block</code> defines an interface for forking and joining parallel tasks. The <code>define_task_block</code> and <code>define_task_block_restore_thread</code> function templates create an object of type <code>task_block</code> and pass a reference to that object to a user-provided function object.
+     </p>
+
+     <p>
+       An object of class <code>task_block</code> cannot be constructed, destroyed, copied, or moved except by the implementation of the task block library. Taking the address of a <code>task_block</code> object via <code>operator&</code> is ill-formed. Obtaining its address by any other means (including <code>addressof</code>) results in a pointer with an unspecified value; dereferencing such a pointer results in undefined behavior.
+     </p>
+
+     <p>
+       A <code>task_block</code> is <em>active</em> if it was created by the nearest enclosing task block, where “task block” refers to an
+       invocation of <code>define_task_block</code> or <code>define_task_block_restore_thread</code> and “nearest enclosing” means the most
+       recent invocation that has not yet completed. Code designated for execution in another thread by means other
+       than the facilities in this section (e.g., using <code>thread</code> or <code>async</code>) are not enclosed in the task block and a
+       <code>task_block</code> passed to (or captured by) such code is not active within that code. Performing any operation on a
+       <code>task_block</code> that is not active results in undefined behavior.
+     </p>
+
+     <p>
+       When the argument to <code>task_block::run</code> is called, no <code>task_block</code> is active, not even the <code>task_block</code> on which <code>run</code> was called.
+       (The function object should not, therefore, capture a <code>task_block</code> from the surrounding block.)
+     </p>
+
+     <cxx-example>
+     <pre>define_task_block([&](auto& tb) {
+  tb.run([&]{
+    tb.run([] { f(); });               // Error: tb is not active within run
+    define_task_block([&](auto& tb2) { // Define new task block
+      tb2.run(f);
+      ...
+    });
+  });
+  ...
+});
+     </pre>
+     </cxx-example><pre>
+</pre>
+
+     <cxx-note>
+       Implementations are encouraged to diagnose the above error at translation time.
+     </cxx-note>
+
+     <cxx-section id="parallel.task_block.class.run">
+     
+       <h1><code>task_block</code> member function template <code>run</code></h1>
+  
+       <cxx-function>
+         <cxx-signature>template&lt;class F&gt; void run(F&& f);</cxx-signature>
+
+         <cxx-requires>
+           <code>F</code> shall be <code>MoveConstructible</code>. <code><em>DECAY_COPY</em>(std::forward&lt;F&gt;(f))()</code> shall be a valid expression.
+         </cxx-requires>
+  
+         <cxx-preconditions>
+           <code>*this</code> shall be the active <code>task_block</code>.
+         </cxx-preconditions>
+  
+         <cxx-effects>
+           Evaluates <code><em>DECAY_COPY</em>(std::forward&lt;F&gt;(f))()</code>, where <code><em>DECAY_COPY</em>(std::forward&lt;F&gt;(f))</code>
+           is evaluated synchronously within the current thread. The call to the resulting copy of the function object is
+           permitted to run on an unspecified thread created by the implementation in an unordered fashion relative to
+           the sequence of operations following the call to <code>run(f)</code> (the continuation), or indeterminately sequenced
+           within the same thread as the continuation. The call to <code>run</code> synchronizes with the call to the function
+           object. The completion of the call to the function object synchronizes with the next invocation of <code>wait</code> on
+           the same <code>task_block</code> or completion of the nearest enclosing task block (i.e., the <code>define_task_block</code> or
+           <code>define_task_block_restore_thread</code> that created this <code>task_block</code>).
+         </cxx-effects>
+  
+         <cxx-throws>
+           <code>task_cancelled_exception</code>, as described in <cxx-ref to="parallel.task_block.exceptions"></cxx-ref>.
+         </cxx-throws>
+  
+         <cxx-remarks>
+           The <code>run</code> function may return on a thread other than the one on which it was called; in such cases,
+           completion of the call to <code>run</code> synchronizes with the continuation.
+           
+           <cxx-note> The return from <code>run</code> is ordered similarly to an ordinary function call in a single thread.</cxx-note>
+         </cxx-remarks>
+  
+         <cxx-remarks>
+           The invocation of the user-supplied function object <code>f</code> may be immediate or may be delayed until
+           compute resources are available. <code>run</code> might or might not return before the invocation of <code>f</code> completes.
+         </cxx-remarks>
+  
+       </cxx-function>
+     </cxx-section>
+
+     <cxx-section id="parallel.task_block.class.wait">
+
+       <h1><code>task_block</code> member function <code>wait</code></h1>
+
+       <cxx-function>
+         <cxx-signature>void wait();</cxx-signature>
+
+         <cxx-preconditions><code>*this</code> shall be the active <code>task_block</code>.</cxx-preconditions>
+
+         <cxx-effects>
+           Blocks until the tasks spawned using this <code>task_block</code> have completed.
+         </cxx-effects>
+
+         <cxx-throws>
+           <code>task_cancelled_exception</code>, as described in <cxx-ref to="parallel.task_block.exceptions"></cxx-ref>.
+         </cxx-throws>
+
+         <cxx-postconditions>
+           All tasks spawned by the nearest enclosing task block have completed.
+         </cxx-postconditions>
+
+         <cxx-remarks>
+           The <code>wait</code> function may return on a thread other than the one on which it was called; in such cases, completion of the call to <code>wait</code> synchronizes with subsequent operations.
+           
+           <cxx-note>The return from wait is ordered similarly to an ordinary function call in a single thread.</cxx-note>
+
+           <cxx-example><pre>
+define_task_block([&](auto& tb) {
+  tb.run([&]{ process(a, w, x); }); // Process a[w] through a[x]
+  if (y &lt; x) tb.wait();             // Wait if overlap between [w,x) and [y,z)
+  process(a, y, z);                 // Process a[y] through a[z]
+});
+</pre>
+           </cxx-example>
+         </cxx-remarks>
+       </cxx-function>
+     </cxx-section>
+   </cxx-section>
+
+   <cxx-section id="parallel.task_block.define_task_block">
+     <h1>Function template <code>define_task_block</code></h1>
+
+     <cxx-function>
+       <cxx-signature>template&lt;class F&gt;
+void define_task_block(F&& f);
+       </cxx-signature>
+
+       <cxx-signature>template&lt;class F&gt;
+void define_task_block_restore_thread(F&& f);
+       </cxx-signature>
+
+       <cxx-requires>
+         Given an lvalue <code>tb</code> of type <code>task_block</code>, the expression <code>f(tb)</code> shall be well-formed
+       </cxx-requires>
+
+       <cxx-effects>
+         Constructs a <code>task_block</code> <code>tb</code> and calls <code>f(tb)</code>.
+       </cxx-effects>
+
+       <cxx-throws>
+         <code>exception_list</code>, as specified in <cxx-ref to="parallel.task_block.exceptions"></cxx-ref>.
+       </cxx-throws>
+
+       <cxx-postconditions>
+         All tasks spawned from <code>f</code> have finished execution.
+       </cxx-postconditions>
+
+       <cxx-remarks>
+         The <code>define_task_block</code> function may return on a thread other than the one on which it was called
+         unless there are no task blocks active on entry to <code>define_task_block</code> (see <cxx-ref to="parallel.task_block.class"></cxx-ref>), in which
+         case the function returns on the original thread. When <code>define_task_block</code> returns on a different thread,
+         it synchronizes with operations following the call. <cxx-note> The return from define_task_block is ordered
+         similarly to an ordinary function call in a single thread.</cxx-note> The <code>define_task_block_restore_thread</code>
+         function always returns on the same thread as the one on which it was called.
+       </cxx-remarks>
+
+       <cxx-notes>
+         It is expected (but not mandated) that <code>f</code> will (directly or indirectly) call <code>tb.run(<em>function-object</em>)</code>.
+       </cxx-notes>
+     </cxx-function>
+   </cxx-section>
+
+   <cxx-section id="parallel.task_block.exceptions">
+     <h1>Exception Handling</h1>
+
+     <p>
+       Every <code>task_block</code> has an associated exception list. When the task block starts, its associated exception list is empty.
+     </p>
+
+     <p>
+       When an exception is thrown from the user-provided function object passed to <code>define_task_block</code> or
+       <code>define_task_block_restore_thread</code>, it is added to the exception list for that task block. Similarly, when
+       an exception is thrown from the user-provided function object passed into <code>task_block::run</code>, the exception
+       object is added to the exception list associated with the nearest enclosing task block. In both cases, an
+       implementation may discard any pending tasks that have not yet been invoked. Tasks that are already in
+       progress are not interrupted except at a call to <code>task_block::run</code> or <code>task_block::wait</code> as described below.
+     </p>
+
+     <p>
+       If the implementation is able to detect that an exception has been thrown by another task within
+       the same nearest enclosing task block, then <code>task_block::run</code> or <code>task_block::wait</code> may throw
+       <code>task_canceled_exception</code>; these instances of <code>task_canceled_exception</code> are not added to the exception
+       list of the corresponding task block.
+     </p>
+
+     <p>
+       When a task block finishes with a non-empty exception list, the exceptions are aggregated into an <code>exception_list</code> object, which is then thrown from the task block.
+     </p>
+
+     <p>
+       The order of the exceptions in the <code>exception_list</code> object is unspecified.
+     </p>
+   </cxx-section>
+</cxx-clause>
+</ins>
+

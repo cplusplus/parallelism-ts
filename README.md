@@ -1,5 +1,5 @@
-    Document Number: N4506
-    Date:            2015-05-05
+    Document Number: N4579
+    Date:            2015-02-22
     Revises:
     Project:         Programming Language C++
     Project Number:  TS 19570
@@ -7,24 +7,15 @@
                      NVIDIA Corporation
                      jhoberock@nvidia.com
 
-# Parallelism TS Editor's Report, post-Lenexa mailing 
+# Parallelism TS Editor's Report, pre-Jacksonville mailing 
 
-N4505 is the latest Parallelism TS Working Draft. It contains editorial and technical changes to the Parallelism TS to apply the following revisions:
+N4578 is the proposed working draft of Parallelism TS Version 2. It contains technical changes to the Parallelism TS to apply the following revision:
 
-  * N4274 - Relaxing Packing Rules for Exceptions Thrown by Parallel Algorithms - Proposed Wording (Revision 1)
-  * Feature test macro for the Parallelism TS
+  * P0155R0 - Task Block R5
 
-N4505 updates the previous draft, N4407, published in the pre-Lenexa mailing.
-
-N4507 is document N4505 reformatted as a TS document. It updates N4409, which was published in the pre-Lenexa mailing.
+N4578 updates the previous draft, N4505, published in the post-Lenexa mailing.
 
 ## Technical Changes
 
-* Applied N4274, which relaxes the exception packaging rules for exceptions thrown by parallel algorithms. Additionally, changed instances of "terminates with (exception)" phrasing to "exits via (exception)", as directed by the Library Working Group.
-
-* Introduced the feature test macro `__cpp_lib_experimental_parallel_algorithm` for the functionality of the Parallelism TS as directed by SG1.
-
-## Editorial Changes
-
-* Promoted subsection 1.3.1, which was incorrectly grouped under section 1.3, to section 1.4.
+* Applied P0155R0, which introduces support for fork-join task parallelism via task blocks.
 

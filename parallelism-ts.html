@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <!-- Sources at https://github.com/cplusplus/parallelism-ts -->
-<html><head><!--[if lte IE 8]><script>document.createElement("nav");document.createElement("section");document.createElement("time");document.createElement("CXX-TITLEPAGE");document.createElement("CXX-DOCNUM");document.createElement("CXX-REVISES");document.createElement("CXX-EDITOR");document.createElement("CXX-EMAIL");document.createElement("CXX-TOC");document.createElement("CXX-CLAUSE");document.createElement("CXX-SECTION");document.createElement("CXX-FOOTNOTE");document.createElement("CXX-FOREIGN-INDEX");document.createElement("CXX-REF");document.createElement("CXX-NOTE");document.createElement("CXX-EXAMPLE");document.createElement("CXX-FUNCTION");document.createElement("CXX-SIGNATURE");document.createElement("CXX-EFFECTS");document.createElement("CXX-REMARKS");document.createElement("CXX-RETURNS");document.createElement("CXX-REQUIRES");document.createElement("CXX-COMPLEXITY");document.createElement("CXX-NOTES");document.createElement("CXX-PUBLISH-BUTTON");</script><![endif]--><style>template {display: none !important;} /* injected by platform.js */</style><style>body {transition: opacity ease-in 0.2s; } 
+<html><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8"><!--[if lte IE 8]><script>document.createElement("nav");document.createElement("section");document.createElement("time");document.createElement("CXX-TITLEPAGE");document.createElement("CXX-DOCNUM");document.createElement("CXX-REVISES");document.createElement("CXX-EDITOR");document.createElement("CXX-EMAIL");document.createElement("CXX-TOC");document.createElement("CXX-CLAUSE");document.createElement("CXX-SECTION");document.createElement("CXX-FOOTNOTE");document.createElement("CXX-FOREIGN-INDEX");document.createElement("CXX-REF");document.createElement("CXX-NOTE");document.createElement("CXX-EXAMPLE");document.createElement("CXX-FUNCTION");document.createElement("CXX-SIGNATURE");document.createElement("CXX-EFFECTS");document.createElement("CXX-REMARKS");document.createElement("CXX-RETURNS");document.createElement("CXX-REQUIRES");document.createElement("CXX-COMPLEXITY");document.createElement("CXX-NOTES");document.createElement("CXX-PRECONDITIONS");document.createElement("CXX-THROWS");document.createElement("CXX-POSTCONDITIONS");document.createElement("CXX-PUBLISH-BUTTON");</script><![endif]--><style>template {display: none !important;} /* injected by platform.js */</style><style>body {transition: opacity ease-in 0.2s; } 
 body[unresolved] {opacity: 0; display: block; overflow: hidden; position: relative; } 
 </style><style shim-shadowdom-css="">style { display: none !important; }
 cxx-function {
@@ -953,7 +954,7 @@ html   [segment], html   segment {
   box-shadow: 0px 0px 0px 1px rgba(0, 0, 0, 0.1);
   border-radius: 5px 5px 5px 5px;
 }</style>
-<title>Technical Specification for C++ Extensions for Parallelism, Working Draft</title></head>
+<title>Technical Specification for C++ Extensions for Parallelism Version 2, Working Draft</title></head>
 <body class="cxx-draft">
 
 <cxx-titlepage stage="draft">
@@ -962,13 +963,13 @@ html   [segment], html   segment {
       <div class="page">
         <table class="header">
           
-            <tr><th>Document Number:</th><td><cxx-docnum class="docname">N4505</cxx-docnum></td></tr>
+            <tbody><tr><th>Document Number:</th><td><cxx-docnum class="docname">N4578</cxx-docnum></td></tr>
           
           
-            <tr><th>Date:</th><td><time pubdate=""><span class="pubyear">2015</span>-05-05</time></td></tr>
+            <tr><th>Date:</th><td><time pubdate=""><span class="pubyear">2016</span>-02-22</time></td></tr>
           
           
-            <tr><th>Revises:</th><td><cxx-revises><a href="http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2015/n4407.html">N4407</a></cxx-revises></td></tr>
+            <tr><th>Revises:</th><td><cxx-revises><a href="http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2015/n4505.html">N4505</a></cxx-revises></td></tr>
           
           
             <tr><th>Editor:</th><td><cxx-editor>
@@ -977,8 +978,8 @@ html   [segment], html   segment {
     <cxx-email><a href="mailto:jhoberock@nvidia.com">jhoberock@nvidia.com</a></cxx-email>
   </cxx-editor></td></tr>
           
-        </table>
-        <h1>Working Draft, Technical Specification for C++ Extensions for Parallelism</h1>
+        </tbody></table>
+        <h1>Working Draft, Technical Specification for C++ Extensions for Parallelism Version 2</h1>
         <p class="warning"><strong>Note: this is an early draft. It’s known to be
         incomplet and incorrekt, and it has lots of b<span style="margin-left: -1.2pt; margin-right: 1pt">a</span>d<span style="width:1.5em"> </span>for<span style="margin-left:-3pt; margin-right:0.6pt">mat</span>ti<span style="position:relative; top:-0.15ex">n</span>g.</strong></p>
       </div>
@@ -1177,6 +1178,54 @@ html   [segment], html   segment {
         
       </li>
             
+              <li><span class="marker">5</span><a href="#parallel.task_block">Task Block</a>
+        
+          <ol>
+            
+              <li><span class="marker">5.1</span><a href="#parallel.task_block.synopsis">Header &lt;experimental/task_block&gt; synopsis</a>
+        
+      </li>
+            
+              <li><span class="marker">5.2</span><a href="#parallel.task_block.task_cancelled_exception">Class task_cancelled_exception</a>
+        
+          <ol>
+            
+              <li><span class="marker">5.2.1</span><a href="#parallel.task_block.task_cancelled_exception.what">task_cancelled_exception member function what</a>
+        
+      </li>
+            
+          </ol>
+        
+      </li>
+            
+              <li><span class="marker">5.3</span><a href="#parallel.task_block.class">Class task_block</a>
+        
+          <ol>
+            
+              <li><span class="marker">5.3.1</span><a href="#parallel.task_block.class.run">task_block member function template run</a>
+        
+      </li>
+            
+              <li><span class="marker">5.3.2</span><a href="#parallel.task_block.class.wait">task_block member function wait</a>
+        
+      </li>
+            
+          </ol>
+        
+      </li>
+            
+              <li><span class="marker">5.4</span><a href="#parallel.task_block.define_task_block">Function template define_task_block</a>
+        
+      </li>
+            
+              <li><span class="marker">5.5</span><a href="#parallel.task_block.exceptions">Exception Handling</a>
+        
+      </li>
+            
+          </ol>
+        
+      </li>
+            
           </ol>
         
       
@@ -1264,7 +1313,7 @@ html   [segment], html   segment {
     experimental and not part of the C++ Standard Library, they should not be
     declared directly within namespace <code>std</code>. Unless otherwise specified, all
     components described in this Technical Specification are declared in namespace 
-    <code>std::experimental::parallel::v1</code>.</p>
+    <code>std::experimental::parallel::<ins>v2</ins><del>v1</del></code>.</p>
 
     <cxx-note><span class="nowrap">[ <em>Note:</em></span>
     
@@ -1275,7 +1324,7 @@ html   [segment], html   segment {
 
     <p para_num="2" id="parallel.general.namespaces.2">Unless otherwise specified, references to such entities described in this
     Technical Specification are assumed to be qualified with
-    <code>std::experimental::parallel::v1</code>, and references to entities described in the C++
+    <code>std::experimental::parallel::<ins>v2</ins><del>v1</del></code>, and references to entities described in the C++
     Standard Library are assumed to be qualified with <code>std::</code>.</p>
 
     <p para_num="3" id="parallel.general.namespaces.3">Extensions that are expected to eventually be added to an existing header
@@ -1298,7 +1347,7 @@ html   [segment], html   segment {
   
     <p para_num="1" id="parallel.general.defns.1">For the purposes of this document, the terms and definitions given in the C++ Standard and the following apply.</p>
   
-    <p para_num="2" id="parallel.general.defns.2">A <dfn>parallel algorithm</dfn> is a function template described by this Technical Specification declared in namespace <code>std::experimental::parallel::v1</code> with a formal template parameter named <code>ExecutionPolicy</code>.</p>
+    <p para_num="2" id="parallel.general.defns.2">A <dfn>parallel algorithm</dfn> is a function template described by this Technical Specification declared in namespace <code>std::experimental::parallel::<ins>v2</ins><del>v1</del></code> with a formal template parameter named <code>ExecutionPolicy</code>.</p>
   
     <p para_num="3" id="parallel.general.defns.3">
       Parallel algorithms access objects indirectly accessible via their arguments by invoking the following functions:
@@ -1316,7 +1365,7 @@ html   [segment], html   segment {
           User-provided function objects to be applied during the execution of the algorithm, if required by the specification.
         </li>
 
-        <ins><li>
+        <li>
           Operations on those function objects required by the specification.
 
           <cxx-note><span class="nowrap">[ <em>Note:</em></span>
@@ -1325,7 +1374,7 @@ html   [segment], html   segment {
           
     <span class="nowrap">— <em>end note</em> ]</span>
   </cxx-note>
-        </li></ins>
+        </li>
       </ul>
   
       These functions are herein called <em>element access functions</em>.
@@ -1361,11 +1410,10 @@ html   [segment], html   segment {
     
 
     <section>
-      <header><span class="section-number">1.5</span>  <span style="float:right"><a href="#parallel.general.features">[parallel.general.features]</a></span></header>
+      <header><span class="section-number">1.5</span> <h1 data-bookmark-label="1.5 Feature-testing recommendations">Feature-testing recommendations</h1> <span style="float:right"><a href="#parallel.general.features">[parallel.general.features]</a></span></header>
       
-  <ins>
-    <h1>Feature-testing recommendations</h1>     
-    <p>An implementation that provides support for this Technical Specification shall define the feature test macro(s) in Table 1.</p>
+         
+    <p para_num="1" id="parallel.general.features.1">An implementation that provides support for this Technical Specification shall define the feature test macro(s) in Table 1.</p>
 
     <table is="cxx-table" class="column-rules">
     
@@ -1390,10 +1438,16 @@ html   [segment], html   segment {
             <code>&lt;experimental/numeric&gt;</code>
           </td>
         </tr>
+        <tr>
+          <td><code>__cpp_lib_experimental_parallel_task_block</code></td>
+          <td>201510</td>
+          <td>
+            <code>&lt;experimental/task_block&gt;</code><br>
+          </td>
+        </tr>
       </thead>
     
   </table>
-  </ins>
   
     </section>
   </cxx-section>
@@ -1472,14 +1526,14 @@ sort(exec, v.begin(), v.end());
     
 
     <section>
-      <header><span class="section-number">2.2</span> <h1 data-bookmark-label="2.2 Header <experimental/execution_policy> synopsis">Header <code>&lt;experimental/execution_policy&gt;</code> synopsis</h1> <span style="float:right"><a href="#parallel.execpol.synopsis">[parallel.execpol.synopsis]</a></span></header>
+      <header><span class="section-number">2.2</span> <h1 data-bookmark-label="2.2 Header &lt;experimental/execution_policy&gt; synopsis">Header <code>&lt;experimental/execution_policy&gt;</code> synopsis</h1> <span style="float:right"><a href="#parallel.execpol.synopsis">[parallel.execpol.synopsis]</a></span></header>
       
   
 
 <pre>namespace std {
 namespace experimental {
 namespace parallel {
-inline namespace v1 {
+inline namespace <ins>v2</ins><del>v1</del> {
   <cxx-ref insynopsis="" to="parallel.execpol.type">// <i><a title="parallel.execpol.type" href="#parallel.execpol.type">2.3</a>, Execution policy type trait</i></cxx-ref>
   template&lt;class T&gt; struct is_execution_policy;
   template&lt;class T&gt; constexpr bool is_execution_policy_v = is_execution_policy&lt;T&gt;::value;
@@ -1514,7 +1568,10 @@ inline namespace v1 {
 <pre>template&lt;class T&gt; struct is_execution_policy { <em>see below</em> };
 </pre>
 
-    <p para_num="1" id="parallel.execpol.type.1"><code>is_execution_policy</code> can be used to detect parallel execution policies for the purpose of excluding function signatures from otherwise ambiguous overload resolution participation.</p>
+    <p para_num="1" id="parallel.execpol.type.1"><code>is_execution_policy</code>
+ can be used to detect parallel execution policies for the purpose of 
+excluding function signatures from otherwise ambiguous overload 
+resolution participation.</p>
     
     <p para_num="2" id="parallel.execpol.type.2"><code>is_execution_policy&lt;T&gt;</code> shall be a UnaryTypeTrait with a BaseCharacteristic of <code>true_type</code> if <code>T</code> is the type of a standard or implementation-defined execution policy, otherwise <code>false_type</code>.
 
@@ -1543,7 +1600,10 @@ inline namespace v1 {
     <pre>class sequential_execution_policy{ <i>unspecified</i> };
 </pre>
 
-    <p para_num="1" id="parallel.execpol.seq.1">The class <code>sequential_execution_policy</code> is an execution policy type used as a unique type to disambiguate parallel algorithm overloading and require that a parallel algorithm's execution may not be parallelized.</p>
+    <p para_num="1" id="parallel.execpol.seq.1">The class <code>sequential_execution_policy</code>
+ is an execution policy type used as a unique type to disambiguate 
+parallel algorithm overloading and require that a parallel algorithm's 
+execution may not be parallelized.</p>
 
   
     </section>
@@ -1559,7 +1619,10 @@ inline namespace v1 {
 <pre>class parallel_execution_policy{ <i>unspecified</i> };
 </pre>
 
-    <p para_num="1" id="parallel.execpol.par.1">The class <code>parallel_execution_policy</code> is an execution policy type used as a unique type to disambiguate parallel algorithm overloading and indicate that a parallel algorithm's execution may be parallelized.</p>
+    <p para_num="1" id="parallel.execpol.par.1">The class <code>parallel_execution_policy</code>
+ is an execution policy type used as a unique type to disambiguate 
+parallel algorithm overloading and indicate that a parallel algorithm's 
+execution may be parallelized.</p>
 
   
     </section>
@@ -1575,7 +1638,10 @@ inline namespace v1 {
 <pre>class parallel_vector_execution_policy{ <i>unspecified</i> };
 </pre>
 
-    <p para_num="1" id="parallel.execpol.vec.1">The class <code>class parallel_vector_execution_policy</code> is an execution policy type used as a unique type to disambiguate parallel algorithm overloading and indicate that a parallel algorithm's execution may be vectorized and parallelized.</p>
+    <p para_num="1" id="parallel.execpol.vec.1">The class <code>class parallel_vector_execution_policy</code>
+ is an execution policy type used as a unique type to disambiguate 
+parallel algorithm overloading and indicate that a parallel algorithm's 
+execution may be vectorized and parallelized.</p>
 
   
     </section>
@@ -1781,7 +1847,7 @@ constexpr parallel_vector_execution_policy par_vec{};
         </p>
         <p para_num="2" id="parallel.exceptions.behavior.2">
           During the execution of a standard parallel algorithm, if the invocation of an element access function
-          <ins>exits via</ins><del>terminates with</del> an uncaught exception, the behavior of the program is determined by the type of
+          exits via an uncaught exception, the behavior of the program is determined by the type of
           execution policy used to invoke the algorithm:
 
           </p><ul>
@@ -1791,34 +1857,37 @@ constexpr parallel_vector_execution_policy par_vec{};
             </li>
             <li>
               If the execution policy object is of type <code>sequential_execution_policy</code> or
-              <code>parallel_execution_policy</code>, the execution of the algorithm <ins>exits via</ins><del>terminates with</del> an
-              <del><code>exception_list</code></del> exception. <ins>The exception shall be an <code>exception_list</code> containing all</ins><del>All</del> uncaught exceptions thrown during
-              the invocations of element access functions<ins>, or optionally the uncaught exception if there was only one</ins><del>shall be contained in the
-              <code>exception_list</code></del>.<pre></pre>
+              <code>parallel_execution_policy</code>, the execution of the algorithm exits via an
+               exception. The exception shall be an <code>exception_list</code> containing all uncaught exceptions thrown during
+              the invocations of element access functions, or optionally the uncaught exception if there was only one.<pre></pre>
 
               <cxx-note><span class="nowrap">[ <em>Note:</em></span>
     
-                For example, <del>the number of invocations of the user-provided function object in
-                <code>for_each</code> is unspecified. W</del><ins>w</ins>hen <code>for_each</code> is executed sequentially,
-                <ins>if an invocation of the user-provided function object throws an exception, <code>for_each</code> can exit via the uncaught exception, or throw an <code>exception_list</code> containing the original exception.
-                <del>only one exception will be contained in the <code>exception_list</code> object.</del>
-              </ins>
+                For example, when <code>for_each</code> is executed sequentially,
+                if an invocation of the user-provided function object throws an exception, <code>for_each</code> can exit via the uncaught exception, or throw an <code>exception_list</code> containing the original exception.
+              
     <span class="nowrap">— <em>end note</em> ]</span>
   </cxx-note><pre></pre>
 
               <cxx-note><span class="nowrap">[ <em>Note:</em></span>
     
                 These guarantees imply that, unless the algorithm has failed to allocate memory and
-                <ins>exits via</ins><del>terminated with</del> <code>std::bad_alloc</code>, all exceptions thrown during the execution of
-                the algorithm are communicated to the caller. It is unspecified whether an algorithm implementation will "forge ahead" after 
+                exits via <code>std::bad_alloc</code>, all exceptions 
+thrown during the execution of
+                the algorithm are communicated to the caller. It is 
+unspecified whether an algorithm implementation will "forge ahead" after
+ 
                 encountering and capturing a user exception.
               
     <span class="nowrap">— <em>end note</em> ]</span>
   </cxx-note><pre></pre>
               <cxx-note><span class="nowrap">[ <em>Note:</em></span>
     
-                The algorithm may <ins>exit via</ins><del>terminate with</del> the <code>std::bad_alloc</code> exception even if one or more
-                user-provided function objects have <ins>exited via</ins><del>terminated with</del> an exception. For example, this can happen when an algorithm fails to allocate memory while
+                The algorithm may exit via the <code>std::bad_alloc</code>
+ exception even if one or more
+                user-provided function objects have exited via an 
+exception. For example, this can happen when an algorithm fails to 
+allocate memory while
                 creating or adding elements to the <code>exception_list</code> object.
               
     <span class="nowrap">— <em>end note</em> ]</span>
@@ -1837,14 +1906,13 @@ constexpr parallel_vector_execution_policy par_vec{};
     
 
     <section>
-      <header><span class="section-number">3.2</span> <h1 data-bookmark-label="3.2 Header <experimental/exception_list> synopsis">Header <code>&lt;experimental/exception_list&gt;</code> synopsis</h1> <span style="float:right"><a href="#parallel.exceptions.synopsis">[parallel.exceptions.synopsis]</a></span></header>
+      <header><span class="section-number">3.2</span> <h1 data-bookmark-label="3.2 Header &lt;experimental/exception_list&gt; synopsis">Header <code>&lt;experimental/exception_list&gt;</code> synopsis</h1> <span style="float:right"><a href="#parallel.exceptions.synopsis">[parallel.exceptions.synopsis]</a></span></header>
       
       
-      <pre>
-namespace std {
+      <pre>namespace std {
 namespace experimental {
 namespace parallel {
-inline namespace v1 {
+inline namespace <ins>v2</ins><del>v1</del> {
 
   class exception_list : public exception
   {
@@ -2403,14 +2471,14 @@ for_each(par_vec, std::begin(a), std::end(a), [&amp;](int) {
     
 
     <section>
-      <header><span class="section-number">4.3.1</span> <h1 data-bookmark-label="4.3.1 Header <experimental/algorithm> synopsis">Header <code>&lt;experimental/algorithm&gt;</code> synopsis</h1> <span style="float:right"><a href="#parallel.alg.ops.synopsis">[parallel.alg.ops.synopsis]</a></span></header>
+      <header><span class="section-number">4.3.1</span> <h1 data-bookmark-label="4.3.1 Header &lt;experimental/algorithm&gt; synopsis">Header <code>&lt;experimental/algorithm&gt;</code> synopsis</h1> <span style="float:right"><a href="#parallel.alg.ops.synopsis">[parallel.alg.ops.synopsis]</a></span></header>
       
       
 
       <pre>namespace std {
 namespace experimental {
 namespace parallel {
-inline namespace v1 {
+inline namespace <ins>v2</ins><del>v1</del> {
   template&lt;class ExecutionPolicy,
            class InputIterator, class Function&gt;
     void for_each(ExecutionPolicy&amp;&amp; exec,
@@ -2629,14 +2697,14 @@ InputIterator for_each_n(ExecutionPolicy &amp;&amp; exec,
     
 
     <section>
-      <header><span class="section-number">4.4.1</span> <h1 data-bookmark-label="4.4.1 Header <experimental/numeric> synopsis">Header <code>&lt;experimental/numeric&gt;</code> synopsis</h1> <span style="float:right"><a href="#parallel.alg.numeric.synopsis">[parallel.alg.numeric.synopsis]</a></span></header>
+      <header><span class="section-number">4.4.1</span> <h1 data-bookmark-label="4.4.1 Header &lt;experimental/numeric&gt; synopsis">Header <code>&lt;experimental/numeric&gt;</code> synopsis</h1> <span style="float:right"><a href="#parallel.alg.numeric.synopsis">[parallel.alg.numeric.synopsis]</a></span></header>
       
       
 
       <pre>namespace std {
 namespace experimental {
 namespace parallel {
-inline namespace v1 {
+inline namespace <ins>v2</ins><del>v1</del> {
   template&lt;class InputIterator&gt;
     typename iterator_traits&lt;InputIterator&gt;::value_type
       reduce(InputIterator first, InputIterator last);
@@ -3274,6 +3342,469 @@ OutputIterator transform_inclusive_scan(InputIterator first, InputIterator last,
 
     </section>
   </cxx-clause>
+
+<ins>
+<cxx-clause id="parallel.task_block">
+    
+
+    <section>
+      <header><span class="section-number">5</span> <h1 data-bookmark-label="5 Task Block">Task Block</h1> <span style="float:right"><a href="#parallel.task_block">[parallel.task_block]</a></span></header>
+      
+  
+
+   <cxx-section id="parallel.task_block.synopsis">
+    
+
+    <section>
+      <header><span class="section-number">5.1</span> <h1 data-bookmark-label="5.1 Header &lt;experimental/task_block&gt; synopsis">Header <code>&lt;experimental/task_block&gt;</code> synopsis</h1> <span style="float:right"><a href="#parallel.task_block.synopsis">[parallel.task_block.synopsis]</a></span></header>
+      
+     
+
+     <pre>namespace std {
+namespace experimental {
+namespace parallel {
+inline namespace v2 {
+  class task_cancelled_exception;
+
+  class task_block;
+
+  template&lt;class F&gt;
+    void define_task_block(F&amp;&amp; f);
+
+  template&lt;class f&gt;
+    void define_task_block_restore_thread(F&amp;&amp; f);
+}
+}
+}
+}
+     </pre>
+   
+    </section>
+  </cxx-section>
+
+   <cxx-section id="parallel.task_block.task_cancelled_exception">
+    
+
+    <section>
+      <header><span class="section-number">5.2</span> <h1 data-bookmark-label="5.2 Class task_cancelled_exception">Class <code>task_cancelled_exception</code></h1> <span style="float:right"><a href="#parallel.task_block.task_cancelled_exception">[parallel.task_block.task_cancelled_exception]</a></span></header>
+      
+     
+     <pre>namespace std {
+namespace experimental {
+namespace parallel
+inline namespace v2 {
+
+  class task_cancelled_exception : public exception
+  {
+    public:
+      task_cancelled_exception() noexcept;
+      virtual const char* what() const noexcept;
+  };
+}
+}
+}
+}
+     </pre>
+
+     <p para_num="1" id="parallel.task_block.task_cancelled_exception.1">
+       The class <code>task_cancelled_exception</code> defines the type of objects thrown by
+       <code>task_block::run</code> or <code>task_block::wait</code> if they detect than an
+       exception is pending within the current parallel block. See <cxx-ref to="parallel.task_block.exceptions"><a title="parallel.task_block.exceptions" href="#parallel.task_block.exceptions">5.5</a></cxx-ref>, below.
+     </p>
+
+     <cxx-section id="parallel.task_block.task_cancelled_exception.what">
+    
+
+    <section>
+      <header><span class="section-number">5.2.1</span> <h1 data-bookmark-label="5.2.1 task_cancelled_exception member function what"><code>task_cancelled_exception</code> member function <code>what</code></h1> <span style="float:right"><a href="#parallel.task_block.task_cancelled_exception.what">[parallel.task_block.task_cancelled_exception.what]</a></span></header>
+      
+       
+
+       <cxx-function para_num="1" id="parallel.task_block.task_cancelled_exception.what.1">
+    
+    <pre><code><cxx-signature>virtual const char* what() const noexcept</cxx-signature></code></pre>
+
+    <dl>
+      
+         
+
+         <cxx-returns para_num="2" id="parallel.task_block.task_cancelled_exception.what.2">
+    
+    <dt>Returns:</dt><dd>
+           An implementation-defined NTBS.
+         </dd>
+  </cxx-returns>
+       
+    </dl>
+  </cxx-function>
+     
+    </section>
+  </cxx-section>
+   
+    </section>
+  </cxx-section>
+
+   <cxx-section id="parallel.task_block.class">
+    
+
+    <section>
+      <header><span class="section-number">5.3</span> <h1 data-bookmark-label="5.3 Class task_block">Class <code>task_block</code></h1> <span style="float:right"><a href="#parallel.task_block.class">[parallel.task_block.class]</a></span></header>
+      
+     
+     <pre>namespace std {
+namespace experimental {
+namespace parallel {
+inline namespace v2 {
+
+  class task_block
+  {
+    private:
+      ~task_block();
+
+    public:
+      task_block(const task_block&amp;) = delete;
+      task_block&amp; operator=(const task_block&amp;) = delete;
+      void operator&amp;() const = delete;
+
+      template&lt;class F&gt;
+        void run(F&amp;&amp; f);
+
+      void wait();
+  };
+}
+}
+}
+}
+     </pre>
+
+     <p para_num="1" id="parallel.task_block.class.1">
+       The class <code>task_block</code> defines an interface for forking and joining parallel tasks. The <code>define_task_block</code> and <code>define_task_block_restore_thread</code> function templates create an object of type <code>task_block</code> and pass a reference to that object to a user-provided function object.
+     </p>
+
+     <p para_num="2" id="parallel.task_block.class.2">
+       An object of class <code>task_block</code> cannot be constructed,
+ destroyed, copied, or moved except by the implementation of the task 
+block library. Taking the address of a <code>task_block</code> object via <code>operator&amp;</code> is ill-formed. Obtaining its address by any other means (including <code>addressof</code>) results in a pointer with an unspecified value; dereferencing such a pointer results in undefined behavior.
+     </p>
+
+     <p para_num="3" id="parallel.task_block.class.3">
+       A <code>task_block</code> is <em>active</em> if it was created by the nearest enclosing task block, where “task block” refers to an
+       invocation of <code>define_task_block</code> or <code>define_task_block_restore_thread</code> and “nearest enclosing” means the most
+       recent invocation that has not yet completed. Code designated for execution in another thread by means other
+       than the facilities in this section (e.g., using <code>thread</code> or <code>async</code>) are not enclosed in the task block and a
+       <code>task_block</code> passed to (or captured by) such code is not active within that code. Performing any operation on a
+       <code>task_block</code> that is not active results in undefined behavior.
+     </p>
+
+     <p para_num="4" id="parallel.task_block.class.4">
+       When the argument to <code>task_block::run</code> is called, no <code>task_block</code> is active, not even the <code>task_block</code> on which <code>run</code> was called.
+       (The function object should not, therefore, capture a <code>task_block</code> from the surrounding block.)
+     </p>
+
+     <cxx-example>
+    
+    <span class="nowrap">[ <em>Example:</em></span>
+    
+     <pre>define_task_block([&amp;](auto&amp; tb) {
+  tb.run([&amp;]{
+    tb.run([] { f(); });               // Error: tb is not active within run
+    define_task_block([&amp;](auto&amp; tb2) { // Define new task block
+      tb2.run(f);
+      ...
+    });
+  });
+  ...
+});
+     </pre>
+     
+    <span class="nowrap">— <em>end example</em> ]</span>
+  </cxx-example><pre></pre>
+
+     <cxx-note><span class="nowrap">[ <em>Note:</em></span>
+    
+       Implementations are encouraged to diagnose the above error at translation time.
+     
+    <span class="nowrap">— <em>end note</em> ]</span>
+  </cxx-note>
+
+     <cxx-section id="parallel.task_block.class.run">
+    
+
+    <section>
+      <header><span class="section-number">5.3.1</span> <h1 data-bookmark-label="5.3.1 task_block member function template run"><code>task_block</code> member function template <code>run</code></h1> <span style="float:right"><a href="#parallel.task_block.class.run">[parallel.task_block.class.run]</a></span></header>
+      
+     
+       
+  
+       <cxx-function para_num="1" id="parallel.task_block.class.run.1">
+    
+    <pre><code><cxx-signature>template&lt;class F&gt; void run(F&amp;&amp; f);</cxx-signature></code></pre>
+
+    <dl>
+      
+         
+
+         <cxx-requires para_num="2" id="parallel.task_block.class.run.2">
+    
+    <dt>Requires:</dt><dd>
+           <code>F</code> shall be <code>MoveConstructible</code>. <code><em>DECAY_COPY</em>(std::forward&lt;F&gt;(f))()</code> shall be a valid expression.
+         </dd>
+  </cxx-requires>
+  
+         <cxx-preconditions para_num="3" id="parallel.task_block.class.run.3">
+    
+    <dt>Preconditions:</dt><dd>
+           <code>*this</code> shall be the active <code>task_block</code>.
+         </dd>
+  </cxx-preconditions>
+  
+         <cxx-effects para_num="4" id="parallel.task_block.class.run.4">
+    
+    <dt>Effects:</dt><dd>
+           Evaluates <code><em>DECAY_COPY</em>(std::forward&lt;F&gt;(f))()</code>, where <code><em>DECAY_COPY</em>(std::forward&lt;F&gt;(f))</code>
+           is evaluated synchronously within the current thread. The call to the resulting copy of the function object is
+           permitted to run on an unspecified thread created by the implementation in an unordered fashion relative to
+           the sequence of operations following the call to <code>run(f)</code> (the continuation), or indeterminately sequenced
+           within the same thread as the continuation. The call to <code>run</code> synchronizes with the call to the function
+           object. The completion of the call to the function object synchronizes with the next invocation of <code>wait</code> on
+           the same <code>task_block</code> or completion of the nearest enclosing task block (i.e., the <code>define_task_block</code> or
+           <code>define_task_block_restore_thread</code> that created this <code>task_block</code>).
+         </dd>
+  </cxx-effects>
+  
+         <cxx-throws para_num="5" id="parallel.task_block.class.run.5">
+    
+    <dt>Throws:</dt><dd>
+           <code>task_cancelled_exception</code>, as described in <cxx-ref to="parallel.task_block.exceptions"><a title="parallel.task_block.exceptions" href="#parallel.task_block.exceptions">5.5</a></cxx-ref>.
+         </dd>
+  </cxx-throws>
+  
+         <cxx-remarks para_num="6" id="parallel.task_block.class.run.6">
+    
+    <dt>Remarks:</dt><dd>
+           The <code>run</code> function may return on a thread other than the one on which it was called; in such cases,
+           completion of the call to <code>run</code> synchronizes with the continuation.
+           
+           <cxx-note><span class="nowrap">[ <em>Note:</em></span>
+     The return from <code>run</code> is ordered similarly to an ordinary function call in a single thread.
+    <span class="nowrap">— <em>end note</em> ]</span>
+  </cxx-note>
+         </dd>
+  </cxx-remarks>
+  
+         <cxx-remarks para_num="7" id="parallel.task_block.class.run.7">
+    
+    <dt>Remarks:</dt><dd>
+           The invocation of the user-supplied function object <code>f</code> may be immediate or may be delayed until
+           compute resources are available. <code>run</code> might or might not return before the invocation of <code>f</code> completes.
+         </dd>
+  </cxx-remarks>
+  
+       
+    </dl>
+  </cxx-function>
+     
+    </section>
+  </cxx-section>
+
+     <cxx-section id="parallel.task_block.class.wait">
+    
+
+    <section>
+      <header><span class="section-number">5.3.2</span> <h1 data-bookmark-label="5.3.2 task_block member function wait"><code>task_block</code> member function <code>wait</code></h1> <span style="float:right"><a href="#parallel.task_block.class.wait">[parallel.task_block.class.wait]</a></span></header>
+      
+
+       
+
+       <cxx-function para_num="1" id="parallel.task_block.class.wait.1">
+    
+    <pre><code><cxx-signature>void wait();</cxx-signature></code></pre>
+
+    <dl>
+      
+         
+
+         <cxx-preconditions para_num="2" id="parallel.task_block.class.wait.2">
+    
+    <dt>Preconditions:</dt><dd><code>*this</code> shall be the active <code>task_block</code>.</dd>
+  </cxx-preconditions>
+
+         <cxx-effects para_num="3" id="parallel.task_block.class.wait.3">
+    
+    <dt>Effects:</dt><dd>
+           Blocks until the tasks spawned using this <code>task_block</code> have completed.
+         </dd>
+  </cxx-effects>
+
+         <cxx-throws para_num="4" id="parallel.task_block.class.wait.4">
+    
+    <dt>Throws:</dt><dd>
+           <code>task_cancelled_exception</code>, as described in <cxx-ref to="parallel.task_block.exceptions"><a title="parallel.task_block.exceptions" href="#parallel.task_block.exceptions">5.5</a></cxx-ref>.
+         </dd>
+  </cxx-throws>
+
+         <cxx-postconditions para_num="5" id="parallel.task_block.class.wait.5">
+    
+    <dt>Postconditions:</dt><dd>
+           All tasks spawned by the nearest enclosing task block have completed.
+         </dd>
+  </cxx-postconditions>
+
+         <cxx-remarks para_num="6" id="parallel.task_block.class.wait.6">
+    
+    <dt>Remarks:</dt><dd>
+           The <code>wait</code> function may return on a thread other than the one on which it was called; in such cases, completion of the call to <code>wait</code> synchronizes with subsequent operations.
+           
+           <cxx-note><span class="nowrap">[ <em>Note:</em></span>
+    The return from wait is ordered similarly to an ordinary function call in a single thread.
+    <span class="nowrap">— <em>end note</em> ]</span>
+  </cxx-note>
+
+           <cxx-example>
+    
+    <span class="nowrap">[ <em>Example:</em></span>
+    <pre>define_task_block([&amp;](auto&amp; tb) {
+  tb.run([&amp;]{ process(a, w, x); }); // Process a[w] through a[x]
+  if (y &lt; x) tb.wait();             // Wait if overlap between [w,x) and [y,z)
+  process(a, y, z);                 // Process a[y] through a[z]
+});
+</pre>
+           
+    <span class="nowrap">— <em>end example</em> ]</span>
+  </cxx-example>
+         </dd>
+  </cxx-remarks>
+       
+    </dl>
+  </cxx-function>
+     
+    </section>
+  </cxx-section>
+   
+    </section>
+  </cxx-section>
+
+   <cxx-section id="parallel.task_block.define_task_block">
+    
+
+    <section>
+      <header><span class="section-number">5.4</span> <h1 data-bookmark-label="5.4 Function template define_task_block">Function template <code>define_task_block</code></h1> <span style="float:right"><a href="#parallel.task_block.define_task_block">[parallel.task_block.define_task_block]</a></span></header>
+      
+     
+
+     <cxx-function para_num="1" id="parallel.task_block.define_task_block.1">
+    
+    <pre><code><cxx-signature>template&lt;class F&gt;
+void define_task_block(F&amp;&amp; f);
+       </cxx-signature><cxx-signature>template&lt;class F&gt;
+void define_task_block_restore_thread(F&amp;&amp; f);
+       </cxx-signature></code></pre>
+
+    <dl>
+      
+       
+
+       
+
+       <cxx-requires para_num="2" id="parallel.task_block.define_task_block.2">
+    
+    <dt>Requires:</dt><dd>
+         Given an lvalue <code>tb</code> of type <code>task_block</code>, the expression <code>f(tb)</code> shall be well-formed
+       </dd>
+  </cxx-requires>
+
+       <cxx-effects para_num="3" id="parallel.task_block.define_task_block.3">
+    
+    <dt>Effects:</dt><dd>
+         Constructs a <code>task_block</code> <code>tb</code> and calls <code>f(tb)</code>.
+       </dd>
+  </cxx-effects>
+
+       <cxx-throws para_num="4" id="parallel.task_block.define_task_block.4">
+    
+    <dt>Throws:</dt><dd>
+         <code>exception_list</code>, as specified in <cxx-ref to="parallel.task_block.exceptions"><a title="parallel.task_block.exceptions" href="#parallel.task_block.exceptions">5.5</a></cxx-ref>.
+       </dd>
+  </cxx-throws>
+
+       <cxx-postconditions para_num="5" id="parallel.task_block.define_task_block.5">
+    
+    <dt>Postconditions:</dt><dd>
+         All tasks spawned from <code>f</code> have finished execution.
+       </dd>
+  </cxx-postconditions>
+
+       <cxx-remarks para_num="6" id="parallel.task_block.define_task_block.6">
+    
+    <dt>Remarks:</dt><dd>
+         The <code>define_task_block</code> function may return on a thread other than the one on which it was called
+         unless there are no task blocks active on entry to <code>define_task_block</code> (see <cxx-ref to="parallel.task_block.class"><a title="parallel.task_block.class" href="#parallel.task_block.class">5.3</a></cxx-ref>), in which
+         case the function returns on the original thread. When <code>define_task_block</code> returns on a different thread,
+         it synchronizes with operations following the call. <cxx-note><span class="nowrap">[ <em>Note:</em></span>
+     The return from define_task_block is ordered
+         similarly to an ordinary function call in a single thread.
+    <span class="nowrap">— <em>end note</em> ]</span>
+  </cxx-note> The <code>define_task_block_restore_thread</code>
+         function always returns on the same thread as the one on which it was called.
+       </dd>
+  </cxx-remarks>
+
+       <cxx-notes para_num="7" id="parallel.task_block.define_task_block.7">
+    
+    <dt>Notes:</dt><dd>
+         It is expected (but not mandated) that <code>f</code> will (directly or indirectly) call <code>tb.run(<em>function-object</em>)</code>.
+       </dd>
+  </cxx-notes>
+     
+    </dl>
+  </cxx-function>
+   
+    </section>
+  </cxx-section>
+
+   <cxx-section id="parallel.task_block.exceptions">
+    
+
+    <section>
+      <header><span class="section-number">5.5</span> <h1 data-bookmark-label="5.5 Exception Handling">Exception Handling</h1> <span style="float:right"><a href="#parallel.task_block.exceptions">[parallel.task_block.exceptions]</a></span></header>
+      
+     
+
+     <p para_num="1" id="parallel.task_block.exceptions.1">
+       Every <code>task_block</code> has an associated exception list. When the task block starts, its associated exception list is empty.
+     </p>
+
+     <p para_num="2" id="parallel.task_block.exceptions.2">
+       When an exception is thrown from the user-provided function object passed to <code>define_task_block</code> or
+       <code>define_task_block_restore_thread</code>, it is added to the exception list for that task block. Similarly, when
+       an exception is thrown from the user-provided function object passed into <code>task_block::run</code>, the exception
+       object is added to the exception list associated with the nearest enclosing task block. In both cases, an
+       implementation may discard any pending tasks that have not yet been invoked. Tasks that are already in
+       progress are not interrupted except at a call to <code>task_block::run</code> or <code>task_block::wait</code> as described below.
+     </p>
+
+     <p para_num="3" id="parallel.task_block.exceptions.3">
+       If the implementation is able to detect that an exception has been thrown by another task within
+       the same nearest enclosing task block, then <code>task_block::run</code> or <code>task_block::wait</code> may throw
+       <code>task_canceled_exception</code>; these instances of <code>task_canceled_exception</code> are not added to the exception
+       list of the corresponding task block.
+     </p>
+
+     <p para_num="4" id="parallel.task_block.exceptions.4">
+       When a task block finishes with a non-empty exception list, the exceptions are aggregated into an <code>exception_list</code> object, which is then thrown from the task block.
+     </p>
+
+     <p para_num="5" id="parallel.task_block.exceptions.5">
+       The order of the exceptions in the <code>exception_list</code> object is unspecified.
+     </p>
+   
+    </section>
+  </cxx-section>
+
+    </section>
+  </cxx-clause>
+</ins>
+
 
 
 
