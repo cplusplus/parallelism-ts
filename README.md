@@ -1,5 +1,5 @@
-    Document Number: N4579
-    Date:            2015-02-22
+    Document Number: NXXXX
+    Date:            2017-06-19
     Revises:
     Project:         Programming Language C++
     Project Number:  TS 19570
@@ -7,15 +7,20 @@
                      NVIDIA Corporation
                      jhoberock@nvidia.com
 
-# Parallelism TS Editor's Report, pre-Jacksonville mailing 
+# Parallelism TS Editor's Report, pre-Toronto mailing 
 
-N4578 is the proposed working draft of Parallelism TS Version 2. It contains technical changes to the Parallelism TS to apply the following revision:
+NXXXX is the proposed working draft of Parallelism TS Version 2. It contains editorial changes to the Parallelism TS to make it consistent with new ISO directives concerning "Scope", "Normative references", and "Terms and definitions" clauses.
 
-  * P0155R0 - Task Block R5
+NXXXX updates the previous draft, N4579, published in the pre-Jacksonville mailing.
 
-N4578 updates the previous draft, N4505, published in the post-Lenexa mailing.
+# Technical Changes
 
-## Technical Changes
+None.
 
-* Applied P0155R0, which introduces support for fork-join task parallelism via task blocks.
+# Editorial Changes
+
+* Introduced new Clause 1 - Scope
+* Introduced new Clause 2 - Normative references
+* Introduced new Clause 3 - Terms and definitions
+* Incremented the numbers of all existing clauses
 
