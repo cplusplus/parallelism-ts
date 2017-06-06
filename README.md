@@ -1,4 +1,4 @@
-    Document Number: NXXXX
+    Document Number: N4670
     Date:            2017-06-19
     Revises:
     Project:         Programming Language C++
@@ -9,9 +9,9 @@
 
 # Parallelism TS Editor's Report, pre-Toronto mailing 
 
-NXXXX is the proposed working draft of Parallelism TS Version 2. It contains editorial changes to the Parallelism TS to make it consistent with new ISO directives concerning "Scope", "Normative references", and "Terms and definitions" clauses.
+N4669 is the proposed working draft of Parallelism TS Version 2. It contains editorial changes to the Parallelism TS to make it consistent with new ISO directives concerning "Scope", "Normative references", and "Terms and definitions" clauses.
 
-NXXXX updates the previous draft, N4579, published in the pre-Jacksonville mailing.
+N4669 updates the previous draft, N4579, published in the pre-Jacksonville mailing.
 
 # Technical Changes
 
