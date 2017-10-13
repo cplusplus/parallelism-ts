@@ -88,6 +88,37 @@ for_each(par, std::begin(a), std::end(a), [&amp;](int) {
         incremented correctly.
       </cxx-example>
 
+      <ins>
+      <p>
+        The invocations of element access functions in parallel algorithms invoked with an
+        execution policy of type <code>unsequenced_policy</code> are permitted to execute
+        in an unordered fashion in the calling thread, unsequenced with respect to one another
+        within the calling thread.
+
+        <cxx-note>
+          This means that multiple function object invocations may be interleaved on a single thread.
+        </cxx-note>
+        <pre>
+</pre>
+
+        <cxx-note>
+          This overrides the usual guarantee from the C++ standard, Section 1.9 [intro.execution] that
+          function executions do not interleave with one another.
+        </cxx-note>
+      </p>
+      </ins>
+
+      <ins>
+      <p>
+        The invocations of element access functions in parallel algorithms invoked with an
+        executino policy of type <code>vector_policy</code> are permitted to execute
+        in an unordered fashion in the calling thread, unsequenced with respect to one another
+        within the calling thread, subject to the sequencing constraints of wavefront application
+        (<cxx-ref to="parallel.alg.general.wavefront"></cxx-ref>) for the last argument to
+        <code>for_loop</code> or <code>for_loop_strided</code>.
+      </p>
+      </ins>
+
       <p>
         The invocations of element access functions in parallel algorithms invoked with an execution
         policy of type <code>parallel_vector_execution_policy</code>
@@ -161,6 +192,107 @@ for_each(par_vec, std::begin(a), std::end(a), [&amp;](int) {
         The semantics of parallel algorithms invoked with an execution policy object of
         implementation-defined type are implementation-defined.
       </p>
+    </cxx-section>
+
+    <cxx-section id="parallel.alg.general.wavefront">
+      <h1>Wavefront Application</h1>
+      <ins>
+      <p>
+        For the purposes of this section, an <i>evaluation</i> is a value computation or side effect of
+        an expression, or an execution of a statement. Initialization of a temporary object is considered a
+        subexpression of the expression that necessitates the temporary object.
+      </p>
+
+      <p>
+        An evaluation A <i>contains</i> an evaluation B if:
+
+        <ul>
+        <li>A and B are not potentially concurrent ([intro.races]); and</li>
+        <li>the start of A is the start of B or the start of A is sequenced before the start of B; and</li>
+        <li>the completion of B is the completion of A or the completion of B is sequenced before the completion of A.</li>
+        </ul>
+
+        <cxx-note>This includes evaluations occurring in function invocations.</cxx-note>
+      </p>
+
+      <p>
+        An evaluation A is <i>ordered before</i> an evaluation B if A is deterministically
+        sequenced before B. <cxx-note>If A is indeterminately sequenced with respect to B
+        or A and B are unsequenced, then A is not ordered before B and B is not ordered
+        before A. The ordered before relationship is transitive.</cxx-note>
+      </p>
+
+      <p>
+        For an evaluation A ordered before an evaluation B, both contained in the same
+        invocation of an element access function, A is a <i>vertical antecedent</i> of B if:
+
+        <ul>
+        <li>there exists an evaluation S such that:
+          <ul>
+            <li>S contains A, and</li>
+            <li>S contains all evaluations C (if any) such that A is ordered before C and C is ordered before B,</li>
+            <li>but S does not contain B, and</li>
+          </ul>
+        </li>
+        <li>
+          control reached B from A without executing any of the following:
+          <ul>
+            <li>a <code>goto</code> statement or <code>asm</code> declaration that jumps to a statement outside of S, or</li>
+            <li>a <code>switch</code> statement executed within S that transfers control into a substatement of a nested selection or iteration statement, or</li>
+            <li>a <code>throw</code> <cxx-note>even if caught</cxx-note>, or</li>
+            <li>a <code>longjmp</code>.
+          </ul>
+        </li>
+        </ul>
+
+        <cxx-note>
+          Vertical antecedent is an irreflexive, antisymmetric, nontransitive relationship between two evaluations.
+          Informally, A is a vertical antecedent of B if A is sequenced immediately before B or A is nested zero or
+          more levels within a statement S that immediately precedes B.
+        </cxx-note>
+      </p>
+
+      <p>
+        In the following, <i>X<sub>i</sub></i> and <i>X<sub>j</sub></i> refer to evaluations of the <i>same</i> expression
+        or statement contained in the application of an element access function corresponding to the i<sup>th</sup> and
+        j<sup>th</sup> elements of the input sequence. <cxx-note>There might be several evaluations <i>X<sub>k</sub></i>,
+        <i>Y<sub>k</sub></i>, etc. of a single expression or statement in application <i>k</i>, for example, if the
+        expression or statement appears in a loop within the element access function.</cxx-note>
+      </p>
+
+      <p>
+        <i>Horizontally matched</i> is an equivalence relationship between two evaluations of the same expression. An
+        evaluation B<sub>i</sub> is <i>horizontally matched</i> with an evaluation B<sub>j</sub> if:
+
+        <ul>
+          <li>both are the first evaluations in their respective applications of the element access function, or</li>
+          <li>there exist horizontally matched evaluations A<sub>i</sub> and A<sub>j</sub> that are vertical antecedents of evaluations B<sub>i</sub> and B<sub>j</sub>, respectively.
+        </ul>
+
+        <cxx-note>
+          <i>Horizontally matched</i> establishes a theoretical <i>lock-step</i> relationship between evaluations in different applications of an element access function.
+        </cxx-note>
+      </p>
+
+      <p>
+        Let <i>f</i> be a function called for each argument list in a sequence of argument lists.
+        <i>Wavefront application</i> of <i>f</i> requires that evaluation A<sub>i</sub> be sequenced
+        before evaluation B<sub>i</sub> if i &lt; j and and:
+
+        <ul>
+          <li>A<sub>i</sub> is sequenced before some evaluation B<sub>i</sub> and B<sub>i</sub> is horizontally matched with B<sub>j</sub>, or</li>
+          <li>A<sub>i</sub> is horizontally matched with some evaluation A<sub>j</sub> and A<sub>j</sub> is sequenced before B<sub>j<sub>.</li>
+        </ul>
+
+        <cxx-note>
+          <i>Wavefront application</i> guarantees that parallel applications i and j execute such that progress on application j never gets <i>ahead</i> of application i.
+        </cxx-note>
+
+        <cxx-note>
+          The relationships between A<sub>i</sub> and B<sub>i</sub> and between A<sub>j</sub> and B<sub>j</sub> are <i>sequenced before</i>, not <i>vertical antecedent</i>.
+        </cxx-note>
+      </p>
+      </ins>
     </cxx-section>
 
     <cxx-section id="parallel.alg.overloads">
@@ -379,6 +511,20 @@ inline namespace v2 {
     InputIterator for_each_n(ExecutionPolicy&amp;&amp; exec,
                              InputIterator first, Size n,
                              Function f);
+
+<ins>namespace execution {
+  <cxx-ref insynopsis="" to="parallel.alg.novec"></cxx-ref>
+  template&lt;class F&gt;
+    auto no_vec(F&amp;&amp; f) noexcept -&gt; decltype(std::forward&lt;F&gt;(f)());
+
+  <cxx-ref insynopsis="" to="parallel.alg.ordupdate.class"></cxx-ref>
+  template&lt;class T&gt;
+    class ordered_update_t;
+
+  <cxx-ref insynopsis="" to="parallel.alg.ordupdate.func"></cxx-ref>
+  template&lt;class T&gt;
+    ordered_update_t&lt;T&gt; ordered_update(T&amp; ref) noexcept;
+}</ins>
 }
 }
 }
@@ -486,6 +632,143 @@ InputIterator for_each_n(ExecutionPolicy &amp;&amp; exec,
           <code>Function</code> to meet the requirements of <code>CopyConstructible</code>.
         </cxx-notes>
       </cxx-function>
+    </cxx-section>
+
+    <cxx-section id="parallel.alg.novec">
+      <h1>No vec</h1>
+
+      <ins>
+      <cxx-function>
+        <cxx-signature>template&lt;class F&gt;
+auto no_vec(F&amp;&amp; f) noexcept -&gt; decltype(std::forward&lt;F&gt;(f)());</cxx-signature>
+
+        <cxx-effects>
+          Evaluates <code>std::forward&gt;F&lt;(f)()</code>. When invoked within an element access function
+          in a parallel algorithm using <code>vector_policy</code>, if two calls to <code>no_vec</code> are
+          horizontally matched within a wavefront application of an element access function over input
+          sequence S, then the execution of <code>f</code> in the application for one element in S is
+          sequenced before the execution of <code>f</code> in the application for a subsequent element in
+          S; otherwise, there is no effect on sequencing.
+        </cxx-effects>
+
+        <cxx-returns>
+          the result of <code>f</code>.
+        </cxx-returns>
+        
+        <cxx-remarks>
+          If <code>f</code> returns a result, the result is ignored.
+        </cxx-remarks>
+
+        <cxx-notes>
+          If <code>f</code> exits via an exception, then <code>terminate</code> will be called, consistent
+          with all other potentially-throwing operations invoked with <code>vector_policy</code> execution.
+
+          <cxx-example>
+            <pre>extern int* p;
+for_loop(vec, 0, n[&amp;](int i) {
+  y[i] +=y[i+1];
+  if(y[i] &lt; 0) {
+    no_vec([]{
+      *p++ = i;
+    });
+  }
+});</pre>
+
+            The updates <code>*p++ = i</code> will occur in the same order as if the policy were <code>seq</code>.
+          </cxx-example>
+        </cxx-notes>
+      </cxx-function>
+      </ins>
+    </cxx-section>
+
+    <cxx-section id="parallel.alg.ordupdate.class">
+      <h1>Ordered update class</h1>
+
+      <ins>
+<pre>
+class ordered_update_t {
+  T&amp; ref_; // exposition only
+public:
+  ordered_update_t(T&amp; loc) noexcept
+    : ref_(loc) {}
+  ordered_update_t(const ordered_update_t&amp;) = delete;
+  ordered_update_t&amp; operator=(const ordered_update_t&amp;) = delete;
+
+  template &lt;class U&gt;
+    auto operator=(U rhs) const noexcept
+      { return no_vec([&amp;]{ return ref_ = std::move(rhs); }); }
+  template &lt;class U&gt;
+    auto operator+=(U rhs) const noexcept
+      { return no_vec([&amp;]{ return ref_ += std::move(rhs); }); }
+  template &lt;class U&gt;
+    auto operator-=(U rhs) const noexcept
+      { return no_vec([&amp;]{ return ref_ -= std::move(rhs); }); }
+  template &lt;class U&gt;
+    auto operator*=(U rhs) const noexcept
+      { return no_vec([&amp;]{ return ref_ *= std::move(rhs); }); }
+  template &lt;class U&gt;
+    auto operator/=(U rhs) const noexcept
+      { return no_vec([&amp;]{ return ref_ /= std::move(rhs); }); }
+  template &lt;class U&gt;
+    auto operator%=(U rhs) const noexcept
+      { return no_vec([&amp;]{ return ref_ %= std::move(rhs); }); }
+  template &lt;class U&gt;
+    auto operator&gt;&gt;=(U rhs) const noexcept
+      { return no_vec([&amp;]{ return ref_ &gt;&gt;= std::move(rhs); }); }
+  template &lt;class U&gt;
+    auto operator&lt;&lt;=(U rhs) const noexcept
+      { return no_vec([&amp;]{ return ref_ &lt;&lt;= std::move(rhs); }); }
+  template &lt;class U&gt;
+    auto operator&amp;=(U rhs) const noexcept
+      { return no_vec([&amp;]{ return ref_ &amp;= std::move(rhs); }); }
+  template &lt;class U&gt;
+    auto operator^=(U rhs) const noexcept
+      { return no_vec([&amp;]{ return ref_ ^= std::move(rhs); }); }
+  template &lt;class U&gt;
+    auto operator|=(U rhs) const noexcept
+      { return no_vec([&amp;]{ return ref_ |= std::move(rhs); }); }
+
+  auto operator++() const noexcept
+    { return no_vec([&amp;]{ return ++ref_; }); }
+  auto operator++(int) const noexcept
+    { return no_vec([&amp;]{ return ref_++; }); }
+  auto operator--() const noexcept
+    { return no_vec([&amp;]{ return --ref_; }); }
+  auto operator--(int) const noexcept
+    { return no_vec([&amp;]{ return ref_--; }); }
+};
+</pre>
+
+      <p>
+        An object of type <code>ordered_update_t&gt;T&lt;</code> is a proxy for an object of type T
+        intended to be used within a parallel application of an element access function using a
+        policy object of type <code>vector_policy</code>. Simple increments, assignments, and compound
+        assignments to the object are forwarded to the proxied object, but are sequenced as though
+        executed within a <code>no_vec</code> invocation.
+
+        <cxx-note>
+          The return-value deduction of the forwarded operations results in these operations returning by
+          value, not reference. This formulation prevents accidental collisions on accesses to the return
+          value.
+        </cxx-note>
+      </p>
+      </ins>
+    </cxx-section>
+
+    <cxx-section id="parallel.alg.ordupdate.func">
+      <h1>Ordered update function template</h1>
+      <ins>
+
+      <cxx-function>
+        <cxx-signature>template&lt;T&gt;
+ordered_update_t&lt;T&gt; ordered_update(T&amp; loc) noexcept;</cxx-signature>
+      </cxx-function>
+
+      <cxx-returns>
+        <code>{ loc }</code>.
+      </cxx-returns>
+
+      </ins>
     </cxx-section>
   </cxx-section>
 
