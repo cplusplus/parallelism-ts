@@ -1,5 +1,5 @@
-    Document Number: N4506
-    Date:            2015-05-05
+    Document Number: N4699
+    Date:            2017-10-16
     Revises:
     Project:         Programming Language C++
     Project Number:  TS 19570
@@ -7,24 +7,22 @@
                      NVIDIA Corporation
                      jhoberock@nvidia.com
 
-# Parallelism TS Editor's Report, post-Lenexa mailing 
+# Parallelism TS Editor's Report, pre-Albuquerque mailing 
 
-N4505 is the latest Parallelism TS Working Draft. It contains editorial and technical changes to the Parallelism TS to apply the following revisions:
+N4698 is the proposed working draft of Parallelism TS Version 2. It contains changes to the Parallelism TS as directed by the committee at the Toronto meeting, and editorial changes.
 
-  * N4274 - Relaxing Packing Rules for Exceptions Thrown by Parallel Algorithms - Proposed Wording (Revision 1)
-  * Feature test macro for the Parallelism TS
+N4698 updates the previous draft, N4669, published in the pre-Toronto mailing.
 
-N4505 updates the previous draft, N4407, published in the pre-Lenexa mailing.
+# Technical Changes
 
-N4507 is document N4505 reformatted as a TS document. It updates N4409, which was published in the pre-Lenexa mailing.
+* Apply P0076R4 - Vector and Wavefront Policies.
 
-## Technical Changes
+# Editorial Changes
 
-* Applied N4274, which relaxes the exception packaging rules for exceptions thrown by parallel algorithms. Additionally, changed instances of "terminates with (exception)" phrasing to "exits via (exception)", as directed by the Library Working Group.
+* Reformat Table 1 - Feature Test Macro(s), to match the style of the Library Fundamentals TS.
 
-* Introduced the feature test macro `__cpp_lib_experimental_parallel_algorithm` for the functionality of the Parallelism TS as directed by SG1.
+# Notes
 
-## Editorial Changes
-
-* Promoted subsection 1.3.1, which was incorrectly grouped under section 1.3, to section 1.4.
+* The pre-existing content of N4698 has not yet been harmonized with C++17. As a result, this content is named and namespaced inconsistently with the newly applied content of P0076R4. We anticipate that these inconsistencies will be harmonized by a future revision.
+* N4698 contains forward references to `for_loop` and `for_loop_strided`. We anticipate their introduction in a future revision.
 

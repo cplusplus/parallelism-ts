@@ -1,50 +1,5 @@
 <cxx-clause id="parallel.general">
   <h1>General</h1>
-  <cxx-section id="parallel.general.scope">
-    <h1>Scope</h1>
-      <p>This Technical Specification describes requirements for implementations of an
-      interface that computer programs written in the C++ programming language may
-      use to invoke algorithms with parallel execution. The algorithms described by
-      this Technical Specification are realizable across a broad class of
-      computer architectures.</p>
-      
-      <p>This Technical Specification is non-normative. Some of the functionality
-      described by this Technical Specification may be considered for standardization
-      in a future version of C++, but it is not currently part of any C++ standard.
-      Some of the functionality in this Technical Specification may never be
-      standardized, and other functionality may be standardized in a substantially
-      changed form.</p>
-      
-      <p>The goal of this Technical Specification is to build widespread existing
-      practice for parallelism in the C++ standard algorithms library. It gives
-      advice on extensions to those vendors who wish to provide them.</p>
-  </cxx-section>
-
-  <cxx-section id="parallel.general.references">
-    <h1>Normative references</h1>
-
-    <p>The following referenced document is indispensable for the
-    application of this document. For dated references, only the
-    edition cited applies. For undated references, the latest edition
-    of the referenced document (including any amendments) applies.</p>
-
-    <ul>
-      <li>ISO/IEC 14882:—<cxx-footnote>To be published. Section references are relative to <a href="http://www.open-std.org/jtc1/sc22/wg21/prot/14882fdis/n3937.pdf">N3937</a>.</cxx-footnote>,
-      <cite>Programming Languages — C++</cite>
-      <cxx-foreign-index id="cxx" src="cxx_N3797_index.json" name="C++14"></cxx-foreign-index></li>
-    </ul>
-
-    <p>ISO/IEC 14882:— is herein called the <dfn>C++ Standard</dfn>.
-    The library described in ISO/IEC 14882:— clauses 17-30 is herein called
-    the <dfn>C++ Standard Library</dfn>. The C++ Standard Library components described in
-    ISO/IEC 14882:— clauses 25, 26.7 and 20.7.2 are herein called the <dfn>C++ Standard
-    Algorithms Library</dfn>.</p>
-
-    <p>Unless otherwise specified, the whole of the C++ Standard's Library
-    introduction (<cxx-ref in="cxx" to="library"></cxx-ref>) is included into this
-    Technical Specification by reference.</p>
-  </cxx-section>
-
   <cxx-section id="parallel.general.namespaces">
     <h1>Namespaces and headers</h1>
 
@@ -52,7 +7,7 @@
     experimental and not part of the C++ Standard Library, they should not be
     declared directly within namespace <code>std</code>. Unless otherwise specified, all
     components described in this Technical Specification are declared in namespace 
-    <code>std::experimental::parallel::v1</code>.</p>
+    <code>std::experimental::parallel::v2</code>.</p>
 
     <cxx-note>
     Once standardized, the components described by this Technical Specification are expected to be promoted to namespace <code>std</code>. 
@@ -60,7 +15,7 @@
 
     <p>Unless otherwise specified, references to such entities described in this
     Technical Specification are assumed to be qualified with
-    <code>std::experimental::parallel::v1</code>, and references to entities described in the C++
+    <code>std::experimental::parallel::v2</code>, and references to entities described in the C++
     Standard Library are assumed to be qualified with <code>std::</code>.</p>
 
     <p>Extensions that are expected to eventually be added to an existing header
@@ -72,65 +27,11 @@
 </pre>
   </cxx-section>
 
-  <cxx-section id="parallel.general.defns">
-    <h1>Terms and definitions</h1>
-  
-    <p>For the purposes of this document, the terms and definitions given in the C++ Standard and the following apply.</p>
-  
-    <p>A <dfn>parallel algorithm</dfn> is a function template described by this Technical Specification declared in namespace <code>std::experimental::parallel::v1</code> with a formal template parameter named <code>ExecutionPolicy</code>.</p>
-  
-    <p>
-      Parallel algorithms access objects indirectly accessible via their arguments by invoking the following functions:
-  
-      <ul>
-        <li>
-          All operations of the categories of the iterators that the algorithm is instantiated with.
-        </li>
-  
-        <li>
-          Functions on those sequence elements that are required by its specification.
-        </li>
-  
-        <li>
-          User-provided function objects to be applied during the execution of the algorithm, if required by the specification.
-        </li>
-
-        <ins><li>
-          Operations on those function objects required by the specification.
-
-          <cxx-note>
-            See clause 25.1 of <em>C++ Standard Algorithms Library</em>.
-          </cxx-note>
-        </li></ins>
-      </ul>
-  
-      These functions are herein called <em>element access functions</em>.
-  
-      <cxx-example>
-        The <code>sort</code> function may invoke the following element access functions:
-  
-        <ul>
-          <li>
-            Methods of the random-access iterator of the actual template argument, as per 24.2.7, as implied by the name of the
-            template parameters <code>RandomAccessIterator</code>.
-          </li>
-  
-          <li>
-            The <code>swap</code> function on the elements of the sequence (as per 25.4.1.1 [sort]/2).
-          </li>
-  
-          <li>
-            The user-provided <code>Compare</code> function object.
-          </li>
-        </ul>
-      </cxx-example>
-  </cxx-section>
-
   <cxx-section id="parallel.general.features">
-  <ins>
     <h1>Feature-testing recommendations</h1>     
     <p>An implementation that provides support for this Technical Specification shall define the feature test macro(s) in Table 1.</p>
 
+    <del>
     <table is="cxx-table" class="column-rules">
       <caption>Feature Test Macro(s)</caption>
 
@@ -150,9 +51,67 @@
             <code>&lt;experimental/numeric&gt;</code>
           </td>
         </tr>
+        <tr>
+          <td><code>__cpp_lib_experimental_parallel_task_block</code></td>
+          <td>201510</td>
+          <td>
+            <code>&lt;experimental/task_block&gt;</code><br>
+          </td>
+        </tr>
       </thead>
     </table>
-  </ins>
+    </del>
+
+    <ins>
+    <table is="cxx-table" class="column-rules">
+      <caption>Feature Test Macro(s)</caption>
+
+      <thead>
+        <tr>
+          <th>Doc. No.</th>
+          <th>Title</th>
+          <th>Primary Section</th>
+          <th>Macro Name</th>
+          <th>Value</th>
+          <th>Header</th>
+        </tr>
+        <tr>
+          <td>N4505</td>
+          <td>Working Draft, Technical Specification for C++ Extensions for Parallelism</td>
+          <td><cxx-ref to="parallel.alg"</cxx-ref></td>
+          <td><code>__cpp_lib_experimental_parallel_algorithm</code></td>
+          <td>201505</td>
+          <td>
+            <code>&lt;experimental/algorithm&gt;</code><br>
+            <code>&lt;experimental/exception_list&gt;</code><br>
+            <code>&lt;experimental/execution_policy&gt;</code><br>
+            <code>&lt;experimental/numeric&gt;</code>
+          </td>
+        </tr>
+        <tr>
+          <td>P0155R0</td>
+          <td>Task Block R5</td>
+          <td><cxx-ref to="parallel.task_block"></cxx-ref></td>
+          <td><code>__cpp_lib_experimental_parallel_task_block</code></td>
+          <td>201510</td>
+          <td>
+            <code>&lt;experimental/task_block&gt;</code><br>
+          </td>
+        </tr>
+        <tr>
+          <td>P0076R4</td>
+          <td>Vector and Wavefront Policies</td>
+          <td><cxx-ref to="parallel.execpol.unseq"</cxx-ref>, <cxx-ref to="parallel.execpol.vec"</cxx-ref></td>
+          <td><code>__cpp_lib_experimental_execution_vector_policy</code></td>
+          <td>201707</td>
+          <td>
+            <code>&lt;experimental/algorithm&gt;</code><br>
+            <code>&lt;experimental/execution&gt;</code><br>
+          </td>
+        </tr>
+      </thead>
+    </table>
+    <ins>
   </cxx-section>
 </cxx-clause>
 
