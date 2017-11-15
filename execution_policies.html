@@ -69,13 +69,13 @@ inline namespace v2 {
   <cxx-ref insynopsis="" to="parallel.execpol.dynamic"></cxx-ref>
   class execution_policy;
 
-<ins>namespace execution {
+namespace execution {
   <cxx-ref insynopsis="" to="parallel.execpol.unseq"></cxx-ref>
-  <ins>class unsequenced_policy;</ins>
+  class unsequenced_policy;
 
   <cxx-ref insynopsis="" to="parallel.execpol.vec"></cxx-ref>
-  <ins>class vector_policy;</ins>
-}</ins>
+  class vector_policy;
+}
 }
 }
 }
@@ -135,7 +135,6 @@ class parallel_vector_execution_policy{ <i>unspecified</i> };
 
   <cxx-section id="parallel.execpol.unseq">
     <h1>Unsequenced execution policy</h1>
-<ins>
 
 <pre>
 class unsequenced_policy{ <i>unspecified</i> };
@@ -143,12 +142,10 @@ class unsequenced_policy{ <i>unspecified</i> };
 
     <p>The class <code>unsequenced_policy</code> is an execution policy type used as a unique type to disambiguate parallel algorithm overloading and indicate that a parallel algorithm's execution may be vectorized, e.g., executed on a single thread using instructions that operate on multiple data items.</p>
 
-</ins>
   </cxx-section>
 
   <cxx-section id="parallel.execpol.vec">
     <h1>Vector execution policy</h1>
-<ins>
 
 <pre>
 class vector_policy{ <i>unspecified</i> };
@@ -156,7 +153,6 @@ class vector_policy{ <i>unspecified</i> };
 
     <p>The class <code>vector_policy</code> is an execution policy type used as a unique type to disambiguate parallel algorithm overloading and indicate that a parallel algorithm's execution may be vectorized. Additionally, such vectorization will result in an execution that respects the sequencing constraints of wavefront application ([parallel.alg.general.wavefront]). <cxx-note>The implementation thus makes stronger guarantees than for <code>unsequenced_policy</code>, for example.</cxx-note></p>
 
-</ins>
   </cxx-section>
 
   <cxx-section id="parallel.execpol.dynamic">

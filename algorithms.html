@@ -88,7 +88,6 @@ for_each(par, std::begin(a), std::end(a), [&amp;](int) {
         incremented correctly.
       </cxx-example>
 
-      <ins>
       <p>
         The invocations of element access functions in parallel algorithms invoked with an
         execution policy of type <code>unsequenced_policy</code> are permitted to execute
@@ -106,9 +105,7 @@ for_each(par, std::begin(a), std::end(a), [&amp;](int) {
           function executions do not interleave with one another.
         </cxx-note>
       </p>
-      </ins>
 
-      <ins>
       <p>
         The invocations of element access functions in parallel algorithms invoked with an
         executino policy of type <code>vector_policy</code> are permitted to execute
@@ -117,7 +114,6 @@ for_each(par, std::begin(a), std::end(a), [&amp;](int) {
         (<cxx-ref to="parallel.alg.general.wavefront"></cxx-ref>) for the last argument to
         <code>for_loop</code> or <code>for_loop_strided</code>.
       </p>
-      </ins>
 
       <p>
         The invocations of element access functions in parallel algorithms invoked with an execution
@@ -196,7 +192,6 @@ for_each(par_vec, std::begin(a), std::end(a), [&amp;](int) {
 
     <cxx-section id="parallel.alg.general.wavefront">
       <h1>Wavefront Application</h1>
-      <ins>
       <p>
         For the purposes of this section, an <i>evaluation</i> is a value computation or side effect of
         an expression, or an execution of a statement. Initialization of a temporary object is considered a
@@ -292,7 +287,6 @@ for_each(par_vec, std::begin(a), std::end(a), [&amp;](int) {
           The relationships between A<sub>i</sub> and B<sub>i</sub> and between A<sub>j</sub> and B<sub>j</sub> are <i>sequenced before</i>, not <i>vertical antecedent</i>.
         </cxx-note>
       </p>
-      </ins>
     </cxx-section>
 
     <cxx-section id="parallel.alg.overloads">
@@ -512,7 +506,7 @@ inline namespace v2 {
                              InputIterator first, Size n,
                              Function f);
 
-<ins>namespace execution {
+namespace execution {
   <cxx-ref insynopsis="" to="parallel.alg.novec"></cxx-ref>
   template&lt;class F&gt;
     auto no_vec(F&amp;&amp; f) noexcept -&gt; decltype(std::forward&lt;F&gt;(f)());
@@ -524,7 +518,7 @@ inline namespace v2 {
   <cxx-ref insynopsis="" to="parallel.alg.ordupdate.func"></cxx-ref>
   template&lt;class T&gt;
     ordered_update_t&lt;T&gt; ordered_update(T&amp; ref) noexcept;
-}</ins>
+}
 }
 }
 }
@@ -637,7 +631,6 @@ InputIterator for_each_n(ExecutionPolicy &amp;&amp; exec,
     <cxx-section id="parallel.alg.novec">
       <h1>No vec</h1>
 
-      <ins>
       <cxx-function>
         <cxx-signature>template&lt;class F&gt;
 auto no_vec(F&amp;&amp; f) noexcept -&gt; decltype(std::forward&lt;F&gt;(f)());</cxx-signature>
@@ -678,13 +671,11 @@ for_loop(vec, 0, n[&amp;](int i) {
           </cxx-example>
         </cxx-notes>
       </cxx-function>
-      </ins>
     </cxx-section>
 
     <cxx-section id="parallel.alg.ordupdate.class">
       <h1>Ordered update class</h1>
 
-      <ins>
 <pre>
 class ordered_update_t {
   T&amp; ref_; // exposition only
@@ -752,12 +743,10 @@ public:
           value.
         </cxx-note>
       </p>
-      </ins>
     </cxx-section>
 
     <cxx-section id="parallel.alg.ordupdate.func">
       <h1>Ordered update function template</h1>
-      <ins>
 
       <cxx-function>
         <cxx-signature>template&lt;T&gt;
@@ -768,7 +757,6 @@ ordered_update_t&lt;T&gt; ordered_update(T&amp; loc) noexcept;</cxx-signature>
         <code>{ loc }</code>.
       </cxx-returns>
 
-      </ins>
     </cxx-section>
   </cxx-section>
 
