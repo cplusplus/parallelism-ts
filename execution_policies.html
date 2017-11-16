@@ -46,13 +46,15 @@ sort(exec, v.begin(), v.end());
     </cxx-note>
   </cxx-section>
   <cxx-section id="parallel.execpol.synopsis">
-  <h1>Header <code>&lt;experimental/execution_policy&gt;</code> synopsis</h1>
+  <h1>Header <code>&lt;experimental/execution<del>_policy</del>&gt;</code> synopsis</h1>
 
 <pre>
-namespace std {
-namespace experimental {
-namespace parallel {
-inline namespace v2 {
+<ins>#include &lt;execution&gt;</ins>
+
+<del>namespace std {</del>
+namespace <ins>std::</ins>experimental {
+<ins>inline </ins>namespace parallel<ins>ism_v2</ins> {
+<del>inline namespace v2 {
   <cxx-ref insynopsis="" to="parallel.execpol.type"></cxx-ref>
   template&lt;class T&gt; struct is_execution_policy;
   template&lt;class T&gt; constexpr bool is_execution_policy_v = is_execution_policy&lt;T&gt;::value;
@@ -68,17 +70,22 @@ inline namespace v2 {
 
   <cxx-ref insynopsis="" to="parallel.execpol.dynamic"></cxx-ref>
   class execution_policy;
-
+</del>
 namespace execution {
   <cxx-ref insynopsis="" to="parallel.execpol.unseq"></cxx-ref>
   class unsequenced_policy;
 
   <cxx-ref insynopsis="" to="parallel.execpol.vec"></cxx-ref>
   class vector_policy;
+
+  <ins><cxx-ref insynopsis="" to="parallel.execpol.objects"></cxx-ref>
+  inline constexpr unsequenced_policy unseq{ <i>unspecified</i> };
+  inline constexpr parallel_policy par{ <i>unspecified</i> };</ins>
+}
+<del>}</del>
 }
 }
-}
-}
+<del>}</del>
 </pre>
   </cxx-section>
   <cxx-section id="parallel.execpol.type">
@@ -142,6 +149,13 @@ class unsequenced_policy{ <i>unspecified</i> };
 
     <p>The class <code>unsequenced_policy</code> is an execution policy type used as a unique type to disambiguate parallel algorithm overloading and indicate that a parallel algorithm's execution may be vectorized, e.g., executed on a single thread using instructions that operate on multiple data items.</p>
 
+    <p><ins>The invocations of element access functions in parallel algorithms invoked with an execution policy of type <code>unsequenced_policy</code> are permitted to execute in an unordered fashion in the calling thread, unsequenced with respect to one another within the calling thread.
+    <cxx-note>This means that multiple function object invocations may be interleaved on a single thread.</note></ins></p>
+
+    <p><ins><cxx-note>This overrides the usual guarantee from the C++ Standard, <cxx-ref in="cxx" to="intro.execution"></cxx-ref> [intro.execution] that function executions do not overlap with one another.</cxx-note></ins></p>
+
+    <p><ins>During the execution of a parallel algorithm with the <code>experimental::execution::unsequenced_policy</code> policy, if the invocation of an element access function exits via an uncaught exception, <code>terminate()</code> shall be called.</ins></p>
+
   </cxx-section>
 
   <cxx-section id="parallel.execpol.vec">
@@ -152,6 +166,10 @@ class vector_policy{ <i>unspecified</i> };
 </pre>
 
     <p>The class <code>vector_policy</code> is an execution policy type used as a unique type to disambiguate parallel algorithm overloading and indicate that a parallel algorithm's execution may be vectorized. Additionally, such vectorization will result in an execution that respects the sequencing constraints of wavefront application ([parallel.alg.general.wavefront]). <cxx-note>The implementation thus makes stronger guarantees than for <code>unsequenced_policy</code>, for example.</cxx-note></p>
+
+    <p><ins>The invocations of element access functions in parallel algorithms invoked with an execution policy of type <code>vector_policy</code> are permitted to execute in unordered fashion in the calling thread, unsequenced with respect to one another within the calling thread, subject to the sequencing constraints of wavefront application (<cxx-ref to="parallel.alg.general.wavefront"></cxx-ref>) for the last argument to <code>for_loop</code> or <code>for_loop_strided</code>.</ins></p>
+
+    <p><ins>During the execution of a parallel algorithm with the <code>experimental::execution::vector_policy</code> policy, if the invocation of an element access function exits via an uncaught exception, <code>terminate()</code> shall be called.</ins></p>
 
   </cxx-section>
 
@@ -243,11 +261,13 @@ std::sort(exec, std::begin(sort_me), std::end(sort_me));</pre>
     <h1>Execution policy objects</h1>
 
 <pre>
-constexpr sequential_execution_policy      seq{};
+<del>constexpr sequential_execution_policy      seq{};
 constexpr parallel_execution_policy        par{};
-constexpr parallel_vector_execution_policy par_vec{};
+constexpr parallel_vector_execution_policy par_vec{};</del>
+<ins>constexpr execution::unsequenced_policy unseq{};
+constexpr execution::vector_policy vec{};</ins>
 </pre>
 
-    <p>The header <code>&lt;experimental/execution_policy&gt;</code> declares a global object associated with each type of execution policy defined by this Technical Specification.</p>
+    <p>The header <code>&lt;experimental/execution<del>_policy</del>&gt;</code> declares a global object associated with each type of execution policy defined by this Technical Specification.</p>
   </cxx-section>
 </cxx-clause>
