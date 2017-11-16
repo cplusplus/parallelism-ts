@@ -488,10 +488,12 @@ for_each(par_vec, std::begin(a), std::end(a), [&amp;](int) {
       <h1>Header <code>&lt;experimental/algorithm&gt;</code> synopsis</h1>
 
       <pre>
-namespace std {
-namespace experimental {
-namespace parallel {
-inline namespace v2 {
+<ins>#include &lt;algorithm&gt;
+</ins>
+<del>namespace std {</del>
+namespace <ins>std::</ins>experimental {
+<ins>inline </ins>namespace parallel<ins>ism_v2</ins> {
+<del>inline namespace v2 {
   template&lt;class ExecutionPolicy,
            class InputIterator, class Function&gt;
     void for_each(ExecutionPolicy&amp;&amp; exec,
@@ -504,7 +506,7 @@ inline namespace v2 {
            class InputIterator, class Size, class Function&gt;
     InputIterator for_each_n(ExecutionPolicy&amp;&amp; exec,
                              InputIterator first, Size n,
-                             Function f);
+                             Function f);</del>
 
 namespace execution {
   <cxx-ref insynopsis="" to="parallel.alg.novec"></cxx-ref>
@@ -519,10 +521,10 @@ namespace execution {
   template&lt;class T&gt;
     ordered_update_t&lt;T&gt; ordered_update(T&amp; ref) noexcept;
 }
+<del>}</del>
 }
 }
-}
-}
+<del>}</del>
 </pre>
     </cxx-section>
 
