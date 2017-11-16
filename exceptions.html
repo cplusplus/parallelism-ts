@@ -54,15 +54,16 @@
       <h1>Header <code>&lt;experimental/exception_list&gt;</code> synopsis</h1>
       <pre>
 
-namespace std {
-namespace experimental {
-namespace parallel {
-inline namespace v2 {
+<del>namespace std {</del>
+namespace <ins>std::</ins>experimental {
+<ins>inline </ins>namespace parallel<ins>ism_v2</ins> {
+<del>inline namespace v2 {</del>
 
   class exception_list : public exception
   {
     public:
-      typedef <em>unspecified</em> iterator;
+      <del>typedef <em>unspecified</em> iterator;</del>
+      <ins>using iterator = <em>unspecified</em>;</ins>
   
       size_t size() const noexcept;
       iterator begin() const noexcept;
@@ -70,16 +71,16 @@ inline namespace v2 {
 
       const char* what() const noexcept override;
   };
+<del>}</del>
 }
 }
-}
-}
+<del>}</del>
       </pre>
 
       <p>
-        The class <code>exception_list</code> owns a sequence of <code>exception_ptr</code> objects. The parallel
+        The class <code>exception_list</code> owns a sequence of <code>exception_ptr</code> objects.<del> The parallel
         algorithms may use the <code>exception_list</code> to communicate uncaught exceptions encountered during parallel execution to the
-        caller of the algorithm.
+        caller of the algorithm.</del>
       </p>
 
       <p>
