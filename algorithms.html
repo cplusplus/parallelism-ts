@@ -722,9 +722,11 @@ auto no_vec(F&amp;&amp; f) noexcept -&gt; decltype(std::forward&lt;F&gt;(f)());<
           the result of <code>f</code>.
         </cxx-returns>
         
+        <del>
         <cxx-remarks>
-          If <code>f</code> returns a result, the result is ignored.
+          <del>If <code>f</code> returns a result, the result is ignored.</del>
         </cxx-remarks>
+        </del>
 
         <cxx-notes>
           If <code>f</code> exits via an exception, then <code>terminate</code> will be called, consistent
@@ -805,7 +807,7 @@ public:
 </pre>
 
       <p>
-        An object of type <code>ordered_update_t&gt;T&lt;</code> is a proxy for an object of type T
+      An object of type <code>ordered_update_t<del>&gt;</del><ins>&lt;</ins>T<del>&lt;</del><ins>&gt;</ins></code> is a proxy for an object of type T
         intended to be used within a parallel application of an element access function using a
         policy object of type <code>vector_policy</code>. Simple increments, assignments, and compound
         assignments to the object are forwarded to the proxied object, but are sequenced as though
