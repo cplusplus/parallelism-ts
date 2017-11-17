@@ -1,5 +1,5 @@
-    Document Number: N4670
-    Date:            2017-06-19
+    Document Number: N4699
+    Date:            2017-10-16
     Revises:
     Project:         Programming Language C++
     Project Number:  TS 19570
@@ -7,20 +7,22 @@
                      NVIDIA Corporation
                      jhoberock@nvidia.com
 
-# Parallelism TS Editor's Report, pre-Toronto mailing 
+# Parallelism TS Editor's Report, pre-Albuquerque mailing 
 
-N4669 is the proposed working draft of Parallelism TS Version 2. It contains editorial changes to the Parallelism TS to make it consistent with new ISO directives concerning "Scope", "Normative references", and "Terms and definitions" clauses.
+N4698 is the proposed working draft of Parallelism TS Version 2. It contains changes to the Parallelism TS as directed by the committee at the Toronto meeting, and editorial changes.
 
-N4669 updates the previous draft, N4579, published in the pre-Jacksonville mailing.
+N4698 updates the previous draft, N4669, published in the pre-Toronto mailing.
 
 # Technical Changes
 
-None.
+* Apply P0076R4 - Vector and Wavefront Policies.
 
 # Editorial Changes
 
-* Introduced new Clause 1 - Scope
-* Introduced new Clause 2 - Normative references
-* Introduced new Clause 3 - Terms and definitions
-* Incremented the numbers of all existing clauses
+* Reformat Table 1 - Feature Test Macro(s), to match the style of the Library Fundamentals TS.
+
+# Notes
+
+* The pre-existing content of N4698 has not yet been harmonized with C++17. As a result, this content is named and namespaced inconsistently with the newly applied content of P0076R4. We anticipate that these inconsistencies will be harmonized by a future revision.
+* N4698 contains forward references to `for_loop` and `for_loop_strided`. We anticipate their introduction in a future revision.
 
