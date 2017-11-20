@@ -1,4 +1,4 @@
-    Document Number: N4XXX+1
+    Document Number: N4707
     Date:            2017-11-XX
     Revises:
     Project:         Programming Language C++
@@ -9,9 +9,9 @@
 
 # Parallelism TS Editor's Report, pre-Albuquerque mailing 
 
-NXXXX is the proposed working draft of Parallelism TS Version 2. It contains changes to the Parallelism TS as directed by the committee at the Albuquerque meeting.
+N4706 is the proposed working draft of Parallelism TS Version 2. It contains changes to the Parallelism TS as directed by the committee at the Albuquerque meeting.
 
-NXXXX updates the previous draft, N4696, published in the pre-Toronto mailing.
+N4706 updates the previous draft, N4696, published in the pre-Toronto mailing.
 
 # Technical Changes
 
