@@ -1,5 +1,5 @@
-    Document Number: N4699
-    Date:            2017-10-16
+    Document Number: N4707
+    Date:            2017-11-XX
     Revises:
     Project:         Programming Language C++
     Project Number:  TS 19570
@@ -9,20 +9,16 @@
 
 # Parallelism TS Editor's Report, pre-Albuquerque mailing 
 
-N4698 is the proposed working draft of Parallelism TS Version 2. It contains changes to the Parallelism TS as directed by the committee at the Toronto meeting, and editorial changes.
+N4706 is the proposed working draft of Parallelism TS Version 2. It contains changes to the Parallelism TS as directed by the committee at the Albuquerque meeting.
 
-N4698 updates the previous draft, N4669, published in the pre-Toronto mailing.
+N4706 updates the previous draft, N4696, published in the pre-Toronto mailing.
 
 # Technical Changes
 
-* Apply P0076R4 - Vector and Wavefront Policies.
+* Apply P0776R1 - Rebase the Parallelism TS onto the C++17 Standard
+* Apply P0075R2 - Template Library for Parallel For Loops
 
-# Editorial Changes
+# Acknowledgements
 
-* Reformat Table 1 - Feature Test Macro(s), to match the style of the Library Fundamentals TS.
-
-# Notes
-
-* The pre-existing content of N4698 has not yet been harmonized with C++17. As a result, this content is named and namespaced inconsistently with the newly applied content of P0076R4. We anticipate that these inconsistencies will be harmonized by a future revision.
-* N4698 contains forward references to `for_loop` and `for_loop_strided`. We anticipate their introduction in a future revision.
+Thanks to Alisdair Meredith and Pablo Halpern for reviewing these changes.
 
