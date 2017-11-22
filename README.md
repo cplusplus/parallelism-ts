@@ -1,5 +1,5 @@
     Document Number: N4707
-    Date:            2017-11-XX
+    Date:            2017-11-22
     Revises:
     Project:         Programming Language C++
     Project Number:  TS 19570
