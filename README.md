@@ -7,7 +7,7 @@
                      NVIDIA Corporation
                      jhoberock@nvidia.com
 
-# Parallelism TS Editor's Report, pre-Albuquerque mailing 
+# Parallelism TS Editor's Report, post-Albuquerque mailing 
 
 N4706 is the proposed working draft of Parallelism TS Version 2. It contains changes to the Parallelism TS as directed by the committee at the Albuquerque meeting.
 
