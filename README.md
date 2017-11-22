@@ -1,5 +1,5 @@
     Document Number: N4699
-    Date:            2017-10-16
+    Date:            2017-11-22
     Revises:
     Project:         Programming Language C++
     Project Number:  TS 19570
