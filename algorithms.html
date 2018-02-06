@@ -1,309 +1,103 @@
 <cxx-clause id="parallel.alg">
   <h1>Parallel algorithms</h1>
 
-    <cxx-section id="parallel.alg.general.wavefront">
-      <h1>Wavefront Application</h1>
-      <p>
-        For the purposes of this section, an <i>evaluation</i> is a value computation or side effect of
-        an expression, or an execution of a statement. Initialization of a temporary object is considered a
-        subexpression of the expression that necessitates the temporary object.
-      </p>
+  <cxx-section id="parallel.alg.wavefront">
+    <h1>Wavefront Application</h1>
+    <p>
+      For the purposes of this section, an <i>evaluation</i> is a value computation or side effect of
+      an expression, or an execution of a statement. Initialization of a temporary object is considered a
+      subexpression of the expression that necessitates the temporary object.
+    </p>
 
-      <p>
-        An evaluation A <i>contains</i> an evaluation B if:
+    <p>
+      An evaluation A <i>contains</i> an evaluation B if:
 
+      <ul>
+      <li>A and B are not potentially concurrent ([intro.races]); and</li>
+      <li>the start of A is the start of B or the start of A is sequenced before the start of B; and</li>
+      <li>the completion of B is the completion of A or the completion of B is sequenced before the completion of A.</li>
+      </ul>
+
+      <cxx-note>This includes evaluations occurring in function invocations.</cxx-note>
+    </p>
+
+    <p>
+      An evaluation A is <i>ordered before</i> an evaluation B if A is deterministically
+      sequenced before B. <cxx-note>If A is indeterminately sequenced with respect to B
+      or A and B are unsequenced, then A is not ordered before B and B is not ordered
+      before A. The ordered before relationship is transitive.</cxx-note>
+    </p>
+
+    <p>
+      For an evaluation A ordered before an evaluation B, both contained in the same
+      invocation of an element access function, A is a <i>vertical antecedent</i> of B if:
+
+      <ul>
+      <li>there exists an evaluation S such that:
         <ul>
-        <li>A and B are not potentially concurrent ([intro.races]); and</li>
-        <li>the start of A is the start of B or the start of A is sequenced before the start of B; and</li>
-        <li>the completion of B is the completion of A or the completion of B is sequenced before the completion of A.</li>
+          <li>S contains A, and</li>
+          <li>S contains all evaluations C (if any) such that A is ordered before C and C is ordered before B,</li>
+          <li>but S does not contain B, and</li>
         </ul>
-
-        <cxx-note>This includes evaluations occurring in function invocations.</cxx-note>
-      </p>
-
-      <p>
-        An evaluation A is <i>ordered before</i> an evaluation B if A is deterministically
-        sequenced before B. <cxx-note>If A is indeterminately sequenced with respect to B
-        or A and B are unsequenced, then A is not ordered before B and B is not ordered
-        before A. The ordered before relationship is transitive.</cxx-note>
-      </p>
-
-      <p>
-        For an evaluation A ordered before an evaluation B, both contained in the same
-        invocation of an element access function, A is a <i>vertical antecedent</i> of B if:
-
+      </li>
+      <li>
+        control reached B from A without executing any of the following:
         <ul>
-        <li>there exists an evaluation S such that:
-          <ul>
-            <li>S contains A, and</li>
-            <li>S contains all evaluations C (if any) such that A is ordered before C and C is ordered before B,</li>
-            <li>but S does not contain B, and</li>
-          </ul>
-        </li>
-        <li>
-          control reached B from A without executing any of the following:
-          <ul>
-            <li>a <code>goto</code> statement or <code>asm</code> declaration that jumps to a statement outside of S, or</li>
-            <li>a <code>switch</code> statement executed within S that transfers control into a substatement of a nested selection or iteration statement, or</li>
-            <li>a <code>throw</code> <cxx-note>even if caught</cxx-note>, or</li>
-            <li>a <code>longjmp</code>.
-          </ul>
-        </li>
+          <li>a <code>goto</code> statement or <code>asm</code> declaration that jumps to a statement outside of S, or</li>
+          <li>a <code>switch</code> statement executed within S that transfers control into a substatement of a nested selection or iteration statement, or</li>
+          <li>a <code>throw</code> <cxx-note>even if caught</cxx-note>, or</li>
+          <li>a <code>longjmp</code>.
         </ul>
+      </li>
+      </ul>
 
-        <cxx-note>
-          Vertical antecedent is an irreflexive, antisymmetric, nontransitive relationship between two evaluations.
-          Informally, A is a vertical antecedent of B if A is sequenced immediately before B or A is nested zero or
-          more levels within a statement S that immediately precedes B.
-        </cxx-note>
-      </p>
-
-      <p>
-        In the following, <i>X<sub>i</sub></i> and <i>X<sub>j</sub></i> refer to evaluations of the <i>same</i> expression
-        or statement contained in the application of an element access function corresponding to the i<sup>th</sup> and
-        j<sup>th</sup> elements of the input sequence. <cxx-note>There might be several evaluations <i>X<sub>k</sub></i>,
-        <i>Y<sub>k</sub></i>, etc. of a single expression or statement in application <i>k</i>, for example, if the
-        expression or statement appears in a loop within the element access function.</cxx-note>
-      </p>
-
-      <p>
-        <i>Horizontally matched</i> is an equivalence relationship between two evaluations of the same expression. An
-        evaluation B<sub>i</sub> is <i>horizontally matched</i> with an evaluation B<sub>j</sub> if:
-
-        <ul>
-          <li>both are the first evaluations in their respective applications of the element access function, or</li>
-          <li>there exist horizontally matched evaluations A<sub>i</sub> and A<sub>j</sub> that are vertical antecedents of evaluations B<sub>i</sub> and B<sub>j</sub>, respectively.
-        </ul>
-
-        <cxx-note>
-          <i>Horizontally matched</i> establishes a theoretical <i>lock-step</i> relationship between evaluations in different applications of an element access function.
-        </cxx-note>
-      </p>
-
-      <p>
-        Let <i>f</i> be a function called for each argument list in a sequence of argument lists.
-        <i>Wavefront application</i> of <i>f</i> requires that evaluation A<sub>i</sub> be sequenced
-        before evaluation B<sub>i</sub> if i &lt; j and and:
-
-        <ul>
-          <li>A<sub>i</sub> is sequenced before some evaluation B<sub>i</sub> and B<sub>i</sub> is horizontally matched with B<sub>j</sub>, or</li>
-          <li>A<sub>i</sub> is horizontally matched with some evaluation A<sub>j</sub> and A<sub>j</sub> is sequenced before B<sub>j<sub>.</li>
-        </ul>
-
-        <cxx-note>
-          <i>Wavefront application</i> guarantees that parallel applications i and j execute such that progress on application j never gets <i>ahead</i> of application i.
-        </cxx-note>
-
-        <cxx-note>
-          The relationships between A<sub>i</sub> and B<sub>i</sub> and between A<sub>j</sub> and B<sub>j</sub> are <i>sequenced before</i>, not <i>vertical antecedent</i>.
-        </cxx-note>
-      </p>
-    </cxx-section>
-
-    <cxx-section id="parallel.alg.overloads">
-      <h1><del><code>ExecutionPolicy</code> algorithm overloads</del></h1>
-
-      <del>
-      <p>
-        The Parallel Algorithms Library provides overloads for each of the algorithms named in
-        Table 1, corresponding to the algorithms with the same name in the C++ Standard Algorithms Library.
-        
-        For each algorithm in <cxx-ref to="tab.parallel.algorithms"></cxx-ref>, if there are overloads for
-        corresponding algorithms with the same name
-        in the C++ Standard Algorithms Library,
-        the overloads shall have an additional template type parameter named
-        <code>ExecutionPolicy</code>, which shall be the first template parameter.
-        
-        In addition, each such overload shall have the new function parameter as the
-        first function parameter of type <code>ExecutionPolicy&amp;&amp;</code>.
-      </p>
-      </del>
-
-      <del>
-      <p>
-        Unless otherwise specified, the semantics of <code>ExecutionPolicy</code> algorithm overloads
-        are identical to their overloads without.
-      </p>
-      </del>
-        
-      <del>
-      <p>
-        Parallel algorithms shall not participate in overload resolution unless
-        <code>is_execution_policy&lt;decay_t&lt;ExecutionPolicy&gt;&gt;::value</code> is <code>true</code>.
-      </p>
-      </del>
-        
-      <del>
-      <table is="cxx-table" id="tab.parallel.algorithms" class="list">
-        <caption><del>Table of parallel algorithms</del></caption>
-          <tr>
-            <td><code>adjacent_difference</code></td>
-            <td><code>adjacent_find</code></td>
-            <td><code>all_of</code></td>
-            <td><code>any_of</code></td>
-          </tr>
-          <tr>
-            <td><code>copy</code></td>
-            <td><code>copy_if</code></td>
-            <td><code>copy_n</code></td>
-            <td><code>count</code></td>
-          </tr>
-          <tr>
-            <td><code>count_if</code></td>
-            <td><code>equal</code></td>
-            <td><code>exclusive_scan</code></td>
-            <td><code>fill</code></td>
-          </tr>
-          <tr>
-            <td><code>fill_n</code></td>
-            <td><code>find</code></td>
-            <td><code>find_end</code></td>
-            <td><code>find_first_of</code></td>
-          </tr>
-          <tr>
-            <td><code>find_if</code></td>
-            <td><code>find_if_not</code></td>
-            <td><code>for_each</code></td>
-            <td><code>for_each_n</code></td>
-          </tr>
-          <tr>
-            <td><code>generate</code></td>
-            <td><code>generate_n</code></td>
-            <td><code>includes</code></td>
-            <td><code>inclusive_scan</code></td>
-          </tr>
-          <tr>
-            <td><code>inner_product</code></td>
-            <td><code>inplace_merge</code></td>
-            <td><code>is_heap</code></td>
-            <td><code>is_heap_until</code></td>
-          </tr>
-          <tr>
-            <td><code>is_partitioned</code></td>
-            <td><code>is_sorted</code></td>
-            <td><code>is_sorted_until</code></td>
-            <td><code>lexicographical_compare</code></td>
-          </tr>
-          <tr>
-            <td><code>max_element</code></td>
-            <td><code>merge</code></td>
-            <td><code>min_element</code></td>
-            <td><code>minmax_element</code></td>
-          </tr>
-          <tr>
-            <td><code>mismatch</code></td>
-            <td><code>move</code></td>
-            <td><code>none_of</code></td>
-            <td><code>nth_element</code></td>
-          </tr>
-          <tr>
-            <td><code>partial_sort</code></td>
-            <td><code>partial_sort_copy</code></td>
-            <td><code>partition</code></td>
-            <td><code>partition_copy</code></td>
-          </tr>
-          <tr>
-            <td><code>reduce</code></td>
-            <td><code>remove</code></td>
-            <td><code>remove_copy</code></td>
-            <td><code>remove_copy_if</code></td>
-          </tr>
-          <tr>
-            <td><code>remove_if</code></td>
-            <td><code>replace</code></td>
-            <td><code>replace_copy</code></td>
-            <td><code>replace_copy_if</code></td>
-          </tr>
-          <tr>
-            <td><code>replace_if</code></td>
-            <td><code>reverse</code></td>
-            <td><code>reverse_copy</code></td>
-            <td><code>rotate</code></td>
-          </tr>
-          <tr>
-            <td><code>rotate_copy</code></td>
-            <td><code>search</code></td>
-            <td><code>search_n</code></td>
-            <td><code>set_difference</code></td>
-          </tr>
-          <tr>
-            <td><code>set_intersection</code></td>
-            <td><code>set_symmetric_difference</code></td>
-            <td><code>set_union</code></td>
-            <td><code>sort</code></td>
-          </tr>
-          <tr>
-            <td><code>stable_partition</code></td>
-            <td><code>stable_sort</code></td>
-            <td><code>swap_ranges</code></td>
-            <td><code>transform</code></td>
-          </tr>
-          <tr>
-            <td><code>transform_exclusive_scan</code></td>
-            <td><code>transform_inclusive_scan</code></td>
-            <td><code>transform_reduce</code></td>
-            <td><code>uninitialized_copy</code></td>
-          </tr>
-          <tr>
-            <td><code>uninitialized_copy_n</code></td>
-            <td><code>uninitialized_fill</code></td>
-            <td><code>uninitialized_fill_n</code></td>
-            <td><code>unique</code></td>
-          </tr>
-          <tr>
-            <td><code>unique_copy</code></td>
-            <td></td>
-            <td></td>
-            <td></td>
-          </tr>
-      </table>
-      </del>
-
-      <del>
       <cxx-note>
-      Not all algorithms in the Standard Library have counterparts in <cxx-ref to="tab.parallel.algorithms"></cxx-ref>.
+        Vertical antecedent is an irreflexive, antisymmetric, nontransitive relationship between two evaluations.
+        Informally, A is a vertical antecedent of B if A is sequenced immediately before B or A is nested zero or
+        more levels within a statement S that immediately precedes B.
       </cxx-note>
-      </del>
-    </cxx-section>
-  </cxx-section>
+    </p>
 
-  <cxx-section id="parallel.alg.defns">
-    <h1><del>Definitions</del></h1>
-
-    <del>
     <p>
-      Define <code><em>GENERALIZED_SUM</em>(op, a1, ..., aN)</code> as follows:
+      In the following, <i>X<sub>i</sub></i> and <i>X<sub>j</sub></i> refer to evaluations of the <i>same</i> expression
+      or statement contained in the application of an element access function corresponding to the i<sup>th</sup> and
+      j<sup>th</sup> elements of the input sequence. <cxx-note>There might be several evaluations <i>X<sub>k</sub></i>,
+      <i>Y<sub>k</sub></i>, etc. of a single expression or statement in application <i>k</i>, for example, if the
+      expression or statement appears in a loop within the element access function.</cxx-note>
+    </p>
+
+    <p>
+      <i>Horizontally matched</i> is an equivalence relationship between two evaluations of the same expression. An
+      evaluation B<sub>i</sub> is <i>horizontally matched</i> with an evaluation B<sub>j</sub> if:
 
       <ul>
-        <li><code>a1</code> when <code>N</code> is <code>1</code></li>
-      
-        <li>
-          <code>op(<em>GENERALIZED_SUM</em>(op, b1, ..., bK)</code>, <code><em>GENERALIZED_SUM</em>(op, bM, ..., bN))</code> where
-           
-          <ul>
-            <li><code>b1, ..., bN</code> may be any permutation of <code>a1, ..., aN</code> and</li>
-
-            <li><code>1 &lt; K+1 = M &le; N</code>.</li>
-          </ul>
-        </li>
+        <li>both are the first evaluations in their respective applications of the element access function, or</li>
+        <li>there exist horizontally matched evaluations A<sub>i</sub> and A<sub>j</sub> that are vertical antecedents of evaluations B<sub>i</sub> and B<sub>j</sub>, respectively.
       </ul>
-    </p>
-    </del>
 
-    <del>
+      <cxx-note>
+        <i>Horizontally matched</i> establishes a theoretical <i>lock-step</i> relationship between evaluations in different applications of an element access function.
+      </cxx-note>
+    </p>
+
     <p>
-      Define <code><em>GENERALIZED_NONCOMMUTATIVE_SUM</em>(op, a1, ..., aN)</code> as follows:
+      Let <i>f</i> be a function called for each argument list in a sequence of argument lists.
+      <i>Wavefront application</i> of <i>f</i> requires that evaluation A<sub>i</sub> be sequenced
+      before evaluation B<sub>i</sub> if i &lt; j and and:
 
       <ul>
-        <li><code>a1</code> when <code>N</code> is <code>1</code></li>
-
-        <li>
-          <code>op(<em>GENERALIZED_NONCOMMUTATIVE_SUM</em>(op, a1, ..., aK), <em>GENERALIZED_NONCOMMUTATIVE_SUM</em>(op, aM, </code><br>
-          <code>..., aN)</code> where <code>1 &lt; K+1 = M &le; N</code>.
-        </li>
+        <li>A<sub>i</sub> is sequenced before some evaluation B<sub>i</sub> and B<sub>i</sub> is horizontally matched with B<sub>j</sub>, or</li>
+        <li>A<sub>i</sub> is horizontally matched with some evaluation A<sub>j</sub> and A<sub>j</sub> is sequenced before B<sub>j<sub>.</li>
       </ul>
+
+      <cxx-note>
+        <i>Wavefront application</i> guarantees that parallel applications i and j execute such that progress on application j never gets <i>ahead</i> of application i.
+      </cxx-note>
+
+      <cxx-note>
+        The relationships between A<sub>i</sub> and B<sub>i</sub> and between A<sub>j</sub> and B<sub>j</sub> are <i>sequenced before</i>, not <i>vertical antecedent</i>.
+      </cxx-note>
     </p>
-    </del>
   </cxx-section>
 
   <cxx-section id="parallel.alg.ops">
