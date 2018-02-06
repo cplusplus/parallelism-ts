@@ -24,28 +24,6 @@ namespace execution {
 }
 </pre>
   </cxx-section>
-  <del><cxx-section id="parallel.execpol.type"></del>
-    <del>
-    <h1>Execution policy type trait</h1>
-
-<pre>
-template&lt;class T&gt; struct is_execution_policy { <em>see below</em> };
-</pre>
-
-    <p><code>is_execution_policy</code> can be used to detect parallel execution policies for the purpose of excluding function signatures from otherwise ambiguous overload resolution participation.</p>
-    
-    <p><code>is_execution_policy&lt;T&gt;</code> shall be a UnaryTypeTrait with a BaseCharacteristic of <code>true_type</code> if <code>T</code> is the type of a standard or implementation-defined execution policy, otherwise <code>false_type</code>.
-
-    <pre>
-</pre>
-
-    <cxx-note>
-      This provision reserves the privilege of creating non-standard execution policies to the library implementation.
-    </cxx-note>
-    
-    <p>The behavior of a program that adds specializations for <code>is_execution_policy</code> is undefined.</p>
-  </del>
-  </cxx-section>
 
   <del><cxx-section id="parallel.execpol.seq"></del>
     <del>
