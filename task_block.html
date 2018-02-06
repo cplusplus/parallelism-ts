@@ -61,10 +61,8 @@ inline namespace parallelism_v2 {
      <h1>Class <code>task_block</code></h1>
      <pre>
 
-<del>namespace std {</del>
-namespace <ins>std::</ins>experimental {
-<ins>inline </ins>namespace parallel<ins>ism_v2</ins> {
-<del>inline namespace v2 {</del>
+namespace std::experimental {
+inline namespace parallelism_v2 {
 
   class task_block
   {
@@ -72,19 +70,17 @@ namespace <ins>std::</ins>experimental {
       ~task_block();
 
     public:
-      task_block(const task_block&) = delete;
-      task_block& operator=(const task_block&) = delete;
-      void operator&() const = delete;
+      task_block(const task_block&amp;) = delete;
+      task_block&amp; operator=(const task_block&amp;) = delete;
+      void operator&amp;() const = delete;
 
       template&lt;class F&gt;
-        void run(F&& f);
+        void run(F&amp;&amp; f);
 
       void wait();
   };
-<del>}</del>
 }
 }
-<del>}</del>
      </pre>
 
      <p>
