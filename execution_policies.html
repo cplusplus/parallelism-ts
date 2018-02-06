@@ -2,31 +2,13 @@
   <h1>Execution policies</h1>
 
   <cxx-section id="parallel.execpol.synopsis">
-  <h1>Header <code>&lt;experimental/execution<del>_policy</del>&gt;</code> synopsis</h1>
+  <h1>Header <code>&lt;experimental/execution&gt;</code> synopsis</h1>
 
 <pre>
-<ins>#include &lt;execution&gt;</ins>
+#include &lt;execution&gt;
 
-<del>namespace std {</del>
-namespace <ins>std::</ins>experimental {
-<ins>inline </ins>namespace parallel<ins>ism_v2</ins> {
-<del>inline namespace v2 {
-  <cxx-ref insynopsis="" to="parallel.execpol.type"></cxx-ref>
-  template&lt;class T&gt; struct is_execution_policy;
-  template&lt;class T&gt; constexpr bool is_execution_policy_v = is_execution_policy&lt;T&gt;::value;
-
-  <cxx-ref insynopsis="" to="parallel.execpol.seq"></cxx-ref>
-  class sequential_execution_policy;
-
-  <cxx-ref insynopsis="" to="parallel.execpol.par"></cxx-ref>
-  class parallel_execution_policy;
-
-  <cxx-ref insynopsis="" to="parallel.execpol.parvec"></cxx-ref>
-  class parallel_vector_execution_policy;
-
-  <cxx-ref insynopsis="" to="parallel.execpol.dynamic"></cxx-ref>
-  class execution_policy;
-</del>
+namespace std::experimental {
+inline namespace parallelism_v2 {
 namespace execution {
   <cxx-ref insynopsis="" to="parallel.execpol.unseq"></cxx-ref>
   class unsequenced_policy;
@@ -34,14 +16,12 @@ namespace execution {
   <cxx-ref insynopsis="" to="parallel.execpol.vec"></cxx-ref>
   class vector_policy;
 
-  <ins><cxx-ref insynopsis="" to="parallel.execpol.objects"></cxx-ref>
+  <cxx-ref insynopsis="" to="parallel.execpol.objects"></cxx-ref>
   inline constexpr unsequenced_policy unseq{ <i>unspecified</i> };
-  inline constexpr parallel_policy par{ <i>unspecified</i> };</ins>
-}
-<del>}</del>
+  inline constexpr parallel_policy par{ <i>unspecified</i> };
 }
 }
-<del>}</del>
+}
 </pre>
   </cxx-section>
   <del><cxx-section id="parallel.execpol.type"></del>
