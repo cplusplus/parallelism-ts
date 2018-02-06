@@ -107,25 +107,10 @@
       <h1>Header <code>&lt;experimental/algorithm&gt;</code> synopsis</h1>
 
       <pre>
-<ins>#include &lt;algorithm&gt;
-</ins>
-<del>namespace std {</del>
-namespace <ins>std::</ins>experimental {
-<ins>inline </ins>namespace parallel<ins>ism_v2</ins> {
-<del>inline namespace v2 {
-  template&lt;class ExecutionPolicy,
-           class InputIterator, class Function&gt;
-    void for_each(ExecutionPolicy&amp;&amp; exec,
-                  InputIterator first, InputIterator last,
-                  Function f);
-  template&lt;class InputIterator, class Size, class Function&gt;
-    InputIterator for_each_n(InputIterator first, Size n,
-                             Function f);
-  template&lt;class ExecutionPolicy,
-           class InputIterator, class Size, class Function&gt;
-    InputIterator for_each_n(ExecutionPolicy&amp;&amp; exec,
-                             InputIterator first, Size n,
-                             Function f);</del>
+#include &lt;algorithm&gt;
+
+namespace std::experimental {
+inline namespace parallelism_v2 {
 
 namespace execution {
   <cxx-ref insynopsis="" to="parallel.alg.novec"></cxx-ref>
@@ -140,7 +125,6 @@ namespace execution {
   template&lt;class T&gt;
     ordered_update_t&lt;T&gt; ordered_update(T&amp; ref) noexcept;
 }
-<ins>
 
 // Exposition only: Suppress template argument deduction.
 template&lt;class T&gt; struct no_deduce { using type = T; };
@@ -197,11 +181,8 @@ template&lt;class ExecutionPolicy,
          class I, class Size, class S, class... Rest&gt;
   void for_loop_n_strided(ExecutionPolicy&amp;&amp; exec,
                           I start, Size n, S stride, Rest&amp;&amp;... rest);
-</ins>
-<del>}</del>
 }
 }
-<del>}</del>
 </pre>
     </cxx-section>
 
