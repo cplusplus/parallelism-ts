@@ -342,52 +342,50 @@ for_loop(execution::vec, 0, n,
     </cxx-section>
 
     <cxx-section id="parallel.alg.forloop">
-      <h1><ins>For loop</ins></h1>
+      <h1>For loop</h1>
 
       <cxx-function>
-        <cxx-signature><ins>template&lt;class I, class... Rest&gt;
-void for_loop(no_deduce_t&lt;I&gt; start, I finish, Rest&amp;&amp;... rest);</ins></cxx-signature>
+        <cxx-signature>template&lt;class I, class... Rest&gt;
+void for_loop(no_deduce_t&lt;I&gt; start, I finish, Rest&amp;&amp;... rest);</cxx-signature>
 
-        <cxx-signature><ins>template&lt;class ExecutionPolicy,
+        <cxx-signature>template&lt;class ExecutionPolicy,
       class I, class... Rest&gt;
 void for_loop(ExecutionPolicy&amp;&amp; exec,
               no_deduce_t&lt;I&gt; start, I finish, Rest&amp;&amp;... rest);
 
-</ins></cxx-signature>
+</cxx-signature>
 
-        <cxx-signature><ins>template&lt;class I, class S, class... Rest&gt;
+        <cxx-signature>template&lt;class I, class S, class... Rest&gt;
 void for_loop_strided(no_deduce_t&lt;I&gt; start, I finish,
-                      S stride, Rest&amp;&amp;... rest);</ins></cxx-signature>
+                      S stride, Rest&amp;&amp;... rest);</cxx-signature>
 
-        <cxx-signature><ins>template&lt;class ExecutionPolicy,
+        <cxx-signature>template&lt;class ExecutionPolicy,
       class I, class S, class... Rest&gt;
 void for_loop_strided(ExecutionPolicy&amp;&amp; exec,
                       no_deduce_t&lt;I&gt; start, I finish,
                       S stride, Rest&amp;&amp;... rest);
 
-</ins></cxx-signature>
+</cxx-signature>
 
-        <cxx-signature><ins>template&lt;class I, class Size, class... Rest&gt;
-void for_loop_n(I start, Size n, Rest&amp;&amp;... rest);</ins></cxx-signature>
+        <cxx-signature>template&lt;class I, class Size, class... Rest&gt;
+void for_loop_n(I start, Size n, Rest&amp;&amp;... rest);</cxx-signature>
 
-        <cxx-signature><ins>template&lt;class ExecutionPolicy,
+        <cxx-signature>template&lt;class ExecutionPolicy,
       class I, class Size, class... Rest&gt;
 void for_loop_n(ExecutionPolicy&amp;&amp; exec,
                 I start, Size n, Rest&amp;&amp;... rest);
           
-</ins></cxx-signature>
+</cxx-signature>
 
-        <cxx-signature><ins>template&lt;class I, class Size, class S, class... Rest&gt;
-void for_loop_n_strided(I start, Size n, S stride, Rest&amp;&amp;... rest);</ins></cxx-signature>
+        <cxx-signature>template&lt;class I, class Size, class S, class... Rest&gt;
+void for_loop_n_strided(I start, Size n, S stride, Rest&amp;&amp;... rest);</cxx-signature>
 
-        <cxx-signature><ins>template&lt;class ExecutionPolicy, 
+        <cxx-signature>template&lt;class ExecutionPolicy, 
       class I, class Size, class S, class... Rest&gt;
 void for_loop_n_strided(ExecutionPolicy&amp;&amp; exec,
-                        I start, Size n, S stride, Rest&amp;&amp;... rest);</ins></cxx-signature>
+                        I start, Size n, S stride, Rest&amp;&amp;... rest);</cxx-signature>
 
-        <ins>
         <cxx-requires>
-          <ins>
           For the overloads with an <code>ExecutionPolicy</code>, <code>I</code> shall be an integral type
           or meet the requirements of a forward iterator type; otherwise, <code>I</code> shall be an integral
           type or meet the requirements of an input iterator type. <code>Size</code> shall be an integral type
@@ -399,75 +397,65 @@ void for_loop_n_strided(ExecutionPolicy&amp;&amp; exec,
           followed by exactly one invocable element-access function, <em>f</em>. For the overloads with an
           <code>ExecutionPolicy</code>, <em>f</em> shall meet the requirements of <code>CopyConstructible</code>;
           otherwise, <em>f</em> shall meet the requirements of <code>MoveConstructible</code>.
-          </ins>
         </cxx-requires>
-        </ins>
 
-        <ins>
         <cxx-effects>
-          <ins>
-            Applies <em>f</em> to each element in the <em>input sequence</em>, as described below, with additional
-            arguments corresponding to the reductions and inductions in the <code>rest</code> parameter pack. The
-            length of the input sequence is:
+          Applies <em>f</em> to each element in the <em>input sequence</em>, as described below, with additional
+          arguments corresponding to the reductions and inductions in the <code>rest</code> parameter pack. The
+          length of the input sequence is:
 
-            <ul>
-              <li>
-                <code>n</code>, if specified,
-              </li>
+          <ul>
+            <li>
+              <code>n</code>, if specified,
+            </li>
 
-              <li>
-                otherwise <code>finish - start</code> if neither <code>n</code> nor <code>stride</code> is specified,
-              </li>
+            <li>
+              otherwise <code>finish - start</code> if neither <code>n</code> nor <code>stride</code> is specified,
+            </li>
 
-              <li>
-                otherwise <code>1 + (finish-start-1)/stride</code> if <code>stride</code> is positive,
-              </li>
+            <li>
+              otherwise <code>1 + (finish-start-1)/stride</code> if <code>stride</code> is positive,
+            </li>
 
-              <li>
-                otherwise <code>1 + (start-finish-1)/-stride</code>.
-              </li>
-            </ul>
+            <li>
+              otherwise <code>1 + (start-finish-1)/-stride</code>.
+            </li>
+          </ul>
 
-            The first element in the input sequence is <code>start</code>. Each subsequent element is generated by adding
-            <code>stride</code> to the previous element, if <code>stride</code> is specified, otherwise by incrementing
-            the previous element. <cxx-note>As described in the C++ standard, section [algorithms.general], arithmetic
-            on non-random-access iterators is performed using advance and distance.</cxx-note> <cxx-note>The order of the
-            elements of the input sequence is important for determining ordinal position of an application of <em>f</em>,
-            even though the applications themselves may be unordered.</cxx-note></p>
+          The first element in the input sequence is <code>start</code>. Each subsequent element is generated by adding
+          <code>stride</code> to the previous element, if <code>stride</code> is specified, otherwise by incrementing
+          the previous element. <cxx-note>As described in the C++ standard, section [algorithms.general], arithmetic
+          on non-random-access iterators is performed using advance and distance.</cxx-note> <cxx-note>The order of the
+          elements of the input sequence is important for determining ordinal position of an application of <em>f</em>,
+          even though the applications themselves may be unordered.</cxx-note></p>
 
-            The first argument to <em>f</em> is an element from the input sequence. <cxx-note>if <code>I</code> is an
-            iterator type, the iterators in the input sequence are not dereferenced before
-            being passed to <em>f</em>.</cxx-note> For each member of the rest parameter pack
-            excluding <em>f</em>, an additional argument is passed to each application of <em>f</em> as follows:
+          The first argument to <em>f</em> is an element from the input sequence. <cxx-note>if <code>I</code> is an
+          iterator type, the iterators in the input sequence are not dereferenced before
+          being passed to <em>f</em>.</cxx-note> For each member of the rest parameter pack
+          excluding <em>f</em>, an additional argument is passed to each application of <em>f</em> as follows:
 
-            <ul>
-              <li>
-                If the pack member is an object returned by a call to a reduction function listed in section
-                [parallel.alg.reductions], then the additional argument is a reference to an accumulator of that reduction
-                object.
-              </li>
+          <ul>
+            <li>
+              If the pack member is an object returned by a call to a reduction function listed in section
+              [parallel.alg.reductions], then the additional argument is a reference to an accumulator of that reduction
+              object.
+            </li>
 
-              <li>
-                If the pack member is an object returned by a call to <code>induction</code>, then the additional argument is the
-                induction value for that induction object corresponding to the position of the application of <em>f</em> in the input
-                sequence.
-              </li>
-            </ul>
-          </ins>
+            <li>
+              If the pack member is an object returned by a call to <code>induction</code>, then the additional argument is the
+              induction value for that induction object corresponding to the position of the application of <em>f</em> in the input
+              sequence.
+            </li>
+          </ul>
         </cxx-effects>
-        </ins>
 
-        <ins>
         <cxx-complexity>
-          <ins>Applies <em>f</em> exactly once for each element of the input sequence.</ins>
+          Applies <em>f</em> exactly once for each element of the input sequence.
         </cxx-complexity>
-        </ins>
 
-        <ins>
-          <cxx-remarks>
-            <ins>If <em>f</em> returns a result, the result is ignored.</ins>
-          </cxx-remarks>
-        </ins>
+        <cxx-remarks>
+          If <em>f</em> returns a result, the result is ignored.
+        </cxx-remarks>
       </cxx-function>
     </cxx-section>
 
