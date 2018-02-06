@@ -187,9 +187,8 @@ template&lt;class ExecutionPolicy,
     </cxx-section>
 
     <cxx-section id="parallel.alg.reductions">
-      <h1><ins>Reductions</ins></h1>
+      <h1>Reductions</h1>
 
-      <ins>
       <p>
         Each of the function templates in this subclause ([parallel.alg.reductions]) returns a <em>reduction object</em>
         of unspecified type having a <em>reduction value type</em> and encapsulating a <em>reduction identity</em> value for the reduction, a
@@ -213,93 +212,83 @@ template&lt;class ExecutionPolicy,
         to commutative operations closely related to the combiner operation. For example if the combiner is <code>plus&lt;T&gt;</code>, incrementing
         the accumulator would be consistent with the combiner but doubling it or assigning to it would not.</cxx-note>
       </p>
-      </ins>
 
       <cxx-function>
-        <cxx-signature><ins>template&lt;class T, class BinaryOperation&gt;
-<em>unspecified</em> reduction(T&amp; var, const T&amp; identity, BinaryOperation combiner);</ins></cxx-signature>
+        <cxx-signature>template&lt;class T, class BinaryOperation&gt;
+<em>unspecified</em> reduction(T&amp; var, const T&amp; identity, BinaryOperation combiner);</cxx-signature>
 
-        <ins>
-        <cxx-requires><ins>T shall meet the requirements of <code>CopyConstructible</code> and <code>MoveAssignable</code>. The expression <code>var = combiner(var, var)</code> shall be well-formed.</ins></cxx-requires>
-        </ins>
+        <cxx-requires>T shall meet the requirements of <code>CopyConstructible</code> and <code>MoveAssignable</code>. The expression <code>var = combiner(var, var)</code> shall be well-formed.</cxx-requires>
 
-        <ins>
-        <cxx-returns><ins>a reduction object of unspecified type having reduction value type <code>T</code>, reduction identity <code>identity</code>, combiner function object <code>combiner</code>, and using the object referenced by <code>var</code> as its live-out object.</ins></cxx-returns>
-        </ins>
+        <cxx-returns>a reduction object of unspecified type having reduction value type <code>T</code>, reduction identity <code>identity</code>, combiner function object <code>combiner</code>, and using the object referenced by <code>var</code> as its live-out object.</cxx-returns>
       </cxx-function>
 
       <cxx-function>
-        <cxx-signature><ins>template&lt;class T&gt;
-<em>unspecified</em> reduction_plus(T&amp; var);</ins></cxx-signature>
-        <cxx-signature><ins>template&lt;class T&gt;
-<em>unspecified</em> reduction_multiplies(T&amp; var);</ins></cxx-signature>
-        <cxx-signature><ins>template&lt;class T&gt;
-<em>unspecified</em> reduction_bit_and(T&amp; var);</ins></cxx-signature>
-        <cxx-signature><ins>template&lt;class T&gt;
-<em>unspecified</em> reduction_bit_or(T&amp; var);</ins></cxx-signature>
-        <cxx-signature><ins>template&lt;class T&gt;
-<em>unspecified</em> reduction_bit_xor(T&amp; var);</ins></cxx-signature>
-        <cxx-signature><ins>template&lt;class T&gt;
-<em>unspecified</em> reduction_min(T&amp; var);</ins></cxx-signature>
-        <cxx-signature><ins>template&lt;class T&gt;
-<em>unspecified</em> reduction_max(T&amp; var);</ins></cxx-signature>
+        <cxx-signature>template&lt;class T&gt;
+<em>unspecified</em> reduction_plus(T&amp; var);</cxx-signature>
+        <cxx-signature>template&lt;class T&gt;
+<em>unspecified</em> reduction_multiplies(T&amp; var);</cxx-signature>
+        <cxx-signature>template&lt;class T&gt;
+<em>unspecified</em> reduction_bit_and(T&amp; var);</cxx-signature>
+        <cxx-signature>template&lt;class T&gt;
+<em>unspecified</em> reduction_bit_or(T&amp; var);</cxx-signature>
+        <cxx-signature>template&lt;class T&gt;
+<em>unspecified</em> reduction_bit_xor(T&amp; var);</cxx-signature>
+        <cxx-signature>template&lt;class T&gt;
+<em>unspecified</em> reduction_min(T&amp; var);</cxx-signature>
+        <cxx-signature>template&lt;class T&gt;
+<em>unspecified</em> reduction_max(T&amp; var);</cxx-signature>
 
-        <ins>
-          <cxx-requires><ins>T shall meet the requirements of <code>CopyConstructible</code> and <code>MoveAssignable</code>.</ins></cxx-requires>
-        </ins>
+        <cxx-requires>T shall meet the requirements of <code>CopyConstructible</code> and <code>MoveAssignable</code>.></cxx-requires>
 
-        <ins>
-          <cxx-returns><ins>a reduction object of unspecified type having reduction value type <code>T</code>, reduction identity and combiner operation as specified in table <cxx-ref to="reduction-identities-and-combiner-operations"></cxx-ref> and using the object referenced by <code>var</code> as its live-out object.</ins></cxx-returns>
-        </ins>
+        <cxx-returns>a reduction object of unspecified type having reduction value type <code>T</code>, reduction identity and combiner operation as specified in table <cxx-ref to="reduction-identities-and-combiner-operations"></cxx-ref> and using the object referenced by <code>var</code> as its live-out object.</cxx-returns>
 
         <table is="cxx-table" class="column-rules" id=reduction-identities-and-combiner-operations>
-          <caption><ins>Reduction identities and combiner operations</ins></caption>
+          <caption>Reduction identities and combiner operations</caption>
           <thead>
             <tr>
-              <th><ins>Function</ins></th>
-              <th><ins>Reduction Identity</ins></th>
-              <th><ins>Combiner Operation</ins></th>
+              <th>Function</th>
+              <th>Reduction Identity</th>
+              <th>Combiner Operation</th>
             </tr>
             <tr>
-              <th><ins><code>reduction_plus</code></ins></th>
-              <th><ins><code>T()</code></ins></th>
-              <th><ins><code>x + y</code></ins></th>
+              <th><code>reduction_plus</code></th>
+              <th><code>T()</code></th>
+              <th><code>x + y</code></th>
             </tr>
             <tr>
-              <th><ins><code>reduction_multiplies</code></ins></th>
-              <th><ins><code>T(1)</code></ins></th>
-              <th><ins><code>x * y</code></ins></th>
+              <th><code>reduction_multiplies</code></th>
+              <th><code>T(1)</code></th>
+              <th><code>x * y</code></th>
             </tr>
             <tr>
-              <th><ins><code>reduction_bit_and</code></ins></th>
-              <th><ins><code>(~T())</code></ins></th>
-              <th><ins><code>X &amp; y</code></ins></th>
+              <th><code>reduction_bit_and</code></th>
+              <th><code>(~T())</code></th>
+              <th><code>X &amp; y</code></th>
             </tr>
             <tr>
-              <th><ins><code>reduction_bit_or</code></ins></th>
-              <th><ins><code>T()</code></ins></th>
-              <th><ins><code>x | y</code></ins></th>
+              <th><code>reduction_bit_or</code></th>
+              <th><code>T()</code></th>
+              <th><code>x | y</code></th>
             </tr>
             <tr>
-              <th><ins><code>reduction_bit_xor</code></ins></th>
-              <th><ins><code>T()</code></ins></th>
-              <th><ins><code>x ^ y</code></ins></th>
+              <th><code>reduction_bit_xor</code></th>
+              <th><code>T()</code></th>
+              <th><code>x ^ y</code></th>
             </tr>
             <tr>
-              <th><ins><code>reduction_min</code></ins></th>
-              <th><ins><code>var</code></ins></th>
-              <th><ins><code>min(x, y)</code></ins></th>
+              <th><code>reduction_min</code></th>
+              <th><code>var</code></th>
+              <th><code>min(x, y)</code></th>
             </tr>
             <tr>
-              <th><ins><code>reduction_max</code></ins></th>
-              <th><ins><code>var</code></ins></th>
-              <th><ins><code>max(x, y)</code></ins></th>
+              <th><code>reduction_max</code></th>
+              <th><code>var</code></th>
+              <th><code>max(x, y)</code></th>
             </tr>
           </thead>
         </table>
 
-        <ins>
-        <cxx-example><ins>The following code updates each element of <code>y</code> and sets <code>s</code> ot the sum of the squares.
+        <cxx-example>The following code updates each element of <code>y</code> and sets <code>s</code> ot the sum of the squares.
 <pre>
 extern int n;
 extern float x[], y[], a;
@@ -312,7 +301,7 @@ for_loop(execution::vec, 0, n,
     }
 );
 </pre>
-        </ins></cxx-example>
+        </cxx-example>
         </ins>
       </cxx-function>
     </cxx-section>
