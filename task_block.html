@@ -5,23 +5,19 @@
      <h1>Header <code>&lt;experimental/task_block&gt;</code> synopsis</h1>
 
      <pre>
-<del>namespace std {</del>
-namespace <ins>std::</ins>experimental {
-<ins>inline </ins>namespace parallel<ins>ism_v2</ins> {
-<del>inline namespace v2 {</del>
+namespace std::experimental {
+inline namespace parallelism_v2 {
   class task_cancelled_exception;
 
   class task_block;
 
   template&lt;class F&gt;
-    void define_task_block(F&& f);
+    void define_task_block(F&amp;&amp; f);
 
   template&lt;class f&gt;
-    void define_task_block_restore_thread(F&& f);
-<del>}</del>
+    void define_task_block_restore_thread(F&amp;&amp; f);
 }
 }
-<del>}</del>
      </pre>
    </cxx-section>
 
