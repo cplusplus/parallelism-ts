@@ -1,4 +1,4 @@
-    Document Number: NYYYY
+    Document Number: N4726
     Date:            2018-02-12
     Revises:
     Project:         Programming Language C++
@@ -9,9 +9,9 @@
 
 # Parallelism TS Editor's Report, pre-Jacksonville mailing 
 
-NXXXX is the proposed working draft of Parallelism TS Version 2. It contains editorial changes to the Parallelism TS.
+N4725 is the proposed working draft of Parallelism TS Version 2. It contains editorial changes to the Parallelism TS.
 
-NXXXX updates the previous draft, N4706, published in the post-Toronto mailing.
+N4725 updates the previous draft, N4706, published in the post-Toronto mailing.
 
 # Acknowledgements
 
