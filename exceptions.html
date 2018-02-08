@@ -1,71 +1,16 @@
 <cxx-clause id="parallel.exceptions">
   <h1>Parallel exceptions</h1>
-    <cxx-section id="parallel.exceptions.behavior">
-      <h1><del>Exception reporting behavior</del></h1>
-        <del>
-        <p>
-          During the execution of a standard parallel algorithm, 
-          if temporary memory resources are required and none are available,
-          the algorithm throws a <code>std::bad_alloc</code> exception.
-        </p>
-        <p>
-          During the execution of a standard parallel algorithm, if the invocation of an element access function
-          exits via an uncaught exception, the behavior of the program is determined by the type of
-          execution policy used to invoke the algorithm:
-
-          <ul>
-            <li>
-              If the execution policy object is of type <code>parallel_vector_execution_policy</code>, <code>unsequenced_policy</code>, or <code>vector_policy</code>,
-              <code>std::terminate</code> shall be called.
-            </li>
-            <li>
-              If the execution policy object is of type <code>sequential_execution_policy</code> or
-              <code>parallel_execution_policy</code>, the execution of the algorithm exits via an
-               exception. The exception shall be an <code>exception_list</code> containing all uncaught exceptions thrown during
-              the invocations of element access functions, or optionally the uncaught exception if there was only one.<pre>
-</pre>
-
-              <cxx-note>
-                For example, when <code>for_each</code> is executed sequentially,
-                if an invocation of the user-provided function object throws an exception, <code>for_each</code> can exit via the uncaught exception, or throw an <code>exception_list</code> containing the original exception.
-              </cxx-note><pre>
-</pre>
-
-              <cxx-note>
-                These guarantees imply that, unless the algorithm has failed to allocate memory and
-                exits via <code>std::bad_alloc</code>, all exceptions thrown during the execution of
-                the algorithm are communicated to the caller. It is unspecified whether an algorithm implementation will "forge ahead" after 
-                encountering and capturing a user exception.
-              </cxx-note><pre>
-</pre>
-              <cxx-note>
-                The algorithm may exit via the <code>std::bad_alloc</code> exception even if one or more
-                user-provided function objects have exited via an exception. For example, this can happen when an algorithm fails to allocate memory while
-                creating or adding elements to the <code>exception_list</code> object.
-              </cxx-note>
-            </li>
-
-            <li>
-              If the execution policy object is of any other type, the behavior is implementation-defined.
-            </li>
-          </ul>
-        </p>
-        </del>
-    </cxx-section>
     <cxx-section id="parallel.exceptions.synopsis">
       <h1>Header <code>&lt;experimental/exception_list&gt;</code> synopsis</h1>
       <pre>
 
-<del>namespace std {</del>
-namespace <ins>std::</ins>experimental {
-<ins>inline </ins>namespace parallel<ins>ism_v2</ins> {
-<del>inline namespace v2 {</del>
+namespace std::experimental {
+inline namespace parallelism_v2 {
 
   class exception_list : public exception
   {
     public:
-      <del>typedef <em>unspecified</em> iterator;</del>
-      <ins>using iterator = <em>unspecified</em>;</ins>
+      using iterator = <em>unspecified</em>;
   
       size_t size() const noexcept;
       iterator begin() const noexcept;
@@ -73,20 +18,16 @@ namespace <ins>std::</ins>experimental {
 
       const char* what() const noexcept override;
   };
-<del>}</del>
 }
 }
-<del>}</del>
       </pre>
 
       <p>
-        The class <code>exception_list</code> owns a sequence of <code>exception_ptr</code> objects.<del> The parallel
-        algorithms may use the <code>exception_list</code> to communicate uncaught exceptions encountered during parallel execution to the
-        caller of the algorithm.</del>
+        The class <code>exception_list</code> owns a sequence of <code>exception_ptr</code> objects.
       </p>
 
       <p>
-        The type <code>exception_list::iterator</code> shall fulfill the requirements of
+        The type <code>exception_list::iterator</code> <ins>fulfills</ins><del>shall fulfill</del> the requirements of
         <code>ForwardIterator</code>.
       </p>
 

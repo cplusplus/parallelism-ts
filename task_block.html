@@ -5,23 +5,19 @@
      <h1>Header <code>&lt;experimental/task_block&gt;</code> synopsis</h1>
 
      <pre>
-<del>namespace std {</del>
-namespace <ins>std::</ins>experimental {
-<ins>inline </ins>namespace parallel<ins>ism_v2</ins> {
-<del>inline namespace v2 {</del>
+namespace std::experimental {
+inline namespace parallelism_v2 {
   class task_cancelled_exception;
 
   class task_block;
 
   template&lt;class F&gt;
-    void define_task_block(F&& f);
+    void define_task_block(F&amp;&amp; f);
 
   template&lt;class f&gt;
-    void define_task_block_restore_thread(F&& f);
-<del>}</del>
+    void define_task_block_restore_thread(F&amp;&amp; f);
 }
 }
-<del>}</del>
      </pre>
    </cxx-section>
 
@@ -29,21 +25,17 @@ namespace <ins>std::</ins>experimental {
      <h1>Class <code>task_cancelled_exception</code></h1>
      <pre>
 
-<del>namespace std {</del>
-namespace <ins>std::</ins>experimental {
-<ins>inline </ins>namespace parallel<ins>ism_v2 {</ins>
-<del>inline namespace v2 {</del>
+namespace std::experimental {
+inline namespace parallelism_v2 {
 
   class task_cancelled_exception : public exception
   {
     public:
       task_cancelled_exception() noexcept;
-      virtual const char* what() const noexcept<ins> override</ins>;
+      virtual const char* what() const noexcept override;
   };
-<del>}</del>
 }
 }
-<del>}</del>
      </pre>
 
      <p>
@@ -69,10 +61,8 @@ namespace <ins>std::</ins>experimental {
      <h1>Class <code>task_block</code></h1>
      <pre>
 
-<del>namespace std {</del>
-namespace <ins>std::</ins>experimental {
-<ins>inline </ins>namespace parallel<ins>ism_v2</ins> {
-<del>inline namespace v2 {</del>
+namespace std::experimental {
+inline namespace parallelism_v2 {
 
   class task_block
   {
@@ -80,19 +70,17 @@ namespace <ins>std::</ins>experimental {
       ~task_block();
 
     public:
-      task_block(const task_block&) = delete;
-      task_block& operator=(const task_block&) = delete;
-      void operator&() const = delete;
+      task_block(const task_block&amp;) = delete;
+      task_block&amp; operator=(const task_block&amp;) = delete;
+      void operator&amp;() const = delete;
 
       template&lt;class F&gt;
-        void run(F&& f);
+        void run(F&amp;&amp; f);
 
       void wait();
   };
-<del>}</del>
 }
 }
-<del>}</del>
      </pre>
 
      <p>
