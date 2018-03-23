@@ -201,6 +201,180 @@ namespace simd_abi {
     </p>
   </cxx-section>
 
+  <cxx-section id="parallel.simd.abi">
+    <h1><ins><code>simd</code> ABI tags</ins></h1>
+    <ins>
+    <pre>
+
+namespace std::experimental {
+inline namespace parallelism_v2 {
+namespace simd_abi {
+  struct scalar {};
+  template&lt;int N&gt; struct fixed_size {};
+  template&lt;class T&gt; inline constexpr in max_fixed_size = <em>implementation-defined</em>;
+  template&lt;class T&gt; using compatible = <em>implementation-defined</em>;
+  template&lt;class T&gt; using native = <em>implementation-defined</em>;
+}
+}
+}
+    </pre>
+    </ins>
+
+    <p>
+    <ins>
+      An <em>ABI tag</em> is a type in the <code>std::experimental::parallelism_v2::simd_abi</code> namespace that indicates a choice of size and binary representation for objects of data-parallel type. <cxx-note>The intent is for the size and binary representation to depend on the target architecture.</cxx-note> The ABI tag, together with a given element type implies a number of elements. ABI tag types are used as the second template argument to <code>simd</code> and <code>simd_mask</code>. <cxx-note>The ABI tag is orthogonal to selecting the machine instruction set. The selected machine instruction set limits the usable ABI tag types, though (see <cxx-ref to="parallel.simd.overview"></cxx-ref>). The ABI tags enable users to safely pass objects of data-parallel type between translation unit boundaries (e.g. function calls or I/O).</cxx-note>
+    </ins>
+    </p>
+
+    <p>
+    <ins>
+      Use of the <code>scalar</code> tag type requires data-parallel types to store a single element (i.e., <code>simd&lt;T, simd_abi::scalar&gt;::size()</code> returns 1). <cxx-note><code>scalar</code> is not an alias for <code>fixed_size&lt;1&gt;</code>.</cxx-note>
+    </ins>
+    </p>
+
+    <p>
+    <ins>
+      The value of <code>max_fixed_size&lt;T&gt;</code> is at least 32.
+    </ins>
+    </p>
+
+    <p>
+    <ins>
+      Use of the <code>simd_abi::fixed_size&lt;N&gt;</code> tag type requires data-parallel types to store <code>N</code> elements (i.e. <code>simd&lt;T, simd_abi::fixed_size&lt;N&gt;&gt;::size()</code> is <code>N</code>). <code>simd&lt;T, fixed_size&lt;N&gt;&gt;</code> and <code>simd_mask&lt;T, fixed_size&lt;N&gt;&gt;</code> with <code>N &gt; 0</code> and <code>N &lt;= max_fixed_size&lt;T&gt;</code> is supported. Additionally, for every supported <code>simd&lt;T, Abi&gt;</code> (see <cxx-ref to="parallel.simd.overview"></cxx-ref>), where <code>Abi</code> is an ABI tag is not a specialization of <code>simd_abi::fixed_size</code>, <code>N == simd&lt;T, Abi&gt;::size()</code> is true.
+
+      <cxx-note>It is unspecified whether <code>simd&lt;T, fixed_size&lt;T, fixed_size&lt;N&gt;&gt;</code> with <code>N &gt; max_fixed_size&lt;T&gt;</code> is supported. The value of <code>max_fixed_size&lt;T&gt;</code> can depend on compiler flags and can change between different compiler versions.</cxx-note>
+
+      <cxx-note>An implementation may forego ABI compatibility between differently compiled translation units for <code>simd</code> and <code>simd_mask</code> specializations using the same <code>simd_abi::fixed_size&lt;N&gt;</code> tag. Otherwise, the efficiency of <code>simd&lt;T, Abi&gt;</code> is likely to be better than for <code>simd&lt;T, fixed_size&lt;simd_size_v&lt;T, Abi&gt;&gt;&gt;</code> (with <code>Abi</code> not a specialization of <code>simd_abi::fixed_size</code>).</cxx-note>
+    </ins>
+    </p>
+
+    <p>
+    <ins>
+      An implementation may define additional <em>extended ABI tag</em> types in the <code>std::experimental::parallelism_v2::simd_abi</code> namespace, to support other forms of data-parallel computation.
+    </ins>
+    </p>
+
+    <p>
+    <ins>
+      <code>compatible&lt;T&gt;</code> is an implementation-defined alias for an ABI tag. <cxx-note>The intent is to use the ABI tag producing the most efficient data-parallel execution for the element type <code>T</code> that ensures ABI compatibility between translation units on the target architecture.</cxx-note>
+
+      <br>
+      <br>
+
+      <cxx-example>
+        Consider a target architecture supporting the extended ABI tags <code>__simd128</code> and <code>__simd256</code>, where the <code>__simd256</code> type requires an optional ISA extension on said architecture. Also, the target architecture does not support <code>long double</code> with either ABI tag. The implementation therefore defines
+
+        <bl> 
+          <li>
+          <ins>
+            <code>compatible&lt;T&gt;</code> as an alias for <code>__simd128</code> for all vectorizable <code>T</code>, except <code>long double</code>, and
+          </ins>
+          </li>
+
+          <li>
+          <ins>
+            <code>compatible&lt;long double&gt;</code> as an alias for <code>scalar</code>.
+          </ins>
+          </li>
+        </bl>
+      </cxx-example>
+    </ins>
+    </p>
+
+    <p>
+    <ins>
+      <code>native&lt;T&gt;</code> is an implementation-defined alias for an ABI tag. <cxx-note>The intent is to use the ABI tag producing the most efficient data-parallel execution for the element type <code>T</code> that is supported on the currently targeted system. For target architectures without ISA extensions, the <code>native&lt;T&gt;</code> and <code>compatible&lt;T&gt;</code> aliases will likely be the same. For target architectures with ISA extensions, compiler flags may influence the <code>native&lt;T&gt;</code> alias while <code>compatible&lt;T&gt;</code> will be the same independent of such flags.</cxx-note>
+
+      <br>
+      <br>
+
+      <cxx-example>
+        Consider a target architecture supporting the extended ABI tags <code>__simd128</code> and <code>__simd256</code>, where hardware support for <code>__simd256</code> only exists for floating-point types. The implementation therefore defines <code>native&lt;T&gt;</code> as an alias for
+
+        <bl>
+          <li>
+          <ins>
+            <code>__simd256</code> if <code>T</code> is a floating-point type, and
+          </ins>
+          </li>
+
+          <li>
+          <ins>
+            <code>__simd128</code> otherwise.
+          </ins>
+          </li>
+        </bl>
+      </cxx-example>
+    </ins>
+    </p>
+
+    <ins>
+    <pre>
+
+namespace std::experimental {
+inline namespace parallelism_v2 {
+namespace simd_abi {
+
+  template&lt;T, size_t N&gt; struct deduce { using type = <em>see-below</em>; };
+}
+}
+}
+    </pre>
+    </ins>
+
+    <p>
+    <ins>
+      The member <code>type</code> is present if and only if
+
+      <bl>
+        <li>
+        <ins>
+          <code>T</code> is a vectorizable type, and
+        </ins>
+        </li>
+
+        <li>
+        <ins>
+          <code>simd_abi::fixed_size&lt;N&gt;</code> is supported (see <cxx-ref to="parallel.simd.abi"></cxx-ref>).
+        </ins>
+        </li>
+      </bl>
+    </ins>
+    </p>
+
+    <p>
+    <ins>
+      Where present, the member typedef <code>type</code> shall name an ABI tag type that satisfies
+    </ins>
+
+      <bl>
+        <li>
+        <ins>
+          <code>simd_size&lt;T, type&gt; == N</code>, and
+        </ins>
+        </li>
+
+        <li>
+        <ins>
+          <code>simd&lt;T, type&gt;</code> is default constructible (see <cxx-ref to="parallel.simd.overview"></cxx-ref>).
+        </ins>
+        </li>
+      </bl>
+
+      <br>
+
+    <ins>
+      If <code>N</code> is <code>1</code>, the member typedef <code>type</code> is <code>simd_abi::scalar</code>. Otherwise, if there are multiple ABI tag types that satisfy the constraints, the member typedef <code>type</code> is implementation-defined. <cxx-note>It is expected that extended ABI tags can produce better optimizations and thus are preferred over <code>simd_abi::fixed_size&lt;N&gt;</code>.</cxx-note>
+    </ins>
+    </p>
+
+    <p>
+    <ins>
+      The behavior of a program that adds specializations for <code>deduce</code> is undefined.
+    </ins>
+    </p>
+  </cxx-section>
+
   <cxx-section id="parallel.simd.overview">
   </cxx-section>
 </cxx-clause>
