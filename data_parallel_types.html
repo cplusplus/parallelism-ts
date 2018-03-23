@@ -375,6 +375,176 @@ namespace simd_abi {
     </p>
   </cxx-section>
 
+  <cxx-section id="parallel.simd.traits">
+    <h1><ins><code>simd</code> type traits</ins></h1>
+
+    <ins>
+    <code>template&lt;class&gt; struct is_abi_tag { <em>see-below</em> };</code>
+    </ins>
+
+    <p>
+    <ins>
+      The type <code>is_abi_tag&lt;T&gt;</code> is a <code>UnaryTypeTrait</code> with a <code>BaseCharacteristic</code> of <code>true_type</code> if <code>T</code> is a standard or extended ABI tag, and <code>false_type</code> otherwise.
+    </ins>
+    </p>
+
+    <p>
+    <ins>
+      The behavior of a program that adds specializations for <code>is_abi_tag</code> is undefined.
+    </ins>
+    </p>
+
+    <ins>
+    <code>template&lt;class&gt; struct is_simd { <em>see-below</em> };</code>
+    </ins>
+
+    <p>
+    <ins>
+      The type <code>is_simd&lt;T&gt;</code> is a <code>UnaryTypeTrait</code> with a <code>BaseCharacteristic</code> of <code>true_type</code> if <code>T</code> is a specialization of the <code>simd</code> class template, and <code>false_type</code> otherwise.
+    </ins>
+    </p>
+
+    <p>
+    <ins>
+      The behavior of a program that adds specializations for <code>is_simd</code> is undefined.
+    </ins>
+    </p>
+
+    <p>
+    <ins>
+      The type <code>is_simd_mask&lt;T&gt;</code> is a <code>UnaryTypeTrait</code> with a <code>BaseCharacteristic</code> of <code>true_type</code> if <code>T</code> is a specialization of the <code>simd_mask</code> class template, and <code>false_type</code> otherwise.
+    </ins>
+    </p>
+
+    <p>
+    <ins>
+      The behavior of a program that adds specializations for <code>is_simd_mask</code> is undefined.
+    </ins>
+    </p>
+
+    <ins>
+    <code>template&lt;class T&gt; struct is_simd_flag_type { <em>see-below</em> };</code>
+    </ins>
+
+    <p>
+    <ins>
+      The type <code>is_simd_flag_type&lt;class T&gt;</code> is a <code>UnaryTypeTrait</code> with a <code>BaseCharacteristic</code> of <code>true_type</code> if <code>T</code> is one of
+
+      <bl>
+        <li>
+        <ins>
+          <code>element_aligned_tag</code>, or
+        </ins>
+        </li>
+
+        <li>
+        <ins>
+          <code>vector_aligned_tag</code>, or
+        </ins>
+        </li>
+
+        <li>
+        <ins>
+          <code>overaligned_tag&lt;N&gt;</code> with <code>N &gt; 0</code> and <code>N</code> an integral power of two,
+        </ins>
+        </li>
+      </bl>
+
+      <br>
+
+      <ins>
+      and <code>false_type</code> otherwise.
+      </ins>
+    </ins>
+    </p>
+
+    <p>
+    <ins>
+      The behavior of a program that adds specializations for <code>is_simd_flag_type</code> is undefined.
+    </ins>
+    </p>
+
+    <ins>
+    <code>template&lt;class T, class Abi = simd_abi::compatible&lt;T&gt;&gt; struct simd_size { <em>see-below</em> };</code>
+    </ins>
+
+    <p>
+    <ins>
+      <code>simd_size&lt;T, Abi&gt;</code> has a member <code>value</code> if and only if
+
+      <bl>
+        <li>
+        <ins>
+          <code>T</code> is a vectorizable type, and
+        </ins>
+        </li>
+
+        <li>
+        <ins>
+          <code>is_abi_tag_v&lt;Abi&gt;</code> is <code>true</code>.
+        </ins>
+        </li>
+      </bl>
+
+      <br>
+
+      <ins>
+      <cxx-note>
+        The rules are different from <cxx-ref to="parallel.simd.overview"></cxx-ref>.
+      </cxx-note>
+      </ins>
+    </ins>
+    </p>
+
+    <p>
+    <ins>
+      If <code>value</code> is present, the type <code>simd_size&lt;T, Abi&gt;</code> is a <code>BinaryTypeTrait</code> with a <code>BaseCharacteristic</code> of <code>integral_constant&lt;size_t, N&gt;</code> with <code>N</code> equal to the number of elements in a <code>simd&lt;T, Abi&gt;</code> object. <cxx-note>If <code>simd&lt;T, Abi&gt;</code> is not supported for the currently targeted system, <code>simd_size&lt;T, Abi&gt;::value</code> produces the value <code>simd&lt;T, Abi&gt;::size()</code> would return if it were supported.</cxx-note>
+    </ins>
+    </p>
+
+    <p>
+    <ins>
+      The behavior of a program that adds specializations for <code>simd_size</code> is undefined.
+    </ins>
+    </p>
+
+    <ins>
+    <code>template&lt;class T, class U = typename T::value_type&gt; struct memory_alignment { <em>see-below</em> };</code>
+    </ins>
+
+    <p>
+    <ins>
+      <code>memory_alignment&lt;T, U&gt;</code> has a member <code>value</code> if and only if
+    </ins>
+
+      <bl>
+        <li>
+        <ins>
+          <code>is_simd_mask_v&lt;T&gt;</code> is <code>true</code> and <code>U</code> is <code>bool</code>, or
+        </ins>
+        </li>
+
+        <li>
+        <ins>
+          <code>is_simd_v&lt;T&gt;</code> is <code>true</code> and <code>U</code> is a vectorizable type.
+        </ins>
+        </li>
+      </bl>
+    </p>
+
+    <p>
+    <ins>
+      If <code>value</code> is present, the type <code>memory_alignment&lt;T, U&gt;</code> is a <code>BinaryTypeTrait</code> with a <code>BaseCharacteristic</code> of <code>integral_constant&lt;size_t, N&gt;</code> for some implementation-defined <code>N</code> (see <cxx-ref to="parallel.simd.copy"></cxx-ref> and <cxx-ref to="parallel.simd.mask.copy"></cxx-ref>). <cxx-note><code>value</code> identifies the alignment restrictions on pointers used for (converting) loads and stores for the give type <code>T</code> on arrays of type <code>U</code>.</cxx-note>
+    </ins>
+    </p>
+
+    <p>
+    <ins>
+      The behavior of a program that adds specializations for <code>memory_alignment</code> is undefined.
+    </ins>
+    </p>
+  </cxx-section>
+
   <cxx-section id="parallel.simd.overview">
   </cxx-section>
 </cxx-clause>
