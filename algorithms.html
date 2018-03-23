@@ -305,9 +305,8 @@ for_loop(execution::vec, 0, n,
     </cxx-section>
 
     <cxx-section id="parallel.alg.inductions">
-      <h1><ins>Inductions</ins></h1>
+      <h1>Inductions</h1>
 
-      <ins>
       <p>
         Each of the function templates in this section return an <em>induction object</em> of unspecified type having an <em>induction
         value type</em> and encapsulating an initial value <em>i</em> of that type and, optionally, a <em>stride</em>.
@@ -323,25 +322,20 @@ for_loop(execution::vec, 0, n,
         An induction object may refer to a <em>live-out</em> object to hold the final value of the induction sequence. When the algorithm using the induction
         object completes, the live-out object is assigned the value <em>i + n * stride</em>, where <em>n</em> is the number of elements in the input range.
       </p>
-      </ins>
 
       <cxx-function>
-        <cxx-signature><ins>template&lt;class T&gt;
-<em>unspecified</em> induction(T&amp;&amp; var);</ins></cxx-signature>
+        <cxx-signature>template&lt;class T&gt;
+<em>unspecified</em> induction(T&amp;&amp; var);</cxx-signature>
 
-        <cxx-signature><ins>template&lt;class T, class S&gt;
-<em>unspecified</em> induction(T&amp;&amp; var, S stride);</ins></cxx-signature>
+        <cxx-signature>template&lt;class T, class S&gt;
+<em>unspecified</em> induction(T&amp;&amp; var, S stride);</cxx-signature>
 
-        <ins>
           <cxx-returns>
-            <ins>
             an induction object with induction value type <code>remove_cv_t&gt;remove_reference_t&gt;T&lt;&lt;</code>,
             initial value <code>var</code>, and (if specified) stride <code>stride</code>. If <code>T</code> is an lvalue reference
             to non-<code>const</code> type, then the object referenced by <code>var</code> becomes the live-out object for the
             induction object; otherwise there is no live-out object.
-            </ins>
           </cxx-returns>
-        </ins>
       </cxx-function>
     </cxx-section>
 
