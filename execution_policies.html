@@ -33,12 +33,12 @@ class unsequenced_policy{ <i>unspecified</i> };
 
     <p>The class <code>unsequenced_policy</code> is an execution policy type used as a unique type to disambiguate parallel algorithm overloading and indicate that a parallel algorithm's execution may be vectorized, e.g., executed on a single thread using instructions that operate on multiple data items.</p>
 
-    <p><ins>The invocations of element access functions in parallel algorithms invoked with an execution policy of type <code>unsequenced_policy</code> are permitted to execute in an unordered fashion in the calling thread, unsequenced with respect to one another within the calling thread.
-    <cxx-note>This means that multiple function object invocations may be interleaved on a single thread.</note></ins></p>
+    <p>The invocations of element access functions in parallel algorithms invoked with an execution policy of type <code>unsequenced_policy</code> are permitted to execute in an unordered fashion in the calling thread, unsequenced with respect to one another within the calling thread.
+    <cxx-note>This means that multiple function object invocations may be interleaved on a single thread.</note></p>
 
-    <p><ins><cxx-note>This overrides the usual guarantee from the C++ Standard, <cxx-ref in="cxx" to="intro.execution"></cxx-ref> [intro.execution] that function executions do not overlap with one another.</cxx-note></ins></p>
+    <p><cxx-note>This overrides the usual guarantee from the C++ Standard, <cxx-ref in="cxx" to="intro.execution"></cxx-ref> [intro.execution] that function executions do not overlap with one another.</cxx-note></p>
 
-    <p><ins>During the execution of a parallel algorithm with the <code>experimental::execution::unsequenced_policy</code> policy, if the invocation of an element access function exits via an uncaught exception, <code>terminate()</code> shall be called.</ins></p>
+    <p>During the execution of a parallel algorithm with the <code>experimental::execution::unsequenced_policy</code> policy, if the invocation of an element access function exits via an uncaught exception, <code>terminate()</code> shall be called.</p>
 
   </cxx-section>
 
