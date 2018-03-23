@@ -1,0 +1,207 @@
+<cxx-clause id="parallel.simd">
+  <h1><ins>Data-Parallel Types</ins></h1>
+
+  <cxx-section id="parallel.simd.general">
+    <h1><ins>General</ins></h1>
+
+    <p>
+    <ins>
+      The data-parallel library consists of data-parallel types and operations on these types. A data-parallel type consists of elements of an underlying arithmetic type, called the <em>element type</em>. The number of elements is a constant for each data-parallel type and called the <em>width</em> of that type.
+    </ins>
+    </p>
+
+    <p>
+    <ins>
+      Throughout this Clause, the term <em>data-parallel type</em> refers to all <em>supported</em> <cxx-ref to="parallel.simd.overview"></cxx-ref> specializations of the <code>simd</code> and <code>simd_mask</code> class templates. A <em>data-parallel object</em> is an object of <em>data-parallel type</em>.
+    </ins>
+    <p>
+
+    <p>
+    <ins>
+      An <em>element-wise operation</em> applies a specified operation to the elements of one or more data-parallel objects. Each such application is unsequenced with respect to the others. A <em>unary element-wise operation</em> is an element-wise operation that applies a unary operation to each element of a data-parallel object. A <em>binary element-wise operation</em> is an element-wise operation that applies a binary operation to corresponding elements of two data-parallel objects.
+    </ins>
+    </p>
+
+    <p>
+    <ins>
+      Throughout this Clause, the set of <em>vectorizable types</em> for a data-parallel type comprises all cv-unqualified arithmetic types other than <code>bool</code>.
+    </ins>
+    </p>
+
+    <p>
+    <ins>
+      <cxx-note>The intent is to support acceleration through data-parallel execution resources, such as SIMD registers and instructions or execution units driven by a common instruction decoder. If such execution resources are unavailable, the interfaces support a transparent fallback to sequential execution.</cxx-note>
+    </ins>
+    </p>
+
+  </cxx-section>
+
+  <cxx-section id="parallel.simd.synopsis">
+    <h1><ins>Header <code>&lt;experimental/simd&gt;</code> synopsis</ins></h1>
+
+    <ins>
+    <pre>
+
+namespace std::experimental {
+inline namespace parallelism_v2 {
+namespace simd_abi {
+
+  struct scalar {};
+  template&lt;int N&gt; struct fixed_size {};
+  template&lt;class T&gt; inline constexpr int max_fixed_size = <em>implementation-defined</em>;
+  template&lt;class T&gt; using compatible = <em>implementation-defined</em>;
+  template&lt;class T&gt; using native = <em>implementation-defined</em>;
+
+  template&lt;class T, size_t N&gt; struct deduce { using type = <em>see-below</em>; };
+  template&lt;class T, size_t N&gt; using deduce_t = typename deduce&lt;T, N&gt;::type;
+
+  struct element_aligned_tag {};
+  struct vector_aligned_tag {};
+  template&lt;size_t&gt; struct overaligned_tag {};
+  inline constexpr element_aligned_tag element_aligned{};
+  inline constexpr vector_aligned_tag vector_aligned{};
+  template&lt;size_t N&gt; inline constexpr overaligned_tag&lt;N&gt; overaligned{};
+
+  <cxx-ref insynopsis="" to="parallel.simd.traits"></cxx-ref> traits
+  template&lt;class T&gt; struct is_abi_tag;
+  template&lt;class T&gt; inline constexpr bool is_abi_tag_v = is_abi_tag&lt;T&gt;::value;
+
+  template&lt;class T&gt; struct is_simd;
+  template&lt;class T&gt; inline constexpr bool is_simd_v = is_simd&lt;T&gt;::value;
+
+  template&lt;class T&gt; struct is_simd_mask;
+  template&lt;class T&gt; inline constexpr bool is_simd_mask_v = is_simd_mask&lt;T&gt;::value;
+
+  template&lt;class T&gt; struct is_simd_flag_type;
+  template&lt;class T&gt; inline constexpr bool is_simd_flag_type_v = is_simd_flag_type&lt;T&gt;::value;
+
+  template&lt;class T, class Abi = simd_abi::compatible&lt;T&gt;&gt; struct simd_size;
+  template&lt;class T, class Abi = simd_abi::compatible&lt;T&gt;&gt;
+  inline constexpr size_t simd_size_v = simd_size&lt;T,Abi&gt;::value;
+
+  template&lt;class T, class U = typename T::value_type&gt; struct memory_alignment;
+  template&lt;class T, class U = typename T::value_type&gt;
+  inline constexpr size_t memory_alignment_v = memory_alignment&lt;T,U&gt;::value;
+
+  <cxx-ref insynopsis="" to="parallel.simd.class"></cxx-ref> class template simd
+  template&lt;class T, class Abi = simd_abi::compatible&lt;T&gt;&gt; class simd;
+  template&lt;class T&gt; using native_simd&lt;T, simd_abi::native&lt;T&gt;&gt;;
+  template&lt;class T, int N&gt; using fixed_size_simd = simd&lt;T, simd_abi::fixed_size&lt;N&gt;&gt;;
+
+  <cxx-ref insynopsis="" to="parallel.simd.mask.class"></cxx-ref> class template simd_mask
+  template&lt;class T, class Abi = simd_abi::compatible&lt;T&gt;&gt; class simd_mask;
+  template&lt;class T&gt; using native_simd_mask&lt;T, simd_abi::native&lt;T&gt;&gt;;
+  template&lt;class T, int N&gt; using fixed_size_simd_mask = simd_mask&lt;T, simd_abi::fixed_size&lt;N&gt;&gt;;
+
+  <cxx-ref insynopsis="" to="parallel.simd.casts"></cxx-ref> casts
+  template&lt;class T, class U, class Abi&gt; <em>see-below</em> simd_cast(const simd&lt;U, Abi&gt;&);
+  template&lt;class T, class U, class Abi&gt; <em>see-below</em> static_simd_cast(const simd&lt;U, Abi&gt;&);
+
+  template&lt;class T, class Abi&gt;
+  fixed_size_simd&lt;T, simd_size_v&lt;T, Abi&gt;&gt; to_fixed_size(const simd&lt;T, Abi&gt;&) noexcept;
+  template&lt;class T, class Abi&gt;
+  fixed_size_simd_mask&lt;T, simd_size_v&lt;T, Abi&gt;&gt; to_fixed_size(const simd_mask&lt;T, Abi&gt;&) noexcept;
+  template&lt;class T, int N&gt; native_simd&lt;T&gt; to_native(const fixed_size_simd&lt;T, N&gt;&) noexcept;
+  template&lt;class T, int N&gt; native_simd_mask&lt;T&gt; to_native(const fixed_size_simd_mask&lt;T, N&gt;&) noexcept;
+  template&lt;class T, int N&gt; simd&lt;T&gt; to_compatible(const fixed_size_simd&lt;T, N&gt;&) noexcept;
+  template&lt;class T, int N&gt; simd_mask&lt;T&gt; to_compatible(const fixed_size_simd_mask&lt;T, N&gt;&) noexcept;
+
+  template&lt;size_t... Sizes, class T, class Abi&gt;
+    tuple&lt;simd&lt;T, simd_abi::deduce_t&lt;T, Sizes&gt;&gt;...&gt; split(const simd&lt;T, Abi&gt;&);
+  template&lt;size_t... Sizes, class T, class Abi&gt;
+    tuple&lt;simd_mask&lt;T, simd_mask_abi::deduce_t&lt;T, Sizes&gt;&gt;...&gt; split(const simd_mask&lt;T, Abi&gt;&);
+  template&lt;class V, class Abi&gt;
+    array&lt;V, simd_size_v&lt;typename V::value_type, Abi&gt; / V::size()&gt; split(const simd&lt;typename V::value_type, Abi&gt;&);
+  template&lt;class V, class Abi&gt;
+    array&lt;V, simd_size_v&lt;typename V::value_type, Abi&gt; / V::size()&gt; split(const simd_mask&lt;typename V::value_type, Abi&gt;&);
+
+  template&lt;class T, class... Abis&gt;
+    simd&lt;T, simd_abi::deduce_t&gt;T, (simd_size_v&lt;T, Abis&gt; + ...)&gt;&gt; concat(const simd&lt;T, Abis&gt;&...);
+  template&lt;class T, class... Abis&gt;
+    simd_mask&lt;T, simd_abi::deduce_t&gt;T, (simd_size_v&lt;T, Abis&gt; + ...)&gt;&gt; concat(const simd_mask&lt;T, Abis&gt;&...);
+
+  <cxx-ref insynopsys="" to="parallel.simd.mask.reductions"></cxx-ref> reductions
+  template&lt;class T, class Abi&gt; bool all_of(const simd_mask&lt;T, Abi&gt;&) noexcept;
+  template&lt;class T, class Abi&gt; bool any_of(const simd_mask&lt;T, Abi&gt;&) noexcept;
+  template&lt;class T, class Abi&gt; bool none_of(const simd_mask&lt;T, Abi&gt;&) noexcept;
+  template&lt;class T, class Abi&gt; bool some_of(const simd_mask&lt;T, Abi&gt;&) noexcept;
+  template&lt;class T, class Abi&gt; int popcount(const simd_mask&lt;T, Abi&gt;&) noexcept;
+  template&lt;class T, class Abi&gt; int find_first_set(const simd_mask&lt;T, Abi&gt;&);
+  template&lt;class T, class Abi&gt; int find_last_set(const simd_mask&lt;T, Abi&gt;&);
+
+  bool all_of(<em>see-below</em>) noexcept;
+  bool any_of(<em>see-below</em>) noexcept;
+  bool none_of(<em>see-below</em>) noexcept;
+  bool some_of(<em>see-below</em>) noexcept;
+  int popcount(<em>see-below</em>) noexcept;
+  int find_first_set(<em>see-below</em>) noexcept;
+  int find_last_set(<em>see-below</em>) noexcept;
+
+  <cxx-ref insynopsis="" to="parallel.simd.whereexpr"></cxx-ref> where expressions
+  template&lt;class M, class T&gt; class const_where_expression;
+  template&lt;class M, class T&gt; class where_expression;
+
+  <cxx-ref insynopsis="" to="parallel.simd.mask.where"></cxx-ref> masked assignment
+  template&lt;class T&gt; struct nodeduce { using type = T; }; // exposition only
+  template&lt;class T&gt; using nodeduce_t = typename nodeduce&lt;T&gt;::type; // exposition only
+
+  template&lt;class T, class Abi&gt;
+  where_expression&lt;simd_mask&lt;T, Abi&gt;, simd&lt;T, Abi&gt;&gt; where(const typename simd&lt;T, Abi&gt;::mask_type&, simd&lt;T, Abi&gt;&) noexcept;
+
+  template&lt;class T, class Abi&gt;
+  const_where_expression&lt;simd_mask&lt;T, Abi&gt;, simd&lt;T, Abi&gt;&gt; where(const typename simd&lt;T, Abi&gt;::mask_type&, const simd&lt;T, Abi&gt;&) noexcept;
+
+  template&lt;class T, class Abi&gt;
+  where_expression&lt;simd_mask&lt;T, Abi&gt;, simd_mask&lt;T, Abi&gt;&gt; where(const nodeduce_t&lt;simd_mask&lt;T, Abit&gt;&gt;&, simd_mask&lt;T, Abi&gt;&) noexcept;
+
+  template&lt;class T, class Abi&gt;
+  const_where_expression&lt;simd_mask&lt;T, Abi&gt;, simd_mask&lt;T, Abi&gt;&gt; where(const nodeduce_t&lt;simd_mask&lt;T, Abit&gt;&gt;&, const simd_mask&lt;T, Abi&gt;&) noexcept;
+
+  template&lt;class T&gt;
+  const_where_expression&lt;bool, T&gt; where(<em>see-below</em> k, const T& d) noexcept;
+
+  <cxx-ref insynopsis="" to="parallel.simd.reductions"></cxx-ref> reductions
+  template&lt;class T, class Abi, class BinaryOperation = plus&lt;&gt;&gt;
+  T reduce(const simd&lt;T, Abi&gt;&, BinaryOperation = {});
+
+  template&lt;class M, class V, class BinaryOperation&gt;
+  typename V::value_type reduce(const const_where_expression&lt;M, V&gt;& x,
+                                typename V::value_type identity_element, BinaryOperation binary_op);
+  template&lt;class M, class V&gt;
+  typename V::value_type reduce(const const_where_expression&lt;M, V&gt; x, plus&lt;&gt; binary_op = {});
+  template&lt;class M, class V&gt;
+  typename V::value_type reduce(const const_where_expression&lt;M, V&gt; x, multiplies&lt;&gt; binary_op = {});
+  template&lt;class M, class V&gt;
+  typename V::value_type reduce(const const_where_expression&lt;M, V&gt; x, bit_and&lt;&gt; binary_op = {});
+  template&lt;class M, class V&gt;
+  typename V::value_type reduce(const const_where_expression&lt;M, V&gt; x, bit_or&lt;&gt; binary_op = {});
+  template&lt;class M, class V&gt;
+  typename V::value_type reduce(const const_where_expression&lt;M, V&gt; x, bit_xor&lt;&gt; binary_op = {});
+
+  template&lt;class T, class Abi&gt; T hmin(const simd&lt;T, abi&gt;&);
+  template&lt;class T, class Abi&gt; typename V::value_type hmin(const const_where_expression&lt;M, V&gt;&);
+  template&lt;class T, class Abi&gt; T hmax(const simd&lt;T, abi&gt;&);
+  template&lt;class T, class Abi&gt; typename V::value_type hmax(const const_where_expression&lt;M, V&gt;&);
+
+  <cxx-ref insynopsis="" to="parallel.simd.alg"></cxx-ref> algorithms
+  template&lt;class T, class Abi&gt; simd&lt;T, Abi&gt; min(const simd&lt;T, Abi&gt;& a, const simd&lt;T, Abi&gt;& b) noexcept;
+  template&lt;class T, class Abi&gt; simd&lt;T, Abi&gt; max(const simd&lt;T, Abi&gt;& a, const simd&lt;T, Abi&gt;& b) noexcept;
+  template&lt;class T, class Abi&gt; simd&lt;T, Abi&gt; minmax(const simd&lt;T, Abi&gt;& a, const simd&lt;T, Abi&gt;& b) noexcept;
+  template&lt;class T, class Abi&gt; simd&lt;T, Abi&gt; clamp(const simd&lt;T, Abi&gt;& v, const simd&lt;T, Abi&gt;& lo, const simd&lt;T, Abi&gt;& hi) noexcept;
+}
+}
+}
+    </pre>
+    </ins>
+
+    <p>
+    <ins>
+      The header <code>&lt;experimental/simd&gt;</code> defines class templates, tag types, trait types, and function templates for element-wise operations on data-parallel objects.
+    </ins>
+    </p>
+  </cxx-section>
+
+  <cxx-section id="parallel.simd.overview">
+  </cxx-section>
+</cxx-clause>
+
