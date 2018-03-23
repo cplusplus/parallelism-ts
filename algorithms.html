@@ -100,45 +100,6 @@
     </p>
   </cxx-section>
 
-  <cxx-section id="parallel.alg.defns">
-    <h1><del>Definitions</del></h1>
-
-    <del>
-    <p>
-      Define <code><em>GENERALIZED_SUM</em>(op, a1, ..., aN)</code> as follows:
-
-      <ul>
-        <li><code>a1</code> when <code>N</code> is <code>1</code></li>
-      
-        <li>
-          <code>op(<em>GENERALIZED_SUM</em>(op, b1, ..., bK)</code>, <code><em>GENERALIZED_SUM</em>(op, bM, ..., bN))</code> where
-           
-          <ul>
-            <li><code>b1, ..., bN</code> may be any permutation of <code>a1, ..., aN</code> and</li>
-
-            <li><code>1 &lt; K+1 = M &le; N</code>.</li>
-          </ul>
-        </li>
-      </ul>
-    </p>
-    </del>
-
-    <del>
-    <p>
-      Define <code><em>GENERALIZED_NONCOMMUTATIVE_SUM</em>(op, a1, ..., aN)</code> as follows:
-
-      <ul>
-        <li><code>a1</code> when <code>N</code> is <code>1</code></li>
-
-        <li>
-          <code>op(<em>GENERALIZED_NONCOMMUTATIVE_SUM</em>(op, a1, ..., aK), <em>GENERALIZED_NONCOMMUTATIVE_SUM</em>(op, aM, </code><br>
-          <code>..., aN)</code> where <code>1 &lt; K+1 = M &le; N</code>.
-        </li>
-      </ul>
-    </p>
-    </del>
-  </cxx-section>
-
   <cxx-section id="parallel.alg.ops">
     <h1>Non-Numeric Parallel Algorithms</h1>
 
