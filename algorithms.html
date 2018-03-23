@@ -476,12 +476,6 @@ auto no_vec(F&amp;&amp; f) noexcept -&gt; decltype(std::forward&lt;F&gt;(f)());<
         <cxx-returns>
           the result of <code>f</code>.
         </cxx-returns>
-        
-        <del>
-        <cxx-remarks>
-          <del>If <code>f</code> returns a result, the result is ignored.</del>
-        </cxx-remarks>
-        </del>
 
         <cxx-notes>
           If <code>f</code> exits via an exception, then <code>terminate</code> will be called, consistent
