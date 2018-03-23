@@ -51,9 +51,9 @@ class vector_policy{ <i>unspecified</i> };
 
     <p>The class <code>vector_policy</code> is an execution policy type used as a unique type to disambiguate parallel algorithm overloading and indicate that a parallel algorithm's execution may be vectorized. Additionally, such vectorization will result in an execution that respects the sequencing constraints of wavefront application ([parallel.alg.general.wavefront]). <cxx-note>The implementation thus makes stronger guarantees than for <code>unsequenced_policy</code>, for example.</cxx-note></p>
 
-    <p><ins>The invocations of element access functions in parallel algorithms invoked with an execution policy of type <code>vector_policy</code> are permitted to execute in unordered fashion in the calling thread, unsequenced with respect to one another within the calling thread, subject to the sequencing constraints of wavefront application (<cxx-ref to="parallel.alg.general.wavefront"></cxx-ref>) for the last argument to <code>for_loop</code> or <code>for_loop_strided</code>.</ins></p>
+    <p>The invocations of element access functions in parallel algorithms invoked with an execution policy of type <code>vector_policy</code> are permitted to execute in unordered fashion in the calling thread, unsequenced with respect to one another within the calling thread, subject to the sequencing constraints of wavefront application (<cxx-ref to="parallel.alg.general.wavefront"></cxx-ref>) for the last argument to <code>for_loop</code> or <code>for_loop_strided</code>.</p>
 
-    <p><ins>During the execution of a parallel algorithm with the <code>experimental::execution::vector_policy</code> policy, if the invocation of an element access function exits via an uncaught exception, <code>terminate()</code> shall be called.</ins></p>
+    <p>During the execution of a parallel algorithm with the <code>experimental::execution::vector_policy</code> policy, if the invocation of an element access function exits via an uncaught exception, <code>terminate()</code> shall be called.</p>
 
   </cxx-section>
 
