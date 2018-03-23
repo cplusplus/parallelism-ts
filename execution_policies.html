@@ -61,13 +61,10 @@ class vector_policy{ <i>unspecified</i> };
     <h1>Execution policy objects</h1>
 
 <pre>
-<del>constexpr sequential_execution_policy      seq{};
-constexpr parallel_execution_policy        par{};
-constexpr parallel_vector_execution_policy par_vec{};</del>
-<ins>constexpr execution::unsequenced_policy unseq{};
-constexpr execution::vector_policy vec{};</ins>
+constexpr execution::unsequenced_policy unseq{};
+constexpr execution::vector_policy vec{};
 </pre>
 
-    <p>The header <code>&lt;experimental/execution<del>_policy</del>&gt;</code> declares a global object associated with each type of execution policy defined by this Technical Specification.</p>
+    <p>The header <code>&lt;experimental/execution&gt;</code> declares a global object associated with each type of execution policy defined by this Technical Specification.</p>
   </cxx-section>
 </cxx-clause>
