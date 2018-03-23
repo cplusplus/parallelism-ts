@@ -12,10 +12,10 @@ inline namespace parallelism_v2 {
   class task_block;
 
   template&lt;class F&gt;
-    void define_task_block(F&& f);
+    void define_task_block(F&amp;&amp; f);
 
   template&lt;class f&gt;
-    void define_task_block_restore_thread(F&& f);
+    void define_task_block_restore_thread(F&amp;&amp; f);
 }
 }
      </pre>
@@ -70,12 +70,12 @@ inline namespace parallelism_v2 {
       ~task_block();
 
     public:
-      task_block(const task_block&) = delete;
-      task_block& operator=(const task_block&) = delete;
-      void operator&() const = delete;
+      task_block(const task_block&amp;) = delete;
+      task_block&amp; operator=(const task_block&amp;) = delete;
+      void operator&amp;() const = delete;
 
       template&lt;class F&gt;
-        void run(F&& f);
+        void run(F&amp;&amp; f);
 
       void wait();
   };
