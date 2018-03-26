@@ -1982,6 +1982,282 @@ typename V::value_type reduce(const const_where_expression&lt;M, V&gt;& x, bit_x
           </cxx-throws>
         </cxx-function>
       </cxx-section>
+
+      <cxx-section id="parallel.simd.casts">
+        <h1><ins><code>simd</code> casts</ins></h1>
+
+        <cxx-function>
+          <cxx-signature><ins>template&lt;class T, class U, class Abi&gt; <em>see-below</em> simd_cast(const simd&lt;U, Abi&gt;& x)</ins></cxx-signature>
+
+          <p>
+          <ins>
+            Let <code>To</code> identify <code>T::value_type</code> if <code>is_simd_v&lt;T&gt;</code> is <code>true</code>, or <code>T</code> otherwise.
+          </ins>
+          </p>
+
+          <cxx-returns>
+          <ins>
+            A <code>simd</code> object with the <em>i</em>-th element initialized to <code>static_cast&lt;To&gt;(x[i])</code> for all <code>i</code> &#8714; <code>[0, size())</code>.
+          </ins>
+          </cxx-returns>
+
+          <cxx-throws>
+          <ins>
+            Nothing.
+          </ins>
+          </cxx-throws>
+
+          <cxx-remarks>
+          <ins>
+            The function shall not participate in overload resolution unless
+
+            <bl>
+              <li>
+              <ins>
+                every possible value of type <code>U</code> can be represented with type <code>To</code>, and
+              </ins>
+              </li>
+
+              <li>
+              <ins>
+                either
+
+                <ul>
+                  <li>
+                  <ins>
+                    <code>is_simd_v&lt;T&gt;</code> is <code>false</code>, or
+                  </ins>
+                  </li>
+
+                  <li>
+                  <ins>
+                    <code>T::size() == simd&lt;U, Abi&gt;::size()</code> is <code>true</code>.
+                  </ins>
+                  </li>
+                </ul>
+              </ins>
+              </li>
+            </bl>
+          </ins>
+          </cxx-remarks>
+
+          <p>
+          <ins>
+            The return type is
+          </ins>
+
+            <bl>
+              <li>
+              <ins>
+                <code>T</code> if <code>is_simd_v&lt;T&gt;</code> is <code>true</code>, otherwise
+              </ins>
+              </li>
+
+              <li>
+              <ins>
+                <code>simd&lt;T, Abi&gt;</code> is <code>U</code> is <code>T</code>, otherwise
+              </ins>
+              </li>
+
+              <li>
+              <ins>
+                <code>simd&lt;T, simd_abi::fixed_size&lt;simd&lt;U, Abi&gt;::size()&gt;&gt;</code>
+              </ins>
+              </li>
+            </bl>
+          <br>
+        </cxx-function>
+
+        <cxx-function>
+          <cxx-signature><ins>template&lt;class T, class U, class Abi&gt; <em>see-below</em> static_simd_cast(const simd&lt;U, Abi&gt;& x);</ins></cxx-signature>
+
+          <p>
+          <ins>
+            Let <code>To</code> identify <code>T::value_type</code> if <code>is_simd_v&lt;T&gt;</code> is <code>true</code> or <code>T</code> otherwise.
+          </ins>
+          </p>
+
+          <cxx-returns>
+          <ins>
+            A <code>simd</code> object with the <em>i</em>-th element initialized to <code>static_cast&lt;To&gt;(x[i])</code> for all <code>i</code> &#8714; <code>[0, size())</code>.
+          </ins>
+          </cxx-returns>
+
+          <cxx-throws>
+          <ins>
+            Nothing.
+          </ins>
+          </cxx-throws>
+
+          <cxx-remarks>
+          <ins>
+            The function shall not participate in overload resolution unless either
+
+            <bl>
+              <li>
+              <ins>
+                <code>is_simd_v&lt;T&gt;</code> is <code>false</code>, or
+              </ins>
+              </li>
+
+              <li>
+              <ins>
+                <code>T::size() == simd&lt;U, Abi&gt;::size()</code> is <code>true</code>.
+              </ins>
+              </li>
+            </bl>
+          </ins>
+          </cxx-remarks>
+
+          <p>
+          <ins>The return type is</ins>
+
+            <bl>
+              <li>
+              <ins>
+                <code>T</code> if <code>is_simd_v&lt;T&gt;</code> is <code>true</code>, otherwise
+              </ins>
+              </li>
+
+              <li>
+              <ins>
+                <code>simd&lt;T, Abi&gt;</code> if either <code>U</code> is <code>T</code> or <code>U</code> and <code>T</code> are integral types that only differ in signedness, otherwise
+              </ins>
+              </li>
+
+              <li>
+              <ins>
+                <code>simd&lt;T, simd_abi::fixed_size&lt;simd&lt;U, Abi&gt;::size()&gt;&gt;</code>.
+              </ins>
+              </li>
+            </bl>
+          <br>
+        </cxx-function>
+
+        <cxx-function>
+          <cxx-signature><ins>
+template&lt;class T, class Abi&gt;
+fixed_size_simd&lt;T, simd_size_v&lt;T, Abi&gt;&gt; to_fixed_size(const simd&lt;T, Abi&gt;& x) noexcept;
+template&lt;class T, class Abi&gt;
+fixed_size_simd_mask&lt;T, simd_size_v&lt;T, Abi&gt;&gt; to_fixed_size(const simd_mask&lt;T, Abi&gt;& x) noexcept;
+</ins></cxx-signature>
+
+          <cxx-returns>
+          <ins>
+            A data-parallel object with the <em>i</em>-th element initialized to <code>x[i]</code> for all <code>i</code> &#8714; <code>[0, size())</code>.
+          </ins>
+          </cxx-returns>
+        </cxx-function>
+
+        <cxx-function>
+          <cxx-signature><ins>
+template&lt;class T, int N&gt; native_simd&lt;T&gt; to_native(const fixed_size_simd&lt;T, N&gt;& x) noexcept;
+template&lt;class T, int N&gt; native_simd_mask&lt;T&gt; to_native(const fixed_size_simd_mask&lt;T, N&gt;& x) noexcept;
+</ins></cxx-signature>
+
+          <cxx-returns>
+          <ins>
+            A data-parallel object with the <em>i</em>-th element initialized to <code>x[i]</code> for all <code>i</code> &#8714; <code>[0, size())</code>. 
+          </ins>
+          </cxx-returns>
+
+          <cxx-remarks>
+          <ins>
+            These functions shall not participate in overload resolution unless <code>simd_size_v&lt;T, simd_abi::native&lt;T&gt;&gt; == N</code> is <code>true</code>.
+          </ins>
+          </cxx-remarks>
+        </cxx-function>
+
+        <cxx-function>
+          <cxx-signature><ins>
+template&lt;class T, int N&gt; simd&lt;T&gt; to_compatible(const fixed_size_simd&lt;T, N&gt;& x) noexcept;
+template&lt;class T, int N&gt; simd_mask&lt;T&gt; to_compatible(const fixed_size_simd_mask&lt;T, N&gt;& x) noexcept;
+</ins></cxx-signature>
+
+          <cxx-returns>
+          <ins>
+            A data-parallel object with the <em>i</em>-th element initialized to <code>x[i]</code> for all <code>i</code> &#8714; <code>[0, size())</code>.
+          </ins>
+          </cxx-returns>
+
+          <cxx-remarks>
+          <ins>
+            These functions shall not participate in overload resolution unless <code>simd_size_v&lt;T, simd_abi::compatible&lt;T&gt;&gt; == N</code> is <code>true</code>.
+          </ins>
+          </cxx-remarks>
+        </cxx-function>
+
+        <cxx-function>
+          <cxx-signature><ins>
+template&lt;size_t... Sizes, class T, class Abi&gt;
+tuple&lt;simd&lt;T, simd_abi::deduce_t&lt;T, Sizes&gt;&gt;...&gt; split(const simd&lt;T, Abi&gt;& x);
+template&lt;size_t... Sizes, class T, class Abi&gt;
+tuple&lt;simd_mask&lt;T, simd_abi::deduce_t&lt;T, Sizes&gt;&gt;...&gt; split(const simd_mask&lt;T, Abi&gt;& x);
+</ins></cxx-signature>
+
+          <cxx-returns>
+          <ins>
+            A <code>tuple</code> of data-parallel objects with the <em>i</em>-th <code>simd</code>/<code>simd_mask</code> element of the <em>j</em>-th <code>tuple</code> element initialized to the value of the element <code>x</code> with index <em>i</em> + sum of the first <em>j</em> values in the <code>Sizes</code> pack.
+          </ins>
+          </cxx-returns>
+
+          <cxx-remarks>
+          <ins>
+            These functions shall not participate in overload resolution unless the sum of all values in the <code>Sizes</code> pack is equal to <code>simd_size_v&lt;T, Abi&gt;</code>.
+          </ins>
+          </cxx-remarks>
+        </cxx-function>
+
+        <cxx-function>
+          <cxx-signature><ins>
+template&lt;class V, class Abi&gt;
+array&lt;V, simd_size_v&lt;typename V::value_type, Abi&gt; / V::size()&gt; split(const simd&lt;typename V::value_type, Abi&gt;& x);
+template&lt;class V, class Abi&gt;
+array&lt;V, simd_size_v&lt;typename V::value_type, Abi&gt; / V::size()&gt; split(const simd_mask&lt;typename V::value_type, Abi&gt;& x);
+</ins></cxx-signature>
+
+          <cxx-returns>
+          <ins>
+            An <code>array</code> of data-parallel objects with the <em>i</em>-th <code>simd</code>/<code>simd_mask</code> element of the <em>j</em>-th <code>array</code> element initialized to the value of the element in <code>x</code> with index <code><em>i</em> + <em>j</em> * V::size()</code>.
+          </ins>
+          </cxx-returns>
+
+          <cxx-remarks>
+          <ins>
+            These functions shall not participate in overload resolution unless
+
+            <bl>
+              <li>
+              <ins>
+                <code>simd_size_v&lt;typename V::value_type, Abi&gt;</code> is an integral multiple of <code>V::size()</code>, and
+              </ins>
+              </li>
+
+              <li>
+              <ins>
+                for the overload with a <code>simd</code> parameter <code>is_simd_v&lt;V&gt;</code> is <code>true</code>, for the overload with a <code>simd_mask</code> parameter <code>is_simd_mask_v&lt;V&gt;</code> is <code>true</code>.
+              </ins>
+              </li>
+            </bl>
+          </ins>
+          </cxx-remarks>
+        </cxx-function>
+
+        <cxx-function>
+          <cxx-signature><ins>
+template&lt;class T, class... Abis&gt;
+simd&lt;T, simd_abi::deduce_t&lt;T, (simd_size_v&lt;T, Abis&gt; + ...)&gt;&gt; concat(const simd&lt;T, Abis&gt;&... xs);
+template&lt;class T, class... Abis&gt;
+simd_mask&lt;T, simd_abi::deduce_t&lt;T, (simd_size_v&lt;T, Abis&gt; + ...)&gt;&gt; concat(const simd_mask&lt;T, Abis&gt;&... xs);
+</ins></cxx-signature>
+
+          <cxx-returns>
+          <ins>
+            A data-parallel object initialized with the concatenated values in the <code>xs</code> pack of data-parallel objects: The <em>i</em>-th <code>simd</code>/<code>simd_mask</code> element of the <em>j</em>-th parameter in the <code>xs</code> pack is copied to the return value's element with index <em>i</em> + the sum of the width of the first <em>j</em> parameters in the <code>xs</code> pack.
+          </ins>
+          </cxx-returns>
+        </cxx-function>
+      </cxx-section>
     </cxx-section>
   </cxx-section>
 </cxx-clause>
