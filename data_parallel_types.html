@@ -1632,6 +1632,70 @@ friend void swap(reference&& a, value_type& b) noexcept;</ins>
         </cxx-throws>
       </cxx-function>
     </cxx-section>
+
+    <cxx-section id="parallel.simd.nonmembers">
+      <h1><ins><code>simd</code> non-member operations</ins></h1>
+
+      <cxx-section id="parallel.simd.binary">
+        <cxx-function>
+          <cxx-signature><ins>
+friend simd operator+(const simd& lhs, const simd& rhs);
+friend simd operator-(const simd& lhs, const simd& rhs);
+friend simd operator*(const simd& lhs, const simd& rhs);
+friend simd operator/(const simd& lhs, const simd& rhs);
+friend simd operator%(const simd& lhs, const simd& rhs);
+friend simd operator&(const simd& lhs, const simd& rhs);
+friend simd operator|(const simd& lhs, const simd& rhs);
+friend simd operator^(const simd& lhs, const simd& rhs);
+friend simd operator&lt;&lt;(const simd& lhs, const simd& rhs);
+friend simd operator&gt;&gt;(const simd& lhs, const simd& rhs);
+</ins></cxx-signature>
+
+          <cxx-returns>
+          <ins>
+            A <code>simd</code> object initialized with the results of the element-wise application of the indicated operator.
+          </ins>
+          </cxx-returns>
+
+          <cxx-throws>
+          <ins>
+            Nothing.
+          </ins>
+          </cxx-throws>
+
+          <cxx-remarks>
+          <ins>
+            Each of these operators shall not participate in overload resolution unless the indicated operator can be applied to objects of type <code>value_type</code>.
+          </ins>
+          </cxx-remarks>
+        </cxx-function>
+
+        <cxx-function>
+          <cxx-signature><ins>
+friend simd operator&lt;&lt;(const simd& v, int n);
+friend simd operator&gt;&gt;(const simd& v, int n);
+</ins></cxx-signature>
+
+          <cxx-returns>
+          <ins>
+            A <code>simd</code> object where the <em>i</em>-th element is initialized to the result of applying the indicated operator to <code>v[i]</code> and <code>n</code> for all <code>i</code> &#8714; <code>[0, size())</code>.
+          </ins>
+          </cxx-returns>
+
+          <cxx-throws>
+          <ins>
+            Nothing.
+          </ins>
+          </cxx-throws>
+
+          <cxx-remarks>
+          <ins>
+            These operators shall not participate in overload resolution unless the indicated operator can be applied to objects of type <code>value_type</code>.
+          </ins>
+          </cxx-remarks>
+        </cxx-function>
+      </cxx-section>
+    </cxx-section>
   </cxx-section>
 </cxx-clause>
 
