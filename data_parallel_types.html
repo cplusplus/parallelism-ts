@@ -1740,6 +1740,33 @@ friend simd& operator&gt;&gt;=(simd& lhs, int n);
           </cxx-remarks>
         </cxx-function>
       </cxx-section>
+
+      <cxx-section id="parallel.simd.comparison">
+        <h1><ins><code>simd</code> compare operators</ins></h1>
+
+        <cxx-function>
+          <cxx-signature><ins>
+friend mask_type operator==(const simd&, const simd&);
+friend mask_type operator!=(const simd&, const simd&);
+friend mask_type operator&gt;=(const simd&, const simd&);
+friend mask_type operator&lt;=(const simd&, const simd&);
+friend mask_type operator&gt;(const simd&, const simd&);
+friend mask_type operator&lt;(const simd&, const simd&);
+</ins></cxx-signature>
+
+          <cxx-returns>
+          <ins>
+            A <code>simd_mask</code> object initialized with the results of the element-wise application of the indicated operator.
+          </ins>
+          </cxx-returns>
+
+          <cxx-throws>
+          <ins>
+            Nothing.
+          </ins>
+          </cxx-throws>
+        </cxx-function>
+      </cxx-section>
     </cxx-section>
   </cxx-section>
 </cxx-clause>
