@@ -2330,6 +2330,72 @@ clamp(const simd&lt;T, Abi&gt;& v, const simd&lt;T, Abi&gt;& lo, const simd&lt;T
         </cxx-function>
       </cxx-section>
     </cxx-section>
+
+    <cxx-section id="parallel.simd.math">
+      <h1><ins><code>simd</code> math library</ins></h1>
+
+      <p>
+      <ins>
+        For each set of overloaded functions within <code>&lt;cmath&gt;</code>, there shall be additional overloads sufficient to ensure that if any argument corresponding to a <code>double</code> parameter has type <code>simd&lt;T, Abi&gt;</code>, where <code>is_floating_point_v&lt;T&gt;</code> is <code>true</code>, then:
+
+        <bl>
+          <li>
+          <ins>
+            All arguments corresponding to <code>double</code> parameters shall be convertible to <code>simd&lt;T, Abi&gt;</code>.
+          </ins>
+          </li>
+
+          <li>
+          <ins>
+            All arguments corresponding to <code>double*</code> parameters shall be of type <code>simd&lt;T, Abi&gt;*</code>.
+          </ins>
+          </li>
+
+          <li>
+          <ins>
+            All arguments corresponding to parameters of integral type <code>U</code> shall be convertible to <code>fixed_size_simd&lt;U, simd_size_v&lt;T, Abi&gt;&gt;</code>.
+          </ins>
+          </li>
+
+          <li>
+          <ins>
+            All arguments corresponding to <code>U*</code>, where <code>U</code> is integral, shall be of type <code>fixed_size_simd&lt;U, simd_size_v&lt;T, Abi&gt;&gt;*</code>.
+          </ins>
+          </li>
+
+          <li>
+          <ins>
+            If the corresponding return type is <code>double</code>, the return type of the additional overloads is <code>simd&lt;T, Abi&gt;</code>. Otherwise, if the corresponding return type is <code>bool</code>, the return type of the additional overload is <code>simd_mask&lt;T, Abi&gt;</code>. Otherwise, the return type is <code>fixed_size_simd&lt;R, simd_size_v&lt;T, Abi&gt;&gt;</code>, with <code>R</code> denoting the corresponding return type.
+          </ins>
+          </li>
+        </bl>
+
+        <br>
+
+        <ins>
+        It is unspecified whether a call to these overloads with arguments that are all convertible to <code>simd&lt;T, Abi&gt;</code> but are not of type <code>simd&lt;T, Abi&gt;</code> is well-formed.
+        </ins>
+      </ins>
+      </p>
+
+      <p>
+      <ins>
+        Each function overload produced by the above rules applies the indicated <code>&lt;cmath&gt;</code> function element-wise. The results per element are not required to be bitwise equal to the application of the function which is overloaded for the element type. 
+      </ins>
+      </p>
+
+      <p>
+      <ins>
+        The behavior is undefined if a domain, pole, or range error occurs when the input argument(s) are applied to the indicated <code>&lt;cmath&gt;</code> function.
+      </ins>
+      </p>
+
+      <p>
+      <ins>
+        If <code>abs</code> is called with an argument of type <code>simd&lt;X, Abi&gt;</code> for which <code>is_unsigned_v&lt;X&gt;</code> is <code>true</code>, the program is ill-formed.
+      </ins>
+      </p>
+    </cxx-section>
   </cxx-section>
 </cxx-clause>
 
