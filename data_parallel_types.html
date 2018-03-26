@@ -2572,6 +2572,55 @@ explicit simd_mask(const <em>implementation-defined</em>& init) const;</ins></pr
           </cxx-remarks>
         </cxx-function>
       </cxx-section>
+
+      <cxx-section id="parallel.simd.mask.copy">
+        <h1><ins><code>simd_mask</code> copy functions</ins></h1>
+
+        <cxx-function>
+          <cxx-signature><ins>template&lt;class Flags&gt; void copy_from(const value_type* mem, Flags);</ins></cxx-signature>
+
+          <cxx-requires>
+          <ins>
+            If the template parameter <code>Flags</code> is <code>vector_aligned_tag</code>, <code>mem</code> shall point to storage aligned by <code>memory_alignment_v&lt;simd_mask&gt;</code>. If the template parameter <code>Flags</code> is <code>overaligned_tag&lt;N&gt;</code>, <code>mem</code> shall point to storage aligned by <code>N</code>. If the template parameter <code>Flags</code> is <code>element_aligned_tag</code>, <code>mem</code> shall point to storage aligned by <code>alignof(U)</code>. <code>[mem, mem + size())</code> is a valid range.
+          </ins>
+          </cxx-requires>
+
+          <cxx-effects>
+          <ins>
+            Replaces the elements of the <code>simd_mask</code> object such that the <em>i</em>-th element is replaced with <code>mem[i]</code> for all <code>i</code> &#8714; <code>[0, size())</code>.
+
+          </ins>
+          </cxx-effects>
+
+          <cxx-remarks>
+          <ins>
+            This function shall not participate in overload resolution unless <code>is_simd_flag_type_v&lt;Flags&gt;</code> is <code>true</code>.
+          </ins>
+          </cxx-remarks>
+        </cxx-function>
+
+        <cxx-function>
+          <cxx-signature><ins>template&lt;class Flags&gt; void copy_to(value_type* mem, Flags);</ins></cxx-signature>
+
+          <cxx-requires>
+          <ins>
+            If the template parameter <code>Flags</code> is <code>vector_aligned_tag</code>, <code>mem</code> shall point to storage aligned by <code>memory_alignment_v&lt;simd_mask&gt;</code>. If the template parameter <code>Flags</code> is <code>overaligned_tag&lt;N&gt;</code>, <code>mem</code> shall point to storage aligned by <code>N</code>. If the template parameter <code>Flags</code> is <code>element_aligned_tag</code>, <code>mem</code> shall point to storage aligned by <code>alignof(U)</code>. <code>[mem, mem + size())</code> is a valid range.
+          </ins>
+          </cxx-requires>
+
+          <cxx-effects>
+          <ins>
+            Copies all <code>simd_mask</code> elements as if <code>mem[i] = operator[](i)</code> for all <code>i</code> &#8714; <code>[0, size())</code>.
+          </ins>
+          </cxx-effects>
+
+          <cxx-remarks>
+          <ins>
+            This function shall not participate in overload resolution unless <code>is_simd_flag_type_v&lt;Flags&gt;</code> is <code>true</code>.
+          </ins>
+          </cxx-remarks>
+        </cxx-function>
+      </cxx-section>
     </cxx-section>
   </cxx-section>
 </cxx-clause>
