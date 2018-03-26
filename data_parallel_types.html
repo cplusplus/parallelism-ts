@@ -1767,6 +1767,221 @@ friend mask_type operator&lt;(const simd&, const simd&);
           </cxx-throws>
         </cxx-function>
       </cxx-section>
+
+      <cxx-section id="parallel.simd.reductions">
+        <cxx-function>
+          <cxx-signature><ins>
+template&lt;class T, class Abi, class BinaryOperation = plus&lt;&gt;&gt;
+T reduce(const simd&lt;T, Abi&gt;& x, BinaryOperation binary_op = {});
+</ins></cxx-signature>
+
+          <cxx-requires>
+          <ins>
+            <code>binary_op</code> shall be callable with two arguments of type <code>T</code> returning <code>T</code>, or callable with two arguments of type <code>simd&lt;T, A1&gt;</code> returning <code>simd&lt;T, A1&gt;</code> for every <code>A1</code> that is an ABI tag type.
+          </ins>
+          </cxx-requires>
+
+          <cxx-returns>
+          <ins>
+            <code><em>GENERALIZED_SUM</em>(binary_op, x.data[i], ...)</code> for all <code>i</code> &#8714; <code>[0, size())</code>.
+          </ins>
+          </cxx-returns>
+
+          <cxx-throws>
+          <ins>
+            Any exception thrown from <code>binary_op</code>.
+          </ins>
+          </cxx-throws>
+
+          <p>
+          <cxx-note>
+          <ins>
+            This overload of <code>reduce</code> does not require an initial value because <code>x</code> is guaranteed to be non-empty.
+          </ins>
+          </cxx-note>
+          </p>
+        </cxx-function>
+
+        <cxx-function>
+          <cxx-signature><ins>
+template&lt;class M, class V, class BinaryOperation&gt;
+typename V::value_type reduce(const const_where_expression&lt;M, V&gt;& x, typename V::value_type identity_element,
+                              BinaryOperation binary_op);
+</ins></cxx-signature>
+
+          <cxx-requires>
+          <ins>
+            <code>binary_op</code> shall be callable with two arguments of type <code>T</code> returning <code>T</code>, or callable with two arguments of type <code>simd&lt;T, A1&gt;</code> returning <code>simd&lt;T, A1&gt;</code> for every <code>A1</code> that is an ABI tag type. The results of <code>binary_op(identity_element, x)</code> and <code>binary_op(x, identity_element)</code> shall be equal to <code>x</code> for all finite values <code>x</code> representable by <code>V::value_type</code>.
+          </ins>
+          </cxx-requires>
+
+          <cxx-returns>
+          <ins>
+            If <code>none_of(x.mask)</code>, returns <code>identity_element</code>. Otherwise, returns <code><em>GENERALIZED_SUM</em>(binary_op, x.data[i], ...)</code> for all <code>i</code> &#8714; {<em>j</em> &#8714; &#8469;<sub>0</sub> &#8739; <em>j</em> &lt; <code>M::size()</code> &#8896; <code>mask[</code><em>j</em><code>]</code> }.
+          </ins>
+          </cxx-returns>
+
+          <cxx-throws>
+          <ins>
+            Any exception thrown from <code>binary_op</code>.
+          </ins>
+          </cxx-throws>
+        </cxx-function>
+
+        <cxx-function>
+          <cxx-signature><ins>
+template&lt;class M, class V&gt;
+typename V::value_type reduce(const const_where_expression&lt;M, V&gt;& x, plus&lt;&gt; binary_op = {});
+</ins></cxx-signature>
+
+          <cxx-returns>
+          <ins>
+            If <code>none_of(x.mask)</code>, returns <code>0</code>. Otherwise, returns <code><em>GENERALIZED_SUM</em>(binary_op, x.data[i], ...)</code> for all <code>i</code> &#8714; {<em>j</em> &#8714; &#8469;<sub>0</sub> &#8739; <em>j</em> &lt; <code>M::size()</code> &#8896; <code>mask[</code><em>j</em><code>]</code> }.
+          </ins>
+          </cxx-returns>
+
+          <cxx-throws>
+          <ins>
+            Nothing.
+          </ins>
+          </cxx-throws>
+        </cxx-function>
+
+        <cxx-function>
+          <cxx-signature><ins>
+template&lt;class M, class V&gt;
+typename V::value_type reduce(const const_where_expression&lt;M, V&gt;& x, multiplies&lt;&gt; binary_op = {});
+</ins></cxx-signature>
+
+          <cxx-returns>
+          <ins>
+            If <code>none_of(x.mask)</code>, returns <code>1</code>. Otherwise, returns <code><em>GENERALIZED_SUM</em>(binary_op, x.data[i], ...)</code> for all <code>i</code> &#8714; {<em>j</em> &#8714; &#8469;<sub>0</sub> &#8739; <em>j</em> &lt; <code>M::size()</code> &#8896; <code>mask[</code><em>j</em><code>]</code> }.
+          </ins>
+          </cxx-returns>
+
+          <cxx-throws>
+          <ins>
+            Nothing.
+          </ins>
+          </cxx-throws>
+        </cxx-function>
+
+        <cxx-function>
+          <cxx-signature><ins>
+template&lt;class M, class V&gt;
+typename V::value_type reduce(const const_where_expression&lt;M, V&gt;& x, bit_and&lt;&gt; binary_op = {});
+</ins></cxx-signature>
+
+          <cxx-requires>
+          <ins>
+            <code>is_integral_v&lt;V::value_type&gt;</code> is <code>true</code>.
+          </ins>
+          </cxx-requires>
+
+          <cxx-returns>
+          <ins>
+            If <code>none_of(x.mask)</code>, returns <code>~V::value_type()</code>. Otherwise, returns <code><em>GENERALIZED_SUM</em>(binary_op, x.data[i], ...)</code> for all <code>i</code> &#8714; {<em>j</em> &#8714; &#8469;<sub>0</sub> &#8739; <em>j</em> &lt; <code>M::size()</code> &#8896; <code>mask[</code><em>j</em><code>]</code> }.
+          </ins>
+          </cxx-returns>
+
+          <cxx-throws>
+          <ins>
+            Nothing.
+          </ins>
+          </cxx-throws>
+        </cxx-function>
+
+        <cxx-function>
+          <cxx-signature><ins>
+template&lt;class M, class V&gt;
+typename V::value_type reduce(const const_where_expression&lt;M, V&gt;& x, bit_or&lt;&gt; binary_op = {});
+template&lt;class M, class V&gt;
+typename V::value_type reduce(const const_where_expression&lt;M, V&gt;& x, bit_xor&lt;&gt; binary_op = {});
+</ins></cxx-signature>
+
+          <cxx-requires>
+          <ins>
+            <code>is_integral_v&lt;V::value_type&gt;</code> is <code>true</code>.
+          </ins>
+          </cxx-requires>
+
+          <cxx-returns>
+          <ins>
+            If <code>none_of(x.mask)</code>, returns <code>0</code>. Otherwise, returns <code><em>GENERALIZED_SUM</em>(binary_op, x.data[i], ...)</code> for all <code>i</code> &#8714; {<em>j</em> &#8714; &#8469;<sub>0</sub> &#8739; <em>j</em> &lt; <code>M::size()</code> &#8896; <code>mask[</code><em>j</em><code>]</code> }.
+          </ins>
+          </cxx-returns>
+
+          <cxx-throws>
+          <ins>
+            Nothing.
+          </ins>
+          </cxx-throws>
+        </cxx-function>
+
+        <cxx-function>
+          <cxx-signature><ins>template&lt;class T, class Abi&gt; T hmin(const simd&lt;T, Abi&gt;& x);</ins></cxx-signature>
+
+          <cxx-returns>
+          <ins>
+            The value of an element <code>x[j]</code> for which <code>x[j] &lt;= x[i]</code> for all <code>i</code> &#8714; <code>[0, size())</code>.
+          </ins>
+          </cxx-returns>
+
+          <cxx-throws>
+          <ins>
+            Nothing.
+          </ins>
+          </cxx-throws>
+        </cxx-function>
+
+        <cxx-function>
+          <cxx-signature><ins>template&lt;class T, class V&gt; typename V::value_type hmin(const const_where_expression&lt;M, V&gt;& x);</ins></cxx-signature>
+
+          <cxx-returns>
+          <ins>
+            If <code>none_of(x.mask)</code>, the return value is <code>numeric_limits&lt;V::value_type&gt;::max()</code>. Otherwise, returns the value of an element <code>x.data[j]</code> for which <code>x.mask[j] == true</code> and <code>x.data[j] &lt;= x.data[i]</code> for all <code>i</code> &#8714; {<em>j</em> &#8714; &#8469;<sub>0</sub> &#8739; <em>j</em> &lt; <code>M::size()</code> &#8896; <code>mask[</code><em>j</em><code>]</code> }.
+          </ins>
+          </cxx-returns>
+
+          <cxx-throws>
+          <ins>
+            Nothing.
+          </ins>
+          </cxx-throws>
+        </cxx-function>
+
+        <cxx-function>
+          <cxx-signature><ins>template&lt;class T, class Abi&gt; T hmax(const simd&lt;T, Abi&gt;& x);</ins></cxx-signature>
+
+          <cxx-returns>
+          <ins>
+            The value of an element <code>x[j]</code> for which <code>x[j] &gt;= x[i]</code> for all <code>i</code> &#8714; <code>[0, size())</code>.
+          </ins>
+          </cxx-returns>
+
+          <cxx-throws>
+          <ins>
+            Nothing.
+          </ins>
+          </cxx-throws>
+        </cxx-function>
+
+        <cxx-function>
+          <cxx-signature><ins>template&lt;class T, class V&gt; typename V::value_type hmax(const const_where_expression&lt;M, V&gt;& x);</ins></cxx-signature>
+
+          <cxx-returns>
+          <ins>
+            If <code>none_of(x.mask)</code>, the return value is <code>numeric_limits&lt;V::value_type&gt;::lowest()</code>. Otherwise, returns the value of an element <code>x.data[j]</code> for which <code>x.mask[j] == true</code> and <code>x.data[j] &gt;= x.data[i]</code> for all <code>i</code> &#8714; {<em>j</em> &#8714; &#8469;<sub>0</sub> &#8739; <em>j</em> &lt; <code>M::size()</code> &#8896; <code>mask[</code><em>j</em><code>]</code> }.
+          </ins>
+          </cxx-returns>
+
+          <cxx-throws>
+          <ins>
+            Nothing.
+          </ins>
+          </cxx-throws>
+        </cxx-function>
+      </cxx-section>
     </cxx-section>
   </cxx-section>
 </cxx-clause>
