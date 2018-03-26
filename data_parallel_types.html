@@ -1383,6 +1383,38 @@ friend void swap(reference&& a, value_type& b) noexcept;</ins>
           </ins>
           </cxx-remarks>
         </cxx-function>
+
+        <cxx-function>
+          <cxx-signature><ins>template&lt;class U, class Flags&gt; void copy_to(U* mem, Flags) const;</ins></cxx-signature>
+
+          <cxx-requires>
+          <ins>
+            If the template parameter <code>Flags</code> is <code>vector_aligned_tag</code>, <code>mem</code> shall point to storage aligned by <code>memory_alignment_v&lt;simd, U&gt;</code>. If the template parameter <code>Flags</code> is <code>overaligned_tag&lt;N&gt;</code>, <code>mem</code> shall point to storage aligned by <code>N</code>. If the template parameter <code>Flags</code> is <code>element_aligned_tag</code>, <code>mem</code> shall point to storage aligned by <code>alignof(U)</code>. <code>[mem, mem + size())</code> is a valid range.
+          </ins>
+          </cxx-requires>
+
+          <cxx-effects>
+          <ins>
+            Copies all <code>simd</code> elements as if <code>mem[i] = static_cast&lt;U&gt;(operator[](i))</code> for all <code>i</code> &#8714; <code>[0, size())</code>.
+          </ins>
+          </cxx-effects>
+
+          <cxx-remarks>
+          <ins>
+            This function shall not participate in overload resolution unless
+
+            <bl>
+              <li>
+                <code>is_simd_flag_type_v&lt;Flags&gt;</code> is <code>true</code>, and
+              </li>
+
+              <li>
+                <code>U</code> is a vectorizable type.
+              </li>
+            </bl>
+          </ins>
+          </cxx-remarks>
+        </cxx-function>
     </cxx-section>
   </cxx-section>
 </cxx-clause>
