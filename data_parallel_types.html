@@ -1352,69 +1352,117 @@ friend void swap(reference&& a, value_type& b) noexcept;</ins>
     <cxx-section id="parallel.simd.copy">
       <h1><ins><code>simd</code> copy functions</ins></h1>
 
-        <cxx-function>
-          <cxx-signature><ins>template&lt;class U, class Flags&gt; void copy_from(const U* mem, Flags);</ins></cxx-signature>
+      <cxx-function>
+        <cxx-signature><ins>template&lt;class U, class Flags&gt; void copy_from(const U* mem, Flags);</ins></cxx-signature>
 
-          <cxx-requires>
-          <ins>
-            If the template parameter <code>Flags</code> is <code>vector_aligned_tag</code>, <code>mem</code> shall point to storage aligned by <code>memory_alignment_v&lt;simd, U&gt;</code>. If the template parameter <code>Flags</code> is <code>overaligned_tag&lt;N&gt;</code>, <code>mem</code> shall point to storage aligend by <code>N</code>. If the template parameter <code>Flags</code> is <code>element_aligned_tag</code>, <code>mem</code> shall point to storage aligned by <code>alignonf(U)</code>. <code>[mem, mem + size())</code> is a valid range.
-          </ins>
-          </cxx-requires>
+        <cxx-requires>
+        <ins>
+          If the template parameter <code>Flags</code> is <code>vector_aligned_tag</code>, <code>mem</code> shall point to storage aligned by <code>memory_alignment_v&lt;simd, U&gt;</code>. If the template parameter <code>Flags</code> is <code>overaligned_tag&lt;N&gt;</code>, <code>mem</code> shall point to storage aligend by <code>N</code>. If the template parameter <code>Flags</code> is <code>element_aligned_tag</code>, <code>mem</code> shall point to storage aligned by <code>alignonf(U)</code>. <code>[mem, mem + size())</code> is a valid range.
+        </ins>
+        </cxx-requires>
 
-          <cxx-effects>
-          <ins>
-            Replaces the elements of the <code>simd</code> object such that the <em>i</em>-th element is assigned with <code>static_cast&lt;T&gt;(mem[i])</code> for all <code>i</code> &#8714; <code>[0, size())</code>.
-          </ins>
-          </cxx-effects>
+        <cxx-effects>
+        <ins>
+          Replaces the elements of the <code>simd</code> object such that the <em>i</em>-th element is assigned with <code>static_cast&lt;T&gt;(mem[i])</code> for all <code>i</code> &#8714; <code>[0, size())</code>.
+        </ins>
+        </cxx-effects>
 
-          <cxx-remarks>
-          <ins>
-            This function shall not participate in overload resolution unless
+        <cxx-remarks>
+        <ins>
+          This function shall not participate in overload resolution unless
 
-            <bl>
-              <li>
-                <code>is_simd_flag_type_v&lt;Flags&gt;</code> is <code>true</code>, and
-              </li>
+          <bl>
+            <li>
+              <code>is_simd_flag_type_v&lt;Flags&gt;</code> is <code>true</code>, and
+            </li>
 
-              <li>
-                <code>U</code> is a vectorizable type.
-              </li>
-            </bl>
-          </ins>
-          </cxx-remarks>
-        </cxx-function>
+            <li>
+              <code>U</code> is a vectorizable type.
+            </li>
+          </bl>
+        </ins>
+        </cxx-remarks>
+      </cxx-function>
 
-        <cxx-function>
-          <cxx-signature><ins>template&lt;class U, class Flags&gt; void copy_to(U* mem, Flags) const;</ins></cxx-signature>
+      <cxx-function>
+        <cxx-signature><ins>template&lt;class U, class Flags&gt; void copy_to(U* mem, Flags) const;</ins></cxx-signature>
 
-          <cxx-requires>
-          <ins>
-            If the template parameter <code>Flags</code> is <code>vector_aligned_tag</code>, <code>mem</code> shall point to storage aligned by <code>memory_alignment_v&lt;simd, U&gt;</code>. If the template parameter <code>Flags</code> is <code>overaligned_tag&lt;N&gt;</code>, <code>mem</code> shall point to storage aligned by <code>N</code>. If the template parameter <code>Flags</code> is <code>element_aligned_tag</code>, <code>mem</code> shall point to storage aligned by <code>alignof(U)</code>. <code>[mem, mem + size())</code> is a valid range.
-          </ins>
-          </cxx-requires>
+        <cxx-requires>
+        <ins>
+          If the template parameter <code>Flags</code> is <code>vector_aligned_tag</code>, <code>mem</code> shall point to storage aligned by <code>memory_alignment_v&lt;simd, U&gt;</code>. If the template parameter <code>Flags</code> is <code>overaligned_tag&lt;N&gt;</code>, <code>mem</code> shall point to storage aligned by <code>N</code>. If the template parameter <code>Flags</code> is <code>element_aligned_tag</code>, <code>mem</code> shall point to storage aligned by <code>alignof(U)</code>. <code>[mem, mem + size())</code> is a valid range.
+        </ins>
+        </cxx-requires>
 
-          <cxx-effects>
-          <ins>
-            Copies all <code>simd</code> elements as if <code>mem[i] = static_cast&lt;U&gt;(operator[](i))</code> for all <code>i</code> &#8714; <code>[0, size())</code>.
-          </ins>
-          </cxx-effects>
+        <cxx-effects>
+        <ins>
+          Copies all <code>simd</code> elements as if <code>mem[i] = static_cast&lt;U&gt;(operator[](i))</code> for all <code>i</code> &#8714; <code>[0, size())</code>.
+        </ins>
+        </cxx-effects>
 
-          <cxx-remarks>
-          <ins>
-            This function shall not participate in overload resolution unless
+        <cxx-remarks>
+        <ins>
+          This function shall not participate in overload resolution unless
 
-            <bl>
-              <li>
-                <code>is_simd_flag_type_v&lt;Flags&gt;</code> is <code>true</code>, and
-              </li>
+          <bl>
+            <li>
+              <code>is_simd_flag_type_v&lt;Flags&gt;</code> is <code>true</code>, and
+            </li>
 
-              <li>
-                <code>U</code> is a vectorizable type.
-              </li>
-            </bl>
-          </ins>
-          </cxx-remarks>
-        </cxx-function>
+            <li>
+              <code>U</code> is a vectorizable type.
+            </li>
+          </bl>
+        </ins>
+        </cxx-remarks>
+      </cxx-function>
+    </cxx-section>
+
+    <cxx-section id="parallel.simd.subscr">
+      <h1><ins><code>simd</code> subscript operators</ins></h1>
+
+      <cxx-function>
+        <cxx-signature><ins>reference operator[](size_t i);</ins></cxx-signature>
+
+        <cxx-requires>
+        <ins>
+          <code>i &lt; size()</code>.
+        </ins>
+        </cxx-requires>
+
+        <cxx-returns>
+        <ins>
+          A <code>reference</code> (see <a href="#parallel.simd.reference">[parallel.simd.reference]</a>) referring to the <em>i</em>-th element.
+        </ins>
+        </cxx-returns>
+
+        <cxx-throws>
+        <ins>
+          Nothing.
+        </ins>
+        </cxx-throws>
+      </cxx-function>
+      
+      <cxx-function>
+        <cxx-signature><ins>value_type operator[](size_t i) const;</ins></cxx-signature>
+
+        <cxx-requires>
+        <ins>
+          <code>i &lt; size()</code>.
+        </ins>
+        </cxx-requires>
+
+        <cxx-returns>
+        <ins>
+          The value of the <em>i</em>-th element.
+        </ins>
+        </cxx-returns>
+
+        <cxx-throws>
+        <ins>
+          Nothing.
+        </ins>
+        </cxx-throws>
+      </cxx-function>
     </cxx-section>
   </cxx-section>
 </cxx-clause>
