@@ -1025,6 +1025,188 @@ V addsub(V a, V b) {
     </ins>
     </p>
     </cxx-section>
+
+    <cxx-section id="parallel.simd.reference">
+      <h1><ins>Element references</ins></h1>
+
+      <p>
+      <ins>
+        A <code>reference</code> is an object that refers to an element in a <code>simd</code> or <code>simd_mask</code> object. <code>reference::value_type</code> is the same type as <code>simd::value_type</code> or <code>simd_mask::value_type</code>, respectively.
+      </ins>
+      </p>
+
+      <p>
+      <ins>
+        Class <code>reference</code> is for exposition only. An implementation is permitted to provide equivalent functionality without providing a class with this name.
+      </ins>
+
+        <pre>
+        <ins>
+class reference // exposition only
+{
+public:
+  reference() = delete;
+  reference(const reference&) = delete;
+
+  operator value_type() const noexcept;
+
+  template&lt;class U&gt; reference operator=(U&& x) &&;
+
+  template&lt;class U&gt; reference operator+=(U&& x) &&;
+  template&lt;class U&gt; reference operator-=(U&& x) &&;
+  template&lt;class U&gt; reference operator*=(U&& x) &&;
+  template&lt;class U&gt; reference operator/=(U&& x) &&;
+  template&lt;class U&gt; reference operator%=(U&& x) &&;
+  template&lt;class U&gt; reference operator|=(U&& x) &&;
+  template&lt;class U&gt; reference operator&=(U&& x) &&;
+  template&lt;class U&gt; reference operator^=(U&& x) &&;
+  template&lt;class U&gt; reference operator&lt;&lt;=(U&& x) &&;
+  template&lt;class U&gt; reference operator&gt;&gt;=(U&& x) &&;
+
+  reference operator++() &&;
+  value_type operator++(int) &&;
+  reference operator--() &&;
+  value_type operator--(int) &&;
+
+  friend void swap(reference&& a, reference&& b) noexcept;
+  friend void swap(value_type&& a, reference&& b) noexcept;
+  friend void swap(reference&& a, value_type&& b) noexcept;
+
+};</ins>
+        </pre>
+      </p>
+
+      <cxx-function>
+        <cxx-signature><ins>operator value_type() const noexcept;</ins></cxx-signature>
+
+        <cxx-returns>
+        <ins>
+          The value of the element referred to by <code>*this</code>.
+        </ins>
+        </cxx-returns>
+      </cxx-function>
+
+      <cxx-function>
+        <cxx-signature><ins>template&lt;class U&gt; reference operator=(U&& x) &&;</ins></cxx-signature>
+
+        <cxx-effects>
+        <ins>
+          Replaces the referred to element in <code>simd</code> or <code>simd_mask</code> with <code>static_cast&lt;value_type&gt;(std::forward&lt;U&gt;(x))</code>.
+        </ins>
+        </cxx-effects>
+
+        <cxx-returns>
+        <ins>
+          A copy of <code>*this</code>.
+        </ins>
+        </cxx-returns>
+
+        <cxx-remarks>
+        <ins>
+          This function shall not participate in overload resolution unless <code>declval&lt;value_type &&gt;() = std::forward&gt;U&gt;(x)</code> is well-formed.
+        </ins>
+        </cxx-remarks>
+      </cxx-function>
+
+      <cxx-function>
+        <cxx-signature><ins>
+template&lt;class U&gt; reference operator+=(U&& x) &&;
+template&lt;class U&gt; reference operator-=(U&& x) &&;
+template&lt;class U&gt; reference operator*=(U&& x) &&;
+template&lt;class U&gt; reference operator/=(U&& x) &&;
+template&lt;class U&gt; reference operator%=(U&& x) &&;
+template&lt;class U&gt; reference operator|=(U&& x) &&;
+template&lt;class U&gt; reference operator&=(U&& x) &&;
+template&lt;class U&gt; reference operator^=(U&& x) &&;
+template&lt;class U&gt; reference operator&lt;&lt;=(U&& x) &&;
+template&lt;class U&gt; reference operator&gt;&gt;=(U&& x) &&;</ins>
+        </cxx-signature>
+
+        <cxx-effects>
+        <ins>
+          Applies the indicated compound operator to the referred to element in <code>simd</code> or <code>simd_mask</code> and <code>std::forward&lt;U&gt;(x)</code>.
+        </ins>
+        </cxx-effects>
+
+        <cxx-returns>
+        <ins>
+          A copy of <code>*this</code>.
+        </ins>
+        </cxx-returns>
+
+        <cxx-remarks>
+        <ins>
+          This function shall not participate in overload resolution unless <code>declval&lt;value_type &&&gt;() @= std::forward&lt;U&gt;(x)</code> (where <code>@=</code> denotes the indicated compound assignment operator) is well-formed.
+        </ins>
+        </cxx-remarks>
+      </cxx-function>
+
+      <cxx-function>
+        <cxx-signature><ins>
+reference operator++() &&;
+reference operator--() &&;
+        </ins>
+        </cxx-signature>
+
+        <cxx-effects>
+        <ins>
+          Applies the indicated operator to the referred to element in <code>simd</code> or <code>simd_mask</code>.
+        </ins>
+        </cxx-effects>
+
+        <cxx-returns>
+        <ins>
+          A copy of <code>*this</code>.
+        </ins>
+        </cxx-returns>
+
+        <cxx-remarks>
+        <ins>
+          This function shall not participate in overload resolution unless the indicated operator can be applied to objects of type <code>value_type</code>.
+        </ins>
+        </cxx-remarks>
+      </cxx-function>
+
+      <cxx-function>
+        <cxx-signature><ins>
+value_type operator++(int) &&;
+value_type operator--(int) &&;
+        </ins>
+        </cxx-signature>
+
+        <cxx-effects>
+        <ins>
+          Applies the indicated operator to the referred to element in <code>simd</code> or <code>simd_mask</code>.
+        </ins>
+        </cxx-effects>
+
+        <cxx-returns>
+        <ins>
+          A copy of the referred to element before applying the indicated operator.
+        </ins>
+        </cxx-returns>
+
+        <cxx-remarks>
+        <ins>
+          This function shall not participate in overload resolution unless the indicated operator can be applied to objects of type <code>value_type</code>.
+        </ins>
+        </cxx-remarks>
+      </cxx-function>
+
+      <cxx-function>
+        <cxx-signature><ins>
+friend void swap(reference&& a, reference&& b) noexcept;
+friend void swap(value_type& a, reference&& b) noexcept;
+friend void swap(reference&& a, value_type& b) noexcept;</ins>
+        </cxx-signature>
+
+        <cxx-effects>
+        <ins>
+          Exchanges the values <code>a</code> and <code>b</code> refer to.
+        </ins>
+        </cxx-effects>
+      </cxx-function>
+    </cxx-section>
   </cxx-section>
 </cxx-clause>
 
