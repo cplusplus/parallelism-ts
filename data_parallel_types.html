@@ -545,6 +545,286 @@ namespace simd_abi {
     </p>
   </cxx-section>
 
+  <cxx-section id="parallel.simd.whereexpr">
+    <h1><ins>Class templates <code>const_where_expression</code> and <code>where_expression</code></ins></h1>
+    <ins>
+    <pre>
+namespace std::experimental {
+inline namespace parallelism_v2 {
+  template&lt;class M, class T&gt; class const_where_expression {
+    const M mask; // exposition only
+    T& data; // exposision only
+
+  public:
+    const_where_expression(const const_where_expression&) = delete;
+    const_where_expression& operator=(const const_where_expression&) = delete;
+
+    T operator-() const &&;
+    T operator+() const &&;
+    T operator~() const &&;
+
+    template&lt;class U, class Flags&gt; void copy_to(U* mem, Flags f) const &&;
+  };
+
+  template&lt;class M, class T&gt;
+  class where_expression : public const_where_expression&lt;M, T&gt; {
+  public:
+    template&lt;class U&gt; void operator=(U&& x) &&;
+    template&lt;class U&gt; void operator+=(U&& x) &&;
+    template&lt;class U&gt; void operator-=(U&& x) &&;
+    template&lt;class U&gt; void operator*=(U&& x) &&;
+    template&lt;class U&gt; void operator/=(U&& x) &&;
+    template&lt;class U&gt; void operator%=(U&& x) &&;
+    template&lt;class U&gt; void operator&=(U&& x) &&;
+    template&lt;class U&gt; void operator|=(U&& x) &&;
+    template&lt;class U&gt; void operator^=(U&& x) &&;
+    template&lt;class U&gt; void operator&lt;&lt;=(U&& x) &&;
+    template&lt;class U&gt; void operator&gt;&gt;=(U&& x) &&;
+    void operator++() &&
+    void operator++(int) &&
+    void operator--() &&
+    void operator--(int) &&
+
+    template&lt;class U, class Flags&gt; void copy_from(const U* mem, Flags) &&;
+  };
+}
+}
+    </pre>
+    </ins>
+
+    <p>
+    <ins>
+      The class templates <code>const_where_expression</code> and <code>where_expression</code> abstract the notion of selecting elements of a given object of arithmetic or data-parallel type.
+    </ins>
+    </p>
+
+    <p>
+    <ins>
+      The first templates argument <code>M</code> shall be cv-unqualified <code>bool</code> or a cv-unqualified <code>simd_mask</code> specialization.
+    </ins>
+    </p>
+
+    <p>
+    <ins>
+      If <code>M</code> is <code>bool</code>, <code>T</code> shall be a cv-unqualified arithmetic type. Otherwise, <code>T</code> shall either be <code>M</code> or <code>typename M::simd_type</code>.
+    </ins>
+    </p>
+
+    <p>
+    <ins>
+      In this subclause, <code>data[0]</code> is used interchangably for <code>data</code>, <code>mask[0]</code> is used interchangably for <code>mask</code>, and <code>M::size()</code> is used interchangably for <code>1</code>.
+    </ins>
+    </p>
+
+    <p>
+    <ins>
+      The <em>selected indices</em> signify the integers <code>i</code> &#8714; {<em>j</em> &#8714; &#8469;<sub>0</sub> &#8739; <em>j</em> &lt; <code>M::size()</code> &#8896; <code>mask[</code><em>j</em><code>]</code> }. The <em>selected elements</em> signify the elements <code>data[i]</code> for all selected indices <code>i</code>.
+    </ins>
+    </p>
+
+    <p>
+    <ins>
+      In this subclause, the <code>value_type</code> is an alias for <code>T</code> if <code>M</code> is <code>bool</code>, or an alias for <code>typename T::value_type</code> if <code>is_simd_mask_v&lt;M&gt;</code> is <code>true</code>.
+    </ins>
+    <p>
+
+    <p>
+    <ins>
+      <cxx-note>The <code>where</code> functions <cxx-ref to="parallel.simd.mask.where"></cxx-ref> initialize <code>mask</code> with the first argument to <code>where</code> and <code>data</code> with the second argument to <code>where</code>.</cxx-note>
+    </ins>
+    </p>
+
+    <cxx-function>
+      <cxx-signature><ins>
+T operator-() const &&;
+T operator+() const &&;
+T operator~() const &&;
+      </ins>
+      </cxx-signature>
+
+      <ins>
+      <cxx-returns>
+      <ins>
+        A copy of <code>data</code> with the indicated unary operator applied to all selected elements.
+      </ins>
+      </cxx-returns>
+      </ins>
+
+      <ins>
+      <cxx-throws>
+      <ins>
+        Nothing.
+      </ins>
+      </cxx-throws>
+      </ins>
+    </cxx-function>
+
+    <cxx-function>
+      <cxx-signature>
+      <ins>
+        template&lt;class U, class Flags&gt; void copy_to(U* mem, Flags) const &&;
+      </ins>
+      </cxx-signature>
+
+      <cxx-requires>
+      <ins>
+        If the template parameter <code>Flags</code> is <code>vector_aligned_tag</code>, <code>mem</code> shall point to storage aligned by <code>memory_alignment_v&lt;T, U&gt;</code>. If the template parameter <code>flags</code> is <code>overaligned_tag&lt;N&gt;</code>, <code>mem</code> shall point to storage aligned by <code>N</code>. If the template parameter <code>Flags</code> is <code>element_aligned_tag</code>, <code>mem</code> shall point to storage aligned by <code>alignof(U)</code>. If <code>M</code> is not <code>bool</code>, the largest <em>i</em> &#8714; <code>[0, M::size())</code> where <code>mask[i]</code> is <code>true</code> is less than the number of values pointed to by <code>mem</code>.
+      </ins>
+      </cxx-requires>
+
+      <cxx-effects>
+      <ins>
+        Copies the selected elements as if <code>mem[i] = static_cast&lt;U&gt;(data[i])</code> for all selected indices <code>i</code>.
+      </ins>
+      </cxx-effects>
+
+      <cxx-throws>
+      <ins>
+        Nothing.
+      </ins>
+      </cxx-throws>
+
+      <cxx-remarks>
+      <ins>
+        This function shall not participate in overload resolution unless
+
+        <bl>
+        <li>
+          <code>is_simd_flag_type_v&lt;Flags&gt;</code> is <code>true</code>, and
+        </li>
+
+        <li>
+          either
+
+          <ul>
+            <li>
+              <code>U</code> is <code>bool</code> and <code>value_type</code> is <code>bool</code>, or
+            </li>
+
+            <li>
+              <code>U</code> is a vectorizable type and <code>value_type</code> is not <code>bool</code>.
+            </li>
+          </ul>
+        </li>
+        </bl>
+      </ins>
+      </cxx-remarks>
+    </cxx-function>
+
+    <cxx-function>
+      <cxx-signature><ins>
+template&lt;class U&gt; void operator=(U&& x) &&;
+      </ins>
+      </cxx-signature>
+
+      <cxx-effects>
+      <ins>
+        Replaces <code>data[i]</code> with <code>static_cast&lt;T&gt;(std::forward&lt;U&gt;(x))[i]</code> for all selected indices <code>i</code>.
+      </ins>
+      </cxx-effects>
+
+      <cxx-remarks>
+      <ins>
+        This operator shall not participate in overload resolution unless <code>U</code> is convertible to <code>T</code>.
+      </ins>
+      </cxx-remarks>
+    </cxx-function>
+
+    <cxx-function>
+      <cxx-signature><ins>
+template&lt;class U&gt; void operator+=(U&& x) &&;
+template&lt;class U&gt; void operator-=(U&& x) &&;
+template&lt;class U&gt; void operator*=(U&& x) &&;
+template&lt;class U&gt; void operator/=(U&& x) &&;
+template&lt;class U&gt; void operator%=(U&& x) &&;
+template&lt;class U&gt; void operator&=(U&& x) &&;
+template&lt;class U&gt; void operator|=(U&& x) &&;
+template&lt;class U&gt; void operator^=(U&& x) &&;
+template&lt;class U&gt; void operator&lt;&lt;=(U&& x) &&;
+template&lt;class U&gt; void operator&gt;&gt;=(U&& x) &&;</ins>
+      </cxx-signature>
+
+      <cxx-effects>
+      <ins>
+        Replaces <code>data[i]</code> with <code>static_cast&lt;T&gt;(data @ std::forward&lt;U&gt;(x))[i]</code> (where <code>@</code> denotes the indicated operator) for all selected indices <code>i</code>.
+      </ins>
+      </cxx-effects>
+
+      <cxx-remarks>
+      <ins>
+        Each of these operators shall not participate in overload resolution unless the return type of <code>data @ std::forward&lt;U&gt;(x)</code> is convertible to <code>T</code>. It is unspecified whether the binary operator, implied by the compound assignment operator, is executed on all elements or only on the selected elements.
+      </ins>
+      </cxx-remarks>
+    </cxx-function>
+
+    <cxx-function>
+      <cxx-signature><ins>
+void operator++() &&;
+void operator++(int) &&;
+void operator--() &&;
+void operator--(int) &&;
+      </ins>
+      </cxx-signature>
+
+      <cxx-effects>
+      <ins>
+        Applies the indicated operator to the selected elements.
+      </ins>
+      </cxx-effects>
+
+      <cxx-remarks>
+      <ins>
+        Each of these operators shall not participate in overload resolution unless the indicated operator can be applied to objects of type <code>T</code>.
+      </ins>
+      </cxx-remarks>
+      </cxx-signature>
+    </cxx-function>
+
+    <cxx-function>
+      <cxx-signature><ins>
+template&lt;class U, class Flags&gt; void copy_from(const U* mem, Flags) &&;</ins>
+      </cxx-signature>
+
+      <cxx-requires>
+      <ins>
+        If the template parameter <code>Flags</code> is <code>vector_aligned_tag</code>, <code>mem</code> shall point to storage aligned by <code>memory_alignment_v&lt;T, U&gt;</code>. If the template parameter <code>Flags</code> is <code>overaligned_tag&lt;N&gt;</code>, <code>mem</code> shall point to storage aligned by <code>N</code>. If the template parameter <code>Flags</code> is <code>element_aligned_tag</code>, <code>mem</code> shall point to storage aligned by <code>alignon(U)</code>. If <code>is_simd_flag_type_v&lt;U&gt;</code> is <code>true</code>, for all selected indices <em>i</em>, <em>i</em> shall be less than the number of values pointed to by <code>mem</code>.
+      </ins>
+      </cxx-requires>
+
+      <cxx-effects>
+      <ins>
+        Replaces the selected elements as if <code>data[i] = static_cast&lt;value_type&gt;(mem[i])</code> for all selected indices <code>i</code>.
+      </ins>
+      </cxx-effects>
+
+      <cxx-remarks>
+      <ins>
+        This function shall not participate in overload resolution unless
+
+        <bl>
+          <li>
+            <code>is_simd_flag_type_v&lt;Flags&gt;</code> is <code>true</code>, and
+          </li>
+
+          <li>
+            either
+
+            <ul>
+              <li>
+                <code>U</code> is <code>bool</code> and <code>value_type</code> is <code>bool</code>, or
+              </li>
+
+              <li>
+                <code>U</code> is a vectorizable type and <code>value_type</code> is not <code>bool</code>. 
+              </li>
+            </ul>
+          </li>
+        </bl>
+      </ins>
+      </cxx-remarks>
+    </cxx-function>
+  </cxx-section>
+
   <cxx-section id="parallel.simd.overview">
   </cxx-section>
 </cxx-clause>
