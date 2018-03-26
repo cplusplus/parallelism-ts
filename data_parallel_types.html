@@ -1695,6 +1695,51 @@ friend simd operator&gt;&gt;(const simd& v, int n);
           </cxx-remarks>
         </cxx-function>
       </cxx-section>
+
+      <cxx-section id="parallel.simd.cassign">
+        <h1><ins><code>simd</code> compound assignment</ins></h1>
+
+        <cxx-function>
+          <cxx-signature><ins>
+friend simd& operator+=(simd& lhs, const simd& rhs);
+friend simd& operator-=(simd& lhs, const simd& rhs);
+friend simd& operator*=(simd& lhs, const simd& rhs);
+friend simd& operator/=(simd& lhs, const simd& rhs);
+friend simd& operator%=(simd& lhs, const simd& rhs);
+friend simd& operator&=(simd& lhs, const simd& rhs);
+friend simd& operator|=(simd& lhs, const simd& rhs);
+friend simd& operator^=(simd& lhs, const simd& rhs);
+friend simd& operator&lt;&lt;=(simd& lhs, const simd& rhs);
+friend simd& operator&gt;&gt;=(simd& lhs, const simd& rhs);
+friend simd& operator&lt;&lt;=(simd& lhs, int n);
+friend simd& operator&gt;&gt;=(simd& lhs, int n);
+</ins></cxx-signature>
+
+          <cxx-effects>
+          <ins>
+            These operators perform the indicated binary element-wise operation.
+          </ins>
+          </cxx-effects>
+
+          <cxx-returns>
+          <ins>
+            <code>lhs</code>.
+          </ins>
+          </cxx-returns>
+
+          <cxx-throws>
+          <ins>
+            Nothing.
+          </ins>
+          </cxx-throws>
+
+          <cxx-remarks>
+          <ins>
+            These operators shall not participate in overload resolution unless the indicated operator can be applied to objects of type <code>value_type</code>.
+          </ins>
+          </cxx-remarks>
+        </cxx-function>
+      </cxx-section>
     </cxx-section>
   </cxx-section>
 </cxx-clause>
