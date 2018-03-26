@@ -1207,6 +1207,147 @@ friend void swap(reference&& a, value_type& b) noexcept;</ins>
         </cxx-effects>
       </cxx-function>
     </cxx-section>
+    
+    <cxx-section id="parallel.simd.ctor">
+      <h1><ins><code>simd</code> constructors</ins></h1>
+
+      <cxx-function>
+        <cxx-signature><ins>template&lt;class U&gt; simd(U&&);</ins></cxx-signature>
+
+        <cxx-effects>
+        <ins>
+          Constructs an object with each element initialized to the value of the argument after conversion to <code>value_type</code>.
+        </ins>
+        </cxx-effects>
+
+        <cxx-throws>
+        <ins>
+          Any exception thrown while converting the argument to <code>value_type</code>.
+        </ins>
+        </cxx-throws>
+
+        <cxx-remarks>
+        <ins>
+          Let <code>From</code> identify the type <code>remove_cv_t&lt;remove_reference_t&lt;U&gt;&gt;</code>. This constructor shall not participate in overload resolution unless:
+
+          <br>
+          <br>
+
+          <bl>
+            <li>
+              <code>From</code> is a vectorizable type and every possibly value of <code>From</code> can be represented with type <code>value_type</code>, or
+            </li>
+
+            <li>
+              <code>From</code> is not an arithmetic type and is implicitly convertible to <code>value_type</code>, or
+            </li>
+
+            <li>
+              <code>From</code> is <code>int</code>, or
+
+            <li>
+              <code>From</code> is <code>unsigned int</code> and <code>value_type</code> is an unsigned integral type.
+            </li>
+            </li>
+          </bl>
+        </ins>
+        </cxx-remarks>
+      </cxx-function>
+
+      <cxx-function>
+        <cxx-signature><ins>template&lt;class U&gt; simd(const simd&lt;U, simd_abi::fixed_size&lt;size()&gt;&gt;& x);</ins></cxx-signature>
+
+        <cxx-effects>
+        <ins>
+          Constructs an object where the <em>i</em>-th element equals <code>static_cast&lt;T&gt;(x[i])</code> for all <code>i</code> &#8714; <code>[0, size())</code>.
+        </ins>
+        </cxx-effects>
+
+        <cxx-remarks>
+        <ins>
+          This constructor shall not participate in overload resolution unless
+        </ins>
+
+          <bl>
+            <li>
+            <ins>
+              <code>abi_type</code> is <code>simd_abi::fixed_size&lt;size()&gt;</code>, and
+            </ins>
+            </li>
+
+            <li>
+            <ins>
+              every possible value of <code>U</code> can be represented with type <code>value_type</code>, and
+            </ins>
+            </li>
+
+            <li>
+            <ins>
+              if both <code>U</code> and <code>value_type</code> are integral, the integer conversion rank [conv.rank] of <code>value_type</code> is greater than the integer conversion rank of <code>U</code>.
+            </ins>
+            </li>
+          </bl>
+        </cxx-remarks>
+      </cxx-function>
+
+      <cxx-function>
+        <cxx-signature><ins>template&lt;class G&gt; simd(G&& gen);</ins></cxx-signature>
+
+        <cxx-effects>
+        <ins>
+          Constructs an object where the <em>i</em>-th element is initialized to <code>gen(integral_constant&lt;size_t, i&gt;())</code>.
+        </ins>
+        </cxx-effects>
+
+        <cxx-remarks>
+        <ins>
+          This constructor shall not participate in overload resolution unless <code>simd(gen(integral_constant&lt;size_t, i&gt;()))</code> is well-formed for all <code>i</code> &#8714; <code>[0, size())</code>.
+        </ins>
+        </cxx-remarks>
+
+        <p>
+        <ins>
+          The calls to <code>gen</code> are unsequenced with respect to each other. Vectorization-unsafe standard library functions may not be invoked by <code>gen</code> ([algorithms.parallel.exec]).
+        </ins>
+        </p>
+      </cxx-function>
+
+      <cxx-function>
+        <cxx-signature><ins>template&lt;class U, class Flags&gt; simd(const U* mem, Flags);</ins></cxx-signature>
+
+        <cxx-requires>
+        <ins>
+          If the template parameter <code>Flags</code> is <code>vector_aligned_tag</code>, <code>mem</code> shall point to storage aligend by <code>memory_alignment_v&lt;simd, U&gt;</code>. If the template parameter <code>Flags</code> is <code>overaligned_tag&lt;N&gt;</code>, <code>mem</code> shall point to storage aligned by <code>N</code>. If the template parameter <code>Flags</code> is <code>element_aligned_tag</code>, <code>mem</code> shall point to storage aligned by <code>alignon(U)</code>. <code>[mem, mem + size())</code> is a valid range.
+        </ins>
+        </cxx-requires>
+
+        <cxx-effects>
+        <ins>
+          Constructs an object where the <em>i</em>-th element is initialized to <code>static_cast&lt;T&gt;(mem[i])</code> for all <code>i</code> &#8714; <code>[0, size())</code>. 
+        </ins>
+        </cxx-effects>
+
+        <cxx-remarks>
+        <ins>
+          This constructor shall not participate in overload resolution unless
+
+          <bl>
+            <li>
+            <ins>
+              <code>is_simd_flag_type_v&lt;Flags&gt;</code> is <code>true</code>, and
+            </ins>
+            </li>
+
+            <li>
+            <ins>
+              <code>U</code> is a vectorizable type.
+            </ins>
+            </li>
+          </bl>
+        </ins>
+        </cxx-remarks>
+      </cxx-function>
+    </cxx-section>
   </cxx-section>
 </cxx-clause>
 
