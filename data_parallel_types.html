@@ -825,7 +825,206 @@ template&lt;class U, class Flags&gt; void copy_from(const U* mem, Flags) &&;</in
     </cxx-function>
   </cxx-section>
 
-  <cxx-section id="parallel.simd.overview">
+  <cxx-section id="parallel.simd.class">
+    <h1><ins>Class template <code>simd</code></ins></h1>
+
+    <cxx-section id="parallel.simd.overview">
+      <h1><ins>Class template <code>simd</code> overview</ins></h1>
+
+      <ins>
+      <pre>
+namespace std::experimental {
+inline namespace parallelism_v2 {
+  template&lt;class T, class Abi&gt; class simd {
+  public:
+    using value_type = T;
+    using reference = <em>see-below</em>;
+    using mask_type = simd_mask&lt;T, Abi&gt;
+    using abi_type = Abi;
+
+    static constexpr size_t size() noexcept;
+
+    simd() = default;
+
+    // implicit conversion constructor
+    template&lt;class U&gt; simd(const simd&lt;U, simd_abi::fixed_size&lt;size()&gt;&gt;&);
+
+    // implicit broadcast constructor (see below for constraints)
+    template&lt;class U&gt; simd(U&& value);
+
+    // generator constructor (see below for constraints)
+    template&lt;class G&gt; explicit simd(G&& gen);
+
+    // load constructor
+    template&lt;class U, class Flags&gt; simd(const U* mem, Flags f);
+
+    <cxx-ref insynopsis="" to="parallel.simd.load"></cxx-ref> loads
+    template&lt;class U, class Flags&gt; copy_from(const U* mem, Flags f);
+
+    <cxx-ref insynopsis="" to="parallel.simd.store"></cxx-ref> stores
+    template&lt;class U, class Flags&gt; copy_to(U* mem, Flags f);
+
+    <cxx-ref insynopsis="" to="parallel.simd.subscr"></cxx-ref> scalar access
+    reference operator[](size_t);
+    value_type operator[](size_t) const;
+
+    <cxx-ref insynopsis="" to="parallel.simd.unary"></cxx-ref> unary operators
+    simd& operator++();
+    simd operator++(int);
+    simd& operator--();
+    simd operator--(int);
+    mask_type operator!() const;
+    simd operator~() const; // see below
+    simd operator+() const;
+    simd operator-() const;
+
+    <cxx-ref insynopsis="" to="parallel.simd.binary"></cxx-ref> binary operators
+    friend simd operator+(const simd&, const simd&);
+    friend simd operator-(const simd&, const simd&);
+    friend simd operator*(const simd&, const simd&);
+    friend simd operator/(const simd&, const simd&);
+    friend simd operator%(const simd&, const simd&);
+    friend simd operator&(const simd&, const simd&);
+    friend simd operator|(const simd&, const simd&);
+    friend simd operator^(const simd&, const simd&);
+    friend simd operator&lt;&lt;(const simd&, const simd&);
+    friend simd operator&gt;&gt;(const simd&, const simd&);
+    friend simd operator&lt;&lt;(const simd&, int);
+    friend simd operator&gt;&gt;(const simd&, int);
+
+    <cxx-ref insynopsis="" to="parallel.simd.cassign"></cxx-ref> compound assignment
+    friend simd& operator+=(simd&, const simd&);
+    friend simd& operator-=(simd&, const simd&);
+    friend simd& operator*=(simd&, const simd&);
+    friend simd& operator/=(simd&, const simd&);
+    friend simd& operator%=(simd&, const simd&);
+    friend simd& operator&=(simd&, const simd&);
+    friend simd& operator|=(simd&, const simd&);
+    friend simd& operator^=(simd&, const simd&);
+    friend simd& operator&lt;&lt;=(simd&, const simd&);
+    friend simd& operator&gt;&gt;=(simd&, const simd&);
+    friend simd& operator&lt;&lt;=(simd&, int);
+    friend simd& operator&gt;&gt;=(simd&, int);
+
+    <cxx-ref insynopsis="" to="parallel.simd.comparison"></cxx-ref> compares
+    friend mask_type operator==(const simd&, const simd&);
+    friend mask_type operator!=(const simd&, const simd&);
+    friend mask_type operator&gt;=(const simd&, const simd&);
+    friend mask_type operator&lt;=(const simd&, const simd&);
+    friend mask_type operator&gt;(const simd&, const simd&);
+    friend mask_type operator&lt;(const simd&, const simd&);
+  };
+}
+}
+      </pre>
+      </ins>
+
+      <p>
+      <ins>
+        The class template <code>simd</code> is a data-parallel type. The width of a given <code>simd</code> specialization is a constant expression, determined by the template parameters.
+      </ins>
+      </p>
+
+      <p>
+      <ins>
+        Every specialization of <code>simd</code> shall be a complete type. The specialization <code>simd&lt;T, Abi&gt;</code> is supported if <code>T</code> is a vectorizable type and
+
+        <bl>
+        <li>
+        <ins>
+          <code>Abi</code> is <code>simd_abi::scalar</code>, or
+        </ins>
+        </li>
+
+        <li>
+        <ins>
+          <code>Abi</code> is <code>simd_abi::fixed_size&lt;N&gt;</code>, with <code>N</code> is constrained as defined in <cxx-ref to="parallel.simd.abi"></cxx-ref>.
+        </ins>
+        </li>
+        </bl>
+
+        <ins>
+          If <code>Abi</code> is an extended ABI tag, it is implementation-defined whether <code>simd&lt;T, Abi&gt;</code> is supported. <cxx-note>The intent is for implementations to decide on the basis of the currently targeted system.</cxx-note>
+          
+          <br><br>
+
+          If <code>simd&lt;T, Abi&gt;</code> is not supported, the specialization shall have a deleted default constructor, deleted destructor, deleted copy constructor, and deleted copy assignment.
+
+          <br><br>
+
+          <cxx-example>
+            Consider an implementation that defines the extended ABI tags <code>__simd_x</code> and <code>__gpu_y</code>. When the compiler is invoked to translate to a machine that has support for the <code>__simd_x</code> ABI tag for all arithmetic types other than <code>long double</code> and no support for the <code>__gpu_y</code> ABI tag, then:
+
+            <bl>
+              <li>
+                <code>simd&lt;T, simd_abi::__gpu_y&gt;</code> is not supported for any <code>T</code> and has a deleted constructor.
+              </li>
+
+              <li>
+                <code>simd&lt;long double, simd_abi::__simd_x&gt;</code> is not supported and has a deleted constructor.
+              </li>
+
+              <li>
+                <code>simd&lt;double, simd_abi::__simd_x&gt;</code> is supported.
+              </li>
+
+              <li>
+                <code>simd&lt;long double, simd_abi::scalar&gt;</code> is supported.
+              </li>
+            </bl>
+          </cxx-example>
+        </ins>
+      </ins>
+      </p>
+
+      <p>
+      <ins>
+        Default intialization performs no initialization of the elements; value-initialization initializes each element with <code>T()</code>. <cxx-note>Thus, default initialization leaves the elements in an indeterminate state.</cxx-note>
+      </ins>
+      </p>
+
+      <cxx-function>
+        <cxx-signature><ins>
+static constexpr size_t size() noexcept;</ins>
+        </cxx-signature>
+
+        <cxx-returns>
+        <ins>
+          The width of <code>simd&lt;T, Abi&gt;</code>.
+        </ins>
+        </cxx-returns>
+      </cxx-function>
+
+    <p>
+    <ins>
+      Implementations should enable explicit conversion from and to implementation-defined types. This adds one or more of the following declarations to class <code>simd</code>:
+
+      <br>
+      <br>
+
+      <code><ins>explicit operator <em>implementation-defined</em>() const;</ins></code>
+      <code><ins>explicit simd(const <em>implementation-defined</em>& init);</ins></code>
+
+      <br>
+      <br>
+
+      [ <em>Example:</em>
+        Consider an implementation that supports the type <code>__vec4f</code> and the function <code>__vec4f</code>, <code>_vec4f_addsub(__vec4f, __vec4f)</code> for the currently targeted system.
+        A user may require the use of <code>_vec4f_addsub</code> for maximum performance and thus writes:
+
+        <pre><ins>
+using V = simd&lt;float, simd_abi::__simd128&gt;;
+V addsub(V a, V b) {
+  return static_cast&lt;V&gt;(_vec4f_addsub(static_cast&lt;__vec4f&gt;(a), static_cast&lt;__vec4f&gt;(b)));
+}
+        </ins>
+        </pre>
+      <ins>
+      <em>&mdash; end example</em> ]
+      </ins>
+    </ins>
+    </p>
+    </cxx-section>
   </cxx-section>
 </cxx-clause>
 
