@@ -2520,6 +2520,58 @@ explicit simd_mask(const <em>implementation-defined</em>& init) const;</ins></pr
         </ins>
         </p>
       </cxx-section>
+      
+      <cxx-section id="parallel.simd.mask.ctor">
+        <h1><ins><code>simd_mask</code> constructors</ins></h1>
+
+        <cxx-function>
+          <cxx-signature><ins>explicit simd_mask(value_type x) noexcept</ins></cxx-signature>
+
+          <cxx-effects>
+          <ins>
+            Constructs an object with each element initialized to <code>x</code>.
+          </ins>
+          </cxx-effects>
+        </cxx-function>
+
+        <cxx-function>
+          <cxx-signature><ins>template&lt;class U&gt; simd_mask(const simd_mask&lt;U, simd_abi::fixed_size&lt;size()&gt;&gt;& x) noexcept;</ins></cxx-signature>
+
+          <cxx-effects>
+          <ins>
+            Constructs an object of type <code>simd_mask</code> where the <em>i</em>-th element equals <code>x[i]</code> for all <code>i</code> &#8714; <code>[0, size())</code>.
+          </ins>
+          </cxx-effects>
+
+          <cxx-remarks>
+          <ins>
+            This constructor shall not participate in overload resolution unless <code>abi_type</code> is <code>simd_abi::fixed_size&lt;size()&gt;</code>.
+          </ins>
+          </cxx-remarks>
+        </cxx-function>
+
+        <cxx-function>
+          <cxx-signature><ins>template&lt;class Flags&gt; simd_mask(const value_type* mem, Flags);</ins></cxx-signature>
+
+          <cxx-requires>
+          <ins>
+            If the template parameter <code>Flags</code> is <code>vector_aligned_tag</code>, <code>mem</code> shall point to storage aligned by <code>memory_alignment_v&lt;simd_mask&gt;</code>. If the template parameter <code>Flags</code> is <code>overaligned_tag&lt;N&gt;</code>, <code>mem</code> shall point to storage aligned by <code>N</code>. If the template parameter <code>Flags</code> is <code>element_aligned_tag</code>, <code>mem</code> shall point to storage aligned by <code>alignof(U)</code>. <code>[mem, mem + size())</code> is a valid range.
+          </ins>
+          </cxx-requires>
+
+          <cxx-effects>
+          <ins>
+            Constructs an object where the <em>i</em>-th element is initialized to <code>mem[i]</code> for all <code>i</code> &#8714; <code>[0, size())</code>. 
+          </ins>
+          </cxx-effects>
+
+          <cxx-remarks>
+          <ins>
+            This constructor shall not participate in overload resolution unless <code>is_simd_flag_type_v&lt;Flags&gt;</code> is <code>true</code>.
+          </ins>
+          </cxx-remarks>
+        </cxx-function>
+      </cxx-section>
     </cxx-section>
   </cxx-section>
 </cxx-clause>
