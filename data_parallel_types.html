@@ -2396,6 +2396,131 @@ clamp(const simd&lt;T, Abi&gt;& v, const simd&lt;T, Abi&gt;& lo, const simd&lt;T
       </ins>
       </p>
     </cxx-section>
+
+    <cxx-section id="parallel.simd.mask.class">
+      <h1><ins>Class template <code>simd_mask</code></ins></h1>
+
+      <cxx-section id="parallel.simd.mask.overview">
+        <h1><ins>Class template <code>simd_mask</code> overview</ins></h1>
+
+        <pre>
+        <ins>
+namespace std::experimental {
+inline namespace parallelism_v2 {
+  template&lt;class T, class Abi&gt; class simd_mask {
+  public:
+    using value_type = bool;
+    using reference = <em>see-below</em>;
+    using simd_type = simd&lt;T, Abi&gt;;
+    using abi_type = Abi;
+
+    static constexpr size_t size() noexcept;
+
+    simd_mask() = default;
+
+    // broadcast constructor
+    explicit simd_mask(value_type) noexcept;
+
+    // implicit type conversion constructor
+    template&lt;class U&gt; simd_mask(const simd_mask&lt;U, simd_abi::fixed_size&lt;size()&gt;&gt;&) noexcept;
+
+    // load constructor
+    template&lt;class Flags&gt; simd_mask(const value_Type* mem, Flags);
+
+    <cxx-ref insynopsis="" to="parallel.simd.mask.copy"></cxx-ref> loads
+    template&lt;class Flags&gt; void copy_from(const value_type* mem, Flags);
+    template&lt;class Flags&gt; void copy_to(value_type* mem, Flags);
+
+    <cxx-ref insynopsis="" to="parallel.simd.mask.subscr"></cxx-ref> scalar access
+    reference operator[](size_t);
+    value_type operator[](size_t) const;
+
+    <cxx-ref insynopsis="" to="parallel.simd.mask.unary"></cxx-ref> unary operators
+    simd_mask operator!() const noexcept;
+    
+    <cxx-ref insynopsis="" to="parallel.simd.mask.binary"></cxx-ref> simd_mask binary operators
+    friend simd_mask operator&&(const simd_mask&, const simd_mask&) noexcept;
+    friend simd_mask operator||(const simd_mask&, const simd_mask&) noexcept;
+    friend simd_mask operator&(const simd_mask&, const simd_mask&) noexcept;
+    friend simd_mask operator|(const simd_mask&, const simd_mask&) noexcept;
+    friend simd_mask operator^(const simd_mask&, const simd_mask&) noexcept;
+
+    <cxx-ref insynopsis="" to="parallel.simd.mask.cassign"></cxx-ref> simd_mask compound assignment
+    friend simd_mask& operator&=(simd_mask&, const simd_mask&) noexcept;
+    friend simd_mask& operator|=(simd_mask&, const simd_mask&) noexcept;
+    friend simd_mask& operator^=(simd_mask&, const simd_mask&) noexcept;
+
+    <cxx-ref insynopsis="" to="parallel.simd.mask.comparison"></cxx-ref> simd_mask compares
+    friend simd_mask operator==(const simd_mask&, const simd_mask&) noexcept;
+    friend simd_mask operator!=(const simd_mask&, const simd_mask&) noexcept;
+  };
+}
+}</ins></pre>
+
+        <p>
+        <ins>
+          The class template <code>simd_mask</code> is a data-parallel type with the element type <code>bool</code>. The width of a given <code>simd_mask</code> specialization is a constant expression, determined by the template parameters. Specifically, <code>simd_mask&lt;T, Abi&gt;::size() == simd&lt;T, Abi&gt;::size()</code>.
+        </ins>
+        </p>
+
+        <p>
+        <ins>
+          Every specialization of <code>simd_mask</code> shall be a complete type. The specialization <code>simd_mask&lt;T, Abi&gt;</code> is supported if <code>T</code> is a vectorizable type and
+
+          <bl>
+            <li>
+            <ins>
+              <code>Abi</code> is <code>simd_abi::scalar</code>, or
+            </ins>
+            </li>
+
+            <li>
+            <ins>
+              <code>Abi</code> is <code>simd_abi::fixed_size&lt;N&gt;</code>, with <code>N</code> constrained as defined in <a href="#parallel.simd.abi">[parallel.simd.abi]</a>.
+            </ins>
+            </li>
+          </bl>
+
+          <ins>
+          If <code>Abi</code> is an extended ABI tag, it is implementation-defined whether <code>simd_mask&lt;T, Abi&gt;</code> is supported. <cxx-note>The intent is for implementations to decide on the basis of the currently targeted system.</cxx-note>
+          If <code>simd_mask&lt;T, Abi&gt;</code> is not supported, the specialization shall have a deleted default constructor, deleted destructor, deleted copy constructor, and deleted copy assignment.
+          </ins>
+        </ins>
+        <br>
+
+        <p>
+        <ins>
+          Default initialization performs no intialization of the elements; value-initialization initializes each element with <code>false</code>. <cxx-note>Thus, default initialization leaves the elements in an indeterminate state.</cxx-note>
+        </ins>
+        </p>
+
+        <cxx-function>
+          <cxx-signature><ins>static constexpr size_t size() noexcept;</ins></cxx-signature>
+
+          <cxx-returns>
+          <ins>
+            The width of <code>simd&lt;T, Abi&gt;</code>.
+          </ins>
+          </cxx-returns>
+        </cxx-function>
+
+        <p>
+        <ins>
+          Implementations should enable explicit conversion from and to implementation-defined types. This adds one or more of the following declarations to class <code>simd_mask</code>:
+
+          <pre>
+          <ins>
+explicit operator <em>implementation-defined</em>() const;
+explicit simd_mask(const <em>implementation-defined</em>& init) const;</ins></pre>
+        <br>
+
+        <p>
+        <ins>
+          The member type <code>reference</code> has the same interface as <code>simd&lt;T, Abi&gt;::reference</code>, except its <code>value_type</code> is <code>bool</code>. (<a href="#parallel.simd.reference">[parallel.simd.reference]</a>)
+        </ins>
+        </p>
+      </cxx-section>
+    </cxx-section>
   </cxx-section>
 </cxx-clause>
 
