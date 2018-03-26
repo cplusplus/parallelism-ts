@@ -2258,6 +2258,77 @@ simd_mask&lt;T, simd_abi::deduce_t&lt;T, (simd_size_v&lt;T, Abis&gt; + ...)&gt;&
           </cxx-returns>
         </cxx-function>
       </cxx-section>
+
+      <cxx-section id="parallel.simd.alg">
+        <h1><ins><code>simd</code> algorithms</ins></h1>
+
+        <cxx-function>
+          <cxx-signature><ins>template&lt;class T, class Abi&gt; simd&lt;T, Abi&gt; min(const simd&lt;T, Abi&gt;& a, const simd&lt;T, Abi&gt;& b) noexcept;</ins></cxx-signature>
+
+          <cxx-returns>
+          <ins>
+            The result of the element-wise application of <code>std::min(a[i], b[i])</code> for all <code>i</code> &#8714; <code>[0, size())</code>.
+          </ins>
+          </cxx-returns>
+        </cxx-function>
+
+        <cxx-function>
+          <cxx-signature><ins>template&lt;class T, class Abi&gt; simd&lt;T, Abi&gt; max(const simd&lt;T, Abi&gt;& a, const simd&lt;T, Abi&gt;& b) noexcept;</ins></cxx-signature>
+
+          <cxx-returns>
+          <ins>
+            The result of the element-wise application of <code>std::max(a[i], b[i])</code> for all <code>i</code> &#8714; <code>[0, size())</code>.
+          </ins>
+          </cxx-returns>
+        </cxx-function>
+
+        <cxx-function>
+          <cxx-signature><ins>
+template&lt;class T, class Abi&gt;
+pair&lt;simd&lt;T, Abi&gt;, simd&lt;T, Abi&gt;&gt; minmax(const simd&lt;T, Abi&gt;& a, const simd&lt;T, Abi&gt;& b) noexcept;</ins></cxx-signature>
+
+          <cxx-returns>
+          <ins>
+            A pair initialized with
+
+            <bl>
+              <li>
+              <ins>
+                the result of element-wise application of <code>std::min(a[i], b[i])</code> for all <code>i</code> &#8714; <code>[0, size())</code> in the <code>first</code> member, and
+
+              </ins>
+              </li>
+
+              <li>
+              <ins>
+                the result of element-wise application of <code>std::max(a[i], b[i])</code> for all <code>i</code> &#8714; <code>[0, size())</code> in the <code>second</code> member, and
+
+              </ins>
+              </li>
+            </bl>
+          </ins>
+          </cxx-returns>
+        </cxx-function>
+
+        <cxx-function>
+          <cxx-signature><ins>
+template&lt;class T, class Abi&gt; simd&lt;T, Abi&gt;
+clamp(const simd&lt;T, Abi&gt;& v, const simd&lt;T, Abi&gt;& lo, const simd&lt;T, Abi&gt;& hi);</ins></cxx-signature>
+
+          <cxx-requires>
+          <ins>
+            No element in <code>lo</code> shall be greater than the corresponding element in <code>hi</code>.
+          </ins>
+          </cxx-requires>
+
+          <cxx-returns>
+          <ins>
+            The result of element-wise application of <code>std::clamp(v[i], lo[i], hi[i])</code> for all <code>i</code> &#8714; <code>[0, size())</code>.
+
+          </ins>
+          </cxx-returns>
+        </cxx-function>
+      </cxx-section>
     </cxx-section>
   </cxx-section>
 </cxx-clause>
