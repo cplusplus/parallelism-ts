@@ -1464,6 +1464,174 @@ friend void swap(reference&& a, value_type& b) noexcept;</ins>
         </cxx-throws>
       </cxx-function>
     </cxx-section>
+
+    <cxx-section id="parallel.simd.unary">
+      <h1><ins><code>simd</code> unary operators</ins></h1>
+
+      <p>
+      <ins>
+        Effects in this subclause are applied as unary element-wise operations.
+      </ins>
+      </p>
+
+      <cxx-function>
+        <cxx-signature><ins>simd& operator++();</ins></cxx-signature>
+
+        <cxx-effects>
+        <ins>
+          Increments every element by one.
+        </ins>
+        </cxx-effects>
+
+        <cxx-returns>
+        <ins>
+          <code>*this</code>.
+        </ins>
+        </cxx-returns>
+
+        <cxx-throws>
+        <ins>
+          Nothing.
+        </ins>
+        </cxx-throws>
+      </cxx-function>
+
+      <cxx-function>
+        <cxx-signature><ins>simd operator++(int);</ins></cxx-signature>
+
+        <cxx-effects>
+        <ins>
+          Increments every element by one.
+        </ins>
+        </cxx-effects>
+
+        <cxx-returns>
+        <ins>
+          A copy of <code>*this</code> before incrementing.
+        </ins>
+        </cxx-effects>
+
+        <cxx-throws>
+        <ins>
+          Nothing.
+        </ins>
+        </cxx-throws>
+      </cxx-function>
+
+      <cxx-function>
+        <cxx-signature><ins>simd& operator--();</ins></cxx-signature>
+
+        <cxx-effects>
+        <ins>
+          Decrements every element by one.
+        </ins>
+        </cxx-effects>
+
+        <cxx-returns>
+        <ins>
+          <code>*this</code>.
+        </ins>
+        </cxx-returns>
+
+        <cxx-throws>
+        <ins>
+          Nothing.
+        </ins>
+        </cxx-throws>
+      </cxx-function>
+
+      <cxx-function>
+        <cxx-signature><ins>simd operator--(int);</ins></cxx-signature>
+
+        <cxx-effects>
+        <ins>
+          Decrements every element by one.
+        </ins>
+        </cxx-effects>
+
+        <cxx-returns>
+        <ins>
+          A copy of <code>*this</code> before decrementing.
+        </ins>
+        </cxx-effects>
+
+        <cxx-throws>
+        <ins>
+          Nothing.
+        </ins>
+        </cxx-throws>
+      </cxx-function>
+
+      <cxx-function>
+        <cxx-signature><ins>mask_type operator!() const;</ins></cxx-signature>
+
+        <cxx-returns>
+        <ins>
+          A <code>simd_mask</code> object with the <em>i</em>-th element set to <code>!operator[](i)</code> for all <code>i</code> &#8714; <code>[0, size())</code>. 
+        </ins>
+        </cxx-returns>
+
+        <cxx-throws>
+          <ins>
+            Nothing.
+          </ins>
+        </cxx-throws>
+      </cxx-function>
+
+      <cxx-function>
+        <cxx-signature><ins>simd operator~() const;</ins></cxx-signature>
+
+        <cxx-returns>
+        <ins>
+          A <code>simd</code> object where each bit is the inverse of the corresponding bit in <code>*this</code>.
+        </ins>
+        </cxx-returns>
+
+        <cxx-throws>
+        <ins>
+          Nothing.
+        </ins>
+        </cxx-throws>
+
+        <cxx-remarks>
+        <ins>
+          <code>simd::operator~()</code> shall not participate in overload resolution unless <code>T</code> is an integral type.
+        </ins>
+        </cxx-remarks>
+      </cxx-function>
+
+      <cxx-function>
+        <cxx-signature><ins>simd operator+() const;</ins></cxx-signature>
+
+        <cxx-returns>
+        <ins>
+          <code>*this</code>.
+        </ins>
+        </cxx-returns>
+
+        <cxx-throws>
+        <ins>
+          Nothing.
+        </ins>
+        </cxx-throws>
+      </cxx-function>
+
+      <cxx-function>
+        <cxx-signature><ins>simd operator-() const;</ins></cxx-signature>
+
+        <cxx-returns>
+        <ins>
+          A <code>simd</code> object where the <em>i</em>-th element is initialized to <code>-operator[](i)</code> for all <code>i</code> &#8714; <code>[0, size())</code>.
+        </ins>
+        </cxx-returns>
+
+        <cxx-throws>
+        <ins>
+          Nothing.
+        </ins>
+        </cxx-throws>
+      </cxx-function>
+    </cxx-section>
   </cxx-section>
 </cxx-clause>
 
