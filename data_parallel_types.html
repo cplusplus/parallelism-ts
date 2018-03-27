@@ -2732,6 +2732,21 @@ friend simd_mask& operator^=(simd_mask& lhs, const simd_mask& rhs) noexcept;
         </cxx-returns>
       </cxx-function>
     </cxx-section>
+    
+    <cxx-section id="parallel.simd.mask.comparison">
+      <cxx-function>
+        <cxx-signature><ins>
+friend simd_mask operator==(const simd_mask&, const simd_mask&) noexcept;
+friend simd_mask operator!=(const simd_mask&, const simd_mask&) noexcept;
+</ins></cxx-signature>
+
+        <cxx-returns>
+        <ins>
+          An object initialized with the results of the element-wise application of the indicated operator.
+        </ins>
+        </cxx-returns>
+      </cxx-function>
+    </cxx-section>
   </cxx-section>
 </cxx-clause>
 
