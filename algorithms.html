@@ -127,7 +127,7 @@ namespace execution {
 
 // Exposition only: Suppress template argument deduction.
 template&lt;class T&gt; struct no_deduce { using type = T; };
-template&lt;class T&gt; struct no_dedu<ins>c</ins><del>d</del>e_t = typename no_deduce&lt;T&gt;::type;
+template&lt;class T&gt; using no_deduce_t = typename no_deduce&lt;T&gt;::type;
 
 <cxx-ref insynopsis="" to="parallel.alg.reductions"></cxx-ref> Support for reductions
 template&lt;class T, class BinaryOperation&gt;
@@ -465,7 +465,7 @@ void for_loop_n_strided(ExecutionPolicy&amp;&amp; exec,
 auto no_vec(F&amp;&amp; f) noexcept -&gt; decltype(std::forward&lt;F&gt;(f)());</cxx-signature>
 
         <cxx-effects>
-          Evaluates <code>std::forward&gt;F&lt;(f)()</code>. When invoked within an element access function
+          Evaluates <code>std::forward&lt;F&gt;(f)()</code>. When invoked within an element access function
           in a parallel algorithm using <code>vector_policy</code>, if two calls to <code>no_vec</code> are
           horizontally matched within a wavefront application of an element access function over input
           sequence S, then the execution of <code>f</code> in the application for one element in S is
@@ -502,6 +502,7 @@ for_loop(vec, 0, n[&amp;](int i) {
       <h1>Ordered update class</h1>
 
 <pre>
+template&lt;class T&gt;
 class ordered_update_t {
   T&amp; ref_; // exposition only
 public:
