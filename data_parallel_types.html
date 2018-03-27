@@ -242,11 +242,11 @@ namespace simd_abi {
 
       <p>
       <ins>
-        Use of the <code>simd_abi::fixed_size&lt;N&gt;</code> tag type requires data-parallel types to store <code>N</code> elements (i.e. <code>simd&lt;T, simd_abi::fixed_size&lt;N&gt;&gt;::size()</code> is <code>N</code>). <code>simd&lt;T, fixed_size&lt;N&gt;&gt;</code> and <code>simd_mask&lt;T, fixed_size&lt;N&gt;&gt;</code> with <code>N &gt; 0</code> and <code>N &lt;= max_fixed_size&lt;T&gt;</code> is supported. Additionally, for every supported <code>simd&lt;T, Abi&gt;</code> (see <cxx-ref to="parallel.simd.overview"></cxx-ref>), where <code>Abi</code> is an ABI tag is not a specialization of <code>simd_abi::fixed_size</code>, <code>N == simd&lt;T, Abi&gt;::size()</code> is true.
+        Use of the <code>simd_abi::fixed_size&lt;N&gt;</code> tag type requires data-parallel types to store <code>N</code> elements (i.e. <code>simd&lt;T, simd_abi::fixed_size&lt;N&gt;&gt;::size()</code> is <code>N</code>). <code>simd&lt;T, fixed_size&lt;N&gt;&gt;</code> and <code>simd_mask&lt;T, fixed_size&lt;N&gt;&gt;</code> with <code>N &gt; 0</code> and <code>N &lt;= max_fixed_size&lt;T&gt;</code> shall be supported. Additionally, for every supported <code>simd&lt;T, Abi&gt;</code> (see <cxx-ref to="parallel.simd.overview"></cxx-ref>), where <code>Abi</code> is an ABI tag that is not a specialization of <code>simd_abi::fixed_size</code>, <code>N == simd&lt;T, Abi&gt;::size()</code> shall be supported.
 
         <cxx-note>It is unspecified whether <code>simd&lt;T, fixed_size&lt;T, fixed_size&lt;N&gt;&gt;</code> with <code>N &gt; max_fixed_size&lt;T&gt;</code> is supported. The value of <code>max_fixed_size&lt;T&gt;</code> can depend on compiler flags and can change between different compiler versions.</cxx-note>
 
-        <cxx-note>An implementation may forego ABI compatibility between differently compiled translation units for <code>simd</code> and <code>simd_mask</code> specializations using the same <code>simd_abi::fixed_size&lt;N&gt;</code> tag. Otherwise, the efficiency of <code>simd&lt;T, Abi&gt;</code> is likely to be better than for <code>simd&lt;T, fixed_size&lt;simd_size_v&lt;T, Abi&gt;&gt;&gt;</code> (with <code>Abi</code> not a specialization of <code>simd_abi::fixed_size</code>).</cxx-note>
+        <cxx-note>An implementation can forego ABI compatibility between differently compiled translation units for <code>simd</code> and <code>simd_mask</code> specializations using the same <code>simd_abi::fixed_size&lt;N&gt;</code> tag. Otherwise, the efficiency of <code>simd&lt;T, Abi&gt;</code> is likely to be better than for <code>simd&lt;T, fixed_size&lt;simd_size_v&lt;T, Abi&gt;&gt;&gt;</code> (with <code>Abi</code> not a specialization of <code>simd_abi::fixed_size</code>).</cxx-note>
       </ins>
       </p>
 
@@ -263,23 +263,26 @@ namespace simd_abi {
         <br>
         <br>
 
-        <cxx-example>
-          Consider a target architecture supporting the extended ABI tags <code>__simd128</code> and <code>__simd256</code>, where the <code>__simd256</code> type requires an optional ISA extension on said architecture. Also, the target architecture does not support <code>long double</code> with either ABI tag. The implementation therefore defines
 
-          <bl> 
-            <li>
-            <ins>
-              <code>compatible&lt;T&gt;</code> as an alias for <code>__simd128</code> for all vectorizable <code>T</code>, except <code>long double</code>, and
-            </ins>
-            </li>
+        [ <em>Example:</em> Consider a target architecture supporting the extended ABI tags <code>__simd128</code> and <code>__simd256</code>, where the <code>__simd256</code> type requires an optional ISA extension on said architecture. Also, the target architecture does not support <code>long double</code> with either ABI tag. The implementation therefore defines
 
-            <li>
-            <ins>
-              <code>compatible&lt;long double&gt;</code> as an alias for <code>scalar</code>.
-            </ins>
-            </li>
-          </bl>
-        </cxx-example>
+        <bl> 
+          <li>
+          <ins>
+            <code>compatible&lt;T&gt;</code> as an alias for <code>__simd128</code> for all vectorizable <code>T</code>, except <code>long double</code>, and
+          </ins>
+          </li>
+
+          <li>
+          <ins>
+            <code>compatible&lt;long double&gt;</code> as an alias for <code>scalar</code>.
+          </ins>
+          </li>
+        </bl>
+
+        <ins>
+        <em>&mdash; end example</em> ]
+        </ins>
       </ins>
       </p>
 
@@ -290,8 +293,7 @@ namespace simd_abi {
         <br>
         <br>
 
-        <cxx-example>
-          Consider a target architecture supporting the extended ABI tags <code>__simd128</code> and <code>__simd256</code>, where hardware support for <code>__simd256</code> only exists for floating-point types. The implementation therefore defines <code>native&lt;T&gt;</code> as an alias for
+        [ <em>Example:</em> Consider a target architecture supporting the extended ABI tags <code>__simd128</code> and <code>__simd256</code>, where hardware support for <code>__simd256</code> only exists for floating-point types. The implementation therefore defines <code>native&lt;T&gt;</code> as an alias for
 
           <bl>
             <li>
@@ -306,7 +308,9 @@ namespace simd_abi {
             </ins>
             </li>
           </bl>
-        </cxx-example>
+        <ins>
+        <em>&mdash; end example</em> ]
+        </ins>
       </ins>
       </p>
 
@@ -326,7 +330,7 @@ namespace simd_abi {
 
       <p>
       <ins>
-        The member <code>type</code> is present if and only if
+        The member <code>type</code> shall be present if and only if
 
         <bl>
           <li>
@@ -381,7 +385,7 @@ namespace simd_abi {
       <h1><ins><code>simd</code> type traits</ins></h1>
 
       <ins>
-      <code>template&lt;class&gt; struct is_abi_tag { <em>see-below</em> };</code>
+      <code>template&lt;class T&gt; struct is_abi_tag { <em>see-below</em> };</code>
       </ins>
 
       <p>
@@ -397,7 +401,7 @@ namespace simd_abi {
       </p>
 
       <ins>
-      <code>template&lt;class&gt; struct is_simd { <em>see-below</em> };</code>
+      <code>template&lt;class T&gt; struct is_simd { <em>see-below</em> };</code>
       </ins>
 
       <p>
@@ -411,6 +415,8 @@ namespace simd_abi {
         The behavior of a program that adds specializations for <code>is_simd</code> is undefined.
       </ins>
       </p>
+
+      <ins><code>template&lt;class T&gt; struct is_simd_mask { <em>see-below</em> };</code></ins>
 
       <p>
       <ins>
@@ -472,7 +478,7 @@ namespace simd_abi {
 
       <p>
       <ins>
-        <code>simd_size&lt;T, Abi&gt;</code> has a member <code>value</code> if and only if
+        <code>simd_size&lt;T, Abi&gt;</code> shall have a member <code>value</code> if and only if
 
         <bl>
           <li>
@@ -516,7 +522,7 @@ namespace simd_abi {
 
       <p>
       <ins>
-        <code>memory_alignment&lt;T, U&gt;</code> has a member <code>value</code> if and only if
+        <code>memory_alignment&lt;T, U&gt;</code> shall have a member <code>value</code> if and only if
       </ins>
 
         <bl>
@@ -614,7 +620,7 @@ inline namespace parallelism_v2 {
   
       <p>
       <ins>
-        In this subclause, <code>data[0]</code> is used interchangably for <code>data</code>, <code>mask[0]</code> is used interchangably for <code>mask</code>, and <code>M::size()</code> is used interchangably for <code>1</code>.
+        In this subclause, if <code>M</code> is <code>bool</code>, <code>data[0]</code> is used interchangably for <code>data</code>, <code>mask[0]</code> is used interchangably for <code>mask</code>, and <code>M::size()</code> is used interchangably for <code>1</code>.
       </ins>
       </p>
   
@@ -626,7 +632,7 @@ inline namespace parallelism_v2 {
   
       <p>
       <ins>
-        In this subclause, the <code>value_type</code> is an alias for <code>T</code> if <code>M</code> is <code>bool</code>, or an alias for <code>typename T::value_type</code> if <code>is_simd_mask_v&lt;M&gt;</code> is <code>true</code>.
+        In this subclause, the type <code>value_type</code> is an alias for <code>T</code> if <code>M</code> is <code>bool</code>, or an alias for <code>typename T::value_type</code> if <code>is_simd_mask_v&lt;M&gt;</code> is <code>true</code>.
       </ins>
       <p>
   
@@ -662,15 +668,11 @@ inline namespace parallelism_v2 {
       </cxx-function>
   
       <cxx-function>
-        <cxx-signature>
-        <ins>
-          template&lt;class U, class Flags&gt; void copy_to(U* mem, Flags) const &&;
-        </ins>
-        </cxx-signature>
+        <cxx-signature><ins>template&lt;class U, class Flags&gt; void copy_to(U* mem, Flags) const &&;</ins></cxx-signature>
   
         <cxx-requires>
         <ins>
-          If the template parameter <code>Flags</code> is <code>vector_aligned_tag</code>, <code>mem</code> shall point to storage aligned by <code>memory_alignment_v&lt;T, U&gt;</code>. If the template parameter <code>flags</code> is <code>overaligned_tag&lt;N&gt;</code>, <code>mem</code> shall point to storage aligned by <code>N</code>. If the template parameter <code>Flags</code> is <code>element_aligned_tag</code>, <code>mem</code> shall point to storage aligned by <code>alignof(U)</code>. If <code>M</code> is not <code>bool</code>, the largest <em>i</em> &#8714; <code>[0, M::size())</code> where <code>mask[i]</code> is <code>true</code> is less than the number of values pointed to by <code>mem</code>.
+          If the template parameter <code>Flags</code> is <code>vector_aligned_tag</code>, <code>mem</code> shall point to storage aligned by <code>memory_alignment_v&lt;T, U&gt;</code>. If the template parameter <code>Flags</code> is <code>overaligned_tag&lt;N&gt;</code>, <code>mem</code> shall point to storage aligned by <code>N</code>. If the template parameter <code>Flags</code> is <code>element_aligned_tag</code>, <code>mem</code> shall point to storage aligned by <code>alignof(U)</code>. If <code>M</code> is not <code>bool</code>, the largest <em>i</em> &#8714; <code>[0, M::size())</code> where <code>mask[i]</code> is <code>true</code> is less than the number of values pointed to by <code>mem</code>.
         </ins>
         </cxx-requires>
   
@@ -789,7 +791,7 @@ template&lt;class U, class Flags&gt; void copy_from(const U* mem, Flags) &&;</in
   
         <cxx-requires>
         <ins>
-          If the template parameter <code>Flags</code> is <code>vector_aligned_tag</code>, <code>mem</code> shall point to storage aligned by <code>memory_alignment_v&lt;T, U&gt;</code>. If the template parameter <code>Flags</code> is <code>overaligned_tag&lt;N&gt;</code>, <code>mem</code> shall point to storage aligned by <code>N</code>. If the template parameter <code>Flags</code> is <code>element_aligned_tag</code>, <code>mem</code> shall point to storage aligned by <code>alignon(U)</code>. If <code>is_simd_flag_type_v&lt;U&gt;</code> is <code>true</code>, for all selected indices <em>i</em>, <em>i</em> shall be less than the number of values pointed to by <code>mem</code>.
+          If the template parameter <code>Flags</code> is <code>vector_aligned_tag</code>, <code>mem</code> shall point to storage aligned by <code>memory_alignment_v&lt;T, U&gt;</code>. If the template parameter <code>Flags</code> is <code>overaligned_tag&lt;N&gt;</code>, <code>mem</code> shall point to storage aligned by <code>N</code>. If the template parameter <code>Flags</code> is <code>element_aligned_tag</code>, <code>mem</code> shall point to storage aligned by <code>alignof(U)</code>. If <code>is_simd_flag_type_v&lt;U&gt;</code> is <code>true</code>, for all selected indices <em>i</em>, <em>i</em> shall be less than the number of values pointed to by <code>mem</code>.
         </ins>
         </cxx-requires>
   
@@ -861,27 +863,25 @@ inline namespace parallelism_v2 {
     // load constructor
     template&lt;class U, class Flags&gt; simd(const U* mem, Flags f);
 
-    <cxx-ref insynopsis="" to="parallel.simd.load"></cxx-ref> loads
+    <cxx-ref insynopsis="" to="parallel.simd.copy"></cxx-ref>
     template&lt;class U, class Flags&gt; copy_from(const U* mem, Flags f);
-
-    <cxx-ref insynopsis="" to="parallel.simd.store"></cxx-ref> stores
     template&lt;class U, class Flags&gt; copy_to(U* mem, Flags f);
 
-    <cxx-ref insynopsis="" to="parallel.simd.subscr"></cxx-ref> scalar access
+    <cxx-ref insynopsis="" to="parallel.simd.subscr"></cxx-ref>
     reference operator[](size_t);
     value_type operator[](size_t) const;
 
-    <cxx-ref insynopsis="" to="parallel.simd.unary"></cxx-ref> unary operators
+    <cxx-ref insynopsis="" to="parallel.simd.unary"></cxx-ref>
     simd& operator++();
     simd operator++(int);
     simd& operator--();
     simd operator--(int);
     mask_type operator!() const;
-    simd operator~() const; // see below
+    simd operator~() const;
     simd operator+() const;
     simd operator-() const;
 
-    <cxx-ref insynopsis="" to="parallel.simd.binary"></cxx-ref> binary operators
+    <cxx-ref insynopsis="" to="parallel.simd.binary"></cxx-ref>
     friend simd operator+(const simd&, const simd&);
     friend simd operator-(const simd&, const simd&);
     friend simd operator*(const simd&, const simd&);
@@ -895,7 +895,7 @@ inline namespace parallelism_v2 {
     friend simd operator&lt;&lt;(const simd&, int);
     friend simd operator&gt;&gt;(const simd&, int);
 
-    <cxx-ref insynopsis="" to="parallel.simd.cassign"></cxx-ref> compound assignment
+    <cxx-ref insynopsis="" to="parallel.simd.cassign"></cxx-ref>
     friend simd& operator+=(simd&, const simd&);
     friend simd& operator-=(simd&, const simd&);
     friend simd& operator*=(simd&, const simd&);
@@ -909,7 +909,7 @@ inline namespace parallelism_v2 {
     friend simd& operator&lt;&lt;=(simd&, int);
     friend simd& operator&gt;&gt;=(simd&, int);
 
-    <cxx-ref insynopsis="" to="parallel.simd.comparison"></cxx-ref> compares
+    <cxx-ref insynopsis="" to="parallel.simd.comparison"></cxx-ref>
     friend mask_type operator==(const simd&, const simd&);
     friend mask_type operator!=(const simd&, const simd&);
     friend mask_type operator&gt;=(const simd&, const simd&);
@@ -1012,7 +1012,7 @@ static constexpr size_t size() noexcept;</ins>
       <br>
 
       [ <em>Example:</em>
-        Consider an implementation that supports the type <code>__vec4f</code> and the function <code>__vec4f</code>, <code>_vec4f_addsub(__vec4f, __vec4f)</code> for the currently targeted system.
+        Consider an implementation that supports the type <code>__vec4f</code> and the function <code>__vec4f _vec4f_addsub(__vec4f, __vec4f)</code> for the currently targeted system.
         A user may require the use of <code>_vec4f_addsub</code> for maximum performance and thus writes:
 
         <pre><ins>
@@ -1139,7 +1139,7 @@ template&lt;class U&gt; reference operator&gt;&gt;=(U&& x) &&;</ins>
 
         <cxx-remarks>
         <ins>
-          This function shall not participate in overload resolution unless <code>declval&lt;value_type &&&gt;() @= std::forward&lt;U&gt;(x)</code> (where <code>@=</code> denotes the indicated compound assignment operator) is well-formed.
+          This function shall not participate in overload resolution unless <code>declval&lt;value_type &&gt;() @= std::forward&lt;U&gt;(x)</code> (where <code>@=</code> denotes the indicated compound assignment operator) is well-formed.
         </ins>
         </cxx-remarks>
       </cxx-function>
@@ -1320,7 +1320,7 @@ friend void swap(reference&& a, value_type& b) noexcept;</ins>
 
         <cxx-requires>
         <ins>
-          If the template parameter <code>Flags</code> is <code>vector_aligned_tag</code>, <code>mem</code> shall point to storage aligend by <code>memory_alignment_v&lt;simd, U&gt;</code>. If the template parameter <code>Flags</code> is <code>overaligned_tag&lt;N&gt;</code>, <code>mem</code> shall point to storage aligned by <code>N</code>. If the template parameter <code>Flags</code> is <code>element_aligned_tag</code>, <code>mem</code> shall point to storage aligned by <code>alignon(U)</code>. <code>[mem, mem + size())</code> is a valid range.
+          If the template parameter <code>Flags</code> is <code>vector_aligned_tag</code>, <code>mem</code> shall point to storage aligend by <code>memory_alignment_v&lt;simd, U&gt;</code>. If the template parameter <code>Flags</code> is <code>overaligned_tag&lt;N&gt;</code>, <code>mem</code> shall point to storage aligned by <code>N</code>. If the template parameter <code>Flags</code> is <code>element_aligned_tag</code>, <code>mem</code> shall point to storage aligned by <code>alignof(U)</code>. <code>[mem, mem + size())</code> is a valid range.
         </ins>
         </cxx-requires>
 
@@ -1360,7 +1360,7 @@ friend void swap(reference&& a, value_type& b) noexcept;</ins>
 
         <cxx-requires>
         <ins>
-          If the template parameter <code>Flags</code> is <code>vector_aligned_tag</code>, <code>mem</code> shall point to storage aligned by <code>memory_alignment_v&lt;simd, U&gt;</code>. If the template parameter <code>Flags</code> is <code>overaligned_tag&lt;N&gt;</code>, <code>mem</code> shall point to storage aligend by <code>N</code>. If the template parameter <code>Flags</code> is <code>element_aligned_tag</code>, <code>mem</code> shall point to storage aligned by <code>alignonf(U)</code>. <code>[mem, mem + size())</code> is a valid range.
+          If the template parameter <code>Flags</code> is <code>vector_aligned_tag</code>, <code>mem</code> shall point to storage aligned by <code>memory_alignment_v&lt;simd, U&gt;</code>. If the template parameter <code>Flags</code> is <code>overaligned_tag&lt;N&gt;</code>, <code>mem</code> shall point to storage aligend by <code>N</code>. If the template parameter <code>Flags</code> is <code>element_aligned_tag</code>, <code>mem</code> shall point to storage aligned by <code>alignof(U)</code>. <code>[mem, mem + size())</code> is a valid range.
         </ins>
         </cxx-requires>
 
@@ -1775,6 +1775,12 @@ friend mask_type operator&lt;(const simd&, const simd&);
 
     <cxx-section id="parallel.simd.reductions">
       <h1><ins><code>simd</code> reductions</ins></h1>
+
+      <p>
+      <ins>
+        In this subclause, <code>BinaryOperation</code> shall be a binary element-wise operation.
+      </ins>
+      </p>
 
       <cxx-function>
         <cxx-signature><ins>
