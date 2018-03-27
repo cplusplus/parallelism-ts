@@ -2747,6 +2747,137 @@ friend simd_mask operator!=(const simd_mask&, const simd_mask&) noexcept;
         </cxx-returns>
       </cxx-function>
     </cxx-section>
+
+    <cxx-section id="parallel.simd.mask.reductions">
+      <cxx-function>
+        <cxx-signature><ins>template&lt;class T, class Abi&gt; bool all_of(const simd_mask&lt;T, abi&gt;& k) noexcept;</ins></cxx-signature>
+
+        <cxx-returns>
+        <ins>
+          <code>true</code> if all boolean elements in <code>k</code> are <code>true</code>, <code>false</code> otherwise.
+        </ins>
+        </cxx-returns>
+      </cxx-function>
+
+      <cxx-function>
+        <cxx-signature><ins>template&lt;class T, class Abi&gt; bool any_of(const simd_mask&lt;T, abi&gt;& k) noexcept;</ins></cxx-signature>
+
+        <cxx-returns>
+        <ins>
+          <code>true</code> if at least one boolean element in <code>k</code> is <code>true</code>, <code>false</code> otherwise.
+        </ins>
+        </cxx-returns>
+      </cxx-function>
+
+      <cxx-function>
+        <cxx-signature><ins>template&lt;class T, class Abi&gt; bool none_of(const simd_mask&lt;T, abi&gt;& k) noexcept;</ins></cxx-signature>
+
+        <cxx-returns>
+        <ins>
+          <code>true</code> if none of the one boolean elements in <code>k</code> is <code>true</code>, <code>false</code> otherwise.
+        </ins>
+        </cxx-returns>
+      </cxx-function>
+
+      <cxx-function>
+        <cxx-signature><ins>template&lt;class T, class Abi&gt; bool some_of(const simd_mask&lt;T, abi&gt;& k) noexcept;</ins></cxx-signature>
+
+        <cxx-returns>
+        <ins>
+          <code>true</code> if at least one of the one boolean elements in <code>k</code> is <code>true</code> and at least one of the boolean elements in <code>k</code> is <code>false</code>, <code>false</code> otherwise.
+        </ins>
+        </cxx-returns>
+      </cxx-function>
+
+      <cxx-function>
+        <cxx-signature><ins>template&lt;class T, class Abi&gt; int popcount(const simd_mask&lt;T, Abi&gt;& k) noexcept;</ins></cxx-signature>
+
+        <cxx-returns>
+        <ins>
+          The number of boolean elements in <code>k</code> that are <code>true</code>.
+        </ins>
+        </cxx-returns>
+      </cxx-function>
+
+      <cxx-function>
+        <cxx-signature><ins>template&lt;class T, class Abi&gt; int find_first_set(const simd_mask&lt;T, Abi&gt;& k);</ins></cxx-signature>
+
+        <cxx-requires>
+        <ins>
+          <code>any_of(k)</code> returns <code>true</code>.
+        </ins>
+        </cxx-requires>
+
+        <cxx-returns>
+        <ins>
+          The lowest element index <code>i</code> where <code>k[i]</code> is <code>true</code>.
+        </ins>
+        </cxx-returns>
+      </cxx-function>
+
+      <cxx-function>
+        <cxx-signature><ins>template&lt;class T, class Abi&gt; int find_last_set(const simd_mask&lt;T, Abi&gt;& k);</ins></cxx-signature>
+
+        <cxx-requires>
+        <ins>
+          <code>any_of(k)</code> returns <code>true</code>.
+        </ins>
+        </cxx-requires>
+
+        <cxx-returns>
+        <ins>
+          The greatest element index <code>i</code> where <code>k[i]</code> is <code>true</code>.
+        </ins>
+        </cxx-returns>
+      </cxx-function>
+
+      <cxx-function>
+        <cxx-signature><ins>
+bool all_of(<em>see-below</em>) noexcept;
+bool any_of(<em>see-below</em>) noexcept;
+bool none_of(<em>see-below</em>) noexcept;
+bool some_of(<em>see-below</em>) noexcept;
+int popcount(<em>see-below</em>) noexcept;
+</ins></cxx-signature>
+
+        <cxx-returns>
+        <ins>
+          <code>all_of</code> and <code>any_of</code> return their arguments; <code>none_of</code> returns the negation of its argument; <code>some_of</code> returns <code>false</code>; <code>popcount</code> returns the integral representation of its argument; <code>find_first_set</code> and <code>find_last_set</code> return <code>0</code>.
+        </ins>
+        </cxx-returns>
+
+        <cxx-remarks>
+        <ins>
+          The functions shall not participate in overload resolution unless the argument is of type <code>bool</code>.
+        </ins>
+        </cxx-remarks>
+      </cxx-function>
+
+      <cxx-function>
+        <cxx-signature><ins>
+int find_first_set(<em>see-below</em>) noexcept;
+int find_last_set(<em>see-below</em>) noexcept;
+</ins></cxx-signature>
+
+        <cxx-requires>
+        <ins>
+          The value of the argument is <code>true</code>.
+        </ins>
+        </cxx-requires>
+        
+        <cxx-returns>
+        <ins>
+          <code>0</code>.
+        </ins>
+        </cxx-returns>
+
+        <cxx-remarks>
+        <ins>
+          The functions shall not participate in overload resolution unless the argument is of type <code>bool</code>.
+        </ins>
+        </cxx-remarks>
+      </cxx-function>
+    </cxx-section>
   </cxx-section>
 </cxx-clause>
 
