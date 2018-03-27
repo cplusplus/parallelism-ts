@@ -2402,14 +2402,14 @@ clamp(const simd&lt;T, Abi&gt;& v, const simd&lt;T, Abi&gt;& lo, const simd&lt;T
     </cxx-section>
   </cxx-section>
 
-    <cxx-section id="parallel.simd.mask.class">
-      <h1><ins>Class template <code>simd_mask</code></ins></h1>
+  <cxx-section id="parallel.simd.mask.class">
+    <h1><ins>Class template <code>simd_mask</code></ins></h1>
 
-      <cxx-section id="parallel.simd.mask.overview">
-        <h1><ins>Class template <code>simd_mask</code> overview</ins></h1>
+    <cxx-section id="parallel.simd.mask.overview">
+      <h1><ins>Class template <code>simd_mask</code> overview</ins></h1>
 
-        <pre>
-        <ins>
+      <pre>
+      <ins>
 namespace std::experimental {
 inline namespace parallelism_v2 {
   template&lt;class T, class Abi&gt; class simd_mask {
@@ -2462,59 +2462,59 @@ inline namespace parallelism_v2 {
 }
 }</ins></pre>
 
-        <p>
-        <ins>
-          The class template <code>simd_mask</code> is a data-parallel type with the element type <code>bool</code>. The width of a given <code>simd_mask</code> specialization is a constant expression, determined by the template parameters. Specifically, <code>simd_mask&lt;T, Abi&gt;::size() == simd&lt;T, Abi&gt;::size()</code>.
-        </ins>
-        </p>
+      <p>
+      <ins>
+        The class template <code>simd_mask</code> is a data-parallel type with the element type <code>bool</code>. The width of a given <code>simd_mask</code> specialization is a constant expression, determined by the template parameters. Specifically, <code>simd_mask&lt;T, Abi&gt;::size() == simd&lt;T, Abi&gt;::size()</code>.
+      </ins>
+      </p>
 
-        <p>
-        <ins>
-          Every specialization of <code>simd_mask</code> shall be a complete type. The specialization <code>simd_mask&lt;T, Abi&gt;</code> is supported if <code>T</code> is a vectorizable type and
+      <p>
+      <ins>
+        Every specialization of <code>simd_mask</code> shall be a complete type. The specialization <code>simd_mask&lt;T, Abi&gt;</code> is supported if <code>T</code> is a vectorizable type and
 
-          <bl>
-            <li>
-            <ins>
-              <code>Abi</code> is <code>simd_abi::scalar</code>, or
-            </ins>
-            </li>
-
-            <li>
-            <ins>
-              <code>Abi</code> is <code>simd_abi::fixed_size&lt;N&gt;</code>, with <code>N</code> constrained as defined in <a href="#parallel.simd.abi">[parallel.simd.abi]</a>.
-            </ins>
-            </li>
-          </bl>
-
+        <bl>
+          <li>
           <ins>
-          If <code>Abi</code> is an extended ABI tag, it is implementation-defined whether <code>simd_mask&lt;T, Abi&gt;</code> is supported. <cxx-note>The intent is for implementations to decide on the basis of the currently targeted system.</cxx-note>
-          If <code>simd_mask&lt;T, Abi&gt;</code> is not supported, the specialization shall have a deleted default constructor, deleted destructor, deleted copy constructor, and deleted copy assignment.
+            <code>Abi</code> is <code>simd_abi::scalar</code>, or
           </ins>
-        </ins>
-        <br>
+          </li>
 
-        <p>
-        <ins>
-          Default initialization performs no intialization of the elements; value-initialization initializes each element with <code>false</code>. <cxx-note>Thus, default initialization leaves the elements in an indeterminate state.</cxx-note>
-        </ins>
-        </p>
-
-        <cxx-function>
-          <cxx-signature><ins>static constexpr size_t size() noexcept;</ins></cxx-signature>
-
-          <cxx-returns>
+          <li>
           <ins>
-            The width of <code>simd&lt;T, Abi&gt;</code>.
+            <code>Abi</code> is <code>simd_abi::fixed_size&lt;N&gt;</code>, with <code>N</code> constrained as defined in <a href="#parallel.simd.abi">[parallel.simd.abi]</a>.
           </ins>
-          </cxx-returns>
-        </cxx-function>
+          </li>
+        </bl>
 
-        <p>
         <ins>
-          Implementations should enable explicit conversion from and to implementation-defined types. This adds one or more of the following declarations to class <code>simd_mask</code>:
+        If <code>Abi</code> is an extended ABI tag, it is implementation-defined whether <code>simd_mask&lt;T, Abi&gt;</code> is supported. <cxx-note>The intent is for implementations to decide on the basis of the currently targeted system.</cxx-note>
+        If <code>simd_mask&lt;T, Abi&gt;</code> is not supported, the specialization shall have a deleted default constructor, deleted destructor, deleted copy constructor, and deleted copy assignment.
+        </ins>
+      </ins>
+      <br>
 
-          <pre>
-          <ins>
+      <p>
+      <ins>
+        Default initialization performs no intialization of the elements; value-initialization initializes each element with <code>false</code>. <cxx-note>Thus, default initialization leaves the elements in an indeterminate state.</cxx-note>
+      </ins>
+      </p>
+
+      <cxx-function>
+        <cxx-signature><ins>static constexpr size_t size() noexcept;</ins></cxx-signature>
+
+        <cxx-returns>
+        <ins>
+          The width of <code>simd&lt;T, Abi&gt;</code>.
+        </ins>
+        </cxx-returns>
+      </cxx-function>
+
+      <p>
+      <ins>
+        Implementations should enable explicit conversion from and to implementation-defined types. This adds one or more of the following declarations to class <code>simd_mask</code>:
+
+        <pre>
+        <ins>
 explicit operator <em>implementation-defined</em>() const;
 explicit simd_mask(const <em>implementation-defined</em>& init) const;</ins></pre>
         <br>
@@ -2524,179 +2524,179 @@ explicit simd_mask(const <em>implementation-defined</em>& init) const;</ins></pr
           The member type <code>reference</code> has the same interface as <code>simd&lt;T, Abi&gt;::reference</code>, except its <code>value_type</code> is <code>bool</code>. (<a href="#parallel.simd.reference">[parallel.simd.reference]</a>)
         </ins>
         </p>
-      </cxx-section>
+    </cxx-section>
       
-      <cxx-section id="parallel.simd.mask.ctor">
-        <h1><ins><code>simd_mask</code> constructors</ins></h1>
+    <cxx-section id="parallel.simd.mask.ctor">
+      <h1><ins><code>simd_mask</code> constructors</ins></h1>
+
+      <cxx-function>
+        <cxx-signature><ins>explicit simd_mask(value_type x) noexcept</ins></cxx-signature>
+
+        <cxx-effects>
+        <ins>
+          Constructs an object with each element initialized to <code>x</code>.
+        </ins>
+        </cxx-effects>
+      </cxx-function>
+
+      <cxx-function>
+        <cxx-signature><ins>template&lt;class U&gt; simd_mask(const simd_mask&lt;U, simd_abi::fixed_size&lt;size()&gt;&gt;& x) noexcept;</ins></cxx-signature>
+
+        <cxx-effects>
+        <ins>
+          Constructs an object of type <code>simd_mask</code> where the <em>i</em>-th element equals <code>x[i]</code> for all <code>i</code> &#8714; <code>[0, size())</code>.
+        </ins>
+        </cxx-effects>
+
+        <cxx-remarks>
+        <ins>
+          This constructor shall not participate in overload resolution unless <code>abi_type</code> is <code>simd_abi::fixed_size&lt;size()&gt;</code>.
+        </ins>
+        </cxx-remarks>
+      </cxx-function>
+
+      <cxx-function>
+        <cxx-signature><ins>template&lt;class Flags&gt; simd_mask(const value_type* mem, Flags);</ins></cxx-signature>
+
+        <cxx-requires>
+        <ins>
+          If the template parameter <code>Flags</code> is <code>vector_aligned_tag</code>, <code>mem</code> shall point to storage aligned by <code>memory_alignment_v&lt;simd_mask&gt;</code>. If the template parameter <code>Flags</code> is <code>overaligned_tag&lt;N&gt;</code>, <code>mem</code> shall point to storage aligned by <code>N</code>. If the template parameter <code>Flags</code> is <code>element_aligned_tag</code>, <code>mem</code> shall point to storage aligned by <code>alignof(U)</code>. <code>[mem, mem + size())</code> is a valid range.
+        </ins>
+        </cxx-requires>
+
+        <cxx-effects>
+        <ins>
+          Constructs an object where the <em>i</em>-th element is initialized to <code>mem[i]</code> for all <code>i</code> &#8714; <code>[0, size())</code>. 
+        </ins>
+        </cxx-effects>
+
+        <cxx-remarks>
+        <ins>
+          This constructor shall not participate in overload resolution unless <code>is_simd_flag_type_v&lt;Flags&gt;</code> is <code>true</code>.
+        </ins>
+        </cxx-remarks>
+      </cxx-function>
+    </cxx-section>
+
+    <cxx-section id="parallel.simd.mask.copy">
+      <h1><ins><code>simd_mask</code> copy functions</ins></h1>
+
+      <cxx-function>
+        <cxx-signature><ins>template&lt;class Flags&gt; void copy_from(const value_type* mem, Flags);</ins></cxx-signature>
+
+        <cxx-requires>
+        <ins>
+          If the template parameter <code>Flags</code> is <code>vector_aligned_tag</code>, <code>mem</code> shall point to storage aligned by <code>memory_alignment_v&lt;simd_mask&gt;</code>. If the template parameter <code>Flags</code> is <code>overaligned_tag&lt;N&gt;</code>, <code>mem</code> shall point to storage aligned by <code>N</code>. If the template parameter <code>Flags</code> is <code>element_aligned_tag</code>, <code>mem</code> shall point to storage aligned by <code>alignof(U)</code>. <code>[mem, mem + size())</code> is a valid range.
+        </ins>
+        </cxx-requires>
+
+        <cxx-effects>
+        <ins>
+          Replaces the elements of the <code>simd_mask</code> object such that the <em>i</em>-th element is replaced with <code>mem[i]</code> for all <code>i</code> &#8714; <code>[0, size())</code>.
+
+        </ins>
+        </cxx-effects>
+
+        <cxx-remarks>
+        <ins>
+          This function shall not participate in overload resolution unless <code>is_simd_flag_type_v&lt;Flags&gt;</code> is <code>true</code>.
+        </ins>
+        </cxx-remarks>
+      </cxx-function>
+
+      <cxx-function>
+        <cxx-signature><ins>template&lt;class Flags&gt; void copy_to(value_type* mem, Flags);</ins></cxx-signature>
+
+        <cxx-requires>
+        <ins>
+          If the template parameter <code>Flags</code> is <code>vector_aligned_tag</code>, <code>mem</code> shall point to storage aligned by <code>memory_alignment_v&lt;simd_mask&gt;</code>. If the template parameter <code>Flags</code> is <code>overaligned_tag&lt;N&gt;</code>, <code>mem</code> shall point to storage aligned by <code>N</code>. If the template parameter <code>Flags</code> is <code>element_aligned_tag</code>, <code>mem</code> shall point to storage aligned by <code>alignof(U)</code>. <code>[mem, mem + size())</code> is a valid range.
+        </ins>
+        </cxx-requires>
+
+        <cxx-effects>
+        <ins>
+          Copies all <code>simd_mask</code> elements as if <code>mem[i] = operator[](i)</code> for all <code>i</code> &#8714; <code>[0, size())</code>.
+        </ins>
+        </cxx-effects>
+
+        <cxx-remarks>
+        <ins>
+          This function shall not participate in overload resolution unless <code>is_simd_flag_type_v&lt;Flags&gt;</code> is <code>true</code>.
+        </ins>
+        </cxx-remarks>
+      </cxx-function>
+    </cxx-section>
+
+    <cxx-section id="parallel.simd.mask.subscr">
+      <h1><ins><code>simd_mask</code> subscript operators</ins></h1>
+
+      <cxx-function>
+        <cxx-signature><ins>reference operator[](size_t i);</ins></cxx-signature>
+
+        <cxx-requires>
+        <ins>
+          <code>i &lt; size()</code>.
+        </ins>
+        </cxx-requires>
+
+        <cxx-returns>
+        <ins>
+          A <code>reference</code> (see <a href="#parallel.simd.reference">[parallel.simd.reference]</a>) referring to the <em>i</em>-th element.
+        </ins>
+        </cxx-returns>
+
+        <cxx-throws>
+        <ins>
+          Nothing.
+        </ins>
+        </cxx-throws>
+      </cxx-function>
+
+      <cxx-function>
+        <cxx-signature><ins>value_type operator[](size_t i) const;</ins></cxx-signature>
+
+        <cxx-requires>
+        <ins>
+          <code>i &lt; size()</code>.
+        </ins>
+        </cxx-requires>
+
+        <cxx-returns>
+        <ins>
+          The value of the <em>i</em>-th element.
+        </ins>
+        </cxx-returns>
+
+        <cxx-throws>
+        <ins>
+          Nothing.
+        </ins>
+        </cxx-throws>
+      </cxx-function>
+    </cxx-section>
+
+    <cxx-section id="parallel.simd.mask.unary">
+      <h1><ins><code>simd_mask</code> unary operators</ins></h1>
+
+      <cxx-function>
+        <cxx-signature><ins>simd_mask operator!() const noexcept;</ins></cxx-signature>
+
+        <cxx-returns>
+        <ins>
+          The result of the element-wise appliation of <code>operator!</code>.
+        </ins>
+        </cxx-returns>
+      </cxx-function>
+    </cxx-section>
+
+    <cxx-section id="parallel.simd.mask.nonmembers">
+      <h1><ins><code>simd_mask</code> non-member operations</ins></h1>
+
+      <cxx-section id="parallel.simd.mask.binary">
+        <h1><ins><code>simd_mask</code> binary operators</ins></h1>
 
         <cxx-function>
-          <cxx-signature><ins>explicit simd_mask(value_type x) noexcept</ins></cxx-signature>
-
-          <cxx-effects>
-          <ins>
-            Constructs an object with each element initialized to <code>x</code>.
-          </ins>
-          </cxx-effects>
-        </cxx-function>
-
-        <cxx-function>
-          <cxx-signature><ins>template&lt;class U&gt; simd_mask(const simd_mask&lt;U, simd_abi::fixed_size&lt;size()&gt;&gt;& x) noexcept;</ins></cxx-signature>
-
-          <cxx-effects>
-          <ins>
-            Constructs an object of type <code>simd_mask</code> where the <em>i</em>-th element equals <code>x[i]</code> for all <code>i</code> &#8714; <code>[0, size())</code>.
-          </ins>
-          </cxx-effects>
-
-          <cxx-remarks>
-          <ins>
-            This constructor shall not participate in overload resolution unless <code>abi_type</code> is <code>simd_abi::fixed_size&lt;size()&gt;</code>.
-          </ins>
-          </cxx-remarks>
-        </cxx-function>
-
-        <cxx-function>
-          <cxx-signature><ins>template&lt;class Flags&gt; simd_mask(const value_type* mem, Flags);</ins></cxx-signature>
-
-          <cxx-requires>
-          <ins>
-            If the template parameter <code>Flags</code> is <code>vector_aligned_tag</code>, <code>mem</code> shall point to storage aligned by <code>memory_alignment_v&lt;simd_mask&gt;</code>. If the template parameter <code>Flags</code> is <code>overaligned_tag&lt;N&gt;</code>, <code>mem</code> shall point to storage aligned by <code>N</code>. If the template parameter <code>Flags</code> is <code>element_aligned_tag</code>, <code>mem</code> shall point to storage aligned by <code>alignof(U)</code>. <code>[mem, mem + size())</code> is a valid range.
-          </ins>
-          </cxx-requires>
-
-          <cxx-effects>
-          <ins>
-            Constructs an object where the <em>i</em>-th element is initialized to <code>mem[i]</code> for all <code>i</code> &#8714; <code>[0, size())</code>. 
-          </ins>
-          </cxx-effects>
-
-          <cxx-remarks>
-          <ins>
-            This constructor shall not participate in overload resolution unless <code>is_simd_flag_type_v&lt;Flags&gt;</code> is <code>true</code>.
-          </ins>
-          </cxx-remarks>
-        </cxx-function>
-      </cxx-section>
-
-      <cxx-section id="parallel.simd.mask.copy">
-        <h1><ins><code>simd_mask</code> copy functions</ins></h1>
-
-        <cxx-function>
-          <cxx-signature><ins>template&lt;class Flags&gt; void copy_from(const value_type* mem, Flags);</ins></cxx-signature>
-
-          <cxx-requires>
-          <ins>
-            If the template parameter <code>Flags</code> is <code>vector_aligned_tag</code>, <code>mem</code> shall point to storage aligned by <code>memory_alignment_v&lt;simd_mask&gt;</code>. If the template parameter <code>Flags</code> is <code>overaligned_tag&lt;N&gt;</code>, <code>mem</code> shall point to storage aligned by <code>N</code>. If the template parameter <code>Flags</code> is <code>element_aligned_tag</code>, <code>mem</code> shall point to storage aligned by <code>alignof(U)</code>. <code>[mem, mem + size())</code> is a valid range.
-          </ins>
-          </cxx-requires>
-
-          <cxx-effects>
-          <ins>
-            Replaces the elements of the <code>simd_mask</code> object such that the <em>i</em>-th element is replaced with <code>mem[i]</code> for all <code>i</code> &#8714; <code>[0, size())</code>.
-
-          </ins>
-          </cxx-effects>
-
-          <cxx-remarks>
-          <ins>
-            This function shall not participate in overload resolution unless <code>is_simd_flag_type_v&lt;Flags&gt;</code> is <code>true</code>.
-          </ins>
-          </cxx-remarks>
-        </cxx-function>
-
-        <cxx-function>
-          <cxx-signature><ins>template&lt;class Flags&gt; void copy_to(value_type* mem, Flags);</ins></cxx-signature>
-
-          <cxx-requires>
-          <ins>
-            If the template parameter <code>Flags</code> is <code>vector_aligned_tag</code>, <code>mem</code> shall point to storage aligned by <code>memory_alignment_v&lt;simd_mask&gt;</code>. If the template parameter <code>Flags</code> is <code>overaligned_tag&lt;N&gt;</code>, <code>mem</code> shall point to storage aligned by <code>N</code>. If the template parameter <code>Flags</code> is <code>element_aligned_tag</code>, <code>mem</code> shall point to storage aligned by <code>alignof(U)</code>. <code>[mem, mem + size())</code> is a valid range.
-          </ins>
-          </cxx-requires>
-
-          <cxx-effects>
-          <ins>
-            Copies all <code>simd_mask</code> elements as if <code>mem[i] = operator[](i)</code> for all <code>i</code> &#8714; <code>[0, size())</code>.
-          </ins>
-          </cxx-effects>
-
-          <cxx-remarks>
-          <ins>
-            This function shall not participate in overload resolution unless <code>is_simd_flag_type_v&lt;Flags&gt;</code> is <code>true</code>.
-          </ins>
-          </cxx-remarks>
-        </cxx-function>
-      </cxx-section>
-
-      <cxx-section id="parallel.simd.mask.subscr">
-        <h1><ins><code>simd_mask</code> subscript operators</ins></h1>
-
-        <cxx-function>
-          <cxx-signature><ins>reference operator[](size_t i);</ins></cxx-signature>
-
-          <cxx-requires>
-          <ins>
-            <code>i &lt; size()</code>.
-          </ins>
-          </cxx-requires>
-
-          <cxx-returns>
-          <ins>
-            A <code>reference</code> (see <a href="#parallel.simd.reference">[parallel.simd.reference]</a>) referring to the <em>i</em>-th element.
-          </ins>
-          </cxx-returns>
-
-          <cxx-throws>
-          <ins>
-            Nothing.
-          </ins>
-          </cxx-throws>
-        </cxx-function>
-
-        <cxx-function>
-          <cxx-signature><ins>value_type operator[](size_t i) const;</ins></cxx-signature>
-
-          <cxx-requires>
-          <ins>
-            <code>i &lt; size()</code>.
-          </ins>
-          </cxx-requires>
-
-          <cxx-returns>
-          <ins>
-            The value of the <em>i</em>-th element.
-          </ins>
-          </cxx-returns>
-
-          <cxx-throws>
-          <ins>
-            Nothing.
-          </ins>
-          </cxx-throws>
-        </cxx-function>
-      </cxx-section>
-
-      <cxx-section id="parallel.simd.mask.unary">
-        <h1><ins><code>simd_mask</code> unary operators</ins></h1>
-
-        <cxx-function>
-          <cxx-signature><ins>simd_mask operator!() const noexcept;</ins></cxx-signature>
-
-          <cxx-returns>
-          <ins>
-            The result of the element-wise appliation of <code>operator!</code>.
-          </ins>
-          </cxx-returns>
-        </cxx-function>
-      </cxx-section>
-
-      <cxx-section id="parallel.simd.mask.nonmembers">
-        <h1><ins><code>simd_mask</code> non-member operations</ins></h1>
-
-        <cxx-section id="parallel.simd.mask.binary">
-          <h1><ins><code>simd_mask</code> binary operators</ins></h1>
-
-          <cxx-function>
-            <cxx-signature><ins>
+          <cxx-signature><ins>
 friend simd_mask operator&&(const simd_mask&, const simd_mask&) noexcept;
 friend simd_mask operator||(const simd_mask&, const simd_mask&) noexcept;
 friend simd_mask operator&(const simd_mask&, const simd_mask&) noexcept;
@@ -2704,143 +2704,143 @@ friend simd_mask operator|(const simd_mask&, const simd_mask&) noexcept;
 friend simd_mask operator^(const simd_mask&, const simd_mask&) noexcept;
 </ins></cxx-signature>
 
-            <cxx-returns>
-            <ins>
-              A <code>simd_mask</code> object initialized with the results of the element-wise appliation of the indicated operator.
-            </ins>
-            </cxx-returns>
-          </cxx-function>
-        </cxx-section>
-      </cxx-sections>
+          <cxx-returns>
+          <ins>
+            A <code>simd_mask</code> object initialized with the results of the element-wise appliation of the indicated operator.
+          </ins>
+          </cxx-returns>
+        </cxx-function>
+      </cxx-section>
+    </cxx-sections>
 
-      <cxx-section id="parallel.simd.mask.cassign">
-        <h1><ins><code>simd_mask</code> compound assignment</ins></h1>
+    <cxx-section id="parallel.simd.mask.cassign">
+      <h1><ins><code>simd_mask</code> compound assignment</ins></h1>
 
-        <cxx-function>
-          <cxx-signature><ins>
+      <cxx-function>
+        <cxx-signature><ins>
 friend simd_mask& operator&=(simd_mask& lhs, const simd_mask& rhs) noexcept;
 friend simd_mask& operator|=(simd_mask& lhs, const simd_mask& rhs) noexcept;
 friend simd_mask& operator^=(simd_mask& lhs, const simd_mask& rhs) noexcept;
 </ins></cxx-signature>
 
-          <cxx-effects>
-          <ins>
-            These operators perform the indicated binary element-wise operation.
-          </ins>
-          </cxx-effects>
+        <cxx-effects>
+        <ins>
+          These operators perform the indicated binary element-wise operation.
+        </ins>
+        </cxx-effects>
 
-          <cxx-returns>
-          <ins>
-            <code>lhs</code>.
-          </ins>
-          </cxx-returns>
-        </cxx-function>
-      </cxx-section>
+        <cxx-returns>
+        <ins>
+          <code>lhs</code>.
+        </ins>
+        </cxx-returns>
+      </cxx-function>
+    </cxx-section>
     
-      <cxx-section id="parallel.simd.mask.comparison">
-        <h1><ins><code>simd_mask</code> comparisons</ins></h1>
+    <cxx-section id="parallel.simd.mask.comparison">
+      <h1><ins><code>simd_mask</code> comparisons</ins></h1>
 
-        <cxx-function>
-          <cxx-signature><ins>
+      <cxx-function>
+        <cxx-signature><ins>
 friend simd_mask operator==(const simd_mask&, const simd_mask&) noexcept;
 friend simd_mask operator!=(const simd_mask&, const simd_mask&) noexcept;
 </ins></cxx-signature>
 
-          <cxx-returns>
-          <ins>
-            An object initialized with the results of the element-wise application of the indicated operator.
-          </ins>
-          </cxx-returns>
-        </cxx-function>
-      </cxx-section>
+        <cxx-returns>
+        <ins>
+          An object initialized with the results of the element-wise application of the indicated operator.
+        </ins>
+        </cxx-returns>
+      </cxx-function>
+    </cxx-section>
 
-      <cxx-section id="parallel.simd.mask.reductions">
-        <h1><ins><code>simd_mask</code> reductions</ins></h1>
+    <cxx-section id="parallel.simd.mask.reductions">
+      <h1><ins><code>simd_mask</code> reductions</ins></h1>
 
-        <cxx-function>
-          <cxx-signature><ins>template&lt;class T, class Abi&gt; bool all_of(const simd_mask&lt;T, abi&gt;& k) noexcept;</ins></cxx-signature>
+      <cxx-function>
+        <cxx-signature><ins>template&lt;class T, class Abi&gt; bool all_of(const simd_mask&lt;T, abi&gt;& k) noexcept;</ins></cxx-signature>
 
-          <cxx-returns>
-          <ins>
-            <code>true</code> if all boolean elements in <code>k</code> are <code>true</code>, <code>false</code> otherwise.
-          </ins>
-          </cxx-returns>
-        </cxx-function>
+        <cxx-returns>
+        <ins>
+          <code>true</code> if all boolean elements in <code>k</code> are <code>true</code>, <code>false</code> otherwise.
+        </ins>
+        </cxx-returns>
+      </cxx-function>
 
-        <cxx-function>
-          <cxx-signature><ins>template&lt;class T, class Abi&gt; bool any_of(const simd_mask&lt;T, abi&gt;& k) noexcept;</ins></cxx-signature>
+      <cxx-function>
+        <cxx-signature><ins>template&lt;class T, class Abi&gt; bool any_of(const simd_mask&lt;T, abi&gt;& k) noexcept;</ins></cxx-signature>
 
-          <cxx-returns>
-          <ins>
-            <code>true</code> if at least one boolean element in <code>k</code> is <code>true</code>, <code>false</code> otherwise.
-          </ins>
-          </cxx-returns>
-        </cxx-function>
+        <cxx-returns>
+        <ins>
+          <code>true</code> if at least one boolean element in <code>k</code> is <code>true</code>, <code>false</code> otherwise.
+        </ins>
+        </cxx-returns>
+      </cxx-function>
 
-        <cxx-function>
-          <cxx-signature><ins>template&lt;class T, class Abi&gt; bool none_of(const simd_mask&lt;T, abi&gt;& k) noexcept;</ins></cxx-signature>
+      <cxx-function>
+        <cxx-signature><ins>template&lt;class T, class Abi&gt; bool none_of(const simd_mask&lt;T, abi&gt;& k) noexcept;</ins></cxx-signature>
 
-          <cxx-returns>
-          <ins>
-            <code>true</code> if none of the one boolean elements in <code>k</code> is <code>true</code>, <code>false</code> otherwise.
-          </ins>
-          </cxx-returns>
-        </cxx-function>
+        <cxx-returns>
+        <ins>
+          <code>true</code> if none of the one boolean elements in <code>k</code> is <code>true</code>, <code>false</code> otherwise.
+        </ins>
+        </cxx-returns>
+      </cxx-function>
 
-        <cxx-function>
-          <cxx-signature><ins>template&lt;class T, class Abi&gt; bool some_of(const simd_mask&lt;T, abi&gt;& k) noexcept;</ins></cxx-signature>
+      <cxx-function>
+        <cxx-signature><ins>template&lt;class T, class Abi&gt; bool some_of(const simd_mask&lt;T, abi&gt;& k) noexcept;</ins></cxx-signature>
 
-          <cxx-returns>
-          <ins>
-            <code>true</code> if at least one of the one boolean elements in <code>k</code> is <code>true</code> and at least one of the boolean elements in <code>k</code> is <code>false</code>, <code>false</code> otherwise.
-          </ins>
-          </cxx-returns>
-        </cxx-function>
+        <cxx-returns>
+        <ins>
+          <code>true</code> if at least one of the one boolean elements in <code>k</code> is <code>true</code> and at least one of the boolean elements in <code>k</code> is <code>false</code>, <code>false</code> otherwise.
+        </ins>
+        </cxx-returns>
+      </cxx-function>
 
-        <cxx-function>
-          <cxx-signature><ins>template&lt;class T, class Abi&gt; int popcount(const simd_mask&lt;T, Abi&gt;& k) noexcept;</ins></cxx-signature>
+      <cxx-function>
+        <cxx-signature><ins>template&lt;class T, class Abi&gt; int popcount(const simd_mask&lt;T, Abi&gt;& k) noexcept;</ins></cxx-signature>
 
-          <cxx-returns>
-          <ins>
-            The number of boolean elements in <code>k</code> that are <code>true</code>.
-          </ins>
-          </cxx-returns>
-        </cxx-function>
+        <cxx-returns>
+        <ins>
+          The number of boolean elements in <code>k</code> that are <code>true</code>.
+        </ins>
+        </cxx-returns>
+      </cxx-function>
 
-        <cxx-function>
-          <cxx-signature><ins>template&lt;class T, class Abi&gt; int find_first_set(const simd_mask&lt;T, Abi&gt;& k);</ins></cxx-signature>
+      <cxx-function>
+        <cxx-signature><ins>template&lt;class T, class Abi&gt; int find_first_set(const simd_mask&lt;T, Abi&gt;& k);</ins></cxx-signature>
 
-          <cxx-requires>
-          <ins>
-            <code>any_of(k)</code> returns <code>true</code>.
-          </ins>
-          </cxx-requires>
+        <cxx-requires>
+        <ins>
+          <code>any_of(k)</code> returns <code>true</code>.
+        </ins>
+        </cxx-requires>
 
-          <cxx-returns>
-          <ins>
-            The lowest element index <code>i</code> where <code>k[i]</code> is <code>true</code>.
-          </ins>
-          </cxx-returns>
-        </cxx-function>
+        <cxx-returns>
+        <ins>
+          The lowest element index <code>i</code> where <code>k[i]</code> is <code>true</code>.
+        </ins>
+        </cxx-returns>
+      </cxx-function>
 
-        <cxx-function>
-          <cxx-signature><ins>template&lt;class T, class Abi&gt; int find_last_set(const simd_mask&lt;T, Abi&gt;& k);</ins></cxx-signature>
+      <cxx-function>
+        <cxx-signature><ins>template&lt;class T, class Abi&gt; int find_last_set(const simd_mask&lt;T, Abi&gt;& k);</ins></cxx-signature>
 
-          <cxx-requires>
-          <ins>
-            <code>any_of(k)</code> returns <code>true</code>.
-          </ins>
-          </cxx-requires>
+        <cxx-requires>
+        <ins>
+          <code>any_of(k)</code> returns <code>true</code>.
+        </ins>
+        </cxx-requires>
 
-          <cxx-returns>
-          <ins>
-            The greatest element index <code>i</code> where <code>k[i]</code> is <code>true</code>.
-          </ins>
-          </cxx-returns>
-        </cxx-function>
+        <cxx-returns>
+        <ins>
+          The greatest element index <code>i</code> where <code>k[i]</code> is <code>true</code>.
+        </ins>
+        </cxx-returns>
+      </cxx-function>
 
-        <cxx-function>
-          <cxx-signature><ins>
+      <cxx-function>
+        <cxx-signature><ins>
 bool all_of(<em>see-below</em>) noexcept;
 bool any_of(<em>see-below</em>) noexcept;
 bool none_of(<em>see-below</em>) noexcept;
@@ -2848,50 +2848,50 @@ bool some_of(<em>see-below</em>) noexcept;
 int popcount(<em>see-below</em>) noexcept;
 </ins></cxx-signature>
 
-          <cxx-returns>
-          <ins>
-            <code>all_of</code> and <code>any_of</code> return their arguments; <code>none_of</code> returns the negation of its argument; <code>some_of</code> returns <code>false</code>; <code>popcount</code> returns the integral representation of its argument; <code>find_first_set</code> and <code>find_last_set</code> return <code>0</code>.
-          </ins>
-          </cxx-returns>
+        <cxx-returns>
+        <ins>
+          <code>all_of</code> and <code>any_of</code> return their arguments; <code>none_of</code> returns the negation of its argument; <code>some_of</code> returns <code>false</code>; <code>popcount</code> returns the integral representation of its argument; <code>find_first_set</code> and <code>find_last_set</code> return <code>0</code>.
+        </ins>
+        </cxx-returns>
 
-          <cxx-remarks>
-          <ins>
-            The functions shall not participate in overload resolution unless the argument is of type <code>bool</code>.
-          </ins>
-          </cxx-remarks>
-        </cxx-function>
+        <cxx-remarks>
+        <ins>
+          The functions shall not participate in overload resolution unless the argument is of type <code>bool</code>.
+        </ins>
+        </cxx-remarks>
+      </cxx-function>
 
-        <cxx-function>
-          <cxx-signature><ins>
+      <cxx-function>
+        <cxx-signature><ins>
 int find_first_set(<em>see-below</em>) noexcept;
 int find_last_set(<em>see-below</em>) noexcept;
 </ins></cxx-signature>
 
-          <cxx-requires>
-          <ins>
-            The value of the argument is <code>true</code>.
-          </ins>
-          </cxx-requires>
-          
-          <cxx-returns>
-          <ins>
-            <code>0</code>.
-          </ins>
-          </cxx-returns>
+        <cxx-requires>
+        <ins>
+          The value of the argument is <code>true</code>.
+        </ins>
+        </cxx-requires>
+        
+        <cxx-returns>
+        <ins>
+          <code>0</code>.
+        </ins>
+        </cxx-returns>
 
-          <cxx-remarks>
-          <ins>
-            The functions shall not participate in overload resolution unless the argument is of type <code>bool</code>.
-          </ins>
-          </cxx-remarks>
-        </cxx-function>
-      </cxx-section>
+        <cxx-remarks>
+        <ins>
+          The functions shall not participate in overload resolution unless the argument is of type <code>bool</code>.
+        </ins>
+        </cxx-remarks>
+      </cxx-function>
+    </cxx-section>
 
-      <cxx-section id="parallel.simd.mask.where">
-        <h1><ins>Where functions</ins></h1>
+    <cxx-section id="parallel.simd.mask.where">
+      <h1><ins>Where functions</ins></h1>
 
-        <cxx-function>
-          <cxx-signature><ins>
+      <cxx-function>
+        <cxx-signature><ins>
 template&lt;class T, class Abi&gt;
 where_expression&lt;simd_mask&lt;T, Abi&gt;, simd&lt;T, Abi&gt;&gt; where(const typename simd&lt;T, Abi&gt;::mask_type& k,
                                                         simd&lt;T, Abi&gt;& v) noexcept;
@@ -2906,12 +2906,12 @@ const_where_expression&lt;simd_mask&lt;T, Abi&gt;, simd_mask&lt;T, Abi&gt;&gt; w
                                                                    const simd_mask&lt;T, Abi&gt;& v) noexcept;
 </ins></cxx-signature>
 
-          <cxx-returns>
-          <ins>
-            An object <a href="#parallel.simd.wherexpr">[parallel.simd.wherexpr]</a> with <code>mask</code> and <code>data</code> initialized with <code>k</code> and <code>v</code> respectively.
-          </ins>
-          </cxx-returns>
-        </cxx-function>
+        <cxx-returns>
+        <ins>
+          An object <a href="#parallel.simd.wherexpr">[parallel.simd.wherexpr]</a> with <code>mask</code> and <code>data</code> initialized with <code>k</code> and <code>v</code> respectively.
+        </ins>
+        </cxx-returns>
+      </cxx-function>
 
       <cxx-function>
         <cxx-signature><ins>
