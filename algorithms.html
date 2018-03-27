@@ -19,7 +19,7 @@
       </ul>
 
       <cxx-note>This includes evaluations occurring in function invocations.</cxx-note>
-    </p>
+    <!-/p ->
 
     <p>
       An evaluation A is <i>ordered before</i> an evaluation B if A is deterministically
@@ -56,7 +56,7 @@
         Informally, A is a vertical antecedent of B if A is sequenced immediately before B or A is nested zero or
         more levels within a statement S that immediately precedes B.
       </cxx-note>
-    </p>
+    <!-/p ->
 
     <p>
       In the following, <i>X<sub>i</sub></i> and <i>X<sub>j</sub></i> refer to evaluations of the <i>same</i> expression
@@ -78,7 +78,6 @@
       <cxx-note>
         <i>Horizontally matched</i> establishes a theoretical <i>lock-step</i> relationship between evaluations in different applications of an element access function.
       </cxx-note>
-    </p>
 
     <p>
       Let <i>f</i> be a function called for each argument list in a sequence of argument lists.
@@ -97,7 +96,6 @@
       <cxx-note>
         The relationships between A<sub>i</sub> and B<sub>i</sub> and between A<sub>j</sub> and B<sub>j</sub> are <i>sequenced before</i>, not <i>vertical antecedent</i>.
       </cxx-note>
-    </p>
   </cxx-section>
 
   <cxx-section id="parallel.alg.ops">
