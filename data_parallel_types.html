@@ -2878,6 +2878,67 @@ int find_last_set(<em>see-below</em>) noexcept;
         </cxx-remarks>
       </cxx-function>
     </cxx-section>
+
+    <cxx-section id="parallel.simd.mask.where">
+      <h1><ins>Where functions</ins></h1>
+
+      <cxx-function>
+        <cxx-signature><ins>
+template&lt;class T, class Abi&gt;
+where_expression&lt;simd_mask&lt;T, Abi&gt;, simd&lt;T, Abi&gt;&gt; where(const typename simd&lt;T, Abi&gt;::mask_type& k,
+                                                        simd&lt;T, Abi&gt;& v) noexcept;
+template&lt;class T, class Abi&gt;
+const_where_expression&lt;simd_mask&lt;T, Abi&gt;, simd&lt;T, Abi&gt;&gt; where(const typename simd&lt;T, Abi&gt;::mask_type& k,
+                                                              const simd&lt;T, Abi&gt;& v) noexcept;
+template&lt;class T, class Abi&gt;
+where_expression&lt;simd_mask&lt;T, Abi&gt;, simd_mask&lt;T, Abi&gt;&gt; where(const nodeduce_t&lt;simd_mask&lt;T, Abi&gt;&gt;& k,
+                                                             simd_mask&lt;T, Abi&gt;& v) noexcept;
+template&lt;class T, class Abi&gt;
+const_where_expression&lt;simd_mask&lt;T, Abi&gt;, simd_mask&lt;T, Abi&gt;&gt; where(const nodeduce_t&lt;simd_mask&lt;T, Abi&gt;&gt;& k,
+                                                                   const simd_mask&lt;T, Abi&gt;& v) noexcept;
+</ins></cxx-signature>
+
+        <cxx-returns>
+        <ins>
+          An object <a href="#parallel.simd.wherexpr">[parallel.simd.wherexpr]</a> with <code>mask</code> and <code>data</code> initialized with <code>k</code> and <code>v</code> respectively.
+        </ins>
+        </cxx-returns>
+      </cxx-function>
+
+      <cxx-function>
+        <cxx-signature><ins>
+template&lt;class T&gt; where_expression&lt;bool T&gt; where(<em>see-below</em> k, T& v) noexcept;
+template&lt;class T&gt;
+const_where_expression&lt;bool, T&gt; where(<em>see-below</em> k, const T& v) noexcept;
+</ins></cxx-signature>
+
+        <cxx-remarks>
+        <ins>
+          The functions shall not participate in overload resolution unles
+
+          <bl>
+            <li>
+            <ins>
+              <code>T</code> is neither a <code>simd</code> nor a <code>simd_mask</code> specialization, and
+            </ins>
+            </li>
+
+            <li>
+            <ins>
+              the first argument is of type <code>bool</code>.
+            </ins>
+            </li>
+          </bl>
+        </ins>
+        </cxx-remarks>
+
+        <cxx-returns>
+        <ins>
+          And object <a href="#parallel.simd.whereexpr">[parallel.simd.whereexpr]</a> with <code>mask</code> and <code>data</code> initialized with <code>k</code> and <code>v</code> respectively.
+        </ins>
+        </cxx-returns>
+      </cxx-function>
+    </cxx-section>
   </cxx-section>
 </cxx-clause>
 
