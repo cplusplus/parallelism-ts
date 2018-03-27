@@ -2684,6 +2684,30 @@ explicit simd_mask(const <em>implementation-defined</em>& init) const;</ins></pr
         </cxx-function>
       </cxx-section>
     </cxx-section>
+
+    <cxx-section id="parallel.simd.mask.nonmembers">
+      <h1><ins><code>simd_mask</code> non-member operations</ins></h1>
+
+      <cxx-section id="parallel.simd.mask.binary">
+        <h1><ins><code>simd_mask</code> binary operators</ins></h1>
+
+        <cxx-function>
+          <cxx-signature><ins>
+friend simd_mask operator&&(const simd_mask&, const simd_mask&) noexcept;
+friend simd_mask operator||(const simd_mask&, const simd_mask&) noexcept;
+friend simd_mask operator&(const simd_mask&, const simd_mask&) noexcept;
+friend simd_mask operator|(const simd_mask&, const simd_mask&) noexcept;
+friend simd_mask operator^(const simd_mask&, const simd_mask&) noexcept;
+</ins></cxx-signature>
+
+          <cxx-returns>
+          <ins>
+            A <code>simd_mask</code> object initialized with the results of the element-wise appliation of the indicated operator.
+          </ins>
+          </cxx-returns>
+        </cxx-function>
+      </cxx-section>
+    </cxx-sections>
   </cxx-section>
 </cxx-clause>
 
