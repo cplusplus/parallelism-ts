@@ -2621,6 +2621,54 @@ explicit simd_mask(const <em>implementation-defined</em>& init) const;</ins></pr
           </cxx-remarks>
         </cxx-function>
       </cxx-section>
+
+      <cxx-section id="parallel.simd.mask.subscr">
+        <h1><ins><code>simd_mask</code> subscript operators</ins></h1>
+
+        <cxx-function>
+          <cxx-signature><ins>reference operator[](size_t i);</ins></cxx-signature>
+
+          <cxx-requires>
+          <ins>
+            <code>i &lt; size()</code>.
+          </ins>
+          </cxx-requires>
+
+          <cxx-returns>
+          <ins>
+            A <code>reference</code> (see <a href="#parallel.simd.reference">[parallel.simd.reference]</a>) referring to the <em>i</em>-th element.
+          </ins>
+          </cxx-returns>
+
+          <cxx-throws>
+          <ins>
+            Nothing.
+          </ins>
+          </cxx-throws>
+        </cxx-function>
+
+        <cxx-function>
+          <cxx-signature><ins>value_type operator[](size_t i) const;</ins></cxx-signature>
+
+          <cxx-requires>
+          <ins>
+            <code>i &lt; size()</code>.
+          </ins>
+          </cxx-requires>
+
+          <cxx-returns>
+          <ins>
+            The value of the <em>i</em>-th element.
+          </ins>
+          </cxx-returns>
+
+          <cxx-throws>
+          <ins>
+            Nothing.
+          </ins>
+          </cxx-throws>
+        </cxx-function>
+      </cxx-section>
     </cxx-section>
   </cxx-section>
 </cxx-clause>
