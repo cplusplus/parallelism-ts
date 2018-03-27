@@ -2708,6 +2708,30 @@ friend simd_mask operator^(const simd_mask&, const simd_mask&) noexcept;
         </cxx-function>
       </cxx-section>
     </cxx-sections>
+
+    <cxx-section id="parallel.simd.mask.cassign">
+      <h1><ins><code>simd_mask</code> compound assignment</ins></h1>
+
+      <cxx-function>
+        <cxx-signature><ins>
+friend simd_mask& operator&=(simd_mask& lhs, const simd_mask& rhs) noexcept;
+friend simd_mask& operator|=(simd_mask& lhs, const simd_mask& rhs) noexcept;
+friend simd_mask& operator^=(simd_mask& lhs, const simd_mask& rhs) noexcept;
+</ins></cxx-signature>
+
+        <cxx-effects>
+        <ins>
+          These operators perform the indicated binary element-wise operation.
+        </ins>
+        </cxx-effects>
+
+        <cxx-returns>
+        <ins>
+          <code>lhs</code>.
+        </ins>
+        </cxx-returns>
+      </cxx-function>
+    </cxx-section>
   </cxx-section>
 </cxx-clause>
 
