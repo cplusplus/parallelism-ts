@@ -240,7 +240,7 @@ void define_task_block_restore_thread(F&& f);
          The <code>define_task_block</code> function may return on a thread other than the one on which it was called
          unless there are no task blocks active on entry to <code>define_task_block</code> (see <cxx-ref to="parallel.task_block.class"></cxx-ref>), in which
          case the function returns on the original thread. When <code>define_task_block</code> returns on a different thread,
-         it synchronizes with operations following the call. <cxx-note> The return from define_task_block is ordered
+         it synchronizes with operations following the call. <cxx-note> The return from <ins><code>define_task_block</code></ins><del>define_task_block</del> is ordered
          similarly to an ordinary function call in a single thread.</cxx-note> The <code>define_task_block_restore_thread</code>
          function always returns on the same thread as the one on which it was called.
        </cxx-remarks>
