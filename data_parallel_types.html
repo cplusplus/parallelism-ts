@@ -2664,15 +2664,16 @@ explicit simd_mask(const <em>implementation-defined</em>& init) const;</ins></pr
         </cxx-returns>
       </cxx-function>
     </cxx-section>
+  </cxx-section>
 
-    <cxx-section id="parallel.simd.mask.nonmembers">
-      <h1><ins><code>simd_mask</code> non-member operations</ins></h1>
+  <cxx-section id="parallel.simd.mask.nonmembers">
+    <h1><ins><code>simd_mask</code> non-member operations</ins></h1>
 
-      <cxx-section id="parallel.simd.mask.binary">
-        <h1><ins><code>simd_mask</code> binary operators</ins></h1>
+    <cxx-section id="parallel.simd.mask.binary">
+      <h1><ins><code>simd_mask</code> binary operators</ins></h1>
 
-        <cxx-function>
-          <cxx-signature><ins>
+      <cxx-function>
+        <cxx-signature><ins>
 friend simd_mask operator&&(const simd_mask&, const simd_mask&) noexcept;
 friend simd_mask operator||(const simd_mask&, const simd_mask&) noexcept;
 friend simd_mask operator& (const simd_mask&, const simd_mask&) noexcept;
@@ -2680,143 +2681,143 @@ friend simd_mask operator| (const simd_mask&, const simd_mask&) noexcept;
 friend simd_mask operator^ (const simd_mask&, const simd_mask&) noexcept;
 </ins></cxx-signature>
 
-          <cxx-returns>
-          <ins>
-            A <code>simd_mask</code> object initialized with the results of the element-wise appliation of the indicated operator.
-          </ins>
-          </cxx-returns>
-        </cxx-function>
-      </cxx-section>
-    </cxx-sections>
+        <cxx-returns>
+        <ins>
+          A <code>simd_mask</code> object initialized with the results of the element-wise appliation of the indicated operator.
+        </ins>
+        </cxx-returns>
+      </cxx-function>
+    </cxx-section>
+  </cxx-sections>
 
-    <cxx-section id="parallel.simd.mask.cassign">
-      <h1><ins><code>simd_mask</code> compound assignment</ins></h1>
+  <cxx-section id="parallel.simd.mask.cassign">
+    <h1><ins><code>simd_mask</code> compound assignment</ins></h1>
 
-      <cxx-function>
-        <cxx-signature><ins>
+    <cxx-function>
+      <cxx-signature><ins>
 friend simd_mask& operator&=(simd_mask& lhs, const simd_mask& rhs) noexcept;
 friend simd_mask& operator|=(simd_mask& lhs, const simd_mask& rhs) noexcept;
 friend simd_mask& operator^=(simd_mask& lhs, const simd_mask& rhs) noexcept;
 </ins></cxx-signature>
 
-        <cxx-effects>
-        <ins>
-          These operators perform the indicated binary element-wise operation.
-        </ins>
-        </cxx-effects>
+      <cxx-effects>
+      <ins>
+        These operators perform the indicated binary element-wise operation.
+      </ins>
+      </cxx-effects>
 
-        <cxx-returns>
-        <ins>
-          <code>lhs</code>.
-        </ins>
-        </cxx-returns>
-      </cxx-function>
-    </cxx-section>
+      <cxx-returns>
+      <ins>
+        <code>lhs</code>.
+      </ins>
+      </cxx-returns>
+    </cxx-function>
+  </cxx-section>
     
-    <cxx-section id="parallel.simd.mask.comparison">
-      <h1><ins><code>simd_mask</code> comparisons</ins></h1>
+  <cxx-section id="parallel.simd.mask.comparison">
+    <h1><ins><code>simd_mask</code> comparisons</ins></h1>
 
-      <cxx-function>
-        <cxx-signature><ins>
+    <cxx-function>
+      <cxx-signature><ins>
 friend simd_mask operator==(const simd_mask&, const simd_mask&) noexcept;
 friend simd_mask operator!=(const simd_mask&, const simd_mask&) noexcept;
 </ins></cxx-signature>
 
-        <cxx-returns>
-        <ins>
-          An object initialized with the results of the element-wise application of the indicated operator.
-        </ins>
-        </cxx-returns>
-      </cxx-function>
-    </cxx-section>
+      <cxx-returns>
+      <ins>
+        An object initialized with the results of the element-wise application of the indicated operator.
+      </ins>
+      </cxx-returns>
+    </cxx-function>
+  </cxx-section>
 
-    <cxx-section id="parallel.simd.mask.reductions">
-      <h1><ins><code>simd_mask</code> reductions</ins></h1>
+  <cxx-section id="parallel.simd.mask.reductions">
+    <h1><ins><code>simd_mask</code> reductions</ins></h1>
 
-      <cxx-function>
-        <cxx-signature><ins>template&lt;class T, class Abi&gt; bool all_of(const simd_mask&lt;T, abi&gt;& k) noexcept;</ins></cxx-signature>
+    <cxx-function>
+      <cxx-signature><ins>template&lt;class T, class Abi&gt; bool all_of(const simd_mask&lt;T, abi&gt;& k) noexcept;</ins></cxx-signature>
 
-        <cxx-returns>
-        <ins>
-          <code>true</code> if all boolean elements in <code>k</code> are <code>true</code>, <code>false</code> otherwise.
-        </ins>
-        </cxx-returns>
-      </cxx-function>
+      <cxx-returns>
+      <ins>
+        <code>true</code> if all boolean elements in <code>k</code> are <code>true</code>, <code>false</code> otherwise.
+      </ins>
+      </cxx-returns>
+    </cxx-function>
 
-      <cxx-function>
-        <cxx-signature><ins>template&lt;class T, class Abi&gt; bool any_of(const simd_mask&lt;T, abi&gt;& k) noexcept;</ins></cxx-signature>
+    <cxx-function>
+      <cxx-signature><ins>template&lt;class T, class Abi&gt; bool any_of(const simd_mask&lt;T, abi&gt;& k) noexcept;</ins></cxx-signature>
 
-        <cxx-returns>
-        <ins>
-          <code>true</code> if at least one boolean element in <code>k</code> is <code>true</code>, <code>false</code> otherwise.
-        </ins>
-        </cxx-returns>
-      </cxx-function>
+      <cxx-returns>
+      <ins>
+        <code>true</code> if at least one boolean element in <code>k</code> is <code>true</code>, <code>false</code> otherwise.
+      </ins>
+      </cxx-returns>
+    </cxx-function>
 
-      <cxx-function>
-        <cxx-signature><ins>template&lt;class T, class Abi&gt; bool none_of(const simd_mask&lt;T, abi&gt;& k) noexcept;</ins></cxx-signature>
+    <cxx-function>
+      <cxx-signature><ins>template&lt;class T, class Abi&gt; bool none_of(const simd_mask&lt;T, abi&gt;& k) noexcept;</ins></cxx-signature>
 
-        <cxx-returns>
-        <ins>
-          <code>true</code> if none of the one boolean elements in <code>k</code> is <code>true</code>, <code>false</code> otherwise.
-        </ins>
-        </cxx-returns>
-      </cxx-function>
+      <cxx-returns>
+      <ins>
+        <code>true</code> if none of the one boolean elements in <code>k</code> is <code>true</code>, <code>false</code> otherwise.
+      </ins>
+      </cxx-returns>
+    </cxx-function>
 
-      <cxx-function>
-        <cxx-signature><ins>template&lt;class T, class Abi&gt; bool some_of(const simd_mask&lt;T, abi&gt;& k) noexcept;</ins></cxx-signature>
+    <cxx-function>
+      <cxx-signature><ins>template&lt;class T, class Abi&gt; bool some_of(const simd_mask&lt;T, abi&gt;& k) noexcept;</ins></cxx-signature>
 
-        <cxx-returns>
-        <ins>
-          <code>true</code> if at least one of the one boolean elements in <code>k</code> is <code>true</code> and at least one of the boolean elements in <code>k</code> is <code>false</code>, <code>false</code> otherwise.
-        </ins>
-        </cxx-returns>
-      </cxx-function>
+      <cxx-returns>
+      <ins>
+        <code>true</code> if at least one of the one boolean elements in <code>k</code> is <code>true</code> and at least one of the boolean elements in <code>k</code> is <code>false</code>, <code>false</code> otherwise.
+      </ins>
+      </cxx-returns>
+    </cxx-function>
 
-      <cxx-function>
-        <cxx-signature><ins>template&lt;class T, class Abi&gt; int popcount(const simd_mask&lt;T, Abi&gt;& k) noexcept;</ins></cxx-signature>
+    <cxx-function>
+      <cxx-signature><ins>template&lt;class T, class Abi&gt; int popcount(const simd_mask&lt;T, Abi&gt;& k) noexcept;</ins></cxx-signature>
 
-        <cxx-returns>
-        <ins>
-          The number of boolean elements in <code>k</code> that are <code>true</code>.
-        </ins>
-        </cxx-returns>
-      </cxx-function>
+      <cxx-returns>
+      <ins>
+        The number of boolean elements in <code>k</code> that are <code>true</code>.
+      </ins>
+      </cxx-returns>
+    </cxx-function>
 
-      <cxx-function>
-        <cxx-signature><ins>template&lt;class T, class Abi&gt; int find_first_set(const simd_mask&lt;T, Abi&gt;& k);</ins></cxx-signature>
+    <cxx-function>
+      <cxx-signature><ins>template&lt;class T, class Abi&gt; int find_first_set(const simd_mask&lt;T, Abi&gt;& k);</ins></cxx-signature>
 
-        <cxx-requires>
-        <ins>
-          <code>any_of(k)</code> returns <code>true</code>.
-        </ins>
-        </cxx-requires>
+      <cxx-requires>
+      <ins>
+        <code>any_of(k)</code> returns <code>true</code>.
+      </ins>
+      </cxx-requires>
 
-        <cxx-returns>
-        <ins>
-          The lowest element index <code>i</code> where <code>k[i]</code> is <code>true</code>.
-        </ins>
-        </cxx-returns>
-      </cxx-function>
+      <cxx-returns>
+      <ins>
+        The lowest element index <code>i</code> where <code>k[i]</code> is <code>true</code>.
+      </ins>
+      </cxx-returns>
+    </cxx-function>
 
-      <cxx-function>
-        <cxx-signature><ins>template&lt;class T, class Abi&gt; int find_last_set(const simd_mask&lt;T, Abi&gt;& k);</ins></cxx-signature>
+    <cxx-function>
+      <cxx-signature><ins>template&lt;class T, class Abi&gt; int find_last_set(const simd_mask&lt;T, Abi&gt;& k);</ins></cxx-signature>
 
-        <cxx-requires>
-        <ins>
-          <code>any_of(k)</code> returns <code>true</code>.
-        </ins>
-        </cxx-requires>
+      <cxx-requires>
+      <ins>
+        <code>any_of(k)</code> returns <code>true</code>.
+      </ins>
+      </cxx-requires>
 
-        <cxx-returns>
-        <ins>
-          The greatest element index <code>i</code> where <code>k[i]</code> is <code>true</code>.
-        </ins>
-        </cxx-returns>
-      </cxx-function>
+      <cxx-returns>
+      <ins>
+        The greatest element index <code>i</code> where <code>k[i]</code> is <code>true</code>.
+      </ins>
+      </cxx-returns>
+    </cxx-function>
 
-      <cxx-function>
-        <cxx-signature><ins>
+    <cxx-function>
+      <cxx-signature><ins>
 bool all_of(<em>see below</em>) noexcept;
 bool any_of(<em>see below</em>) noexcept;
 bool none_of(<em>see below</em>) noexcept;
@@ -2824,50 +2825,50 @@ bool some_of(<em>see below</em>) noexcept;
 int popcount(<em>see below</em>) noexcept;
 </ins></cxx-signature>
 
-        <cxx-returns>
-        <ins>
-          <code>all_of</code> and <code>any_of</code> return their arguments; <code>none_of</code> returns the negation of its argument; <code>some_of</code> returns <code>false</code>; <code>popcount</code> returns the integral representation of its argument.
-        </ins>
-        </cxx-returns>
+      <cxx-returns>
+      <ins>
+        <code>all_of</code> and <code>any_of</code> return their arguments; <code>none_of</code> returns the negation of its argument; <code>some_of</code> returns <code>false</code>; <code>popcount</code> returns the integral representation of its argument.
+      </ins>
+      </cxx-returns>
 
-        <cxx-remarks>
-        <ins>
-          The functions shall not participate in overload resolution unless the argument is of type <code>bool</code>.
-        </ins>
-        </cxx-remarks>
-      </cxx-function>
+      <cxx-remarks>
+      <ins>
+        The functions shall not participate in overload resolution unless the argument is of type <code>bool</code>.
+      </ins>
+      </cxx-remarks>
+    </cxx-function>
 
-      <cxx-function>
-        <cxx-signature><ins>
+    <cxx-function>
+      <cxx-signature><ins>
 int find_first_set(<em>see below</em>) noexcept;
 int find_last_set(<em>see below</em>) noexcept;
 </ins></cxx-signature>
 
-        <cxx-requires>
-        <ins>
-          The value of the argument is <code>true</code>.
-        </ins>
-        </cxx-requires>
-        
-        <cxx-returns>
-        <ins>
-          <code>0</code>.
-        </ins>
-        </cxx-returns>
+      <cxx-requires>
+      <ins>
+        The value of the argument is <code>true</code>.
+      </ins>
+      </cxx-requires>
+      
+      <cxx-returns>
+      <ins>
+        <code>0</code>.
+      </ins>
+      </cxx-returns>
 
-        <cxx-remarks>
-        <ins>
-          The functions shall not participate in overload resolution unless the argument is of type <code>bool</code>.
-        </ins>
-        </cxx-remarks>
-      </cxx-function>
-    </cxx-section>
+      <cxx-remarks>
+      <ins>
+        The functions shall not participate in overload resolution unless the argument is of type <code>bool</code>.
+      </ins>
+      </cxx-remarks>
+    </cxx-function>
+  </cxx-section>
 
-    <cxx-section id="parallel.simd.mask.where">
-      <h1><ins>Where functions</ins></h1>
+  <cxx-section id="parallel.simd.mask.where">
+    <h1><ins>Where functions</ins></h1>
 
-      <cxx-function>
-        <cxx-signature><ins>
+    <cxx-function>
+      <cxx-signature><ins>
 template&lt;class T, class Abi&gt;
 where_expression&lt;simd_mask&lt;T, Abi&gt;, simd&lt;T, Abi&gt;&gt; where(const typename simd&lt;T, Abi&gt;::mask_type& k,
                                                         simd&lt;T, Abi&gt;& v) noexcept;
@@ -2882,47 +2883,46 @@ const_where_expression&lt;simd_mask&lt;T, Abi&gt;, simd_mask&lt;T, Abi&gt;&gt; w
                                                                    const simd_mask&lt;T, Abi&gt;& v) noexcept;
 </ins></cxx-signature>
 
-        <cxx-returns>
-        <ins>
-          An object (<cxx-ref to="parallel.simd.whereexpr"></cxx-ref>) with <code>mask</code> and <code>data</code> initialized with <code>k</code> and <code>v</code> respectively.
-        </ins>
-        </cxx-returns>
-      </cxx-function>
+      <cxx-returns>
+      <ins>
+        An object (<cxx-ref to="parallel.simd.whereexpr"></cxx-ref>) with <code>mask</code> and <code>data</code> initialized with <code>k</code> and <code>v</code> respectively.
+      </ins>
+      </cxx-returns>
+    </cxx-function>
 
-      <cxx-function>
-        <cxx-signature><ins>
+    <cxx-function>
+      <cxx-signature><ins>
 template&lt;class T&gt; where_expression&lt;bool T&gt; where(<em>see below</em> k, T& v) noexcept;
 template&lt;class T&gt;
 const_where_expression&lt;bool, T&gt; where(<em>see below</em> k, const T& v) noexcept;
 </ins></cxx-signature>
 
-        <cxx-remarks>
-        <ins>
-          The functions shall not participate in overload resolution unless
+      <cxx-remarks>
+      <ins>
+        The functions shall not participate in overload resolution unless
 
-          <ul>
-            <li>
-            <ins>
-              <code>T</code> is neither a <code>simd</code> nor a <code>simd_mask</code> specialization, and
-            </ins>
-            </li>
+        <ul>
+          <li>
+          <ins>
+            <code>T</code> is neither a <code>simd</code> nor a <code>simd_mask</code> specialization, and
+          </ins>
+          </li>
 
-            <li>
-            <ins>
-              the first argument is of type <code>bool</code>.
-            </ins>
-            </li>
-          </ul>
-        </ins>
-        </cxx-remarks>
+          <li>
+          <ins>
+            the first argument is of type <code>bool</code>.
+          </ins>
+          </li>
+        </ul>
+      </ins>
+      </cxx-remarks>
 
-        <cxx-returns>
-        <ins>
-          An object (<cxx-ref to="parallel.simd.whereexpr"></cxx-ref>) with <code>mask</code> and <code>data</code> initialized with <code>k</code> and <code>v</code> respectively.
-        </ins>
-        </cxx-returns>
-      </cxx-function>
-    </cxx-section>
+      <cxx-returns>
+      <ins>
+        An object (<cxx-ref to="parallel.simd.whereexpr"></cxx-ref>) with <code>mask</code> and <code>data</code> initialized with <code>k</code> and <code>v</code> respectively.
+      </ins>
+      </cxx-returns>
+    </cxx-function>
   </cxx-section>
 </cxx-clause>
 
