@@ -121,7 +121,7 @@ inline namespace parallelism_v2 {
   template&lt;class T, class... Abis&gt;
     simd_mask&lt;T, simd_abi::deduce_t&lt;T, (simd_size_v&lt;T, Abis&gt; + ...)&gt;&gt; concat(const simd_mask&lt;T, Abis&gt;&...);
 
-  // <cxx-ref insynopsys="" to="parallel.simd.mask.reductions"></cxx-ref> reductions
+  <cxx-ref insynopsis="" to="parallel.simd.mask.reductions"></cxx-ref>
   template&lt;class T, class Abi&gt; bool all_of(const simd_mask&lt;T, Abi&gt;&) noexcept;
   template&lt;class T, class Abi&gt; bool any_of(const simd_mask&lt;T, Abi&gt;&) noexcept;
   template&lt;class T, class Abi&gt; bool none_of(const simd_mask&lt;T, Abi&gt;&) noexcept;
