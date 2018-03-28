@@ -244,9 +244,17 @@ namespace simd_abi {
       <p>
       <ins>
         Use of the <code>simd_abi::fixed_size&lt;N&gt;</code> tag type requires data-parallel types to store <code>N</code> elements (i.e. <code>simd&lt;T, simd_abi::fixed_size&lt;N&gt;&gt;::size()</code> is <code>N</code>). <code>simd&lt;T, fixed_size&lt;N&gt;&gt;</code> and <code>simd_mask&lt;T, fixed_size&lt;N&gt;&gt;</code> with <code>N &gt; 0</code> and <code>N &lt;= max_fixed_size&lt;T&gt;</code> shall be supported. Additionally, for every supported <code>simd&lt;T, Abi&gt;</code> (see <cxx-ref to="parallel.simd.overview"></cxx-ref>), where <code>Abi</code> is an ABI tag that is not a specialization of <code>simd_abi::fixed_size</code>, <code>N == simd&lt;T, Abi&gt;::size()</code> shall be supported.
+      </ins>
+      </p>
 
+      <p>
+      <ins>
         <cxx-note>It is unspecified whether <code>simd&lt;T, fixed_size&lt;T, fixed_size&lt;N&gt;&gt;</code> with <code>N &gt; max_fixed_size&lt;T&gt;</code> is supported. The value of <code>max_fixed_size&lt;T&gt;</code> can depend on compiler flags and can change between different compiler versions.</cxx-note>
+      </ins>
+      </p>
 
+      <p>
+      <ins>
         <cxx-note>An implementation can forego ABI compatibility between differently compiled translation units for <code>simd</code> and <code>simd_mask</code> specializations using the same <code>simd_abi::fixed_size&lt;N&gt;</code> tag. Otherwise, the efficiency of <code>simd&lt;T, Abi&gt;</code> is likely to be better than for <code>simd&lt;T, fixed_size&lt;simd_size_v&lt;T, Abi&gt;&gt;&gt;</code> (with <code>Abi</code> not a specialization of <code>simd_abi::fixed_size</code>).</cxx-note>
       </ins>
       </p>
@@ -646,7 +654,10 @@ public:
       </cxx-function>
   
       <cxx-function>
-        <cxx-signature><ins>template&lt;class U, class Flags&gt; void copy_to(U* mem, Flags) const &&;</ins></cxx-signature>
+        <cxx-signature><ins>
+template&lt;class U, class Flags&gt; void copy_to(U* mem, Flags) const &&;
+        </ins>
+        </cxx-signature>
   
         <cxx-requires>
         <ins>
