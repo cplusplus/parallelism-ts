@@ -99,9 +99,9 @@ inline namespace parallelism_v2 {
   template&lt;class T, class U, class Abi&gt; <em>see-below</em> static_simd_cast(const simd&lt;U, Abi&gt;&);
 
   template&lt;class T, class Abi&gt;
-  fixed_size_simd&lt;T, simd_size_v&lt;T, Abi&gt;&gt; to_fixed_size(const simd&lt;T, Abi&gt;&) noexcept;
+    fixed_size_simd&lt;T, simd_size_v&lt;T, Abi&gt;&gt; to_fixed_size(const simd&lt;T, Abi&gt;&) noexcept;
   template&lt;class T, class Abi&gt;
-  fixed_size_simd_mask&lt;T, simd_size_v&lt;T, Abi&gt;&gt; to_fixed_size(const simd_mask&lt;T, Abi&gt;&) noexcept;
+    fixed_size_simd_mask&lt;T, simd_size_v&lt;T, Abi&gt;&gt; to_fixed_size(const simd_mask&lt;T, Abi&gt;&) noexcept;
   template&lt;class T, int N&gt; native_simd&lt;T&gt; to_native(const fixed_size_simd&lt;T, N&gt;&) noexcept;
   template&lt;class T, int N&gt; native_simd_mask&lt;T&gt; to_native(const fixed_size_simd_mask&lt;T, N&gt;&) noexcept;
   template&lt;class T, int N&gt; simd&lt;T&gt; to_compatible(const fixed_size_simd&lt;T, N&gt;&) noexcept;
@@ -147,40 +147,40 @@ inline namespace parallelism_v2 {
   template&lt;class T&gt; using nodeduce_t = typename nodeduce&lt;T&gt;::type; // exposition only
 
   template&lt;class T, class Abi&gt;
-  where_expression&lt;simd_mask&lt;T, Abi&gt;, simd&lt;T, Abi&gt;&gt; where(const typename simd&lt;T, Abi&gt;::mask_type&, simd&lt;T, Abi&gt;&) noexcept;
+    where_expression&lt;simd_mask&lt;T, Abi&gt;, simd&lt;T, Abi&gt;&gt; where(const typename simd&lt;T, Abi&gt;::mask_type&, simd&lt;T, Abi&gt;&) noexcept;
 
   template&lt;class T, class Abi&gt;
-  const_where_expression&lt;simd_mask&lt;T, Abi&gt;, simd&lt;T, Abi&gt;&gt; where(const typename simd&lt;T, Abi&gt;::mask_type&, const simd&lt;T, Abi&gt;&) noexcept;
+    const_where_expression&lt;simd_mask&lt;T, Abi&gt;, simd&lt;T, Abi&gt;&gt; where(const typename simd&lt;T, Abi&gt;::mask_type&, const simd&lt;T, Abi&gt;&) noexcept;
 
   template&lt;class T, class Abi&gt;
-  where_expression&lt;simd_mask&lt;T, Abi&gt;, simd_mask&lt;T, Abi&gt;&gt; where(const nodeduce_t&lt;simd_mask&lt;T, Abit&gt;&gt;&, simd_mask&lt;T, Abi&gt;&) noexcept;
+    where_expression&lt;simd_mask&lt;T, Abi&gt;, simd_mask&lt;T, Abi&gt;&gt; where(const nodeduce_t&lt;simd_mask&lt;T, Abit&gt;&gt;&, simd_mask&lt;T, Abi&gt;&) noexcept;
 
   template&lt;class T, class Abi&gt;
-  const_where_expression&lt;simd_mask&lt;T, Abi&gt;, simd_mask&lt;T, Abi&gt;&gt; where(const nodeduce_t&lt;simd_mask&lt;T, Abit&gt;&gt;&, const simd_mask&lt;T, Abi&gt;&) noexcept;
+    const_where_expression&lt;simd_mask&lt;T, Abi&gt;, simd_mask&lt;T, Abi&gt;&gt; where(const nodeduce_t&lt;simd_mask&lt;T, Abit&gt;&gt;&, const simd_mask&lt;T, Abi&gt;&) noexcept;
 
   template&lt;class T&gt;
-  where_expression&lt;bool, T&gt; where(<em>see-below</em> k, T& d) noexcept;
+    where_expression&lt;bool, T&gt; where(<em>see-below</em> k, T& d) noexcept;
 
   template&lt;class T&gt;
-  const_where_expression&lt;bool, T&gt; where(<em>see-below</em> k, const T& d) noexcept;
+    const_where_expression&lt;bool, T&gt; where(<em>see-below</em> k, const T& d) noexcept;
 
   <cxx-ref insynopsis="" to="parallel.simd.reductions"></cxx-ref> reductions
   template&lt;class T, class Abi, class BinaryOperation = plus&lt;&gt;&gt;
-  T reduce(const simd&lt;T, Abi&gt;&, BinaryOperation = {});
+    T reduce(const simd&lt;T, Abi&gt;&, BinaryOperation = {});
 
   template&lt;class M, class V, class BinaryOperation&gt;
-  typename V::value_type reduce(const const_where_expression&lt;M, V&gt;& x,
-                                typename V::value_type identity_element, BinaryOperation binary_op);
+    typename V::value_type reduce(const const_where_expression&lt;M, V&gt;& x,
+                                  typename V::value_type identity_element, BinaryOperation binary_op);
   template&lt;class M, class V&gt;
-  typename V::value_type reduce(const const_where_expression&lt;M, V&gt;& x, plus&lt;&gt; binary_op = {});
+    typename V::value_type reduce(const const_where_expression&lt;M, V&gt;& x, plus&lt;&gt; binary_op = {});
   template&lt;class M, class V&gt;
-  typename V::value_type reduce(const const_where_expression&lt;M, V&gt;& x, multiplies&lt;&gt; binary_op);
+    typename V::value_type reduce(const const_where_expression&lt;M, V&gt;& x, multiplies&lt;&gt; binary_op);
   template&lt;class M, class V&gt;
-  typename V::value_type reduce(const const_where_expression&lt;M, V&gt;& x, bit_and&lt;&gt; binary_op);
+    typename V::value_type reduce(const const_where_expression&lt;M, V&gt;& x, bit_and&lt;&gt; binary_op);
   template&lt;class M, class V&gt;
-  typename V::value_type reduce(const const_where_expression&lt;M, V&gt;& x, bit_or&lt;&gt; binary_op);
+    typename V::value_type reduce(const const_where_expression&lt;M, V&gt;& x, bit_or&lt;&gt; binary_op);
   template&lt;class M, class V&gt;
-  typename V::value_type reduce(const const_where_expression&lt;M, V&gt;& x, bit_xor&lt;&gt; binary_op);
+    typename V::value_type reduce(const const_where_expression&lt;M, V&gt;& x, bit_xor&lt;&gt; binary_op);
 
   template&lt;class T, class Abi&gt; T hmin(const simd&lt;T, abi&gt;&);
   template&lt;class T, class Abi&gt; typename V::value_type hmin(const const_where_expression&lt;M, V&gt;&);
@@ -207,9 +207,6 @@ inline namespace parallelism_v2 {
       <h1><ins><code>simd</code> ABI tags</ins></h1>
       <ins>
       <pre>
-
-namespace std::experimental {
-inline namespace parallelism_v2 {
 namespace simd_abi {
   struct scalar {};
   template&lt;int N&gt; struct fixed_size {};
@@ -217,14 +214,18 @@ namespace simd_abi {
   template&lt;class T&gt; using compatible = <em>implementation-defined</em>;
   template&lt;class T&gt; using native = <em>implementation-defined</em>;
 }
-}
-}
       </pre>
       </ins>
 
       <p>
       <ins>
-        An <em>ABI tag</em> is a type in the <code>std::experimental::parallelism_v2::simd_abi</code> namespace that indicates a choice of size and binary representation for objects of data-parallel type. <cxx-note>The intent is for the size and binary representation to depend on the target architecture.</cxx-note> The ABI tag, together with a given element type implies a number of elements. ABI tag types are used as the second template argument to <code>simd</code> and <code>simd_mask</code>. <cxx-note>The ABI tag is orthogonal to selecting the machine instruction set. The selected machine instruction set limits the usable ABI tag types, though (see <cxx-ref to="parallel.simd.overview"></cxx-ref>). The ABI tags enable users to safely pass objects of data-parallel type between translation unit boundaries (e.g. function calls or I/O).</cxx-note>
+        An <em>ABI tag</em> is a type in the <code>std::experimental::parallelism_v2::simd_abi</code> namespace that indicates a choice of size and binary representation for objects of data-parallel type. <cxx-note>The intent is for the size and binary representation to depend on the target architecture.</cxx-note> The ABI tag, together with a given element type implies a number of elements. ABI tag types are used as the second template argument to <code>simd</code> and <code>simd_mask</code>.
+      </ins>
+      </p>
+
+      <p>
+      <ins>
+        <cxx-note>The ABI tag is orthogonal to selecting the machine instruction set. The selected machine instruction set limits the usable ABI tag types, though (see <cxx-ref to="parallel.simd.overview"></cxx-ref>). The ABI tags enable users to safely pass objects of data-parallel type between translation unit boundaries (e.g. function calls or I/O).</cxx-note>
       </ins>
       </p>
 
@@ -284,7 +285,7 @@ namespace simd_abi {
         <em>&mdash; end example</em> ]
         </ins>
       </ins>
-      </p>
+      <!- /p ->
 
       <p>
       <ins>
@@ -315,17 +316,7 @@ namespace simd_abi {
       </p>
 
       <ins>
-      <pre>
-
-namespace std::experimental {
-inline namespace parallelism_v2 {
-namespace simd_abi {
-
-  template&lt;T, size_t N&gt; struct deduce { using type = <em>see-below</em>; };
-}
-}
-}
-      </pre>
+      <pre>template&lt;T, size_t N&gt; struct deduce { using type = <em>see-below</em>; };</pre>
       </ins>
 
       <p>
@@ -464,7 +455,7 @@ namespace simd_abi {
         and <code>false_type</code> otherwise.
         </ins>
       </ins>
-      </p>
+      <!- /p .>
 
       <p>
       <ins>
@@ -498,7 +489,7 @@ namespace simd_abi {
 
         <ins>
         <cxx-note>
-          The rules are different from <cxx-ref to="parallel.simd.overview"></cxx-ref>.
+          The rules are different from those in <a href="#parallel.simd.overview">[parallel.simd.overview]</a>.
         </cxx-note>
         </ins>
       </ins>
@@ -557,46 +548,43 @@ namespace simd_abi {
       <h1><ins>Class templates <code>const_where_expression</code> and <code>where_expression</code></ins></h1>
       <ins>
       <pre>
-namespace std::experimental {
-inline namespace parallelism_v2 {
-  template&lt;class M, class T&gt; class const_where_expression {
-    const M mask; // exposition only
-    T& data; // exposision only
+template&lt;class M, class T&gt; class const_where_expression {
+  const M mask; <em>// exposition only</em>
+  T& data; <em>// exposition only</em>
 
-  public:
-    const_where_expression(const const_where_expression&) = delete;
-    const_where_expression& operator=(const const_where_expression&) = delete;
+public:
+  const_where_expression(const const_where_expression&) = delete;
+  const_where_expression& operator=(const const_where_expression&) = delete;
 
-    T operator-() const &&;
-    T operator+() const &&;
-    T operator~() const &&;
+  T operator-() const &&;
+  T operator+() const &&;
+  T operator~() const &&;
 
-    template&lt;class U, class Flags&gt; void copy_to(U* mem, Flags f) const &&;
-  };
+  template&lt;class U, class Flags&gt; void copy_to(U* mem, Flags f) const &&;
+};
 
-  template&lt;class M, class T&gt;
-  class where_expression : public const_where_expression&lt;M, T&gt; {
-  public:
-    template&lt;class U&gt; void operator=(U&& x) &&;
-    template&lt;class U&gt; void operator+=(U&& x) &&;
-    template&lt;class U&gt; void operator-=(U&& x) &&;
-    template&lt;class U&gt; void operator*=(U&& x) &&;
-    template&lt;class U&gt; void operator/=(U&& x) &&;
-    template&lt;class U&gt; void operator%=(U&& x) &&;
-    template&lt;class U&gt; void operator&=(U&& x) &&;
-    template&lt;class U&gt; void operator|=(U&& x) &&;
-    template&lt;class U&gt; void operator^=(U&& x) &&;
-    template&lt;class U&gt; void operator&lt;&lt;=(U&& x) &&;
-    template&lt;class U&gt; void operator&gt;&gt;=(U&& x) &&;
-    void operator++() &&
-    void operator++(int) &&
-    void operator--() &&
-    void operator--(int) &&
+template&lt;class M, class T&gt;
+class where_expression : public const_where_expression&lt;M, T&gt; {
+public:
+  template&lt;class U&gt; void operator=(U&& x) &&;
+  template&lt;class U&gt; void operator+=(U&& x) &&;
+  template&lt;class U&gt; void operator-=(U&& x) &&;
+  template&lt;class U&gt; void operator*=(U&& x) &&;
+  template&lt;class U&gt; void operator/=(U&& x) &&;
+  template&lt;class U&gt; void operator%=(U&& x) &&;
+  template&lt;class U&gt; void operator&=(U&& x) &&;
+  template&lt;class U&gt; void operator|=(U&& x) &&;
+  template&lt;class U&gt; void operator^=(U&& x) &&;
+  template&lt;class U&gt; void operator&lt;&lt;=(U&& x) &&;
+  template&lt;class U&gt; void operator&gt;&gt;=(U&& x) &&;
 
-    template&lt;class U, class Flags&gt; void copy_from(const U* mem, Flags) &&;
-  };
-}
-}
+  void operator++() &&
+  void operator++(int) &&
+  void operator--() &&
+  void operator--(int) &&
+
+  template&lt;class U, class Flags&gt; void copy_from(const U* mem, Flags) &&;
+};
       </pre>
       </ins>
   
@@ -634,7 +622,7 @@ inline namespace parallelism_v2 {
       <ins>
         In this subclause, the type <code>value_type</code> is an alias for <code>T</code> if <code>M</code> is <code>bool</code>, or an alias for <code>typename T::value_type</code> if <code>is_simd_mask_v&lt;M&gt;</code> is <code>true</code>.
       </ins>
-      <p>
+      <!- /p ->
   
       <p>
       <ins>
@@ -650,21 +638,17 @@ inline namespace parallelism_v2 {
         </ins>
         </cxx-signature>
   
-        <ins>
         <cxx-returns>
         <ins>
           A copy of <code>data</code> with the indicated unary operator applied to all selected elements.
         </ins>
         </cxx-returns>
-        </ins>
   
-        <ins>
         <cxx-throws>
         <ins>
           Nothing.
         </ins>
         </cxx-throws>
-        </ins>
       </cxx-function>
   
       <cxx-function>
@@ -838,87 +822,83 @@ template&lt;class U, class Flags&gt; void copy_from(const U* mem, Flags) &&;</in
 
       <ins>
       <pre>
-namespace std::experimental {
-inline namespace parallelism_v2 {
-  template&lt;class T, class Abi&gt; class simd {
-  public:
-    using value_type = T;
-    using reference = <em>see-below</em>;
-    using mask_type = simd_mask&lt;T, Abi&gt;
-    using abi_type = Abi;
+template&lt;class T, class Abi&gt; class simd {
+public:
+  using value_type = T;
+  using reference = <em>see-below</em>;
+  using mask_type = simd_mask&lt;T, Abi&gt;
+  using abi_type = Abi;
 
-    static constexpr size_t size() noexcept;
+  static constexpr size_t size() noexcept;
 
-    simd() = default;
+  simd() = default;
 
-    // implicit conversion constructor
-    template&lt;class U&gt; simd(const simd&lt;U, simd_abi::fixed_size&lt;size()&gt;&gt;&);
+  <em>// implicit conversion constructor</em>
+  template&lt;class U&gt; simd(const simd&lt;U, simd_abi::fixed_size&lt;size()&gt;&gt;&);
 
-    // implicit broadcast constructor (see below for constraints)
-    template&lt;class U&gt; simd(U&& value);
+  <em>// implicit broadcast constructor (see below for constraints)</em>
+  template&lt;class U&gt; simd(U&& value);
 
-    // generator constructor (see below for constraints)
-    template&lt;class G&gt; explicit simd(G&& gen);
+  <em>// generator constructor (see below for constraints)</em>
+  template&lt;class G&gt; explicit simd(G&& gen);
 
-    // load constructor
-    template&lt;class U, class Flags&gt; simd(const U* mem, Flags f);
+  <em>// load constructor</em>
+  template&lt;class U, class Flags&gt; simd(const U* mem, Flags f);
 
-    <cxx-ref insynopsis="" to="parallel.simd.copy"></cxx-ref>
-    template&lt;class U, class Flags&gt; copy_from(const U* mem, Flags f);
-    template&lt;class U, class Flags&gt; copy_to(U* mem, Flags f);
+  <cxx-ref insynopsis="" to="parallel.simd.copy"></cxx-ref>
+  template&lt;class U, class Flags&gt; copy_from(const U* mem, Flags f);
+  template&lt;class U, class Flags&gt; copy_to(U* mem, Flags f);
 
-    <cxx-ref insynopsis="" to="parallel.simd.subscr"></cxx-ref>
-    reference operator[](size_t);
-    value_type operator[](size_t) const;
+  <cxx-ref insynopsis="" to="parallel.simd.subscr"></cxx-ref>
+  reference operator[](size_t);
+  value_type operator[](size_t) const;
 
-    <cxx-ref insynopsis="" to="parallel.simd.unary"></cxx-ref>
-    simd& operator++();
-    simd operator++(int);
-    simd& operator--();
-    simd operator--(int);
-    mask_type operator!() const;
-    simd operator~() const;
-    simd operator+() const;
-    simd operator-() const;
+  <cxx-ref insynopsis="" to="parallel.simd.unary"></cxx-ref>
+  simd& operator++();
+  simd operator++(int);
+  simd& operator--();
+  simd operator--(int);
+  mask_type operator!() const;
+  simd operator~() const;
+  simd operator+() const;
+  simd operator-() const;
 
-    <cxx-ref insynopsis="" to="parallel.simd.binary"></cxx-ref>
-    friend simd operator+(const simd&, const simd&);
-    friend simd operator-(const simd&, const simd&);
-    friend simd operator*(const simd&, const simd&);
-    friend simd operator/(const simd&, const simd&);
-    friend simd operator%(const simd&, const simd&);
-    friend simd operator&(const simd&, const simd&);
-    friend simd operator|(const simd&, const simd&);
-    friend simd operator^(const simd&, const simd&);
-    friend simd operator&lt;&lt;(const simd&, const simd&);
-    friend simd operator&gt;&gt;(const simd&, const simd&);
-    friend simd operator&lt;&lt;(const simd&, int);
-    friend simd operator&gt;&gt;(const simd&, int);
+  <cxx-ref insynopsis="" to="parallel.simd.binary"></cxx-ref>
+  friend simd operator+(const simd&, const simd&);
+  friend simd operator-(const simd&, const simd&);
+  friend simd operator*(const simd&, const simd&);
+  friend simd operator/(const simd&, const simd&);
+  friend simd operator%(const simd&, const simd&);
+  friend simd operator&(const simd&, const simd&);
+  friend simd operator|(const simd&, const simd&);
+  friend simd operator^(const simd&, const simd&);
+  friend simd operator&lt;&lt;(const simd&, const simd&);
+  friend simd operator&gt;&gt;(const simd&, const simd&);
+  friend simd operator&lt;&lt;(const simd&, int);
+  friend simd operator&gt;&gt;(const simd&, int);
 
-    <cxx-ref insynopsis="" to="parallel.simd.cassign"></cxx-ref>
-    friend simd& operator+=(simd&, const simd&);
-    friend simd& operator-=(simd&, const simd&);
-    friend simd& operator*=(simd&, const simd&);
-    friend simd& operator/=(simd&, const simd&);
-    friend simd& operator%=(simd&, const simd&);
-    friend simd& operator&=(simd&, const simd&);
-    friend simd& operator|=(simd&, const simd&);
-    friend simd& operator^=(simd&, const simd&);
-    friend simd& operator&lt;&lt;=(simd&, const simd&);
-    friend simd& operator&gt;&gt;=(simd&, const simd&);
-    friend simd& operator&lt;&lt;=(simd&, int);
-    friend simd& operator&gt;&gt;=(simd&, int);
+  <cxx-ref insynopsis="" to="parallel.simd.cassign"></cxx-ref>
+  friend simd& operator+=(simd&, const simd&);
+  friend simd& operator-=(simd&, const simd&);
+  friend simd& operator*=(simd&, const simd&);
+  friend simd& operator/=(simd&, const simd&);
+  friend simd& operator%=(simd&, const simd&);
+  friend simd& operator&=(simd&, const simd&);
+  friend simd& operator|=(simd&, const simd&);
+  friend simd& operator^=(simd&, const simd&);
+  friend simd& operator&lt;&lt;=(simd&, const simd&);
+  friend simd& operator&gt;&gt;=(simd&, const simd&);
+  friend simd& operator&lt;&lt;=(simd&, int);
+  friend simd& operator&gt;&gt;=(simd&, int);
 
-    <cxx-ref insynopsis="" to="parallel.simd.comparison"></cxx-ref>
-    friend mask_type operator==(const simd&, const simd&);
-    friend mask_type operator!=(const simd&, const simd&);
-    friend mask_type operator&gt;=(const simd&, const simd&);
-    friend mask_type operator&lt;=(const simd&, const simd&);
-    friend mask_type operator&gt;(const simd&, const simd&);
-    friend mask_type operator&lt;(const simd&, const simd&);
-  };
-}
-}
+  <cxx-ref insynopsis="" to="parallel.simd.comparison"></cxx-ref>
+  friend mask_type operator==(const simd&, const simd&);
+  friend mask_type operator!=(const simd&, const simd&);
+  friend mask_type operator&gt;=(const simd&, const simd&);
+  friend mask_type operator&lt;=(const simd&, const simd&);
+  friend mask_type operator&gt;(const simd&, const simd&);
+  friend mask_type operator&lt;(const simd&, const simd&);
+};
       </pre>
       </ins>
 
@@ -1045,7 +1025,7 @@ V addsub(V a, V b) {
 
         <pre>
         <ins>
-class reference // exposition only
+class reference <em>// exposition only</em>
 {
 public:
   reference() = delete;
@@ -1074,7 +1054,6 @@ public:
   friend void swap(reference&& a, reference&& b) noexcept;
   friend void swap(value_type&& a, reference&& b) noexcept;
   friend void swap(reference&& a, value_type&& b) noexcept;
-
 };</ins>
         </pre>
       </p>
@@ -1434,7 +1413,7 @@ friend void swap(reference&& a, value_type& b) noexcept;</ins>
 
         <cxx-returns>
         <ins>
-          A <code>reference</code> (see <a href="#parallel.simd.reference">[parallel.simd.reference]</a>) referring to the <em>i</em>-th element.
+          A <code>reference</code> (see <cxx-ref to="parallel.simd.reference"></cxx-ref>) referring to the <em>i</em>-th element.
         </ins>
         </cxx-returns>
 
@@ -1512,7 +1491,7 @@ friend void swap(reference&& a, value_type& b) noexcept;</ins>
         <ins>
           A copy of <code>*this</code> before incrementing.
         </ins>
-        </cxx-effects>
+        </cxx-returns>
 
         <cxx-throws>
         <ins>
@@ -1556,7 +1535,7 @@ friend void swap(reference&& a, value_type& b) noexcept;</ins>
         <ins>
           A copy of <code>*this</code> before decrementing.
         </ins>
-        </cxx-effects>
+        </cxx-returns>
 
         <cxx-throws>
         <ins>
@@ -1819,7 +1798,7 @@ T reduce(const simd&lt;T, Abi&gt;& x, BinaryOperation binary_op = {});
         <cxx-signature><ins>
 template&lt;class M, class V, class BinaryOperation&gt;
 typename V::value_type reduce(const const_where_expression&lt;M, V&gt;& x, typename V::value_type identity_element,
-                              BinaryOperation binary_op);
+                              BinaryOperation binary_op = {});
 </ins></cxx-signature>
 
         <cxx-requires>
@@ -1844,7 +1823,7 @@ typename V::value_type reduce(const const_where_expression&lt;M, V&gt;& x, typen
       <cxx-function>
         <cxx-signature><ins>
 template&lt;class M, class V&gt;
-typename V::value_type reduce(const const_where_expression&lt;M, V&gt;& x, plus&lt;&gt; binary_op = {});
+typename V::value_type reduce(const const_where_expression&lt;M, V&gt;& x, plus&lt;&gt; binary_op);
 </ins></cxx-signature>
 
         <cxx-returns>
@@ -1863,7 +1842,7 @@ typename V::value_type reduce(const const_where_expression&lt;M, V&gt;& x, plus&
       <cxx-function>
         <cxx-signature><ins>
 template&lt;class M, class V&gt;
-typename V::value_type reduce(const const_where_expression&lt;M, V&gt;& x, multiplies&lt;&gt; binary_op = {});
+typename V::value_type reduce(const const_where_expression&lt;M, V&gt;& x, multiplies&lt;&gt; binary_op);
 </ins></cxx-signature>
 
         <cxx-returns>
@@ -1882,7 +1861,7 @@ typename V::value_type reduce(const const_where_expression&lt;M, V&gt;& x, multi
       <cxx-function>
         <cxx-signature><ins>
 template&lt;class M, class V&gt;
-typename V::value_type reduce(const const_where_expression&lt;M, V&gt;& x, bit_and&lt;&gt; binary_op = {});
+typename V::value_type reduce(const const_where_expression&lt;M, V&gt;& x, bit_and&lt;&gt; binary_op);
 </ins></cxx-signature>
 
         <cxx-requires>
@@ -1907,9 +1886,9 @@ typename V::value_type reduce(const const_where_expression&lt;M, V&gt;& x, bit_a
       <cxx-function>
         <cxx-signature><ins>
 template&lt;class M, class V&gt;
-typename V::value_type reduce(const const_where_expression&lt;M, V&gt;& x, bit_or&lt;&gt; binary_op = {});
+typename V::value_type reduce(const const_where_expression&lt;M, V&gt;& x, bit_or&lt;&gt; binary_op);
 template&lt;class M, class V&gt;
-typename V::value_type reduce(const const_where_expression&lt;M, V&gt;& x, bit_xor&lt;&gt; binary_op = {});
+typename V::value_type reduce(const const_where_expression&lt;M, V&gt;& x, bit_xor&lt;&gt; binary_op);
 </ins></cxx-signature>
 
         <cxx-requires>
@@ -2419,57 +2398,53 @@ clamp(const simd&lt;T, Abi&gt;& v, const simd&lt;T, Abi&gt;& lo, const simd&lt;T
 
       <pre>
       <ins>
-namespace std::experimental {
-inline namespace parallelism_v2 {
-  template&lt;class T, class Abi&gt; class simd_mask {
-  public:
-    using value_type = bool;
-    using reference = <em>see-below</em>;
-    using simd_type = simd&lt;T, Abi&gt;;
-    using abi_type = Abi;
+template&lt;class T, class Abi&gt; class simd_mask {
+public:
+  using value_type = bool;
+  using reference = <em>see-below</em>;
+  using simd_type = simd&lt;T, Abi&gt;;
+  using abi_type = Abi;
 
-    static constexpr size_t size() noexcept;
+  static constexpr size_t size() noexcept;
 
-    simd_mask() = default;
+  simd_mask() = default;
 
-    // broadcast constructor
-    explicit simd_mask(value_type) noexcept;
+  <em>// broadcast constructor</em>
+  explicit simd_mask(value_type) noexcept;
 
-    // implicit type conversion constructor
-    template&lt;class U&gt; simd_mask(const simd_mask&lt;U, simd_abi::fixed_size&lt;size()&gt;&gt;&) noexcept;
+  <em>// implicit type conversion constructor</em>
+  template&lt;class U&gt; simd_mask(const simd_mask&lt;U, simd_abi::fixed_size&lt;size()&gt;&gt;&) noexcept;
 
-    // load constructor
-    template&lt;class Flags&gt; simd_mask(const value_Type* mem, Flags);
+  <em>// load constructor</em>
+  template&lt;class Flags&gt; simd_mask(const value_Type* mem, Flags);
 
-    <cxx-ref insynopsis="" to="parallel.simd.mask.copy"></cxx-ref> loads
-    template&lt;class Flags&gt; void copy_from(const value_type* mem, Flags);
-    template&lt;class Flags&gt; void copy_to(value_type* mem, Flags);
+  <cxx-ref insynopsis="" to="parallel.simd.mask.copy"></cxx-ref>
+  template&lt;class Flags&gt; void copy_from(const value_type* mem, Flags);
+  template&lt;class Flags&gt; void copy_to(value_type* mem, Flags);
 
-    <cxx-ref insynopsis="" to="parallel.simd.mask.subscr"></cxx-ref> scalar access
-    reference operator[](size_t);
-    value_type operator[](size_t) const;
+  <cxx-ref insynopsis="" to="parallel.simd.mask.subscr"></cxx-ref>
+  reference operator[](size_t);
+  value_type operator[](size_t) const;
 
-    <cxx-ref insynopsis="" to="parallel.simd.mask.unary"></cxx-ref> unary operators
-    simd_mask operator!() const noexcept;
-    
-    <cxx-ref insynopsis="" to="parallel.simd.mask.binary"></cxx-ref> simd_mask binary operators
-    friend simd_mask operator&&(const simd_mask&, const simd_mask&) noexcept;
-    friend simd_mask operator||(const simd_mask&, const simd_mask&) noexcept;
-    friend simd_mask operator&(const simd_mask&, const simd_mask&) noexcept;
-    friend simd_mask operator|(const simd_mask&, const simd_mask&) noexcept;
-    friend simd_mask operator^(const simd_mask&, const simd_mask&) noexcept;
+  <cxx-ref insynopsis="" to="parallel.simd.mask.unary"></cxx-ref>
+  simd_mask operator!() const noexcept;
+  
+  <cxx-ref insynopsis="" to="parallel.simd.mask.binary"></cxx-ref>
+  friend simd_mask operator&&(const simd_mask&, const simd_mask&) noexcept;
+  friend simd_mask operator||(const simd_mask&, const simd_mask&) noexcept;
+  friend simd_mask operator&(const simd_mask&, const simd_mask&) noexcept;
+  friend simd_mask operator|(const simd_mask&, const simd_mask&) noexcept;
+  friend simd_mask operator^(const simd_mask&, const simd_mask&) noexcept;
 
-    <cxx-ref insynopsis="" to="parallel.simd.mask.cassign"></cxx-ref> simd_mask compound assignment
-    friend simd_mask& operator&=(simd_mask&, const simd_mask&) noexcept;
-    friend simd_mask& operator|=(simd_mask&, const simd_mask&) noexcept;
-    friend simd_mask& operator^=(simd_mask&, const simd_mask&) noexcept;
+  <cxx-ref insynopsis="" to="parallel.simd.mask.cassign"></cxx-ref>
+  friend simd_mask& operator&=(simd_mask&, const simd_mask&) noexcept;
+  friend simd_mask& operator|=(simd_mask&, const simd_mask&) noexcept;
+  friend simd_mask& operator^=(simd_mask&, const simd_mask&) noexcept;
 
-    <cxx-ref insynopsis="" to="parallel.simd.mask.comparison"></cxx-ref> simd_mask compares
-    friend simd_mask operator==(const simd_mask&, const simd_mask&) noexcept;
-    friend simd_mask operator!=(const simd_mask&, const simd_mask&) noexcept;
-  };
-}
-}</ins></pre>
+  <cxx-ref insynopsis="" to="parallel.simd.mask.comparison"></cxx-ref>
+  friend simd_mask operator==(const simd_mask&, const simd_mask&) noexcept;
+  friend simd_mask operator!=(const simd_mask&, const simd_mask&) noexcept;
+};</ins></pre>
 
       <p>
       <ins>
@@ -2530,7 +2505,7 @@ explicit simd_mask(const <em>implementation-defined</em>& init) const;</ins></pr
 
         <p>
         <ins>
-          The member type <code>reference</code> has the same interface as <code>simd&lt;T, Abi&gt;::reference</code>, except its <code>value_type</code> is <code>bool</code>. (<a href="#parallel.simd.reference">[parallel.simd.reference]</a>)
+          The member type <code>reference</code> has the same interface as <code>simd&lt;T, Abi&gt;::reference</code>, except its <code>value_type</code> is <code>bool</code>. (<cxx-ref to="parallel.simd.reference"></cxx-ref>)
         </ins>
         </p>
     </cxx-section>
@@ -2650,7 +2625,7 @@ explicit simd_mask(const <em>implementation-defined</em>& init) const;</ins></pr
 
         <cxx-returns>
         <ins>
-          A <code>reference</code> (see <a href="#parallel.simd.reference">[parallel.simd.reference]</a>) referring to the <em>i</em>-th element.
+          A <code>reference</code> (see <cxx-ref to="parallel.simd.reference"></cxx-ref>) referring to the <em>i</em>-th element.
         </ins>
         </cxx-returns>
 
@@ -2708,9 +2683,9 @@ explicit simd_mask(const <em>implementation-defined</em>& init) const;</ins></pr
           <cxx-signature><ins>
 friend simd_mask operator&&(const simd_mask&, const simd_mask&) noexcept;
 friend simd_mask operator||(const simd_mask&, const simd_mask&) noexcept;
-friend simd_mask operator&(const simd_mask&, const simd_mask&) noexcept;
-friend simd_mask operator|(const simd_mask&, const simd_mask&) noexcept;
-friend simd_mask operator^(const simd_mask&, const simd_mask&) noexcept;
+friend simd_mask operator& (const simd_mask&, const simd_mask&) noexcept;
+friend simd_mask operator| (const simd_mask&, const simd_mask&) noexcept;
+friend simd_mask operator^ (const simd_mask&, const simd_mask&) noexcept;
 </ins></cxx-signature>
 
           <cxx-returns>
@@ -2917,7 +2892,7 @@ const_where_expression&lt;simd_mask&lt;T, Abi&gt;, simd_mask&lt;T, Abi&gt;&gt; w
 
         <cxx-returns>
         <ins>
-          An object <a href="#parallel.simd.wherexpr">[parallel.simd.wherexpr]</a> with <code>mask</code> and <code>data</code> initialized with <code>k</code> and <code>v</code> respectively.
+          An object (<cxx-ref to="parallel.simd.whereexpr"></cxx-ref>) with <code>mask</code> and <code>data</code> initialized with <code>k</code> and <code>v</code> respectively.
         </ins>
         </cxx-returns>
       </cxx-function>
@@ -2931,7 +2906,7 @@ const_where_expression&lt;bool, T&gt; where(<em>see-below</em> k, const T& v) no
 
         <cxx-remarks>
         <ins>
-          The functions shall not participate in overload resolution unles
+          The functions shall not participate in overload resolution unless
 
           <bl>
             <li>
@@ -2951,7 +2926,7 @@ const_where_expression&lt;bool, T&gt; where(<em>see-below</em> k, const T& v) no
 
         <cxx-returns>
         <ins>
-          And object <a href="#parallel.simd.whereexpr">[parallel.simd.whereexpr]</a> with <code>mask</code> and <code>data</code> initialized with <code>k</code> and <code>v</code> respectively.
+          An object (<cxx-ref to="parallel.simd.whereexpr"></cxx-ref>) with <code>mask</code> and <code>data</code> initialized with <code>k</code> and <code>v</code> respectively.
         </ins>
         </cxx-returns>
       </cxx-function>
