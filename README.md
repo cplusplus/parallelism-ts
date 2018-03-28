@@ -19,7 +19,12 @@ NYYYY is document NXXXX reformatted as a PDTS draft document.
 
 * Apply the proposed wording in [P0214R9](https://wg21.link/P0214R9) (Data-Parallel Vector Types & Operations).
 
+## Editorial Changes
+
+* Reordered Execution Policy and Parallel Exceptions clauses.
+* Various typographical corrections.
+
 # Acknowledgements
 
-Thanks to Alisdair Meredith for suggesting editorial changes.
+Thanks to Alisdair Meredith, Matthias Kretz, and Marshall Clow for reviewing and suggesting editorial changes.
 
