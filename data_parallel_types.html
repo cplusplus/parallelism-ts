@@ -267,10 +267,10 @@ namespace simd_abi {
 
         [ <em>Example:</em> Consider a target architecture supporting the extended ABI tags <code>__simd128</code> and <code>__simd256</code>, where the <code>__simd256</code> type requires an optional ISA extension on said architecture. Also, the target architecture does not support <code>long double</code> with either ABI tag. The implementation therefore defines
 
-        <bl> 
+        <ul> 
           <li>
           <ins>
-            <code>compatible&lt;T&gt;</code> as an alias for <code>__simd128</code> for all vectorizable <code>T</code>, except <code>long double</code>, and
+            <code>compatible&lt;T&gt;</code> is an alias for <code>__simd128</code> for all vectorizable <code>T</code>, except <code>long double</code>, and
           </ins>
           </li>
 
@@ -279,7 +279,7 @@ namespace simd_abi {
             <code>compatible&lt;long double&gt;</code> as an alias for <code>scalar</code>.
           </ins>
           </li>
-        </bl>
+        </ul>
 
         <ins>
         <em>&mdash; end example</em> ]
@@ -296,7 +296,7 @@ namespace simd_abi {
 
         [ <em>Example:</em> Consider a target architecture supporting the extended ABI tags <code>__simd128</code> and <code>__simd256</code>, where hardware support for <code>__simd256</code> only exists for floating-point types. The implementation therefore defines <code>native&lt;T&gt;</code> as an alias for
 
-          <bl>
+          <ul>
             <li>
             <ins>
               <code>__simd256</code> if <code>T</code> is a floating-point type, and
@@ -308,7 +308,7 @@ namespace simd_abi {
               <code>__simd128</code> otherwise.
             </ins>
             </li>
-          </bl>
+          </ul>
         <ins>
         <em>&mdash; end example</em> ]
         </ins>
@@ -323,7 +323,7 @@ namespace simd_abi {
       <ins>
         The member <code>type</code> shall be present if and only if
 
-        <bl>
+        <ul>
           <li>
           <ins>
             <code>T</code> is a vectorizable type, and
@@ -335,7 +335,7 @@ namespace simd_abi {
             <code>simd_abi::fixed_size&lt;N&gt;</code> is supported (see <cxx-ref to="parallel.simd.abi"></cxx-ref>).
           </ins>
           </li>
-        </bl>
+        </ul>
       </ins>
       <!- /p ->
 
@@ -344,7 +344,7 @@ namespace simd_abi {
         Where present, the member typedef <code>type</code> shall name an ABI tag type that satisfies
       </ins>
 
-        <bl>
+        <ul>
           <li>
           <ins>
             <code>simd_size&lt;T, type&gt; == N</code>, and
@@ -356,9 +356,7 @@ namespace simd_abi {
             <code>simd&lt;T, type&gt;</code> is default constructible (see <cxx-ref to="parallel.simd.overview"></cxx-ref>).
           </ins>
           </li>
-        </bl>
-
-        <br>
+        </ul>
 
       <ins>
         If <code>N</code> is <code>1</code>, the member typedef <code>type</code> is <code>simd_abi::scalar</code>. Otherwise, if there are multiple ABI tag types that satisfy the constraints, the member typedef <code>type</code> is implementation-defined. <cxx-note>It is expected that extended ABI tags can produce better optimizations and thus are preferred over <code>simd_abi::fixed_size&lt;N&gt;</code>.</cxx-note>
@@ -429,7 +427,7 @@ namespace simd_abi {
       <ins>
         The type <code>is_simd_flag_type&lt;class T&gt;</code> is a <code>UnaryTypeTrait</code> with a <code>BaseCharacteristic</code> of <code>true_type</code> if <code>T</code> is one of
 
-        <bl>
+        <ul>
           <li>
           <ins>
             <code>element_aligned_tag</code>, or
@@ -447,9 +445,7 @@ namespace simd_abi {
             <code>overaligned_tag&lt;N&gt;</code> with <code>N &gt; 0</code> and <code>N</code> an integral power of two,
           </ins>
           </li>
-        </bl>
-
-        <br>
+        </ul>
 
         <ins>
         and <code>false_type</code> otherwise.
@@ -471,7 +467,7 @@ namespace simd_abi {
       <ins>
         <code>simd_size&lt;T, Abi&gt;</code> shall have a member <code>value</code> if and only if
 
-        <bl>
+        <ul>
           <li>
           <ins>
             <code>T</code> is a vectorizable type, and
@@ -483,9 +479,7 @@ namespace simd_abi {
             <code>is_abi_tag_v&lt;Abi&gt;</code> is <code>true</code>.
           </ins>
           </li>
-        </bl>
-
-        <br>
+        </ul>
 
         <ins>
         <cxx-note>
@@ -516,7 +510,7 @@ namespace simd_abi {
         <code>memory_alignment&lt;T, U&gt;</code> shall have a member <code>value</code> if and only if
       </ins>
 
-        <bl>
+        <ul>
           <li>
           <ins>
             <code>is_simd_mask_v&lt;T&gt;</code> is <code>true</code> and <code>U</code> is <code>bool</code>, or
@@ -528,7 +522,7 @@ namespace simd_abi {
             <code>is_simd_v&lt;T&gt;</code> is <code>true</code> and <code>U</code> is a vectorizable type.
           </ins>
           </li>
-        </bl>
+        </ul>
       <!- /p ->
 
       <p>
@@ -676,25 +670,25 @@ public:
         <ins>
           This function shall not participate in overload resolution unless
   
-          <bl>
-          <li>
-            <code>is_simd_flag_type_v&lt;Flags&gt;</code> is <code>true</code>, and
-          </li>
+          <ul>
+            <li>
+              <code>is_simd_flag_type_v&lt;Flags&gt;</code> is <code>true</code>, and
+            </li>
   
-          <li>
-            either
+            <li>
+              either
   
-            <ul>
-              <li>
-                <code>U</code> is <code>bool</code> and <code>value_type</code> is <code>bool</code>, or
-              </li>
+              <ul>
+                <li>
+                  <code>U</code> is <code>bool</code> and <code>value_type</code> is <code>bool</code>, or
+                </li>
   
-              <li>
-                <code>U</code> is a vectorizable type and <code>value_type</code> is not <code>bool</code>.
-              </li>
-            </ul>
-          </li>
-          </bl>
+                <li>
+                  <code>U</code> is a vectorizable type and <code>value_type</code> is not <code>bool</code>.
+                </li>
+              </ul>
+            </li>
+          </ul>
         </ins>
         </cxx-remarks>
       </cxx-function>
@@ -789,7 +783,7 @@ template&lt;class U, class Flags&gt; void copy_from(const U* mem, Flags) &&;</in
         <ins>
           This function shall not participate in overload resolution unless
   
-          <bl>
+          <ul>
             <li>
               <code>is_simd_flag_type_v&lt;Flags&gt;</code> is <code>true</code>, and
             </li>
@@ -807,7 +801,7 @@ template&lt;class U, class Flags&gt; void copy_from(const U* mem, Flags) &&;</in
                 </li>
               </ul>
             </li>
-          </bl>
+          </ul>
         </ins>
         </cxx-remarks>
       </cxx-function>
@@ -912,19 +906,19 @@ public:
       <ins>
         Every specialization of <code>simd</code> shall be a complete type. The specialization <code>simd&lt;T, Abi&gt;</code> is supported if <code>T</code> is a vectorizable type and
 
-        <bl>
-        <li>
-        <ins>
-          <code>Abi</code> is <code>simd_abi::scalar</code>, or
-        </ins>
-        </li>
+        <ul>
+          <li>
+          <ins>
+            <code>Abi</code> is <code>simd_abi::scalar</code>, or
+          </ins>
+          </li>
 
-        <li>
-        <ins>
-          <code>Abi</code> is <code>simd_abi::fixed_size&lt;N&gt;</code>, with <code>N</code> is constrained as defined in <cxx-ref to="parallel.simd.abi"></cxx-ref>.
-        </ins>
-        </li>
-        </bl>
+          <li>
+          <ins>
+            <code>Abi</code> is <code>simd_abi::fixed_size&lt;N&gt;</code>, with <code>N</code> is constrained as defined in <cxx-ref to="parallel.simd.abi"></cxx-ref>.
+          </ins>
+          </li>
+        </ul>
 
         <ins>
           If <code>Abi</code> is an extended ABI tag, it is implementation-defined whether <code>simd&lt;T, Abi&gt;</code> is supported. <cxx-note>The intent is for implementations to decide on the basis of the currently targeted system.</cxx-note>
@@ -938,7 +932,7 @@ public:
           <cxx-example>
             Consider an implementation that defines the extended ABI tags <code>__simd_x</code> and <code>__gpu_y</code>. When the compiler is invoked to translate to a machine that has support for the <code>__simd_x</code> ABI tag for all arithmetic types other than <code>long double</code> and no support for the <code>__gpu_y</code> ABI tag, then:
 
-            <bl>
+            <ul>
               <li>
                 <code>simd&lt;T, simd_abi::__gpu_y&gt;</code> is not supported for any <code>T</code> and has a deleted constructor.
               </li>
@@ -954,7 +948,7 @@ public:
               <li>
                 <code>simd&lt;long double, simd_abi::scalar&gt;</code> is supported.
               </li>
-            </bl>
+            </ul>
           </cxx-example>
         </ins>
       </ins>
@@ -1215,7 +1209,7 @@ friend void swap(reference&& a, value_type& b) noexcept;</ins>
           <br>
           <br>
 
-          <bl>
+          <ul>
             <li>
               <code>From</code> is a vectorizable type and every possibly value of <code>From</code> can be represented with type <code>value_type</code>, or
             </li>
@@ -1231,7 +1225,7 @@ friend void swap(reference&& a, value_type& b) noexcept;</ins>
               <code>From</code> is <code>unsigned int</code> and <code>value_type</code> is an unsigned integral type.
             </li>
             </li>
-          </bl>
+          </ul>
         </ins>
         </cxx-remarks>
       </cxx-function>
@@ -1250,7 +1244,7 @@ friend void swap(reference&& a, value_type& b) noexcept;</ins>
           This constructor shall not participate in overload resolution unless
         </ins>
 
-          <bl>
+          <ul>
             <li>
             <ins>
               <code>abi_type</code> is <code>simd_abi::fixed_size&lt;size()&gt;</code>, and
@@ -1268,7 +1262,7 @@ friend void swap(reference&& a, value_type& b) noexcept;</ins>
               if both <code>U</code> and <code>value_type</code> are integral, the integer conversion rank [conv.rank] of <code>value_type</code> is greater than the integer conversion rank of <code>U</code>.
             </ins>
             </li>
-          </bl>
+          </ul>
         </cxx-remarks>
       </cxx-function>
 
@@ -1313,7 +1307,7 @@ friend void swap(reference&& a, value_type& b) noexcept;</ins>
         <ins>
           This constructor shall not participate in overload resolution unless
 
-          <bl>
+          <ul>
             <li>
             <ins>
               <code>is_simd_flag_type_v&lt;Flags&gt;</code> is <code>true</code>, and
@@ -1325,7 +1319,7 @@ friend void swap(reference&& a, value_type& b) noexcept;</ins>
               <code>U</code> is a vectorizable type.
             </ins>
             </li>
-          </bl>
+          </ul>
         </ins>
         </cxx-remarks>
       </cxx-function>
@@ -1353,7 +1347,7 @@ friend void swap(reference&& a, value_type& b) noexcept;</ins>
         <ins>
           This function shall not participate in overload resolution unless
 
-          <bl>
+          <ul>
             <li>
               <code>is_simd_flag_type_v&lt;Flags&gt;</code> is <code>true</code>, and
             </li>
@@ -1361,7 +1355,7 @@ friend void swap(reference&& a, value_type& b) noexcept;</ins>
             <li>
               <code>U</code> is a vectorizable type.
             </li>
-          </bl>
+          </ul>
         </ins>
         </cxx-remarks>
       </cxx-function>
@@ -1385,7 +1379,7 @@ friend void swap(reference&& a, value_type& b) noexcept;</ins>
         <ins>
           This function shall not participate in overload resolution unless
 
-          <bl>
+          <ul>
             <li>
               <code>is_simd_flag_type_v&lt;Flags&gt;</code> is <code>true</code>, and
             </li>
@@ -1393,7 +1387,7 @@ friend void swap(reference&& a, value_type& b) noexcept;</ins>
             <li>
               <code>U</code> is a vectorizable type.
             </li>
-          </bl>
+          </ul>
         </ins>
         </cxx-remarks>
       </cxx-function>
@@ -2003,7 +1997,7 @@ typename V::value_type reduce(const const_where_expression&lt;M, V&gt;& x, bit_x
         <ins>
           The function shall not participate in overload resolution unless
 
-          <bl>
+          <ul>
             <li>
             <ins>
               every possible value of type <code>U</code> can be represented with type <code>To</code>, and
@@ -2029,7 +2023,7 @@ typename V::value_type reduce(const const_where_expression&lt;M, V&gt;& x, bit_x
               </ul>
             </ins>
             </li>
-          </bl>
+          </ul>
         </ins>
         </cxx-remarks>
 
@@ -2038,7 +2032,7 @@ typename V::value_type reduce(const const_where_expression&lt;M, V&gt;& x, bit_x
           The return type is
         </ins>
 
-          <bl>
+          <ul>
             <li>
             <ins>
               <code>T</code> if <code>is_simd_v&lt;T&gt;</code> is <code>true</code>, otherwise
@@ -2056,7 +2050,7 @@ typename V::value_type reduce(const const_where_expression&lt;M, V&gt;& x, bit_x
               <code>simd&lt;T, simd_abi::fixed_size&lt;simd&lt;U, Abi&gt;::size()&gt;&gt;</code>
             </ins>
             </li>
-          </bl>
+          </ul>
         <br>
       </cxx-function>
 
@@ -2085,7 +2079,7 @@ typename V::value_type reduce(const const_where_expression&lt;M, V&gt;& x, bit_x
         <ins>
           The function shall not participate in overload resolution unless either
 
-          <bl>
+          <ul>
             <li>
             <ins>
               <code>is_simd_v&lt;T&gt;</code> is <code>false</code>, or
@@ -2097,14 +2091,14 @@ typename V::value_type reduce(const const_where_expression&lt;M, V&gt;& x, bit_x
               <code>T::size() == simd&lt;U, Abi&gt;::size()</code> is <code>true</code>.
             </ins>
             </li>
-          </bl>
+          </ul>
         </ins>
         </cxx-remarks>
 
         <p>
         <ins>The return type is</ins>
 
-          <bl>
+          <ul>
             <li>
             <ins>
               <code>T</code> if <code>is_simd_v&lt;T&gt;</code> is <code>true</code>, otherwise
@@ -2122,7 +2116,7 @@ typename V::value_type reduce(const const_where_expression&lt;M, V&gt;& x, bit_x
               <code>simd&lt;T, simd_abi::fixed_size&lt;simd&lt;U, Abi&gt;::size()&gt;&gt;</code>.
             </ins>
             </li>
-          </bl>
+          </ul>
         <br>
       </cxx-function>
 
@@ -2218,7 +2212,7 @@ array&lt;V, simd_size_v&lt;typename V::value_type, Abi&gt; / V::size()&gt; split
         <ins>
           These functions shall not participate in overload resolution unless
 
-          <bl>
+          <ul>
             <li>
             <ins>
               <code>simd_size_v&lt;typename V::value_type, Abi&gt;</code> is an integral multiple of <code>V::size()</code>, and
@@ -2230,7 +2224,7 @@ array&lt;V, simd_size_v&lt;typename V::value_type, Abi&gt; / V::size()&gt; split
               for the overload with a <code>simd</code> parameter <code>is_simd_v&lt;V&gt;</code> is <code>true</code>, for the overload with a <code>simd_mask</code> parameter <code>is_simd_mask_v&lt;V&gt;</code> is <code>true</code>.
             </ins>
             </li>
-          </bl>
+          </ul>
         </ins>
         </cxx-remarks>
       </cxx-function>
@@ -2283,7 +2277,7 @@ pair&lt;simd&lt;T, Abi&gt;, simd&lt;T, Abi&gt;&gt; minmax(const simd&lt;T, Abi&g
         <ins>
           A pair initialized with
 
-          <bl>
+          <ul>
             <li>
             <ins>
               the result of element-wise application of <code>std::min(a[i], b[i])</code> for all <code>i</code> &#8714; <code>[0, size())</code> in the <code>first</code> member, and
@@ -2297,7 +2291,7 @@ pair&lt;simd&lt;T, Abi&gt;, simd&lt;T, Abi&gt;&gt; minmax(const simd&lt;T, Abi&g
 
             </ins>
             </li>
-          </bl>
+          </ul>
         </ins>
         </cxx-returns>
       </cxx-function>
@@ -2329,7 +2323,7 @@ clamp(const simd&lt;T, Abi&gt;& v, const simd&lt;T, Abi&gt;& lo, const simd&lt;T
         <ins>
           For each set of overloaded functions within <code>&lt;cmath&gt;</code>, there shall be additional overloads sufficient to ensure that if any argument corresponding to a <code>double</code> parameter has type <code>simd&lt;T, Abi&gt;</code>, where <code>is_floating_point_v&lt;T&gt;</code> is <code>true</code>, then:
 
-          <bl>
+          <ul>
             <li>
             <ins>
               All arguments corresponding to <code>double</code> parameters shall be convertible to <code>simd&lt;T, Abi&gt;</code>.
@@ -2359,9 +2353,7 @@ clamp(const simd&lt;T, Abi&gt;& v, const simd&lt;T, Abi&gt;& lo, const simd&lt;T
               If the corresponding return type is <code>double</code>, the return type of the additional overloads is <code>simd&lt;T, Abi&gt;</code>. Otherwise, if the corresponding return type is <code>bool</code>, the return type of the additional overload is <code>simd_mask&lt;T, Abi&gt;</code>. Otherwise, the return type is <code>fixed_size_simd&lt;R, simd_size_v&lt;T, Abi&gt;&gt;</code>, with <code>R</code> denoting the corresponding return type.
             </ins>
             </li>
-          </bl>
-
-          <br>
+          </ul>
 
           <ins>
           It is unspecified whether a call to these overloads with arguments that are all convertible to <code>simd&lt;T, Abi&gt;</code> but are not of type <code>simd&lt;T, Abi&gt;</code> is well-formed.
@@ -2456,7 +2448,7 @@ public:
       <ins>
         Every specialization of <code>simd_mask</code> shall be a complete type. The specialization <code>simd_mask&lt;T, Abi&gt;</code> is supported if <code>T</code> is a vectorizable type and
 
-        <bl>
+        <ul>
           <li>
           <ins>
             <code>Abi</code> is <code>simd_abi::scalar</code>, or
@@ -2468,7 +2460,7 @@ public:
             <code>Abi</code> is <code>simd_abi::fixed_size&lt;N&gt;</code>, with <code>N</code> constrained as defined in <a href="#parallel.simd.abi">[parallel.simd.abi]</a>.
           </ins>
           </li>
-        </bl>
+        </ul>
 
         <ins>
         If <code>Abi</code> is an extended ABI tag, it is implementation-defined whether <code>simd_mask&lt;T, Abi&gt;</code> is supported. <cxx-note>The intent is for implementations to decide on the basis of the currently targeted system.</cxx-note>
@@ -2908,7 +2900,7 @@ const_where_expression&lt;bool, T&gt; where(<em>see-below</em> k, const T& v) no
         <ins>
           The functions shall not participate in overload resolution unless
 
-          <bl>
+          <ul>
             <li>
             <ins>
               <code>T</code> is neither a <code>simd</code> nor a <code>simd_mask</code> specialization, and
@@ -2920,7 +2912,7 @@ const_where_expression&lt;bool, T&gt; where(<em>see-below</em> k, const T& v) no
               the first argument is of type <code>bool</code>.
             </ins>
             </li>
-          </bl>
+          </ul>
         </ins>
         </cxx-remarks>
 
