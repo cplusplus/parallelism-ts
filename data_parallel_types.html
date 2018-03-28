@@ -14,7 +14,7 @@
     <ins>
       Throughout this Clause, the term <em>data-parallel type</em> refers to all <em>supported</em> <cxx-ref to="parallel.simd.overview"></cxx-ref> specializations of the <code>simd</code> and <code>simd_mask</code> class templates. A <em>data-parallel object</em> is an object of <em>data-parallel type</em>.
     </ins>
-    <p>
+    </p>
 
     <p>
     <ins>
@@ -337,7 +337,7 @@ namespace simd_abi {
           </li>
         </bl>
       </ins>
-      </p>
+      <!- /p ->
 
       <p>
       <ins>
@@ -363,7 +363,7 @@ namespace simd_abi {
       <ins>
         If <code>N</code> is <code>1</code>, the member typedef <code>type</code> is <code>simd_abi::scalar</code>. Otherwise, if there are multiple ABI tag types that satisfy the constraints, the member typedef <code>type</code> is implementation-defined. <cxx-note>It is expected that extended ABI tags can produce better optimizations and thus are preferred over <code>simd_abi::fixed_size&lt;N&gt;</code>.</cxx-note>
       </ins>
-      </p>
+      <!- /p ->
 
       <p>
       <ins>
@@ -493,7 +493,7 @@ namespace simd_abi {
         </cxx-note>
         </ins>
       </ins>
-      </p>
+      <!- /p ->
 
       <p>
       <ins>
@@ -529,7 +529,7 @@ namespace simd_abi {
           </ins>
           </li>
         </bl>
-      </p>
+      <!- /p ->
 
       <p>
       <ins>
@@ -958,7 +958,7 @@ public:
           </cxx-example>
         </ins>
       </ins>
-      </p>
+      <!- /p ->
 
       <p>
       <ins>
@@ -1006,7 +1006,7 @@ V addsub(V a, V b) {
       <em>&mdash; end example</em> ]
       </ins>
     </ins>
-    </p>
+    <!- /p ->
     </cxx-section>
 
     <cxx-section id="parallel.simd.reference">
@@ -1056,7 +1056,7 @@ public:
   friend void swap(reference&& a, value_type&& b) noexcept;
 };</ins>
         </pre>
-      </p>
+      <!- /p ->
 
       <cxx-function>
         <cxx-signature><ins>operator value_type() const noexcept;</ins></cxx-signature>
@@ -2367,7 +2367,7 @@ clamp(const simd&lt;T, Abi&gt;& v, const simd&lt;T, Abi&gt;& lo, const simd&lt;T
           It is unspecified whether a call to these overloads with arguments that are all convertible to <code>simd&lt;T, Abi&gt;</code> but are not of type <code>simd&lt;T, Abi&gt;</code> is well-formed.
           </ins>
         </ins>
-        </p>
+        <!- /p ->
 
         <p>
         <ins>
