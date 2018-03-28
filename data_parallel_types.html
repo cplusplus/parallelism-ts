@@ -52,7 +52,7 @@ inline namespace parallelism_v2 {
     template&lt;class T&gt; using compatible = <em>implementation-defined</em>;
     template&lt;class T&gt; using native = <em>implementation-defined</em>;
   
-    template&lt;class T, size_t N&gt; struct deduce { using type = <em>see-below</em>; };
+    template&lt;class T, size_t N&gt; struct deduce { using type = <em>see below</em>; };
     template&lt;class T, size_t N&gt; using deduce_t = typename deduce&lt;T, N&gt;::type;
   }
 
@@ -95,8 +95,8 @@ inline namespace parallelism_v2 {
   template&lt;class T, int N&gt; using fixed_size_simd_mask = simd_mask&lt;T, simd_abi::fixed_size&lt;N&gt;&gt;;
 
   <cxx-ref insynopsis="" to="parallel.simd.casts"></cxx-ref>
-  template&lt;class T, class U, class Abi&gt; <em>see-below</em> simd_cast(const simd&lt;U, Abi&gt;&);
-  template&lt;class T, class U, class Abi&gt; <em>see-below</em> static_simd_cast(const simd&lt;U, Abi&gt;&);
+  template&lt;class T, class U, class Abi&gt; <em>see below</em> simd_cast(const simd&lt;U, Abi&gt;&);
+  template&lt;class T, class U, class Abi&gt; <em>see below</em> static_simd_cast(const simd&lt;U, Abi&gt;&);
 
   template&lt;class T, class Abi&gt;
     fixed_size_simd&lt;T, simd_size_v&lt;T, Abi&gt;&gt; to_fixed_size(const simd&lt;T, Abi&gt;&) noexcept;
@@ -130,13 +130,13 @@ inline namespace parallelism_v2 {
   template&lt;class T, class Abi&gt; int find_first_set(const simd_mask&lt;T, Abi&gt;&);
   template&lt;class T, class Abi&gt; int find_last_set(const simd_mask&lt;T, Abi&gt;&);
 
-  bool all_of(<em>see-below</em>) noexcept;
-  bool any_of(<em>see-below</em>) noexcept;
-  bool none_of(<em>see-below</em>) noexcept;
-  bool some_of(<em>see-below</em>) noexcept;
-  int popcount(<em>see-below</em>) noexcept;
-  int find_first_set(<em>see-below</em>) noexcept;
-  int find_last_set(<em>see-below</em>) noexcept;
+  bool all_of(<em>see below</em>) noexcept;
+  bool any_of(<em>see below</em>) noexcept;
+  bool none_of(<em>see below</em>) noexcept;
+  bool some_of(<em>see below</em>) noexcept;
+  int popcount(<em>see below</em>) noexcept;
+  int find_first_set(<em>see below</em>) noexcept;
+  int find_last_set(<em>see below</em>) noexcept;
 
   <cxx-ref insynopsis="" to="parallel.simd.whereexpr"></cxx-ref>
   template&lt;class M, class T&gt; class const_where_expression;
@@ -159,10 +159,10 @@ inline namespace parallelism_v2 {
     const_where_expression&lt;simd_mask&lt;T, Abi&gt;, simd_mask&lt;T, Abi&gt;&gt; where(const nodeduce_t&lt;simd_mask&lt;T, Abit&gt;&gt;&, const simd_mask&lt;T, Abi&gt;&) noexcept;
 
   template&lt;class T&gt;
-    where_expression&lt;bool, T&gt; where(<em>see-below</em> k, T& d) noexcept;
+    where_expression&lt;bool, T&gt; where(<em>see below</em> k, T& d) noexcept;
 
   template&lt;class T&gt;
-    const_where_expression&lt;bool, T&gt; where(<em>see-below</em> k, const T& d) noexcept;
+    const_where_expression&lt;bool, T&gt; where(<em>see below</em> k, const T& d) noexcept;
 
   <cxx-ref insynopsis="" to="parallel.simd.reductions"></cxx-ref> reductions
   template&lt;class T, class Abi, class BinaryOperation = plus&lt;&gt;&gt;
@@ -316,7 +316,7 @@ namespace simd_abi {
       </p>
 
       <ins>
-      <pre>template&lt;T, size_t N&gt; struct deduce { using type = <em>see-below</em>; };</pre>
+      <pre>template&lt;T, size_t N&gt; struct deduce { using type = <em>see below</em>; };</pre>
       </ins>
 
       <p>
@@ -374,7 +374,7 @@ namespace simd_abi {
       <h1><ins><code>simd</code> type traits</ins></h1>
 
       <ins>
-      <code>template&lt;class T&gt; struct is_abi_tag { <em>see-below</em> };</code>
+      <code>template&lt;class T&gt; struct is_abi_tag { <em>see below</em> };</code>
       </ins>
 
       <p>
@@ -390,7 +390,7 @@ namespace simd_abi {
       </p>
 
       <ins>
-      <code>template&lt;class T&gt; struct is_simd { <em>see-below</em> };</code>
+      <code>template&lt;class T&gt; struct is_simd { <em>see below</em> };</code>
       </ins>
 
       <p>
@@ -405,7 +405,7 @@ namespace simd_abi {
       </ins>
       </p>
 
-      <ins><code>template&lt;class T&gt; struct is_simd_mask { <em>see-below</em> };</code></ins>
+      <ins><code>template&lt;class T&gt; struct is_simd_mask { <em>see below</em> };</code></ins>
 
       <p>
       <ins>
@@ -420,7 +420,7 @@ namespace simd_abi {
       </p>
 
       <ins>
-      <code>template&lt;class T&gt; struct is_simd_flag_type { <em>see-below</em> };</code>
+      <code>template&lt;class T&gt; struct is_simd_flag_type { <em>see below</em> };</code>
       </ins>
 
       <p>
@@ -460,7 +460,7 @@ namespace simd_abi {
       </p>
 
       <ins>
-      <code>template&lt;class T, class Abi = simd_abi::compatible&lt;T&gt;&gt; struct simd_size { <em>see-below</em> };</code>
+      <code>template&lt;class T, class Abi = simd_abi::compatible&lt;T&gt;&gt; struct simd_size { <em>see below</em> };</code>
       </ins>
 
       <p>
@@ -502,7 +502,7 @@ namespace simd_abi {
       </p>
 
       <ins>
-      <code>template&lt;class T, class U = typename T::value_type&gt; struct memory_alignment { <em>see-below</em> };</code>
+      <code>template&lt;class T, class U = typename T::value_type&gt; struct memory_alignment { <em>see below</em> };</code>
       </ins>
 
       <p>
@@ -819,7 +819,7 @@ template&lt;class U, class Flags&gt; void copy_from(const U* mem, Flags) &&;</in
 template&lt;class T, class Abi&gt; class simd {
 public:
   using value_type = T;
-  using reference = <em>see-below</em>;
+  using reference = <em>see below</em>;
   using mask_type = simd_mask&lt;T, Abi&gt;
   using abi_type = Abi;
 
@@ -1973,7 +1973,7 @@ typename V::value_type reduce(const const_where_expression&lt;M, V&gt;& x, bit_x
       <h1><ins><code>simd</code> casts</ins></h1>
 
       <cxx-function>
-        <cxx-signature><ins>template&lt;class T, class U, class Abi&gt; <em>see-below</em> simd_cast(const simd&lt;U, Abi&gt;& x)</ins></cxx-signature>
+        <cxx-signature><ins>template&lt;class T, class U, class Abi&gt; <em>see below</em> simd_cast(const simd&lt;U, Abi&gt;& x)</ins></cxx-signature>
 
         <p>
         <ins>
@@ -2055,7 +2055,7 @@ typename V::value_type reduce(const const_where_expression&lt;M, V&gt;& x, bit_x
       </cxx-function>
 
       <cxx-function>
-        <cxx-signature><ins>template&lt;class T, class U, class Abi&gt; <em>see-below</em> static_simd_cast(const simd&lt;U, Abi&gt;& x);</ins></cxx-signature>
+        <cxx-signature><ins>template&lt;class T, class U, class Abi&gt; <em>see below</em> static_simd_cast(const simd&lt;U, Abi&gt;& x);</ins></cxx-signature>
 
         <p>
         <ins>
@@ -2393,7 +2393,7 @@ clamp(const simd&lt;T, Abi&gt;& v, const simd&lt;T, Abi&gt;& lo, const simd&lt;T
 template&lt;class T, class Abi&gt; class simd_mask {
 public:
   using value_type = bool;
-  using reference = <em>see-below</em>;
+  using reference = <em>see below</em>;
   using simd_type = simd&lt;T, Abi&gt;;
   using abi_type = Abi;
 
@@ -2817,11 +2817,11 @@ friend simd_mask operator!=(const simd_mask&, const simd_mask&) noexcept;
 
       <cxx-function>
         <cxx-signature><ins>
-bool all_of(<em>see-below</em>) noexcept;
-bool any_of(<em>see-below</em>) noexcept;
-bool none_of(<em>see-below</em>) noexcept;
-bool some_of(<em>see-below</em>) noexcept;
-int popcount(<em>see-below</em>) noexcept;
+bool all_of(<em>see below</em>) noexcept;
+bool any_of(<em>see below</em>) noexcept;
+bool none_of(<em>see below</em>) noexcept;
+bool some_of(<em>see below</em>) noexcept;
+int popcount(<em>see below</em>) noexcept;
 </ins></cxx-signature>
 
         <cxx-returns>
@@ -2839,8 +2839,8 @@ int popcount(<em>see-below</em>) noexcept;
 
       <cxx-function>
         <cxx-signature><ins>
-int find_first_set(<em>see-below</em>) noexcept;
-int find_last_set(<em>see-below</em>) noexcept;
+int find_first_set(<em>see below</em>) noexcept;
+int find_last_set(<em>see below</em>) noexcept;
 </ins></cxx-signature>
 
         <cxx-requires>
@@ -2891,9 +2891,9 @@ const_where_expression&lt;simd_mask&lt;T, Abi&gt;, simd_mask&lt;T, Abi&gt;&gt; w
 
       <cxx-function>
         <cxx-signature><ins>
-template&lt;class T&gt; where_expression&lt;bool T&gt; where(<em>see-below</em> k, T& v) noexcept;
+template&lt;class T&gt; where_expression&lt;bool T&gt; where(<em>see below</em> k, T& v) noexcept;
 template&lt;class T&gt;
-const_where_expression&lt;bool, T&gt; where(<em>see-below</em> k, const T& v) noexcept;
+const_where_expression&lt;bool, T&gt; where(<em>see below</em> k, const T& v) noexcept;
 </ins></cxx-signature>
 
         <cxx-remarks>
