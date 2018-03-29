@@ -26,5 +26,5 @@ NYYYY is document NXXXX reformatted as a PDTS draft document.
 
 # Acknowledgements
 
-Thanks to Alisdair Meredith, Matthias Kretz, and Marshall Clow for reviewing and suggesting editorial changes.
+Thanks to Alisdair Meredith, Matthias Kretz, Marshall Clow, and Bryce Lelbach for reviewing and suggesting editorial changes.
 
