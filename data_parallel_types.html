@@ -1196,7 +1196,7 @@ friend void swap(reference&& a, value_type& b) noexcept;</ins>
     </cxx-section>
     
     <cxx-section id="parallel.simd.ctor">
-      <h1><ins><code>simd</code> constructors</ins></h1>
+      <h1><ins>Constructors</ins></h1>
 
       <cxx-function>
         <cxx-signature><ins>template&lt;class U&gt; simd(U&&);</ins></cxx-signature>
@@ -1337,7 +1337,7 @@ friend void swap(reference&& a, value_type& b) noexcept;</ins>
     </cxx-section>
 
     <cxx-section id="parallel.simd.copy">
-      <h1><ins><code>simd</code> copy functions</ins></h1>
+      <h1><ins>Copy functions</ins></h1>
 
       <cxx-function>
         <cxx-signature><ins>template&lt;class U, class Flags&gt; void copy_from(const U* mem, Flags);</ins></cxx-signature>
@@ -1405,7 +1405,7 @@ friend void swap(reference&& a, value_type& b) noexcept;</ins>
     </cxx-section>
 
     <cxx-section id="parallel.simd.subscr">
-      <h1><ins><code>simd</code> subscript operators</ins></h1>
+      <h1><ins>Subscript operators</ins></h1>
 
       <cxx-function>
         <cxx-signature><ins>reference operator[](size_t i);</ins></cxx-signature>
@@ -1453,7 +1453,7 @@ friend void swap(reference&& a, value_type& b) noexcept;</ins>
     </cxx-section>
 
     <cxx-section id="parallel.simd.unary">
-      <h1><ins><code>simd</code> unary operators</ins></h1>
+      <h1><ins>Unary operators</ins></h1>
 
       <p>
       <ins>
@@ -1622,10 +1622,10 @@ friend void swap(reference&& a, value_type& b) noexcept;</ins>
   </cxx-section>
 
   <cxx-section id="parallel.simd.nonmembers">
-    <h1><ins><code>simd</code> non-member operations</ins></h1>
+    <h1><ins>Non-member operations</ins></h1>
 
     <cxx-section id="parallel.simd.binary">
-      <h1><ins><code>simd</code> binary operators</ins></h1>
+      <h1><ins>Binary operators</ins></h1>
       <cxx-function>
         <cxx-signature><ins>
 friend simd operator+(const simd& lhs, const simd& rhs);
@@ -1686,7 +1686,7 @@ friend simd operator&gt;&gt;(const simd& v, int n);
     </cxx-section>
 
     <cxx-section id="parallel.simd.cassign">
-      <h1><ins><code>simd</code> compound assignment</ins></h1>
+      <h1><ins>Compound assignment</ins></h1>
 
       <cxx-function>
         <cxx-signature><ins>
@@ -1731,7 +1731,7 @@ friend simd& operator&gt;&gt;=(simd& lhs, int n);
     </cxx-section>
 
     <cxx-section id="parallel.simd.comparison">
-      <h1><ins><code>simd</code> compare operators</ins></h1>
+      <h1><ins>Compare operators</ins></h1>
 
       <cxx-function>
         <cxx-signature><ins>
@@ -1758,7 +1758,7 @@ friend mask_type operator&lt;(const simd&, const simd&);
     </cxx-section>
 
     <cxx-section id="parallel.simd.reductions">
-      <h1><ins><code>simd</code> reductions</ins></h1>
+      <h1><ins>Reductions</ins></h1>
 
       <p>
       <ins>
@@ -1973,7 +1973,7 @@ typename V::value_type reduce(const const_where_expression&lt;M, V&gt;& x, bit_x
     </cxx-section>
 
     <cxx-section id="parallel.simd.casts">
-      <h1><ins><code>simd</code> casts</ins></h1>
+      <h1><ins>Casts</ins></h1>
 
       <cxx-function>
         <cxx-signature><ins>template&lt;class T, class U, class Abi&gt; <em>see below</em> simd_cast(const simd&lt;U, Abi&gt;& x)</ins></cxx-signature>
@@ -2249,7 +2249,7 @@ simd_mask&lt;T, simd_abi::deduce_t&lt;T, (simd_size_v&lt;T, Abis&gt; + ...)&gt;&
     </cxx-section>
 
     <cxx-section id="parallel.simd.alg">
-      <h1><ins><code>simd</code> algorithms</ins></h1>
+      <h1><ins>Algorithms</ins></h1>
 
       <cxx-function>
         <cxx-signature><ins>template&lt;class T, class Abi&gt; simd&lt;T, Abi&gt; min(const simd&lt;T, Abi&gt;& a, const simd&lt;T, Abi&gt;& b) noexcept;</ins></cxx-signature>
@@ -2320,7 +2320,7 @@ clamp(const simd&lt;T, Abi&gt;& v, const simd&lt;T, Abi&gt;& lo, const simd&lt;T
       </cxx-section>
 
       <cxx-section id="parallel.simd.math">
-        <h1><ins><code>simd</code> math library</ins></h1>
+        <h1><ins>Math library</ins></h1>
 
         <p>
         <ins>
@@ -2506,7 +2506,7 @@ explicit simd_mask(const <em>implementation-defined</em>& init) const;</ins></pr
     </cxx-section>
       
     <cxx-section id="parallel.simd.mask.ctor">
-      <h1><ins><code>simd_mask</code> constructors</ins></h1>
+      <h1><ins>Constructors</ins></h1>
 
       <cxx-function>
         <cxx-signature><ins>explicit simd_mask(value_type x) noexcept</ins></cxx-signature>
@@ -2558,7 +2558,7 @@ explicit simd_mask(const <em>implementation-defined</em>& init) const;</ins></pr
     </cxx-section>
 
     <cxx-section id="parallel.simd.mask.copy">
-      <h1><ins><code>simd_mask</code> copy functions</ins></h1>
+      <h1><ins>Copy functions</ins></h1>
 
       <cxx-function>
         <cxx-signature><ins>template&lt;class Flags&gt; void copy_from(const value_type* mem, Flags);</ins></cxx-signature>
@@ -2607,7 +2607,7 @@ explicit simd_mask(const <em>implementation-defined</em>& init) const;</ins></pr
     </cxx-section>
 
     <cxx-section id="parallel.simd.mask.subscr">
-      <h1><ins><code>simd_mask</code> subscript operators</ins></h1>
+      <h1><ins>Subscript operators</ins></h1>
 
       <cxx-function>
         <cxx-signature><ins>reference operator[](size_t i);</ins></cxx-signature>
@@ -2655,7 +2655,7 @@ explicit simd_mask(const <em>implementation-defined</em>& init) const;</ins></pr
     </cxx-section>
 
     <cxx-section id="parallel.simd.mask.unary">
-      <h1><ins><code>simd_mask</code> unary operators</ins></h1>
+      <h1><ins>Unary operators</ins></h1>
 
       <cxx-function>
         <cxx-signature><ins>simd_mask operator!() const noexcept;</ins></cxx-signature>
@@ -2670,10 +2670,10 @@ explicit simd_mask(const <em>implementation-defined</em>& init) const;</ins></pr
   </cxx-section>
 
   <cxx-section id="parallel.simd.mask.nonmembers">
-    <h1><ins><code>simd_mask</code> non-member operations</ins></h1>
+    <h1><ins>Non-member operations</ins></h1>
 
     <cxx-section id="parallel.simd.mask.binary">
-      <h1><ins><code>simd_mask</code> binary operators</ins></h1>
+      <h1><ins>Binary operators</ins></h1>
 
       <cxx-function>
         <cxx-signature><ins>
@@ -2694,7 +2694,7 @@ friend simd_mask operator^ (const simd_mask&, const simd_mask&) noexcept;
   </cxx-sections>
 
   <cxx-section id="parallel.simd.mask.cassign">
-    <h1><ins><code>simd_mask</code> compound assignment</ins></h1>
+    <h1><ins>Compound assignment</ins></h1>
 
     <cxx-function>
       <cxx-signature><ins>
@@ -2718,7 +2718,7 @@ friend simd_mask& operator^=(simd_mask& lhs, const simd_mask& rhs) noexcept;
   </cxx-section>
     
   <cxx-section id="parallel.simd.mask.comparison">
-    <h1><ins><code>simd_mask</code> comparisons</ins></h1>
+    <h1><ins>Comparisons</ins></h1>
 
     <cxx-function>
       <cxx-signature><ins>
@@ -2735,7 +2735,7 @@ friend simd_mask operator!=(const simd_mask&, const simd_mask&) noexcept;
   </cxx-section>
 
   <cxx-section id="parallel.simd.mask.reductions">
-    <h1><ins><code>simd_mask</code> reductions</ins></h1>
+    <h1><ins>Reductions</ins></h1>
 
     <cxx-function>
       <cxx-signature><ins>template&lt;class T, class Abi&gt; bool all_of(const simd_mask&lt;T, abi&gt;& k) noexcept;</ins></cxx-signature>
