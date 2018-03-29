@@ -92,8 +92,8 @@ inline namespace parallelism_v2 {
      </p>
 
      <p>
-       A <code>task_block</code> is <em>active</em> if it was created by the nearest enclosing task block, where “task block” refers to an
-       invocation of <code>define_task_block</code> or <code>define_task_block_restore_thread</code> and “nearest enclosing” means the most
+       A <code>task_block</code> is <em>active</em> if it was created by the <ins><em>nearest enclosing</em></ins><del>nearest enclosing</del> <ins><em>task block</em></ins><del>task block</del>, where <ins><em>task block</em></ins><del>“task block”</del> refers to an
+       invocation of <code>define_task_block</code> or <code>define_task_block_restore_thread</code> and <ins><em>nearest enclosing</em></ins><del>“nearest enclosing”</del> means the most
        recent invocation that has not yet completed. Code designated for execution in another thread by means other
        than the facilities in this section (e.g., using <code>thread</code> or <code>async</code>) are not enclosed in the task block and a
        <code>task_block</code> passed to (or captured by) such code is not active within that code. Performing any operation on a
