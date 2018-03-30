@@ -62,8 +62,8 @@ class vector_policy{ <i>unspecified</i> };
     <h1>Execution policy objects</h1>
 
 <pre>
-inline constexpr execution::unsequenced_policy unseq{};
-inline constexpr execution::vector_policy vec{};
+inline constexpr execution::unsequenced_policy unseq{ <ins><i>unspecified</i></ins> };
+inline constexpr execution::vector_policy vec{ <ins><i>unspecified</i></ins> };
 </pre>
 
     <p>The header <code>&lt;experimental/execution&gt;</code> declares a global object associated with each type of execution policy defined by this Technical Specification.</p>

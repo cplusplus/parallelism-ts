@@ -1,4 +1,4 @@
-    Document Number: NXXXX+1
+    Document Number: N4743
     Date:            2018-04-02
     Revises:
     Project:         Programming Language C++
@@ -9,11 +9,11 @@
 
 # Parallelism TS Editor's Report, post-Jacksonville mailing 
 
-NXXXX is the proposed working draft of Parallelism TS Version 2. It contains normative changes as directed by the ISO C++ Standards Committee at the 2018 Jacksonville meeting and editorial changes to the Parallelism TS.
+N4742 is the proposed working draft of Parallelism TS Version 2. It contains normative changes as directed by the ISO C++ Standards Committee at the 2018 Jacksonville meeting and editorial changes to the Parallelism TS.
 
-NXXXX updates the previous draft, N4725, published in the pre-Jacksonville mailing.
+N4742 updates the previous draft, N4725, published in the pre-Jacksonville mailing.
 
-NYYYY is document NXXXX reformatted as a PDTS draft document.
+N4744 is document N4742 reformatted as a PDTS document.
 
 ## Normative Changes
 
@@ -26,5 +26,5 @@ NYYYY is document NXXXX reformatted as a PDTS draft document.
 
 # Acknowledgements
 
-Thanks to Alisdair Meredith, Matthias Kretz, and Marshall Clow for reviewing and suggesting editorial changes.
+Thanks to Alisdair Meredith, Matthias Kretz, Marshall Clow, and Bryce Lelbach for reviewing and suggesting editorial changes.
 

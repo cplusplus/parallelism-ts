@@ -148,7 +148,7 @@ template&lt;class T&gt;
 <cxx-ref insynopsis="" to="parallel.alg.inductions"></cxx-ref> Support for inductions
 template&lt;class T&gt;
   <em>unspecified</em> induction(T&amp;&amp; var);
-template&lt;class T&gt;
+template&lt;class T<ins>, class S</ins>&gt;
   <em>unspecified</em> induction(T&amp;&amp; var, S stride);
 
 <cxx-ref insynopsis="" to="parallel.alg.forloop"></cxx-ref> for_loop
@@ -216,7 +216,7 @@ template&lt;class ExecutionPolicy,
 
         <cxx-requires>T shall meet the requirements of <code>CopyConstructible</code> and <code>MoveAssignable</code>. The expression <code>var = combiner(var, var)</code> shall be well-formed.</cxx-requires>
 
-        <cxx-returns>a reduction object of unspecified type having reduction value type <code>T</code>, reduction identity <code>identity</code>, combiner function object <code>combiner</code>, and using the object referenced by <code>var</code> as its live-out object.</cxx-returns>
+        <cxx-returns><ins>A</ins><del>a</del> reduction object of unspecified type having reduction value type <code>T</code>, reduction identity <code>identity</code>, combiner function object <code>combiner</code>, and using the object referenced by <code>var</code> as its live-out object.</cxx-returns>
       </cxx-function>
 
       <cxx-function>
@@ -237,7 +237,7 @@ template&lt;class ExecutionPolicy,
 
         <cxx-requires>T shall meet the requirements of <code>CopyConstructible</code> and <code>MoveAssignable</code>.</cxx-requires>
 
-        <cxx-returns>a reduction object of unspecified type having reduction value type <code>T</code>, reduction identity and combiner operation as specified in table <cxx-ref to="reduction-identities-and-combiner-operations"></cxx-ref> and using the object referenced by <code>var</code> as its live-out object.</cxx-returns>
+        <cxx-returns><ins>A</ins><del>a</del> reduction object of unspecified type having reduction value type <code>T</code>, reduction identity and combiner operation as specified in table <cxx-ref to="reduction-identities-and-combiner-operations"></cxx-ref> and using the object referenced by <code>var</code> as its live-out object.</cxx-returns>
 
         <table is="cxx-table" class="column-rules" id=reduction-identities-and-combiner-operations>
           <caption>Reduction identities and combiner operations</caption>
@@ -329,7 +329,7 @@ for_loop(execution::vec, 0, n,
 <em>unspecified</em> induction(T&amp;&amp; var, S stride);</cxx-signature>
 
         <cxx-returns>
-          an induction object with induction value type <code>remove_cv_t&lt;remove_reference_t&lt;T&gt;&gt;</code>,
+          <ins>A</ins><del>a</del>n induction object with induction value type <code>remove_cv_t&lt;remove_reference_t&lt;T&gt;&gt;</code>,
           initial value <code>var</code>, and (if specified) stride <code>stride</code>. If <code>T</code> is an lvalue reference
           to non-<code>const</code> type, then the object referenced by <code>var</code> becomes the live-out object for the
           induction object; otherwise there is no live-out object.
@@ -472,7 +472,7 @@ auto no_vec(F&amp;&amp; f) noexcept -&gt; decltype(std::forward&lt;F&gt;(f)());<
         </cxx-effects>
 
         <cxx-returns>
-          the result of <code>f</code>.
+          <ins>T</ins><del>t</del>he result of <code>f</code>.
         </cxx-returns>
 
         <cxx-notes>

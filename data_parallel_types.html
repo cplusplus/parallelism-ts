@@ -661,7 +661,7 @@ template&lt;class U, class Flags&gt; void copy_to(U* mem, Flags) const &&;
   
         <cxx-requires>
         <ins>
-          If the template parameter <code>Flags</code> is <code>vector_aligned_tag</code>, <code>mem</code> shall point to storage aligned by <code>memory_alignment_v&lt;T, U&gt;</code>. If the template parameter <code>Flags</code> is <code>overaligned_tag&lt;N&gt;</code>, <code>mem</code> shall point to storage aligned by <code>N</code>. If the template parameter <code>Flags</code> is <code>element_aligned_tag</code>, <code>mem</code> shall point to storage aligned by <code>alignof(U)</code>. If <code>M</code> is not <code>bool</code>, the largest <em>i</em> &#8714; <code>[0, M::size())</code> where <code>mask[i]</code> is <code>true</code> is less than the number of values pointed to by <code>mem</code>.
+          If the template parameter <code>Flags</code> is <code>vector_aligned_tag</code>, <code>mem</code> shall point to storage aligned by <code>memory_alignment_v&lt;T, U&gt;</code>. If the template parameter <code>Flags</code> is <code>overaligned_tag&lt;N&gt;</code>, <code>mem</code> shall point to storage aligned by <code>N</code>. If the template parameter <code>Flags</code> is <code>element_aligned_tag</code>, <code>mem</code> shall point to storage aligned by <code>alignof(U)</code>. If <code>M</code> is not <code>bool</code>, the largest <code>i</code> &#8714; <code>[0, M::size())</code> where <code>mask[i]</code> is <code>true</code> is less than the number of values pointed to by <code>mem</code>.
         </ins>
         </cxx-requires>
   
@@ -780,7 +780,7 @@ template&lt;class U, class Flags&gt; void copy_from(const U* mem, Flags) &&;</in
   
         <cxx-requires>
         <ins>
-          If the template parameter <code>Flags</code> is <code>vector_aligned_tag</code>, <code>mem</code> shall point to storage aligned by <code>memory_alignment_v&lt;T, U&gt;</code>. If the template parameter <code>Flags</code> is <code>overaligned_tag&lt;N&gt;</code>, <code>mem</code> shall point to storage aligned by <code>N</code>. If the template parameter <code>Flags</code> is <code>element_aligned_tag</code>, <code>mem</code> shall point to storage aligned by <code>alignof(U)</code>. If <code>is_simd_flag_type_v&lt;U&gt;</code> is <code>true</code>, for all selected indices <em>i</em>, <em>i</em> shall be less than the number of values pointed to by <code>mem</code>.
+          If the template parameter <code>Flags</code> is <code>vector_aligned_tag</code>, <code>mem</code> shall point to storage aligned by <code>memory_alignment_v&lt;T, U&gt;</code>. If the template parameter <code>Flags</code> is <code>overaligned_tag&lt;N&gt;</code>, <code>mem</code> shall point to storage aligned by <code>N</code>. If the template parameter <code>Flags</code> is <code>element_aligned_tag</code>, <code>mem</code> shall point to storage aligned by <code>alignof(U)</code>. If <code>is_simd_flag_type_v&lt;U&gt;</code> is <code>true</code>, for all selected indices <code>i</code>, <code>i</code> shall be less than the number of values pointed to by <code>mem</code>.
         </ins>
         </cxx-requires>
   
@@ -1582,7 +1582,7 @@ friend void swap(reference&& a, value_type& b) noexcept;</ins>
 
         <cxx-remarks>
         <ins>
-          <code>simd::operator~()</code> shall not participate in overload resolution unless <code>T</code> is an integral type.
+          This operator shall not participate in overload resolution unless <code>T</code> is an integral type.
         </ins>
         </cxx-remarks>
       </cxx-function>
@@ -2278,7 +2278,7 @@ pair&lt;simd&lt;T, Abi&gt;, simd&lt;T, Abi&gt;&gt; minmax(const simd&lt;T, Abi&g
 
         <cxx-returns>
         <ins>
-          A pair initialized with
+          A <code>pair</code> initialized with
 
           <ul>
             <li>
@@ -2290,7 +2290,7 @@ pair&lt;simd&lt;T, Abi&gt;, simd&lt;T, Abi&gt;&gt; minmax(const simd&lt;T, Abi&g
 
             <li>
             <ins>
-              the result of element-wise application of <code>std::max(a[i], b[i])</code> for all <code>i</code> &#8714; <code>[0, size())</code> in the <code>second</code> member, and
+              the result of element-wise application of <code>std::max(a[i], b[i])</code> for all <code>i</code> &#8714; <code>[0, size())</code> in the <code>second</code> member.
 
             </ins>
             </li>
@@ -2738,7 +2738,7 @@ friend simd_mask operator!=(const simd_mask&, const simd_mask&) noexcept;
     <h1><ins>Reductions</ins></h1>
 
     <cxx-function>
-      <cxx-signature><ins>template&lt;class T, class Abi&gt; bool all_of(const simd_mask&lt;T, abi&gt;& k) noexcept;</ins></cxx-signature>
+      <cxx-signature><ins>template&lt;class T, class Abi&gt; bool all_of(const simd_mask&lt;T, Abi&gt;& k) noexcept;</ins></cxx-signature>
 
       <cxx-returns>
       <ins>
@@ -2748,7 +2748,7 @@ friend simd_mask operator!=(const simd_mask&, const simd_mask&) noexcept;
     </cxx-function>
 
     <cxx-function>
-      <cxx-signature><ins>template&lt;class T, class Abi&gt; bool any_of(const simd_mask&lt;T, abi&gt;& k) noexcept;</ins></cxx-signature>
+      <cxx-signature><ins>template&lt;class T, class Abi&gt; bool any_of(const simd_mask&lt;T, Abi&gt;& k) noexcept;</ins></cxx-signature>
 
       <cxx-returns>
       <ins>
@@ -2758,7 +2758,7 @@ friend simd_mask operator!=(const simd_mask&, const simd_mask&) noexcept;
     </cxx-function>
 
     <cxx-function>
-      <cxx-signature><ins>template&lt;class T, class Abi&gt; bool none_of(const simd_mask&lt;T, abi&gt;& k) noexcept;</ins></cxx-signature>
+      <cxx-signature><ins>template&lt;class T, class Abi&gt; bool none_of(const simd_mask&lt;T, Abi&gt;& k) noexcept;</ins></cxx-signature>
 
       <cxx-returns>
       <ins>
@@ -2768,7 +2768,7 @@ friend simd_mask operator!=(const simd_mask&, const simd_mask&) noexcept;
     </cxx-function>
 
     <cxx-function>
-      <cxx-signature><ins>template&lt;class T, class Abi&gt; bool some_of(const simd_mask&lt;T, abi&gt;& k) noexcept;</ins></cxx-signature>
+      <cxx-signature><ins>template&lt;class T, class Abi&gt; bool some_of(const simd_mask&lt;T, Abi&gt;& k) noexcept;</ins></cxx-signature>
 
       <cxx-returns>
       <ins>
