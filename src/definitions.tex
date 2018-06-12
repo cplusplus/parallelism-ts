@@ -1,51 +1,12 @@
 %!TEX root = ts.tex
 
-\rSec0[defs]{Terms and definitions}
+\rSec0[defns]{Terms and definitions}
 
-\pnum
-\indextext{definitions|(}%
-For the purposes of this document,
-the terms and definitions
-given in ISO/IEC 14882:2014,
-ISO/IEC 2382-1:1993,
-and the following apply.
-
-\pnum
-ISO and IEC maintain terminological databases
-for use in standardization
-at the following addresses:
 \begin{itemize}
-\item IEC Electropedia: available at \url{http://www.electropedia.org/}
-\item ISO Online browsing platform: available at \url{http://www.iso.org/obp}
+\item No terms and definitions are listed in this document.
+\item ISO and IEC maintained terminological databases for use in standardization at the following addresses:
+  \begin{itemize}
+    \item IEC Electropedia: available at \url{http://www.electropedia.org}
+    \item ISO Online browsing platform: available at \url{http://www.iso.org/obp}
+  \end{itemize}
 \end{itemize}
-
-\pnum
-Terms that are used only in a small portion of this document
-are defined where they are used and italicized where they are
-defined.
-
-\indexdefn{host byte order}%
-\definition{host byte order}{defs.host.byte.order}
-the arrangement of bytes in any integer type when using a specific machine architecture
-
-[SOURCE: ISO/IEC 9945:2009, 3.193]
-
-\indexdefn{network byte order}%
-\definition{network byte order}{defs.net.byte.order}
-the way of representing any integer type such that, when transmitted over a network via a network endpoint,
-the \tcode{int} type is transmitted as an appropriate number of octets with the most significant octet first,
-followed by any other octets in descending order of significance
-
-[SOURCE: ISO/IEC 9945:2009, 3.237]
-
-\indexdefn{synchronous operation}%
-\definition{synchronous operation}{defs.sync.op}
-operation where control is not returned until the operation completes
-
-\indexdefn{asynchronous operation}%
-\definition{asynchronous operation}{defs.async.op}
-operation where control is returned immediately without waiting for the operation to complete
-
-\begin{defnote}Multiple asynchronous operations may be executed concurrently.\end{defnote}
-
-\setcounter{tocdepth}{1}
