@@ -1,0 +1,55 @@
+%!TEX root = ts.tex
+
+\rSec0[parallel.exceptions]{Parallel exceptions}
+
+\rSec1[parallel.exceptions.synopsis]{Header \tcode{<experimental/exception_list>} synopsis}
+
+\begin{codeblock}
+namespace std::experimental {
+inline namespace parallelism_v2 {
+
+  class exception_list : public exception
+  {
+    public:
+      using iterator = @\unspec@;
+
+      size_t size() const noexcept;
+      iterator begin() const noexcept;
+      iterator end() const noexcept;
+
+      const char* what() const noexcept override;
+  };
+}
+}
+\end{codeblock}
+
+\pnum The class \tcode{exception_list} owns a sequence of \tcode{exception_ptr} objects.
+
+\pnum The type \tcode{exception_list::iterator} fulfills the requirements of \tcode{ForwardIterator}.
+
+\begin{itemdecl}
+@\pnum@ size_t size() const noexcept;
+\end{itemdecl}
+
+\begin{itemdescr}
+  \pnum \returns The number of \tcode{exception_ptr} objects contained within the \tcode{exception_list}.
+
+  \pnum \complexity Constant time.
+\end{itemdescr}
+
+\begin{itemdecl}
+@\pnum@ iterator begin() const noexcept;
+\end{itemdecl}
+
+\begin{itemdescr}
+  \pnum \returns An iterator referring to the first \tcode{exception_ptr} object returned within the \tcode{exception_list}.
+\end{itemdescr}
+
+\begin{itemdescr}
+  \pnum \returns An iterator that is past the end of the owned sequence.
+\end{itemdescr}
+
+\begin{itemdescr}
+  \pnum \returns An implementation-defined NTBS.
+\end{itemdescr}
+
