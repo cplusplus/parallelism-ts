@@ -1,0 +1,1944 @@
+%!TEX root = ts.tex
+
+\rSec0[parallel.simd]{Data-Parallel Types}
+\rSec1[parallel.simd.general]{General}
+
+\pnum
+The data-parallel library consists of data-parallel types and operations on these types. A data-parallel type consists of elements of an underlying arithmetic type, called the \defn{element type}. The number of elements is a constant for each data-parallel type and called the \defn{width} of that type.
+
+\pnum
+Throughout this Clause, the term \defn{data-parallel type} refers to all \defn{supported} \tref{parallel.simd.overview} specializations of the \tcode{simd} and \tcode{simd_mask} class templates. A \defn{data-parallel object} is an object of \term{data-parallel type}.
+
+\pnum
+An \defn{element-wise operation} applies a specified operation to the elements of one or more data-parallel objects. Each such application is unsequenced with respect to the others. A \defn{unary element-wise operation} is an element-wise operation that applies a unary operation to each element of a data-parallel object. A \defn{binary element-wise operation} is an element-wise operation that applies a binary operation to corresponding elements of two data-parallel objects.
+
+\pnum
+Throughout this Clause, the set of \defn{vectorizable types} for a data-parallel type comprises all cv-unqualified arithmetic types other than \tcode{bool}.
+
+\pnum
+\begin{note}
+The intent is to support acceleration through data-parallel execution resources, such as SIMD registers and instructions or execution units driven by a common instruction decoder. If such execution resources are unavailable, the interfaces support a transparent fallback to sequential execution.
+\end{note}
+
+\rSec1[parallel.simd.synopsis]{Header \tcode{<experimental/simd>} synopsis}
+
+%\indexhdr{experimental/simd}
+\begin{codeblock}
+namespace std::experimental {
+  inline namespace parallelism_v2 {
+    namespace simd_abi {
+      struct scalar {};
+      template<int N> struct fixed_size {};
+      template<class T> inline constexpr int max_fixed_size = @\impdef@;
+      template<class T> using compatible = @\impdef@;
+      template<class T> using native = @\impdef@;
+
+      template<class T, size_t N> struct deduce { using type = @\seebelow@; };
+      template<class T, size_t N> using deduce_t = typename deduce<T, N>::type;
+    }
+
+    struct element_aligned_tag {};
+    struct vector_aligned_tag {};
+    template<size_t> struct overaligned_tag {};
+    inline constexpr element_aligned_tag element_aligned{};
+    inline constexpr vector_aligned_tag vector_aligned{};
+    template<size_t N> inline constexpr overaligned_tag<N> overaligned{};
+
+    // \ref{parallel.simd.traits}, \tcode{simd} type traits
+    template<class T> struct is_abi_tag;
+    template<class T> inline constexpr bool is_abi_tag_v = is_abi_tag<T>::value;
+
+    template<class T> struct is_simd;
+    template<class T> inline constexpr bool is_simd_v = is_simd<T>::value;
+
+    template<class T> struct is_simd_mask;
+    template<class T> inline constexpr bool is_simd_mask_v = is_simd_mask<T>::value;
+
+    template<class T> struct is_simd_flag_type;
+    template<class T> inline constexpr bool is_simd_flag_type_v =
+    is_simd_flag_type<T>::value;
+
+    template<class T, class Abi = simd_abi::compatible<T>> struct simd_size;
+    template<class T, class Abi = simd_abi::compatible<T>>
+    inline constexpr size_t simd_size_v = simd_size<T,Abi>::value;
+
+    template<class T, class U = typename T::value_type> struct memory_alignment;
+    template<class T, class U = typename T::value_type>
+    inline constexpr size_t memory_alignment_v = memory_alignment<T,U>::value;
+
+    // \ref{parallel.simd.class}, Class template \tcode{simd}
+    template<class T, class Abi = simd_abi::compatible<T>> class simd;
+    template<class T> using native_simd = simd<T, simd_abi::native<T>>;
+    template<class T, int N> using fixed_size_simd = simd<T, simd_abi::fixed_size<N>>;
+
+    // \ref{parallel.simd.mask.class}, Class template \tcode{simd_mask}
+    template<class T, class Abi = simd_abi::compatible<T>> class simd_mask;
+    template<class T> using native_simd_mask = simd_mask<T, simd_abi::native<T>>;
+    template<class T, int N> using fixed_size_simd_mask =
+    simd_mask<T, simd_abi::fixed_size<N>>;
+
+    // \ref{parallel.simd.casts}, Casts
+    template<class T, class U, class Abi> @\seebelow@ simd_cast(const simd<U, Abi>&);
+    template<class T, class U, class Abi> @\seebelow@ static_simd_cast(const simd<U, Abi>&);
+
+    template<class T, class Abi>
+    fixed_size_simd<T, simd_size_v<T, Abi>>
+    to_fixed_size(const simd<T, Abi>&) noexcept;
+    template<class T, class Abi>
+    fixed_size_simd_mask<T, simd_size_v<T, Abi>>
+    to_fixed_size(const simd_mask<T, Abi>&) noexcept;
+    template<class T, int N>
+    native_simd<T> to_native(const fixed_size_simd<T, N>&) noexcept;
+    template<class T, int N>
+    native_simd_mask<T> to_native(const fixed_size_simd_mask<T, N>&) noexcept;
+    template<class T, int N>
+    simd<T> to_compatible(const fixed_size_simd<T, N>&) noexcept;
+    template<class T, int N>
+    simd_mask<T> to_compatible(const fixed_size_simd_mask<T, N>&) noexcept;
+
+    template<size_t... Sizes, class T, class Abi>
+    tuple<simd<T, simd_abi::deduce_t<T, Sizes>>...>
+    split(const simd<T, Abi>&);
+    template<size_t... Sizes, class T, class Abi>
+    tuple<simd_mask<T, simd_mask_abi::deduce_t<T, Sizes>>...>
+    split(const simd_mask<T, Abi>&);
+    template<class V, class Abi>
+    array<V, simd_size_v<typename V::value_type, Abi> / V::size()>
+    split(const simd<typename V::value_type, Abi>&);
+    template<class V, class Abi>
+    array<V, simd_size_v<typename V::value_type, Abi> / V::size()>
+    split(const simd_mask<typename V::value_type, Abi>&);
+
+    template<class T, class... Abis>
+    simd<T, simd_abi::deduce_t<T, (simd_size_v<T, Abis> + ...)>>
+    concat(const simd<T, Abis>&...);
+    template<class T, class... Abis>
+    simd_mask<T, simd_abi::deduce_t<T, (simd_size_v<T, Abis> + ...)>>
+    concat(const simd_mask<T, Abis>&...);
+
+    // \ref{parallel.simd.mask.reductions}, TODO
+    template<class T, class Abi> bool all_of(const simd_mask<T, Abi>&) noexcept;
+    template<class T, class Abi> bool any_of(const simd_mask<T, Abi>&) noexcept;
+    template<class T, class Abi> bool none_of(const simd_mask<T, Abi>&) noexcept;
+    template<class T, class Abi> bool some_of(const simd_mask<T, Abi>&) noexcept;
+    template<class T, class Abi> int popcount(const simd_mask<T, Abi>&) noexcept;
+    template<class T, class Abi> int find_first_set(const simd_mask<T, Abi>&);
+    template<class T, class Abi> int find_last_set(const simd_mask<T, Abi>&);
+
+    bool all_of(@\UNSP{T}@) noexcept;
+    bool any_of(@\UNSP{T}@) noexcept;
+    bool none_of(@\UNSP{T}@) noexcept;
+    bool some_of(@\UNSP{T}@) noexcept;
+    int popcount(@\UNSP{T}@) noexcept;
+    int find_first_set(@\UNSP{T}@) noexcept;
+    int find_last_set(@\UNSP{T}@) noexcept;
+
+    // \ref{parallel.simd.whereexpr}, TODO
+    template<class M, class T> class const_where_expression;
+    template<class M, class T> class where_expression;
+
+    // \ref{parallel.simd.mask.where}, TODO
+    template<class T, class Abi>
+    where_expression<simd_mask<T, Abi>, simd<T, Abi>>
+    where(const typename simd<T, Abi>::mask_type&, simd<T, Abi>&) noexcept;
+
+    template<class T, class Abi>
+    const_where_expression<simd_mask<T, Abi>, simd<T, Abi>>
+    where(const typename simd<T, Abi>::mask_type&, const simd<T, Abi>&) noexcept;
+
+    template<class T, class Abi>
+    where_expression<simd_mask<T, Abi>, simd_mask<T, Abi>>
+    where(const nodeduce_t<simd_mask<T, Abit>>&, simd_mask<T, Abi>&) noexcept;
+
+    template<class T, class Abi>
+    const_where_expression<simd_mask<T, Abi>, simd_mask<T, Abi>>
+    where(const nodeduce_t<simd_mask<T, Abit>>&, const simd_mask<T, Abi>&) noexcept;
+
+    template<class T>
+    where_expression<bool, T>
+    where(@\seebelow@ k, T& d) noexcept;
+
+    template<class T>
+    const_where_expression<bool, T>
+    where(@\seebelow@ k, const T& d) noexcept;
+
+    // \ref{parallel.simd.reductions}, TODO
+    template<class T, class Abi, class BinaryOperation = plus<>>
+    T reduce(const simd<T, Abi>&,
+    BinaryOperation = {});
+
+    template<class M, class V, class BinaryOperation>
+    typename V::value_type reduce(const const_where_expression<M, V>& x,
+    typename V::value_type identity_element,
+    BinaryOperation binary_op);
+    template<class M, class V>
+    typename V::value_type reduce(const const_where_expression<M, V>& x,
+    plus<>
+    binary_op = {});
+    template<class M, class V>
+    typename V::value_type reduce(const const_where_expression<M, V>& x,
+    multiplies<>
+    binary_op);
+    template<class M, class V>
+    typename V::value_type reduce(const const_where_expression<M, V>& x,
+    bit_and<>
+    binary_op);
+    template<class M, class V>
+    typename V::value_type reduce(const const_where_expression<M, V>& x,
+    bit_or<>
+    binary_op);
+    template<class M, class V>
+    typename V::value_type reduce(const const_where_expression<M, V>& x,
+    bit_xor<>
+    binary_op);
+
+    template<class T, class Abi>
+    T hmin(const simd<T, abi>&);
+    template<class T, class Abi>
+    typename V::value_type hmin(const const_where_expression<M, V>&);
+    template<class T, class Abi>
+    T hmax(const simd<T, abi>&);
+    template<class T, class Abi>
+    typename V::value_type hmax(const const_where_expression<M, V>&);
+
+    // \ref{parallel.simd.alg}, TODO
+    template<class T, class Abi>
+    simd<T, Abi>
+    min(const simd<T, Abi>& a, const simd<T, Abi>& b) noexcept;
+    template<class T, class Abi>
+    simd<T, Abi>
+    max(const simd<T, Abi>& a, const simd<T, Abi>& b) noexcept;
+    template<class T, class Abi>
+    pair<simd<T, Abi>, simd<T, Abi>>
+    minmax(const simd<T, Abi>& a, const simd<T, Abi>& b) noexcept;
+    template<class T, class Abi>
+    simd<T, Abi>
+    clamp(const simd<T, Abi>& v,
+    const simd<T, Abi>& lo,
+    const simd<T, Abi>& hi) noexcept;
+  }
+}
+\end{codeblock}
+
+\pnum
+The header \tcode{<experimental/simd>} defines class templates, tag types, trait types, and function templates for element-wise operations on data-parallel objects.
+
+\rSec2[parallel.simd.abi]{\tcode{simd} ABI tags}
+
+\begin{codeblock}
+  namespace simd_abi {
+    struct scalar {};
+    template<int N> struct fixed_size {};
+    template<class T> inline constexpr in max_fixed_size = @\impdef@;
+    template<class T> using compatible = @\impdef@;
+    template<class T> using native = @\impdef@;
+  }
+\end{codeblock}
+
+\pnum
+An \defn{ABI tag} is a type in the \tcode{std::experimental::parallelism_v2::simd_abi} namespace that indicates a choice of size and binary representation for objects of data-parallel type. \begin{note}The intent is for the size and binary representation to depend on the target architecture.\end{note} The ABI tag, together with a given element type implies a number of elements. ABI tag types are used as the second template argument to \tcode{simd} and \tcode{simd_mask}.
+
+\pnum
+\begin{note}The ABI tag is orthogonal to selecting the machine instruction set. The selected machine instruction set limits the usable ABI tag types, though (see \tref{parallel.simd.overview}). The ABI tags enable users to safely pass objects of data-parallel type between translation unit boundaries (e.g. function calls or I/O).\end{note}
+
+\pnum
+Use of the \tcode{scalar} tag type requires data-parallel types to store a single element (i.e., \tcode{simd<T, simd_abi::scalar>::size()} returns 1). \begin{note}\tcode{scalar} is not an alias for \tcode{fixed_size<1>}.\end{note}
+
+\pnum
+The value of \tcode{max_fixed_size<T>} is at least 32.
+
+\pnum
+Use of the \tcode{simd_abi::fixed_size<N>} tag type requires data-parallel types to store \tcode{N} elements (i.e. \tcode{simd<T, simd_abi::fixed_size<N>>::size()} is \tcode{N}). \tcode{simd<T, fixed_size<N>>} and \tcode{simd_mask<T, fixed_size<N>>} with \tcode{N > 0} and \tcode{N <= max_fixed_size<T>} shall be supported. Additionally, for every supported \tcode{simd<T, Abi>} (see \tref{parallel.simd.overview}), where \tcode{Abi} is an ABI tag that is not a specialization of \tcode{simd_abi::fixed_size}, \tcode{N == simd<T, Abi>::size()} shall be supported.
+
+\pnum
+\begin{note}It is unspecified whether \tcode{simd<T, fixed_size<T, fixed_size<N>>} with \tcode{N > max_fixed_size<T>} is supported. The value of \tcode{max_fixed_size<T>} can depend on compiler flags and can change between different compiler versions.\end{note}
+
+\pnum
+\begin{note}An implementation can forego ABI compatibility between differently compiled translation units for \tcode{simd} and \tcode{simd_mask} specializations using the same \tcode{simd_abi::fixed_size<N>} tag. Otherwise, the efficiency of \tcode{simd<T, Abi>} is likely to be better than for \tcode{simd<T, fixed_size<simd_size_v<T, Abi>>>} (with \tcode{Abi} not a specialization of \tcode{simd_abi::fixed_size}).\end{note}
+
+\pnum
+An implementation may define additional \defn{extended ABI tag} types in the \tcode{std::experimental::parallelism_v2::simd_abi} namespace, to support other forms of data-parallel computation.
+
+\pnum
+\tcode{compatible<T>} is an implementation-defined alias for an ABI tag. \begin{note}The intent is to use the ABI tag producing the most efficient data-parallel execution for the element type \tcode{T} that ensures ABI compatibility between translation units on the target architecture.\end{note}
+
+\begin{example}
+  Consider a target architecture supporting the extended ABI tags \tcode{__simd128} and \tcode{__simd256}, where the \tcode{__simd256} type requires an optional ISA extension on said architecture. Also, the target architecture does not support \tcode{long double} with either ABI tag. The implementation therefore defines
+  \begin{itemize}
+    \item \tcode{compatible<T>} is an alias for \tcode{__simd128} for all vectorizable \tcode{T}, except \tcode{long double}, and
+    \item \tcode{compatible<long double>} as an alias for \tcode{scalar}.
+  \end{itemize}
+\end{example}
+
+\pnum
+\tcode{native<T>} is an implementation-defined alias for an ABI tag. \begin{note}The intent is to use the ABI tag producing the most efficient data-parallel execution for the element type \tcode{T} that is supported on the currently targeted system. For target architectures without ISA extensions, the \tcode{native<T>} and \tcode{compatible<T>} aliases will likely be the same. For target architectures with ISA extensions, compiler flags may influence the \tcode{native<T>} alias while \tcode{compatible<T>} will be the same independent of such flags.\end{note}
+
+\begin{example}
+  Consider a target architecture supporting the extended ABI tags \tcode{__simd128} and \tcode{__simd256}, where hardware support for \tcode{__simd256} only exists for floating-point types. The implementation therefore defines \tcode{native<T>} as an alias for
+  \begin{itemize}
+    \item \tcode{__simd256} if \tcode{T} is a floating-point type, and
+    \item \tcode{__simd128} otherwise.
+  \end{itemize}
+\end{example}
+
+\begin{codeblock}
+  template<T, size_t N> struct deduce { using type = @\seebelow@; };
+\end{codeblock}
+
+\pnum
+The member \tcode{type} shall be present if and only if
+\begin{itemize}
+  \item \tcode{T} is a vectorizable type, and
+  \item \tcode{simd_abi::fixed_size<N>} is supported (see \tref{parallel.simd.abi}).
+\end{itemize}
+
+\pnum
+Where present, the member typedef \tcode{type} shall name an ABI tag type that satisfies
+\begin{itemize}
+  \item \tcode{simd_size<T, type> == N}, and
+  \item \tcode{simd<T, type>} is default constructible (see \tref{parallel.simd.overview}).
+\end{itemize}
+
+If \tcode{N} is \tcode{1}, the member typedef \tcode{type} is \tcode{simd_abi::scalar}. Otherwise, if there are multiple ABI tag types that satisfy the constraints, the member typedef \tcode{type} is implementation-defined. \begin{note}It is expected that extended ABI tags can produce better optimizations and thus are preferred over \tcode{simd_abi::fixed_size<N>}.\end{note}
+
+\pnum
+The behavior of a program that adds specializations for \tcode{deduce} is undefined.
+
+\rSec2[parallel.simd.traits]{\tcode{simd} type traits}
+
+\begin{itemdecl}
+template<class T> struct is_abi_tag { @\seebelow@ };
+\end{itemdecl}
+\begin{itemdescr}
+\pnum
+The type \tcode{is_abi_tag<T>} is a \tcode{UnaryTypeTrait} with a \tcode{BaseCharacteristic} of \tcode{true_type} if \tcode{T} is a standard or extended ABI tag, and \tcode{false_type} otherwise.
+
+\pnum
+The behavior of a program that adds specializations for \tcode{is_abi_tag} is undefined.
+\end{itemdescr}
+
+\begin{itemdecl}
+template<class T> struct is_simd { @\seebelow@ };
+\end{itemdecl}
+\begin{itemdescr}
+\pnum
+The type \tcode{is_simd<T>} is a \tcode{UnaryTypeTrait} with a \tcode{BaseCharacteristic} of \tcode{true_type} if \tcode{T} is a specialization of the \tcode{simd} class template, and \tcode{false_type} otherwise.
+
+\pnum
+The behavior of a program that adds specializations for \tcode{is_simd} is undefined.
+\end{itemdescr}
+
+\begin{itemdecl}
+template<class T> struct is_simd_mask { @\seebelow@ };
+\end{itemdecl}
+\begin{itemdescr}
+\pnum
+The type \tcode{is_simd_mask<T>} is a \tcode{UnaryTypeTrait} with a \tcode{BaseCharacteristic} of \tcode{true_type} if \tcode{T} is a specialization of the \tcode{simd_mask} class template, and \tcode{false_type} otherwise.
+
+\pnum
+The behavior of a program that adds specializations for \tcode{is_simd_mask} is undefined.
+\begin{itemdescr}
+
+\begin{itemdecl}
+template<class T> struct is_simd_flag_type { @\seebelow@ };
+\end{itemdecl}
+\begin{itemdescr}
+\pnum
+The type \tcode{is_simd_flag_type<class T>} is a \tcode{UnaryTypeTrait} with a \tcode{BaseCharacteristic} of \tcode{true_type} if \tcode{T} is one of
+\begin{itemize}
+  \item \tcode{element_aligned_tag}, or
+  \item \tcode{vector_aligned_tag}, or
+  \item \tcode{overaligned_tag<N>} with \tcode{N > 0} and \tcode{N} an integral power of two,
+\end{itemize}
+and \tcode{false_type} otherwise.
+
+\pnum
+The behavior of a program that adds specializations for \tcode{is_simd_flag_type} is undefined.
+\end{itemdescr}
+
+\begin{itemdecl}
+template<class T, class Abi = simd_abi::compatible<T>> struct simd_size { @\seebelow@ };
+\end{itemdecl}
+\begin{itemdescr}
+\pnum
+\tcode{simd_size<T, Abi>} shall have a member \tcode{value} if and only if
+\begin{itemize}
+  \item \tcode{T} is a vectorizable type, and
+  \item \tcode{is_abi_tag_v<Abi>} is \tcode{true}.
+\end{itemize}
+\begin{note}
+  The rules are different from those in (\tref{parallel.simd.overview}).
+\end{note}
+
+\pnum
+If \tcode{value} is present, the type \tcode{simd_size<T, Abi>} is a \tcode{BinaryTypeTrait} with a \tcode{BaseCharacteristic} of \tcode{integral_constant<size_t, N>} with \tcode{N} equal to the number of elements in a \tcode{simd<T, Abi>} object. \begin{note}If \tcode{simd<T, Abi>} is not supported for the currently targeted system, \tcode{simd_size<T, Abi>::value} produces the value \tcode{simd<T, Abi>::size()} would return if it were supported.\end{note}
+
+\pnum
+The behavior of a program that adds specializations for \tcode{simd_size} is undefined.
+\end{itemdescr}
+
+\begin{itemdecl}
+\tcode{template<class T, class U = typename T::value_type> struct memory_alignment { @\seebelow@ };}
+\end{itemdecl}
+\begin{itemdescr}
+\pnum
+\tcode{memory_alignment<T, U>} shall have a member \tcode{value} if and only if
+\begin{itemize}
+  \item \tcode{is_simd_mask_v<T>} is \tcode{true} and \tcode{U} is \tcode{bool}, or
+  \item \tcode{is_simd_v<T>} is \tcode{true} and \tcode{U} is a vectorizable type.
+\end{itemize}
+
+\pnum
+If \tcode{value} is present, the type \tcode{memory_alignment<T, U>} is a \tcode{BinaryTypeTrait} with a \tcode{BaseCharacteristic} of \tcode{integral_constant<size_t, N>} for some implementation-defined \tcode{N} (see \tref{parallel.simd.copy} and \tref{parallel.simd.mask.copy}). \begin{note}\tcode{value} identifies the alignment restrictions on pointers used for (converting) loads and stores for the give type \tcode{T} on arrays of type \tcode{U}.\end{note}
+
+\pnum
+The behavior of a program that adds specializations for \tcode{memory_alignment} is undefined.
+\end{itemdescr}
+
+\rSec2[parallel.simd.whereexpr]{Class templates \tcode{const_where_expression} and \tcode{where_expression}}
+
+\begin{codeblock}
+  template<class M, class T> class const_where_expression {
+    const M mask; // exposition only
+    T& data; // exposition only
+
+    public:
+    const_where_expression(const const_where_expression&) = delete;
+    const_where_expression& operator=(const const_where_expression&) = delete;
+
+    T operator-() const &&;
+    T operator+() const &&;
+    T operator~() const &&;
+
+    template<class U, class Flags> void copy_to(U* mem, Flags f) const &&;
+  };
+
+  template<class M, class T>
+  class where_expression : public const_where_expression<M, T> {
+    public:
+    template<class U> void operator=(U&& x) &&;
+    template<class U> void operator+=(U&& x) &&;
+    template<class U> void operator-=(U&& x) &&;
+    template<class U> void operator*=(U&& x) &&;
+    template<class U> void operator/=(U&& x) &&;
+    template<class U> void operator%=(U&& x) &&;
+    template<class U> void operator&=(U&& x) &&;
+    template<class U> void operator|=(U&& x) &&;
+    template<class U> void operator^=(U&& x) &&;
+    template<class U> void operator<<=(U&& x) &&;
+    template<class U> void operator>>=(U&& x) &&;
+
+    void operator++() &&
+    void operator++(int) &&
+    void operator--() &&
+    void operator--(int) &&
+
+    template<class U, class Flags> void copy_from(const U* mem, Flags) &&;
+  };
+\end{codeblock}
+
+\pnum
+The class templates \tcode{const_where_expression} and \tcode{where_expression} abstract the notion of selecting elements of a given object of arithmetic or data-parallel type.
+
+\pnum
+The first templates argument \tcode{M} shall be cv-unqualified \tcode{bool} or a cv-unqualified \tcode{simd_mask} specialization.
+
+\pnum
+If \tcode{M} is \tcode{bool}, \tcode{T} shall be a cv-unqualified arithmetic type. Otherwise, \tcode{T} shall either be \tcode{M} or \tcode{typename M::simd_type}.
+
+\pnum
+In this subclause, if \tcode{M} is \tcode{bool}, \tcode{data[0]} is used interchangably for \tcode{data}, \tcode{mask[0]} is used interchangably for \tcode{mask}, and \tcode{M::size()} is used interchangably for \tcode{1}.
+
+\pnum
+The \defn{selected indices} signify the integers $i \in \{j \in \mathbb{N} | j < \tcode{M::size()} \wedge \tcode{mask[}j\tcode{]}\}$. The \defn{selected elements} signify the elements \tcode{data[$i$]} for all selected indices $i$.
+
+\pnum
+In this subclause, the type \tcode{value_type} is an alias for \tcode{T} if \tcode{M} is \tcode{bool}, or an alias for \tcode{typename T::value_type} if \tcode{is_simd_mask_v<M>} is \tcode{true}.
+
+\pnum
+\begin{note}
+  The \tcode{where} functions \tref{parallel.simd.mask.where} initialize \tcode{mask} with the first argument to \tcode{where} and \tcode{data} with the second argument to \tcode{where}.
+\end{note}
+
+\begin{itemdecl}
+  T operator-() const &&;
+  T operator+() const &&;
+  T operator~() const &&;
+\end{itemdecl}
+
+\begin{itemdescr}
+  \returns
+  A copy of \tcode{data} with the indicated unary operator applied to all selected elements.
+
+  \throws Nothing.
+\end{itemdescr}
+
+\begin{itemdecl}
+  template<class U, class Flags> void copy_to(U* mem, Flags) const &&;
+\end{itemdecl}
+
+\begin{itemdescr}
+  \requires
+  If the template parameter \tcode{Flags} is \tcode{vector_aligned_tag}, \tcode{mem} shall point to storage aligned by \tcode{memory_alignment_v<T, U>}. If the template parameter \tcode{Flags} is \tcode{overaligned_tag<N>}, \tcode{mem} shall point to storage aligned by \tcode{N}. If the template parameter \tcode{Flags} is \tcode{element_aligned_tag}, \tcode{mem} shall point to storage aligned by \tcode{alignof(U)}. If \tcode{M} is not \tcode{bool}, the largest \tcode{i} $\in$ \tcode{[0, M::size())} where \tcode{mask[i]} is \tcode{true} is less than the number of values pointed to by \tcode{mem}.
+
+  \effects
+  Copies the selected elements as if \tcode{mem[i] = static_cast<U>(data[i])} for all selected indices \tcode{i}.
+
+  \throws Nothing.
+
+  \remarks 
+  This function shall not participate in overload resolution unless
+  \begin{itemize}
+    \item \tcode{is_simd_flag_type_v<Flags>} is \tcode{true}, and
+    \item either
+      \begin{itemize}
+        \item \tcode{U} is \tcode{bool} and \tcode{value_type} is \tcode{bool}, or
+        \item \tcode{U} is a vectorizable type and \tcode{value_type} is not \tcode{bool}.
+      \end{itemize}
+  \end{itemize}
+\end{itemdescr}
+
+\begin{itemdecl}
+  template<class U> void operator=(U&& x) &&;
+\end{itemdecl}
+
+\begin{itemdescr}
+  \effects
+  Replaces \tcode{data[i]} with \tcode{static_cast<T>(std::forward<U>(x))[i]} for all selected indices \tcode{i}.
+
+  \remarks
+  This operator shall not participate in overload resolution unless \tcode{U} is convertible to \tcode{T}.
+\end{itemdescr}
+
+\begin{itemdecl}
+  template<class U> void operator+=(U&& x) &&;
+  template<class U> void operator-=(U&& x) &&;
+  template<class U> void operator*=(U&& x) &&;
+  template<class U> void operator/=(U&& x) &&;
+  template<class U> void operator%=(U&& x) &&;
+  template<class U> void operator&=(U&& x) &&;
+  template<class U> void operator|=(U&& x) &&;
+  template<class U> void operator^=(U&& x) &&;
+  template<class U> void operator<<=(U&& x) &&;
+  template<class U> void operator>>=(U&& x) &&;
+\end{itemdecl}
+
+\begin{itemdescr}
+  \effects
+  Replaces \tcode{data[i]} with \tcode{static_cast<T>(data @ std::forward<U>(x))[i]} (where \tcode{@} denotes the indicated operator) for all selected indices \tcode{i}.
+
+  \remarks
+  Each of these operators shall not participate in overload resolution unless the return type of \tcode{data @ std::forward<U>(x)} is convertible to \tcode{T}. It is unspecified whether the binary operator, implied by the compound assignment operator, is executed on all elements or only on the selected elements.
+\end{itemdescr}
+
+\begin{itemdecl}
+  void operator++() &&;
+  void operator++(int) &&;
+  void operator--() &&;
+  void operator--(int) &&;
+\end{itemdecl}
+
+\begin{itemdescr}
+  \effects
+  Applies the indicated operator to the selected elements.
+
+  \remarks
+  Each of these operators shall not participate in overload resolution unless the indicated operator can be applied to objects of type \tcode{T}.
+\end{itemdescr}
+
+\begin{itemdecl}
+  template<class U, class Flags> void copy_from(const U* mem, Flags) &&;
+\end{itemdecl}
+
+\begin{itemdescr}
+  \requires
+  If the template parameter \tcode{Flags} is \tcode{vector_aligned_tag}, \tcode{mem} shall point to storage aligned by \tcode{memory_alignment_v<T, U>}. If the template parameter \tcode{Flags} is \tcode{overaligned_tag<N>}, \tcode{mem} shall point to storage aligned by \tcode{N}. If the template parameter \tcode{Flags} is \tcode{element_aligned_tag}, \tcode{mem} shall point to storage aligned by \tcode{alignof(U)}. If \tcode{is_simd_flag_type_v<U>} is \tcode{true}, for all selected indices \tcode{i}, \tcode{i} shall be less than the number of values pointed to by \tcode{mem}.
+
+  \effects
+  Replaces the selected elements as if \tcode{data[i] = static_cast<value_type>(mem[i])} for all selected indices \tcode{i}.
+
+  \remarks
+  This function shall not participate in overload resolution unless
+  \begin{itemize}
+    \item \tcode{is_simd_flag_type_v<Flags>} is \tcode{true}, and
+    \item either
+      \begin{itemize}
+        \item \tcode{U} is \tcode{bool} and \tcode{value_type} is \tcode{bool}, or
+        \item \tcode{U} is a vectorizable type and \tcode{value_type} is not \tcode{bool}.
+      \end{itemize}
+  \end{itemize}
+\end{itemdescr}
+
+\rSec1[parallel.simd.class]{Class template \tcode{simd}}
+
+\rSec2[parallel.simd.overview]{Class template \tcode{simd} overview}
+
+\begin{codeblock}
+  template<class T, class Abi> class simd {
+    public:
+    using value_type = T;
+    using reference = @\seebelow@;
+    using mask_type = simd_mask<T, Abi>
+    using abi_type = Abi;
+
+    static constexpr size_t size() noexcept;
+
+    simd() = default;
+
+    // implicit conversion constructor
+    template<class U> simd(const simd<U, simd_abi::fixed_size<size()>>&);
+
+    // implicit broadcast constructor (see below for constraints)
+    template<class U> simd(U&& value);
+
+    // generator constructor (see below for constraints)
+    template<class G> explicit simd(G&& gen);
+
+    // load constructor
+    template<class U, class Flags> simd(const U* mem, Flags f);
+
+    // \ref{parallel.simd.copy}, TODO
+    template<class U, class Flags> copy_from(const U* mem, Flags f);
+    template<class U, class Flags> copy_to(U* mem, Flags f);
+
+    // \ref{parallel.simd.subscr}, TODO
+    reference operator[](size_t);
+    value_type operator[](size_t) const;
+
+    // \ref{parallel.simd.unary}, TODO
+    simd& operator++();
+    simd operator++(int);
+    simd& operator--();
+    simd operator--(int);
+    mask_type operator!() const;
+    simd operator~() const;
+    simd operator+() const;
+    simd operator-() const;
+
+    // \ref{parallel.simd.binary}, TODO
+    friend simd operator+(const simd&, const simd&);
+    friend simd operator-(const simd&, const simd&);
+    friend simd operator*(const simd&, const simd&);
+    friend simd operator/(const simd&, const simd&);
+    friend simd operator%(const simd&, const simd&);
+    friend simd operator&(const simd&, const simd&);
+    friend simd operator|(const simd&, const simd&);
+    friend simd operator^(const simd&, const simd&);
+    friend simd operator<<(const simd&, const simd&);
+    friend simd operator>>(const simd&, const simd&);
+    friend simd operator<<(const simd&, int);
+    friend simd operator>>(const simd&, int);
+
+    // \ref{parallel.simd.cassign}, TODO
+    friend simd& operator+=(simd&, const simd&);
+    friend simd& operator-=(simd&, const simd&);
+    friend simd& operator*=(simd&, const simd&);
+    friend simd& operator/=(simd&, const simd&);
+    friend simd& operator%=(simd&, const simd&);
+    friend simd& operator&=(simd&, const simd&);
+    friend simd& operator|=(simd&, const simd&);
+    friend simd& operator^=(simd&, const simd&);
+    friend simd& operator<<=(simd&, const simd&);
+    friend simd& operator>>=(simd&, const simd&);
+    friend simd& operator<<=(simd&, int);
+    friend simd& operator>>=(simd&, int);
+
+    // \ref{parallel.simd.comparison}, TODO
+    friend mask_type operator==(const simd&, const simd&);
+    friend mask_type operator!=(const simd&, const simd&);
+    friend mask_type operator>=(const simd&, const simd&);
+    friend mask_type operator<=(const simd&, const simd&);
+    friend mask_type operator>(const simd&, const simd&);
+    friend mask_type operator<(const simd&, const simd&);
+  };
+\end{codeblock}
+
+\pnum
+The class template \tcode{simd} is a data-parallel type. The width of a given \tcode{simd} specialization is a constant expression, determined by the template parameters.
+
+\pnum
+Every specialization of \tcode{simd} shall be a complete type. The specialization \tcode{simd<T, Abi>} is supported if \tcode{T} is a vectorizable type and
+\begin{itemize}
+  \item \tcode{Abi} is \tcode{simd_abi::scalar}, or
+  \item \tcode{Abi} is \tcode{simd_abi::fixed_size<N>}, with \tcode{N} is constrained as defined in \tref{parallel.simd.abi}.
+\end{itemize}
+
+If \tcode{Abi} is an extended ABI tag, it is implementation-defined whether \tcode{simd<T, Abi>} is supported. \begin{note}The intent is for implementations to decide on the basis of the currently targeted system.\end{note}
+
+If \tcode{simd<T, Abi>} is not supported, the specialization shall have a deleted default constructor, deleted destructor, deleted copy constructor, and deleted copy assignment.
+
+\begin{example}
+  Consider an implementation that defines the extended ABI tags \tcode{__simd_x} and \tcode{__gpu_y}. When the compiler is invoked to translate to a machine that has support for the \tcode{__simd_x} ABI tag for all arithmetic types other than \tcode{long double} and no support for the \tcode{__gpu_y} ABI tag, then:
+  \begin{itemize}
+    \item \tcode{simd<T, simd_abi::__gpu_y>} is not supported for any \tcode{T} and has a deleted constructor.
+    \item \tcode{simd<long double, simd_abi::__simd_x>} is not supported and has a deleted constructor.
+    \item \tcode{simd<double, simd_abi::__simd_x>} is supported.
+    \item \tcode{simd<long double, simd_abi::scalar>} is supported.
+  \end{itemize}
+\end{example}
+
+\pnum
+Default intialization performs no initialization of the elements; value-initialization initializes each element with \tcode{T()}. \begin{note}Thus, default initialization leaves the elements in an indeterminate state.\end{note}
+
+\begin{itemdecl}
+  static constexpr size_t size() noexcept;
+\end{itemdecl}
+
+\begin{itemdescr}
+  \returns
+  The width of \tcode{simd<T, Abi>}.
+\end{itemdescr}
+
+\pnum
+Implementations should enable explicit conversion from and to implementation-defined types. This adds one or more of the following declarations to class \tcode{simd}:
+
+\begin{codeblock}
+explicit operator @\impdef@() const;
+explicit simd(const @\impdef@& init);
+\end{codeblock}
+
+\begin{example}
+  Consider an implementation that supports the type \tcode{__vec4f} and the function \tcode{__vec4f _vec4f_addsub(__vec4f, __vec4f)} for the currently targeted system.
+  A user may require the use of \tcode{_vec4f_addsub} for maximum performance and thus writes:
+  \begin{codeblock}
+    using V = simd<float, simd_abi::__simd128>;
+    V addsub(V a, V b) {
+      return static_cast<V>(_vec4f_addsub(static_cast<__vec4f>(a), static_cast<__vec4f>(b)));
+    }
+  \end{codeblock}
+\end{example}
+
+\rSec2[parallel.simd.reference]{Element references}
+
+\pnum
+A \tcode{reference} is an object that refers to an element in a \tcode{simd} or \tcode{simd_mask} object. \tcode{reference::value_type} is the same type as \tcode{simd::value_type} or \tcode{simd_mask::value_type}, respectively.
+
+\pnum
+Class \tcode{reference} is for exposition only. An implementation is permitted to provide equivalent functionality without providing a class with this name.
+
+\begin{codeblock}
+  class reference // exposition only
+  {
+    public:
+    reference() = delete;
+    reference(const reference&) = delete;
+
+    operator value_type() const noexcept;
+
+    template<class U> reference operator=(U&& x) &&;
+
+    template<class U> reference operator+=(U&& x) &&;
+    template<class U> reference operator-=(U&& x) &&;
+    template<class U> reference operator*=(U&& x) &&;
+    template<class U> reference operator/=(U&& x) &&;
+    template<class U> reference operator%=(U&& x) &&;
+    template<class U> reference operator|=(U&& x) &&;
+    template<class U> reference operator&=(U&& x) &&;
+    template<class U> reference operator^=(U&& x) &&;
+    template<class U> reference operator<<=(U&& x) &&;
+    template<class U> reference operator>>=(U&& x) &&;
+
+    reference operator++() &&;
+    value_type operator++(int) &&;
+    reference operator--() &&;
+    value_type operator--(int) &&;
+
+    friend void swap(reference&& a, reference&& b) noexcept;
+    friend void swap(value_type&& a, reference&& b) noexcept;
+    friend void swap(reference&& a, value_type&& b) noexcept;
+  };
+\end{codeblock}
+
+\begin{itemdecl}
+  operator value_type() const noexcept;
+\end{itemdecl}
+
+\begin{itemdescr}
+  \returns
+  The value of the element referred to by \tcode{*this}.
+\end{itemdescr}
+
+\begin{itemdecl}
+  template<class U> reference operator=(U&& x) &&;
+\end{itemdecl}
+
+\begin{itemdescr}
+  \effects
+  Replaces the referred to element in \tcode{simd} or \tcode{simd_mask} with \tcode{static_cast<value_type>(std::forward<U>(x))}.
+
+  \returns
+  A copy of \tcode{*this}.
+
+  \remarks
+  This function shall not participate in overload resolution unless \tcode{declval<value_type \&>() = std::forward>U>(x)} is well-formed.
+\end{itemdescr}
+
+\begin{itemdecl}
+  template<class U> reference operator+=(U&& x) &&;
+  template<class U> reference operator-=(U&& x) &&;
+  template<class U> reference operator*=(U&& x) &&;
+  template<class U> reference operator/=(U&& x) &&;
+  template<class U> reference operator%=(U&& x) &&;
+  template<class U> reference operator|=(U&& x) &&;
+  template<class U> reference operator&=(U&& x) &&;
+  template<class U> reference operator^=(U&& x) &&;
+  template<class U> reference operator<<=(U&& x) &&;
+  template<class U> reference operator>>=(U&& x) &&;
+\end{itemdecl}
+
+\begin{itemdescr}
+  \effects
+  Applies the indicated compound operator to the referred to element in \tcode{simd} or \tcode{simd_mask} and \tcode{std::forward<U>(x)}.
+
+  \returns
+  A copy of \tcode{*this}.
+
+  \remarks
+  This function shall not participate in overload resolution unless \tcode{declval<value_type \&>() @= std::forward<U>(x)} (where \tcode{@=} denotes the indicated compound assignment operator) is well-formed.
+\end{itemdescr}
+
+\begin{itemdecl}
+  reference operator++() &&;
+  reference operator--() &&;
+\end{itemdecl}
+
+\begin{itemdescr}
+  \effects
+  Applies the indicated operator to the referred to element in \tcode{simd} or \tcode{simd_mask}.
+
+  \returns
+  A copy of \tcode{*this}.
+
+  \remarks
+  This function shall not participate in overload resolution unless the indicated operator can be applied to objects of type \tcode{value_type}.
+\end{itemdescr}
+
+\begin{itemdecl}
+  value_type operator++(int) &&;
+  value_type operator--(int) &&;
+\end{itemdecl}
+
+\begin{itemdescr}
+  \effects
+  Applies the indicated operator to the referred to element in \tcode{simd} or \tcode{simd_mask}.
+
+  \returns
+  A copy of the referred to element before applying the indicated operator.
+
+  \remarks
+  This function shall not participate in overload resolution unless the indicated operator can be applied to objects of type \tcode{value_type}.
+\end{itemdescr}
+
+\begin{itemdecl}
+  friend void swap(reference&& a, reference&& b) noexcept;
+  friend void swap(value_type& a, reference&& b) noexcept;
+  friend void swap(reference&& a, value_type& b) noexcept;
+\end{itemdecl}
+
+\begin{itemdescr}
+  \effects
+  Exchanges the values \tcode{a} and \tcode{b} refer to.
+\end{itemdescr}
+
+\rSec2[parallel.simd.ctor]{Constructors}
+
+\begin{itemdecl}
+  template<class U> simd(U&&);
+\end{itemdecl}
+
+\begin{itemdescr}
+  \effects
+  Constructs an object with each element initialized to the value of the argument after conversion to \tcode{value_type}.
+
+  \throws
+  Any exception thrown while converting the argument to \tcode{value_type}.
+
+  \remarks
+  Let \tcode{From} identify the type \tcode{remove_cv_t<remove_reference_t<U>>}. This constructor shall not participate in overload resolution unless:
+
+  \begin{itemize}
+    \item \tcode{From} is a vectorizable type and every possibly value of \tcode{From} can be represented with type \tcode{value_type}, or
+    \item \tcode{From} is not an arithmetic type and is implicitly convertible to \tcode{value_type}, or
+    \item \tcode{From} is \tcode{int}, or
+    \item \tcode{From} is \tcode{unsigned int} and \tcode{value_type} is an unsigned integral type.
+  \end{itemize}
+
+\end{itemdescr}
+
+\begin{itemdecl}
+  template<class U> simd(const simd<U, simd_abi::fixed_size<size()>>& x);
+\end{itemdecl}
+
+\begin{itemdescr}
+  \effects
+  Constructs an object where the $i$-th element equals \tcode{static_cast<T>(x[i])} for all \tcode{i} &#8714; \tcode{[0, size())}.
+
+  \remarks
+  This constructor shall not participate in overload resolution unless
+  \begin{itemize}
+    \item \tcode{abi_type} is \tcode{simd_abi::fixed_size<size()>}, and
+    \item every possible value of \tcode{U} can be represented with type \tcode{value_type}, and
+    \item if both \tcode{U} and \tcode{value_type} are integral, the integer conversion rank [conv.rank] of \tcode{value_type} is greater than the integer conversion rank of \tcode{U}.
+  \end{itemize}
+\end{itemdescr}
+
+\begin{itemdecl}
+  template<class G> simd(G&& gen);
+\end{itemdecl}
+
+\begin{itemdescr}
+  \effects
+  Constructs an object where the $i$-th element is initialized to \tcode{gen(integral_constant<size_t, i>())}.
+
+  \remarks
+  This constructor shall not participate in overload resolution unless \tcode{simd(gen(integral_constant<size_t, i>()))} is well-formed for all \tcode{i} &#8714; \tcode{[0, size())}.
+
+  \pnum
+  The calls to \tcode{gen} are unsequenced with respect to each other. Vectorization-unsafe standard library functions may not be invoked by \tcode{gen} ([algorithms.parallel.exec]).
+\end{itemdescr}
+
+\begin{itemdecl}
+  template<class U, class Flags> simd(const U* mem, Flags);
+\end{itemdecl}
+
+\begin{itemdescr}
+  \requires
+  If the template parameter \tcode{Flags} is \tcode{vector_aligned_tag}, \tcode{mem} shall point to storage aligend by \tcode{memory_alignment_v<simd, U>}. If the template parameter \tcode{Flags} is \tcode{overaligned_tag<N>}, \tcode{mem} shall point to storage aligned by \tcode{N}. If the template parameter \tcode{Flags} is \tcode{element_aligned_tag}, \tcode{mem} shall point to storage aligned by \tcode{alignof(U)}. \tcode{[mem, mem + size())} is a valid range.
+
+  \effects
+  Constructs an object where the $i$-th element is initialized to \tcode{static_cast<T>(mem[i])} for all \tcode{i} &#8714; \tcode{[0, size())}.
+
+  \remarks
+  This constructor shall not participate in overload resolution unless
+  \begin{itemize}
+    \item \tcode{is_simd_flag_type_v<Flags>} is \tcode{true}, and
+    \item \tcode{U} is a vectorizable type.
+  \end{itemize}
+\end{itemdescr}
+
+\rSec2[parallel.simd.copy]{Copy functions}
+
+\begin{itemdecl}
+  template<class U, class Flags> void copy_from(const U* mem, Flags);
+\end{itemdecl}
+
+\begin{itemdescr}
+  \requires
+  If the template parameter \tcode{Flags} is \tcode{vector_aligned_tag}, \tcode{mem} shall point to storage aligned by \tcode{memory_alignment_v<simd, U>}. If the template parameter \tcode{Flags} is \tcode{overaligned_tag<N>}, \tcode{mem} shall point to storage aligend by \tcode{N}. If the template parameter \tcode{Flags} is \tcode{element_aligned_tag}, \tcode{mem} shall point to storage aligned by \tcode{alignof(U)}. \tcode{[mem, mem + size())} is a valid range.
+
+  \effects
+  Replaces the elements of the \tcode{simd} object such that the $i$-th element is assigned with \tcode{static_cast<T>(mem[i])} for all \tcode{i} &#8714; \tcode{[0, size())}.
+
+  \remarks
+  This function shall not participate in overload resolution unless
+  \begin{itemize}
+    \item \tcode{is_simd_flag_type_v<Flags>} is \tcode{true}, and
+    \item \tcode{U} is a vectorizable type.
+  \end{itemize}
+\end{itemdescr}
+
+\begin{itemdecl}
+  template<class U, class Flags> void copy_to(U* mem, Flags) const;
+\end{itemdecl}
+
+\begin{itemdescr}
+  \requires
+  If the template parameter \tcode{Flags} is \tcode{vector_aligned_tag}, \tcode{mem} shall point to storage aligned by \tcode{memory_alignment_v<simd, U>}. If the template parameter \tcode{Flags} is \tcode{overaligned_tag<N>}, \tcode{mem} shall point to storage aligned by \tcode{N}. If the template parameter \tcode{Flags} is \tcode{element_aligned_tag}, \tcode{mem} shall point to storage aligned by \tcode{alignof(U)}. \tcode{[mem, mem + size())} is a valid range.
+
+  \effects
+  Copies all \tcode{simd} elements as if \tcode{mem[i] = static_cast<U>(operator[](i))} for all \tcode{i} &#8714; \tcode{[0, size())}.
+
+  \remarks
+  This function shall not participate in overload resolution unless
+  \begin{itemize}
+    \item \tcode{is_simd_flag_type_v<Flags>} is \tcode{true}, and
+    \item \tcode{U} is a vectorizable type.
+  \end{itemize}
+\end{itemdescr}
+
+\rSec2[parallel.simd.subscr]{Subscript operators}
+
+\begin{itemdecl}
+  reference operator[](size_t i);
+\end{itemdecl}
+
+\begin{itemdescr}
+  \requires
+  \tcode{i < size()}.
+
+  \returns
+  A \tcode{reference} (see \tref{parallel.simd.reference}) referring to the $i$-th element.
+
+  \throws Nothing.
+\end{itemdescr}
+
+\begin{itemdecl}
+  value_type operator[](size_t i) const;
+\end{itemdecl}
+
+\begin{itemdescr}
+  \requires
+  \tcode{i < size()}.
+
+  \returns
+  The value of the $i$-th element.
+
+  \throws Nothing.
+\end{itemdescr}
+
+\rSec2[parallel.simd.unary]{Unary operators}
+
+\pnum
+Effects in this subclause are applied as unary element-wise operations.
+
+\begin{itemdecl}
+  simd& operator++();
+\end{itemdecl}
+
+\begin{itemdescr}
+  \effects
+  Increments every element by one.
+
+  \returns
+  \tcode{*this}.
+
+  \throws Nothing.
+\end{itemdescr}
+
+\begin{itemdecl}
+  simd operator++(int);
+\end{itemdecl}
+
+\begin{itemdescr}
+  \effects
+  Increments every element by one.
+
+  \returns
+  A copy of \tcode{*this} before incrementing.
+
+  \throws Nothing.
+\end{itemdescr}
+
+\begin{itemdecl}
+  simd& operator--();
+\end{itemdecl}
+
+\begin{itemdescr}
+  \effects
+  Decrements every element by one.
+
+  \returns
+  \tcode{*this}.
+
+  \throws Nothing.
+
+\end{itemdescr}
+
+\begin{itemdecl}
+  simd operator--(int);
+\end{itemdecl}
+
+\begin{itemdescr}
+  \effects
+  Decrements every element by one.
+
+  \returns
+  A copy of \tcode{*this} before decrementing.
+
+  \throws Nothing.
+\end{itemdescr}
+
+\begin{itemdecl}
+  mask_type operator!() const;
+\end{itemdecl}
+
+\begin{itemdescr}
+  \returns
+  A \tcode{simd_mask} object with the $i$-th element set to \tcode{!operator[](i)} for all \tcode{i} &#8714; \tcode{[0, size())}.
+
+  \throws Nothing.
+
+\end{itemdescr}
+
+\begin{itemdecl}
+  simd operator~() const;
+\end{itemdecl}
+
+\begin{itemdescr}
+  \returns
+  A \tcode{simd} object where each bit is the inverse of the corresponding bit in \tcode{*this}.
+
+  \throws Nothing.
+
+  \remarks
+  This operator shall not participate in overload resolution unless \tcode{T} is an integral type.
+\end{itemdescr}
+
+\begin{itemdecl}
+  simd operator+() const;
+\end{itemdecl}
+
+\begin{itemdescr}
+  \returns
+  \tcode{*this}.
+
+  \throws Nothing.
+\end{itemdescr}
+
+\begin{itemdecl}
+  simd operator-() const;
+\end{itemdecl}
+
+\begin{itemdescr}
+  \returns
+  A \tcode{simd} object where the $i$-th element is initialized to \tcode{-operator[](i)} for all \tcode{i} &#8714; \tcode{[0, size())}.
+
+  \throws Nothing.
+\end{itemdescr}
+
+\rSec1[parallel.simd.nonmembers]{Non-member operations}
+
+\rSec2[parallel.simd.binary]{Binary operators}
+
+\begin{itemdecl}
+  friend simd operator+(const simd& lhs, const simd& rhs);
+  friend simd operator-(const simd& lhs, const simd& rhs);
+  friend simd operator*(const simd& lhs, const simd& rhs);
+  friend simd operator/(const simd& lhs, const simd& rhs);
+  friend simd operator%(const simd& lhs, const simd& rhs);
+  friend simd operator&(const simd& lhs, const simd& rhs);
+  friend simd operator|(const simd& lhs, const simd& rhs);
+  friend simd operator^(const simd& lhs, const simd& rhs);
+  friend simd operator<<(const simd& lhs, const simd& rhs);
+  friend simd operator>>(const simd& lhs, const simd& rhs);
+\end{itemdecl}
+
+\begin{itemdescr}
+  \returns
+  A \tcode{simd} object initialized with the results of the element-wise application of the indicated operator.
+
+  \throws Nothing.
+
+  \remarks
+  Each of these operators shall not participate in overload resolution unless the indicated operator can be applied to objects of type \tcode{value_type}.
+\end{itemdescr}
+
+\begin{itemdecl}
+  friend simd operator<<(const simd& v, int n);
+  friend simd operator>>(const simd& v, int n);
+\end{itemdecl}
+
+\begin{itemdescr}
+  \returns
+  A \tcode{simd} object where the $i$-th element is initialized to the result of applying the indicated operator to \tcode{v[i]} and \tcode{n} for all \tcode{i} &#8714; \tcode{[0, size())}.
+
+  \throws Nothing.
+
+  \remarks
+  These operators shall not participate in overload resolution unless the indicated operator can be applied to objects of type \tcode{value_type}.
+\end{itemdescr}
+
+\rSec2[parallel.simd.cassign]{Compound assignment}
+
+\begin{itemdecl}
+  friend simd& operator+=(simd& lhs, const simd& rhs);
+  friend simd& operator-=(simd& lhs, const simd& rhs);
+  friend simd& operator*=(simd& lhs, const simd& rhs);
+  friend simd& operator/=(simd& lhs, const simd& rhs);
+  friend simd& operator%=(simd& lhs, const simd& rhs);
+  friend simd& operator&=(simd& lhs, const simd& rhs);
+  friend simd& operator|=(simd& lhs, const simd& rhs);
+  friend simd& operator^=(simd& lhs, const simd& rhs);
+  friend simd& operator<<=(simd& lhs, const simd& rhs);
+  friend simd& operator>>=(simd& lhs, const simd& rhs);
+  friend simd& operator<<=(simd& lhs, int n);
+  friend simd& operator>>=(simd& lhs, int n);
+\end{itemdecl}
+
+\begin{itemdescr}
+  \effects
+  These operators perform the indicated binary element-wise operation.
+
+  \returns
+  \tcode{lhs}.
+
+  \throws Nothing.
+
+  \remarks
+  These operators shall not participate in overload resolution unless the indicated operator can be applied to objects of type \tcode{value_type}.
+\end{itemdescr}
+
+\rSec2[parallel.simd.comparison]{Compare operators}
+
+\begin{itemdecl}
+  friend mask_type operator==(const simd&, const simd&);
+  friend mask_type operator!=(const simd&, const simd&);
+  friend mask_type operator>=(const simd&, const simd&);
+  friend mask_type operator<=(const simd&, const simd&);
+  friend mask_type operator>(const simd&, const simd&);
+  friend mask_type operator<(const simd&, const simd&);
+\end{itemdecl}
+
+\begin{itemdescr}
+  \returns
+  A \tcode{simd_mask} object initialized with the results of the element-wise application of the indicated operator.
+
+  \throws Nothing.
+\end{itemdescr}
+
+\rSec2[parallel.simd.reductions]{Reductions}
+
+\pnum
+In this subclause, \tcode{BinaryOperation} shall be a binary element-wise operation.
+
+\begin{itemdecl}
+  template<class T, class Abi, class BinaryOperation = plus<>>
+  T reduce(const simd<T, Abi>& x, BinaryOperation binary_op = {});
+\end{itemdecl}
+
+\begin{itemdescr}
+  \requires
+  \tcode{binary_op} shall be callable with two arguments of type \tcode{T} returning \tcode{T}, or callable with two arguments of type \tcode{simd<T, A1>} returning \tcode{simd<T, A1>} for every \tcode{A1} that is an ABI tag type.
+
+  \returns
+  \tcode{@\placeholdernc{GENERALIZED_SUM}@(binary_op, x.data[i], ...)} for all \tcode{i} &#8714; \tcode{[0, size())}.
+
+  \throws
+  Any exception thrown from \tcode{binary_op}.
+
+\end{itemdescr}
+
+\begin{itemdecl}
+  template<class M, class V, class BinaryOperation>
+  typename V::value_type reduce(const const_where_expression<M, V>& x, typename V::value_type identity_element,
+  BinaryOperation binary_op = {});
+\end{itemdecl}
+
+\begin{itemdescr}
+  \requires
+  \tcode{binary_op} shall be callable with two arguments of type \tcode{T} returning \tcode{T}, or callable with two arguments of type \tcode{simd<T, A1>} returning \tcode{simd<T, A1>} for every \tcode{A1} that is an ABI tag type. The results of \tcode{binary_op(identity_element, x)} and \tcode{binary_op(x, identity_element)} shall be equal to \tcode{x} for all finite values \tcode{x} representable by \tcode{V::value_type}.
+
+  \returns
+  If \tcode{none_of(x.mask)}, returns \tcode{identity_element}. Otherwise, returns \tcode{@\placeholdernc{GENERALIZED_SUM}@(binary_op, x.data[i], ...)} for all \tcode{i} &#8714; {<em>j</em> &#8714; &#8469;<sub>0</sub> &#8739; <em>j</em> < \tcode{M::size()} &#8896; \tcode{mask[}<em>j</em>\tcode{]} }.
+
+  \throws
+  Any exception thrown from \tcode{binary_op}.
+\end{itemdescr}
+
+\begin{itemdecl}
+  template<class M, class V>
+  typename V::value_type reduce(const const_where_expression<M, V>& x, plus<> binary_op);
+\end{itemdecl}
+
+\begin{itemdescr}
+  \returns
+  If \tcode{none_of(x.mask)}, returns \tcode{0}. Otherwise, returns \tcode{@\placeholdernc{GENERALIZED_SUM}@(binary_op, x.data[i], ...)} for all \tcode{i} &#8714; {<em>j</em> &#8714; &#8469;<sub>0</sub> &#8739; <em>j</em> < \tcode{M::size()} &#8896; \tcode{mask[}<em>j</em>\tcode{]} }.
+
+  \throws Nothing.
+\end{itemdescr}
+
+\begin{itemdecl}
+  template<class M, class V>
+  typename V::value_type reduce(const const_where_expression<M, V>& x, multiplies<> binary_op);
+\end{itemdecl}
+
+\begin{itemdescr}
+  \returns
+  If \tcode{none_of(x.mask)}, returns \tcode{1}. Otherwise, returns \tcode{@\placeholdernc{GENERALIZED_SUM}@(binary_op, x.data[i], ...)} for all \tcode{i} &#8714; {<em>j</em> &#8714; &#8469;<sub>0</sub> &#8739; <em>j</em> < \tcode{M::size()} &#8896; \tcode{mask[}<em>j</em>\tcode{]} }.
+
+  \throws Nothing.
+\end{itemdescr}
+
+\begin{itemdecl}
+  template<class M, class V>
+  typename V::value_type reduce(const const_where_expression<M, V>& x, bit_and<> binary_op);
+\end{itemdecl}
+
+\begin{itemdescr}
+  \requires
+  \tcode{is_integral_v<V::value_type>} is \tcode{true}.
+
+  \returns
+  If \tcode{none_of(x.mask)}, returns \tcode{~V::value_type()}. Otherwise, returns \tcode{@\placeholdernc{GENERALIZED_SUM}@(binary_op, x.data[i], ...)} for all \tcode{i} &#8714; {<em>j</em> &#8714; &#8469;<sub>0</sub> &#8739; <em>j</em> < \tcode{M::size()} &#8896; \tcode{mask[}<em>j</em>\tcode{]} }.
+
+  \throws Nothing.
+\end{itemdescr}
+
+\begin{itemdecl}
+  template<class M, class V>
+  typename V::value_type reduce(const const_where_expression<M, V>& x, bit_or<> binary_op);
+  template<class M, class V>
+  typename V::value_type reduce(const const_where_expression<M, V>& x, bit_xor<> binary_op);
+\end{itemdecl}
+
+\begin{itemdescr}
+  \requires
+  \tcode{is_integral_v<V::value_type>} is \tcode{true}.
+
+  \returns
+  If \tcode{none_of(x.mask)}, returns \tcode{0}. Otherwise, returns \tcode{@\placeholdernc{GENERALIZED_SUM}@(binary_op, x.data[i], ...)} for all \tcode{i} &#8714; {<em>j</em> &#8714; &#8469;<sub>0</sub> &#8739; <em>j</em> < \tcode{M::size()} &#8896; \tcode{mask[}<em>j</em>\tcode{]} }.
+
+  \throws Nothing.
+\end{itemdescr}
+
+\begin{itemdecl}
+  template<class T, class Abi> T hmin(const simd<T, Abi>& x);
+\end{itemdecl}
+
+\begin{itemdescr}
+  \returns
+  The value of an element \tcode{x[j]} for which \tcode{x[j] <= x[i]} for all \tcode{i} &#8714; \tcode{[0, size())}.
+
+  \throws Nothing.
+
+\end{itemdescr}
+
+\begin{itemdecl}
+  template<class T, class V> typename V::value_type hmin(const const_where_expression<M, V>& x);
+\end{itemdecl}
+
+\begin{itemdescr}
+  \returns
+  If \tcode{none_of(x.mask)}, the return value is \tcode{numeric_limits<V::value_type>::max()}. Otherwise, returns the value of an element \tcode{x.data[j]} for which \tcode{x.mask[j] == true} and \tcode{x.data[j] <= x.data[i]} for all \tcode{i} &#8714; {<em>j</em> &#8714; &#8469;<sub>0</sub> &#8739; <em>j</em> < \tcode{M::size()} &#8896; \tcode{mask[}<em>j</em>\tcode{]} }.
+
+  \throws Nothing.
+\end{itemdescr}
+
+\begin{itemdecl}
+  template<class T, class Abi> T hmax(const simd<T, Abi>& x);
+\end{itemdecl}
+
+\begin{itemdescr}
+  \returns
+  The value of an element \tcode{x[j]} for which \tcode{x[j] >= x[i]} for all \tcode{i} &#8714; \tcode{[0, size())}.
+
+  \throws Nothing.
+\end{itemdescr}
+
+\begin{itemdecl}
+  template<class T, class V> typename V::value_type hmax(const const_where_expression<M, V>& x);
+\end{itemdecl}
+
+\begin{itemdescr}
+  \returns
+  If \tcode{none_of(x.mask)}, the return value is \tcode{numeric_limits<V::value_type>::lowest()}. Otherwise, returns the value of an element \tcode{x.data[j]} for which \tcode{x.mask[j] == true} and \tcode{x.data[j] >= x.data[i]} for all \tcode{i} &#8714; {<em>j</em> &#8714; &#8469;<sub>0</sub> &#8739; <em>j</em> < \tcode{M::size()} &#8896; \tcode{mask[}<em>j</em>\tcode{]} }.
+
+  \throws Nothing.
+\end{itemdescr}
+
+\rSec2[parallel.simd.casts]{Casts}
+
+\begin{itemdecl}
+  template<class T, class U, class Abi> @\seebelow@ simd_cast(const simd<U, Abi>& x)
+\end{itemdecl}
+
+\begin{itemdescr}
+  \pnum
+  Let \tcode{To} identify \tcode{T::value_type} if \tcode{is_simd_v<T>} is \tcode{true}, or \tcode{T} otherwise.
+
+  \returns
+  A \tcode{simd} object with the $i$-th element initialized to \tcode{static_cast<To>(x[i])} for all \tcode{i} &#8714; \tcode{[0, size())}.
+
+  \throws Nothing.
+
+  \remarks
+  The function shall not participate in overload resolution unless
+
+  \begin{itemize}
+    \item every possible value of type \tcode{U} can be represented with type \tcode{To}, and
+    \item either
+      \begin{itemize}
+        \item \tcode{is_simd_v<T>} is \tcode{false}, or
+        \item \tcode{T::size() == simd<U, Abi>::size()} is \tcode{true}.
+      \end{itemize}
+  \end{itemize}
+
+  \pnum
+  The return type is
+  \begin{itemize}
+    \item \tcode{T} if \tcode{is_simd_v<T>} is \tcode{true}, otherwise
+    \item \tcode{simd<T, Abi>} is \tcode{U} is \tcode{T}, otherwise
+    \item \tcode{simd<T, simd_abi::fixed_size<simd<U, Abi>::size()>>}
+  \end{itemize}
+\end{itemdescr}
+
+\begin{itemdecl}
+  template<class T, class U, class Abi> @\seebelow@ static_simd_cast(const simd<U, Abi>& x);
+\end{itemdecl}
+
+\begin{itemdescr}
+  \pnum
+  Let \tcode{To} identify \tcode{T::value_type} if \tcode{is_simd_v<T>} is \tcode{true} or \tcode{T} otherwise.
+
+  \returns
+  A \tcode{simd} object with the $i$-th element initialized to \tcode{static_cast<To>(x[i])} for all \tcode{i} &#8714; \tcode{[0, size())}.
+
+  \throws Nothing.
+
+  \remarks
+  The function shall not participate in overload resolution unless either
+  \begin{itemize}
+    \item \tcode{is_simd_v<T>} is \tcode{false}, or
+    \item \tcode{T::size() == simd<U, Abi>::size()} is \tcode{true}.
+  \end{itemize}
+
+  \pnum
+  The return type is
+  \begin{itemize}
+    \item \tcode{T} if \tcode{is_simd_v<T>} is \tcode{true}, otherwise
+    \item \tcode{simd<T, Abi>} if either \tcode{U} is \tcode{T} or \tcode{U} and \tcode{T} are integral types that only differ in signedness, otherwise
+    \item \tcode{simd<T, simd_abi::fixed_size<simd<U, Abi>::size()>>}.
+  \end{itemize}
+\end{itemdescr}
+
+\begin{itemdecl}
+  template<class T, class Abi>
+  fixed_size_simd<T, simd_size_v<T, Abi>> to_fixed_size(const simd<T, Abi>& x) noexcept;
+  template<class T, class Abi>
+  fixed_size_simd_mask<T, simd_size_v<T, Abi>> to_fixed_size(const simd_mask<T, Abi>& x) noexcept;
+\end{itemdecl}
+
+\begin{itemdescr}
+  \returns
+  A data-parallel object with the $i$-th element initialized to \tcode{x[i]} for all \tcode{i} &#8714; \tcode{[0, size())}.
+\end{itemdescr}
+
+\begin{itemdecl}
+  template<class T, int N> native_simd<T> to_native(const fixed_size_simd<T, N>& x) noexcept;
+  template<class T, int N> native_simd_mask<T> to_native(const fixed_size_simd_mask<T, N>& x) noexcept;
+\end{itemdecl}
+
+\begin{itemdescr}
+  \returns
+  A data-parallel object with the $i$-th element initialized to \tcode{x[i]} for all \tcode{i} &#8714; \tcode{[0, size())}.
+
+  \remarks
+  These functions shall not participate in overload resolution unless \tcode{simd_size_v<T, simd_abi::native<T>> == N} is \tcode{true}.
+\end{itemdescr}
+
+\begin{itemdecl}
+  template<class T, int N> simd<T> to_compatible(const fixed_size_simd<T, N>& x) noexcept;
+  template<class T, int N> simd_mask<T> to_compatible(const fixed_size_simd_mask<T, N>& x) noexcept;
+\end{itemdecl}
+
+\begin{itemdescr}
+  \returns
+  A data-parallel object with the $i$-th element initialized to \tcode{x[i]} for all \tcode{i} &#8714; \tcode{[0, size())}.
+
+  \remarks
+  These functions shall not participate in overload resolution unless \tcode{simd_size_v<T, simd_abi::compatible<T>> == N} is \tcode{true}.
+\end{itemdescr}
+
+\begin{itemdecl}
+  template<size_t... Sizes, class T, class Abi>
+  tuple<simd<T, simd_abi::deduce_t<T, Sizes>>...>
+  split(const simd<T, Abi>& x);
+  template<size_t... Sizes, class T, class Abi>
+  tuple<simd_mask<T, simd_abi::deduce_t<T, Sizes>>...>
+  split(const simd_mask<T, Abi>& x);
+\end{itemdecl}
+
+\begin{itemdescr}
+  \returns
+  A \tcode{tuple} of data-parallel objects with the $i$-th \tcode{simd}/\tcode{simd_mask} element of the $j$-th \tcode{tuple} element initialized to the value of the element \tcode{x} with index $i$ + sum of the first $j$ values in the \tcode{Sizes} pack.
+
+  \remarks
+  These functions shall not participate in overload resolution unless the sum of all values in the \tcode{Sizes} pack is equal to \tcode{simd_size_v<T, Abi>}.
+\end{itemdescr}
+
+\begin{itemdecl}
+  template<class V, class Abi>
+  array<V, simd_size_v<typename V::value_type, Abi> / V::size()>
+  split(const simd<typename V::value_type, Abi>& x);
+  template<class V, class Abi>
+  array<V, simd_size_v<typename V::value_type, Abi> / V::size()>
+  split(const simd_mask<typename V::value_type, Abi>& x);
+\end{itemdecl}
+
+\begin{itemdescr}
+  \returns
+  An \tcode{array} of data-parallel objects with the $i$-th \tcode{simd}/\tcode{simd_mask} element of the $j$-th \tcode{array} element initialized to the value of the element in \tcode{x} with index \tcode{$i$ + $j$ * V::size()}.
+
+  \remarks
+  These functions shall not participate in overload resolution unless
+
+  \begin{itemize}
+    \item \tcode{simd_size_v<typename V::value_type, Abi>} is an integral multiple of \tcode{V::size()}, and
+    \item for the overload with a \tcode{simd} parameter \tcode{is_simd_v<V>} is \tcode{true}, for the overload with a \tcode{simd_mask} parameter \tcode{is_simd_mask_v<V>} is \tcode{true}.
+  \end{itemize}
+\end{itemdescr}
+
+\begin{itemdecl}
+  template<class T, class... Abis>
+  simd<T, simd_abi::deduce_t<T, (simd_size_v<T, Abis> + ...)>> concat(const simd<T, Abis>&... xs);
+  template<class T, class... Abis>
+  simd_mask<T, simd_abi::deduce_t<T, (simd_size_v<T, Abis> + ...)>> concat(const simd_mask<T, Abis>&... xs);
+\end{itemdecl}
+
+\begin{itemdescr}
+  \returns
+  A data-parallel object initialized with the concatenated values in the \tcode{xs} pack of data-parallel objects: The $i$-th \tcode{simd}/\tcode{simd_mask} element of the $j$-th parameter in the \tcode{xs} pack is copied to the return value's element with index $i$ + the sum of the width of the first $j$ parameters in the \tcode{xs} pack.
+\end{itemdescr}
+
+\rSec2[parallel.simd.alg]{Algorithms}
+
+\begin{itemdecl}
+  template<class T, class Abi> simd<T, Abi> min(const simd<T, Abi>& a, const simd<T, Abi>& b) noexcept;
+\end{itemdecl}
+
+\begin{itemdescr}
+  \returns
+  The result of the element-wise application of \tcode{std::min(a[i], b[i])} for all \tcode{i} &#8714; \tcode{[0, size())}.
+\end{itemdescr}
+
+\begin{itemdecl}
+  template<class T, class Abi> simd<T, Abi> max(const simd<T, Abi>& a, const simd<T, Abi>& b) noexcept;
+\end{itemdecl}
+
+\begin{itemdescr}
+  \returns
+  The result of the element-wise application of \tcode{std::max(a[i], b[i])} for all \tcode{i} &#8714; \tcode{[0, size())}.
+\end{itemdescr}
+
+\begin{itemdecl}
+  template<class T, class Abi>
+  pair<simd<T, Abi>, simd<T, Abi>> minmax(const simd<T, Abi>& a, const simd<T, Abi>& b) noexcept;
+\end{itemdecl}
+
+\begin{itemdescr}
+  \returns
+  A \tcode{pair} initialized with
+  \begin{itemize}
+    \item the result of element-wise application of \tcode{std::min(a[i], b[i])} for all \tcode{i} &#8714; \tcode{[0, size())} in the \tcode{first} member, and
+    \item the result of element-wise application of \tcode{std::max(a[i], b[i])} for all \tcode{i} &#8714; \tcode{[0, size())} in the \tcode{second} member.
+  \end{itemize}
+\end{itemdescr}
+
+\begin{itemdecl}
+  template<class T, class Abi> simd<T, Abi>
+  clamp(const simd<T, Abi>& v, const simd<T, Abi>& lo, const simd<T, Abi>& hi);
+\end{itemdecl}
+
+\begin{itemdescr}
+  \requires
+  No element in \tcode{lo} shall be greater than the corresponding element in \tcode{hi}.
+
+  \returns
+  The result of element-wise application of \tcode{std::clamp(v[i], lo[i], hi[i])} for all \tcode{i} &#8714; \tcode{[0, size())}.
+\end{itemdescr}
+
+\rSec2[parallel.simd.math]{Math library}
+
+\pnum
+For each set of overloaded functions within \tcode{<cmath>}, there shall be additional overloads sufficient to ensure that if any argument corresponding to a \tcode{double} parameter has type \tcode{simd<T, Abi>}, where \tcode{is_floating_point_v<T>} is \tcode{true}, then:
+\begin{itemize}
+  \item All arguments corresponding to \tcode{double} parameters shall be convertible to \tcode{simd<T, Abi>}.
+  \item All arguments corresponding to \tcode{double*} parameters shall be of type \tcode{simd<T, Abi>*}.
+  \item All arguments corresponding to parameters of integral type \tcode{U} shall be convertible to \tcode{fixed_size_simd<U, simd_size_v<T, Abi>>}.
+  \item All arguments corresponding to \tcode{U*}, where \tcode{U} is integral, shall be of type \tcode{fixed_size_simd<U, simd_size_v<T, Abi>>*}.
+  \item If the corresponding return type is \tcode{double}, the return type of the additional overloads is \tcode{simd<T, Abi>}. Otherwise, if the corresponding return type is \tcode{bool}, the return type of the additional overload is \tcode{simd_mask<T, Abi>}. Otherwise, the return type is \tcode{fixed_size_simd<R, simd_size_v<T, Abi>>}, with \tcode{R} denoting the corresponding return type.
+\end{itemize}
+It is unspecified whether a call to these overloads with arguments that are all convertible to \tcode{simd<T, Abi>} but are not of type \tcode{simd<T, Abi>} is well-formed.
+
+\pnum
+Each function overload produced by the above rules applies the indicated \tcode{<cmath>} function element-wise. The results per element are not required to be bitwise equal to the application of the function which is overloaded for the element type.
+
+\pnum
+The behavior is undefined if a domain, pole, or range error occurs when the input argument(s) are applied to the indicated \tcode{<cmath>} function.
+
+\pnum
+If \tcode{abs} is called with an argument of type \tcode{simd<X, Abi>} for which \tcode{is_unsigned_v<X>} is \tcode{true}, the program is ill-formed.
+
+\rSec1[parallel.simd.mask.class]{Class template \tcode{simd_mask}}
+
+\rSec2[parallel.simd.mask.overview]{Class template \tcode{simd_mask} overview}
+
+\begin{codeblock}
+  template<class T, class Abi> class simd_mask {
+    public:
+    using value_type = bool;
+    using reference = @\seebelow@;
+    using simd_type = simd<T, Abi>;
+    using abi_type = Abi;
+
+    static constexpr size_t size() noexcept;
+
+    simd_mask() = default;
+
+    // broadcast constructor
+    explicit simd_mask(value_type) noexcept;
+
+    // implicit type conversion constructor
+    template<class U>
+    simd_mask(const simd_mask<U, simd_abi::fixed_size<size()>>&) noexcept;
+
+    // load constructor
+    template<class Flags> simd_mask(const value_Type* mem, Flags);
+
+    // \ref{parallel.simd.mask.copy}, TODO
+    template<class Flags> void copy_from(const value_type* mem, Flags);
+    template<class Flags> void copy_to(value_type* mem, Flags);
+
+    // \ref{parallel.simd.mask.subscr}, TODO
+    reference operator[](size_t);
+    value_type operator[](size_t) const;
+
+    // \ref{parallel.simd.mask.unary}, TODO
+    simd_mask operator!() const noexcept;
+
+    // \ref{parallel.simd.mask.binary}, TODO
+    friend simd_mask operator&&(const simd_mask&, const simd_mask&) noexcept;
+    friend simd_mask operator||(const simd_mask&, const simd_mask&) noexcept;
+    friend simd_mask operator&(const simd_mask&, const simd_mask&) noexcept;
+    friend simd_mask operator|(const simd_mask&, const simd_mask&) noexcept;
+    friend simd_mask operator^(const simd_mask&, const simd_mask&) noexcept;
+
+    // \ref{parallel.simd.mask.cassign}, TODO
+    friend simd_mask& operator&=(simd_mask&, const simd_mask&) noexcept;
+    friend simd_mask& operator|=(simd_mask&, const simd_mask&) noexcept;
+    friend simd_mask& operator^=(simd_mask&, const simd_mask&) noexcept;
+
+    // \ref{parallel.simd.mask.comparison}, TODO
+    friend simd_mask operator==(const simd_mask&, const simd_mask&) noexcept;
+    friend simd_mask operator!=(const simd_mask&, const simd_mask&) noexcept;
+  };
+\end{codeblock}
+
+\pnum
+The class template \tcode{simd_mask} is a data-parallel type with the element type \tcode{bool}. The width of a given \tcode{simd_mask} specialization is a constant expression, determined by the template parameters. Specifically, \tcode{simd_mask<T, Abi>::size() == simd<T, Abi>::size()}.
+
+\pnum
+Every specialization of \tcode{simd_mask} shall be a complete type. The specialization \tcode{simd_mask<T, Abi>} is supported if \tcode{T} is a vectorizable type and
+
+\begin{itemize}
+  \item \tcode{Abi} is \tcode{simd_abi::scalar}, or
+  \item \tcode{Abi} is \tcode{simd_abi::fixed_size<N>}, with \tcode{N} constrained as defined in (\tref{parallel.simd.abi}).
+\end{itemize}
+
+If \tcode{Abi} is an extended ABI tag, it is implementation-defined whether \tcode{simd_mask<T, Abi>} is supported. \begin{note}The intent is for implementations to decide on the basis of the currently targeted system.\end{note}
+If \tcode{simd_mask<T, Abi>} is not supported, the specialization shall have a deleted default constructor, deleted destructor, deleted copy constructor, and deleted copy assignment.
+
+\pnum
+Default initialization performs no intialization of the elements; value-initialization initializes each element with \tcode{false}. \begin{note}Thus, default initialization leaves the elements in an indeterminate state.\end{note}
+
+\begin{itemdecl}
+  static constexpr size_t size() noexcept;
+\end{itemdecl}
+
+\begin{itemdescr}
+  \returns
+  The width of \tcode{simd<T, Abi>}.
+\end{itemdescr}
+
+\pnum
+Implementations should enable explicit conversion from and to implementation-defined types. This adds one or more of the following declarations to class \tcode{simd_mask}:
+
+\begin{codeblock}
+  explicit operator @\impdef@() const;
+  explicit simd_mask(const @\impdef@& init) const;
+\end{codeblock}
+
+\pnum
+The member type \tcode{reference} has the same interface as \tcode{simd<T, Abi>::reference}, except its \tcode{value_type} is \tcode{bool}. (\tref{parallel.simd.reference})
+
+\rSec2[parallel.simd.mask.ctor]{Constructors}
+
+\begin{itemdecl}
+  explicit simd_mask(value_type x) noexcept
+\end{itemdecl}
+
+\begin{itemdescr}
+  \effects
+  Constructs an object with each element initialized to \tcode{x}.
+\end{itemdescr}
+
+\begin{itemdecl}
+  template<class U> simd_mask(const simd_mask<U, simd_abi::fixed_size<size()>>& x) noexcept;
+\end{itemdecl}
+
+\begin{itemdescr}
+  \effects
+  Constructs an object of type \tcode{simd_mask} where the $i$-th element equals \tcode{x[i]} for all \tcode{i} &#8714; \tcode{[0, size())}.
+
+  \remarks
+  This constructor shall not participate in overload resolution unless \tcode{abi_type} is \tcode{simd_abi::fixed_size<size()>}.
+\end{itemdescr}
+
+\begin{itemdecl}
+  template<class Flags> simd_mask(const value_type* mem, Flags);
+\end{itemdecl}
+
+\begin{itemdescr}
+  \requires
+  If the template parameter \tcode{Flags} is \tcode{vector_aligned_tag}, \tcode{mem} shall point to storage aligned by \tcode{memory_alignment_v<simd_mask>}. If the template parameter \tcode{Flags} is \tcode{overaligned_tag<N>}, \tcode{mem} shall point to storage aligned by \tcode{N}. If the template parameter \tcode{Flags} is \tcode{element_aligned_tag}, \tcode{mem} shall point to storage aligned by \tcode{alignof(U)}. \tcode{[mem, mem + size())} is a valid range.
+
+  \effects
+  Constructs an object where the $i$-th element is initialized to \tcode{mem[i]} for all \tcode{i} &#8714; \tcode{[0, size())}.
+
+  \remarks
+  This constructor shall not participate in overload resolution unless \tcode{is_simd_flag_type_v<Flags>} is \tcode{true}.
+
+\end{itemdescr}
+
+\rSec2[parallel.simd.mask.copy]{Copy functions}
+
+\begin{itemdecl}
+  template<class Flags> void copy_from(const value_type* mem, Flags);
+\end{itemdecl}
+
+\begin{itemdescr}
+  \requires
+  If the template parameter \tcode{Flags} is \tcode{vector_aligned_tag}, \tcode{mem} shall point to storage aligned by \tcode{memory_alignment_v<simd_mask>}. If the template parameter \tcode{Flags} is \tcode{overaligned_tag<N>}, \tcode{mem} shall point to storage aligned by \tcode{N}. If the template parameter \tcode{Flags} is \tcode{element_aligned_tag}, \tcode{mem} shall point to storage aligned by \tcode{alignof(U)}. \tcode{[mem, mem + size())} is a valid range.
+
+  \effects
+  Replaces the elements of the \tcode{simd_mask} object such that the $i$-th element is replaced with \tcode{mem[i]} for all \tcode{i} &#8714; \tcode{[0, size())}.
+
+  \remarks
+  This function shall not participate in overload resolution unless \tcode{is_simd_flag_type_v<Flags>} is \tcode{true}.
+
+\end{itemdescr}
+
+\begin{itemdecl}
+  template<class Flags> void copy_to(value_type* mem, Flags);
+\end{itemdecl}
+
+\begin{itemdescr}
+  \requires
+  If the template parameter \tcode{Flags} is \tcode{vector_aligned_tag}, \tcode{mem} shall point to storage aligned by \tcode{memory_alignment_v<simd_mask>}. If the template parameter \tcode{Flags} is \tcode{overaligned_tag<N>}, \tcode{mem} shall point to storage aligned by \tcode{N}. If the template parameter \tcode{Flags} is \tcode{element_aligned_tag}, \tcode{mem} shall point to storage aligned by \tcode{alignof(U)}. \tcode{[mem, mem + size())} is a valid range.
+
+  \effects
+  Copies all \tcode{simd_mask} elements as if \tcode{mem[i] = operator[](i)} for all \tcode{i} &#8714; \tcode{[0, size())}.
+
+  \remarks
+  This function shall not participate in overload resolution unless \tcode{is_simd_flag_type_v<Flags>} is \tcode{true}.
+
+\end{itemdescr}
+
+\rSec2[parallel.simd.mask.subscr]{Subscript operators}
+
+\begin{itemdecl}
+  reference operator[](size_t i);
+\end{itemdecl}
+
+\begin{itemdescr}
+  \requires
+  \tcode{i < size()}.
+
+  \returns
+  A \tcode{reference} (see \tref{parallel.simd.reference}) referring to the $i$-th element.
+
+  \throws Nothing.
+\end{itemdescr}
+
+\begin{itemdecl}
+  value_type operator[](size_t i) const;
+\end{itemdecl}
+
+\begin{itemdescr}
+  \requires
+  \tcode{i < size()}.
+
+  \returns
+  The value of the $i$-th element.
+
+  \throws Nothing.
+\end{itemdescr}
+
+\rSec2[parallel.simd.mask.unary]{Unary operators}
+
+\begin{itemdecl}
+  simd_mask operator!() const noexcept;
+\end{itemdecl}
+
+\begin{itemdescr}
+  \returns
+  The result of the element-wise appliation of \tcode{operator!}.
+\end{itemdescr}
+
+\rSec1[parallel.simd.mask.nonmembers]{Non-member operations}
+
+\rSec2[parallel.simd.mask.binary]{Binary operators}
+
+\begin{itemdecl}
+  friend simd_mask operator&&(const simd_mask&, const simd_mask&) noexcept;
+  friend simd_mask operator||(const simd_mask&, const simd_mask&) noexcept;
+  friend simd_mask operator& (const simd_mask&, const simd_mask&) noexcept;
+  friend simd_mask operator| (const simd_mask&, const simd_mask&) noexcept;
+  friend simd_mask operator^ (const simd_mask&, const simd_mask&) noexcept;
+\end{itemdecl}
+
+\begin{itemdescr}
+  \returns
+  A \tcode{simd_mask} object initialized with the results of the element-wise appliation of the indicated operator.
+\end{itemdescr}
+
+\rSec2[parallel.simd.mask.cassign]{Compound assignment}
+
+\begin{itemdecl}
+  friend simd_mask& operator&=(simd_mask& lhs, const simd_mask& rhs) noexcept;
+  friend simd_mask& operator|=(simd_mask& lhs, const simd_mask& rhs) noexcept;
+  friend simd_mask& operator^=(simd_mask& lhs, const simd_mask& rhs) noexcept;
+\end{itemdecl}
+
+\begin{itemdescr}
+  \effects
+  These operators perform the indicated binary element-wise operation.
+
+  \returns
+  \tcode{lhs}.
+\end{itemdescr}
+
+\rSec2[parallel.simd.mask.comparison]{Comparisons}
+
+\begin{itemdecl}
+  friend simd_mask operator==(const simd_mask&, const simd_mask&) noexcept;
+  friend simd_mask operator!=(const simd_mask&, const simd_mask&) noexcept;
+\end{itemdecl}
+
+\begin{itemdescr}
+  \returns
+  An object initialized with the results of the element-wise application of the indicated operator.
+\end{itemdescr}
+
+\rSec2[parallel.simd.mask.reductions]{Reductions}
+
+\begin{itemdecl}
+  template<class T, class Abi> bool all_of(const simd_mask<T, Abi>& k) noexcept;
+\end{itemdecl}
+
+\begin{itemdescr}
+  \returns
+  \tcode{true} if all boolean elements in \tcode{k} are \tcode{true}, \tcode{false} otherwise.
+\end{itemdescr}
+
+\begin{itemdecl}
+  template<class T, class Abi> bool any_of(const simd_mask<T, Abi>& k) noexcept;
+\end{itemdecl}
+
+\begin{itemdescr}
+  \returns
+  \tcode{true} if at least one boolean element in \tcode{k} is \tcode{true}, \tcode{false} otherwise.
+\end{itemdescr}
+
+\begin{itemdecl}
+  template<class T, class Abi> bool none_of(const simd_mask<T, Abi>& k) noexcept;
+\end{itemdecl}
+
+\begin{itemdescr}
+  \returns
+  \tcode{true} if none of the one boolean elements in \tcode{k} is \tcode{true}, \tcode{false} otherwise.
+\end{itemdescr}
+
+\begin{itemdecl}
+  template<class T, class Abi> bool some_of(const simd_mask<T, Abi>& k) noexcept;
+\end{itemdecl}
+
+\begin{itemdescr}
+  \returns
+  \tcode{true} if at least one of the one boolean elements in \tcode{k} is \tcode{true} and at least one of the boolean elements in \tcode{k} is \tcode{false}, \tcode{false} otherwise.
+\end{itemdescr}
+
+\begin{itemdecl}
+  template<class T, class Abi> int popcount(const simd_mask<T, Abi>& k) noexcept;
+\end{itemdecl}
+
+\begin{itemdescr}
+  \returns
+  The number of boolean elements in \tcode{k} that are \tcode{true}.
+\end{itemdescr}
+
+\begin{itemdecl}
+  template<class T, class Abi> int find_first_set(const simd_mask<T, Abi>& k);
+\end{itemdecl}
+
+\begin{itemdescr}
+  \requires
+  \tcode{any_of(k)} returns \tcode{true}.
+
+  \returns
+  The lowest element index \tcode{i} where \tcode{k[i]} is \tcode{true}.
+\end{itemdescr}
+
+\begin{itemdecl}
+  template<class T, class Abi> int find_last_set(const simd_mask<T, Abi>& k);
+\end{itemdecl}
+\begin{itemdescr}
+  \requires
+  \tcode{any_of(k)} returns \tcode{true}.
+
+  \returns
+  The greatest element index \tcode{i} where \tcode{k[i]} is \tcode{true}.
+\end{itemdescr}
+
+\begin{itemdecl}
+  bool all_of(@\UNSP{T}@) noexcept;
+  bool any_of(@\UNSP{T}@) noexcept;
+  bool none_of(@\UNSP{T}@) noexcept;
+  bool some_of(@\UNSP{T}@) noexcept;
+  int popcount(@\UNSP{T}@) noexcept;
+\end{itemdecl}
+
+\begin{itemdescr}
+  \returns
+  \tcode{all_of} and \tcode{any_of} return their arguments; \tcode{none_of} returns the negation of its argument; \tcode{some_of} returns \tcode{false}; \tcode{popcount} returns the integral representation of its argument.
+
+  \remarks
+  The functions shall not participate in overload resolution unless the argument is of type \tcode{bool}.
+\end{itemdescr}
+
+\begin{itemdecl}
+  int find_first_set(@\UNSP{T}@) noexcept;
+  int find_last_set(@\UNSP{T}@) noexcept;
+\end{itemdecl}
+
+\begin{itemdescr}
+  \requires
+  The value of the argument is \tcode{true}.
+
+  \returns
+  \tcode{0}.
+
+  \remarks
+  The functions shall not participate in overload resolution unless the argument is of type \tcode{bool}.
+\end{itemdescr}
+
+\rSec2[parallel.simd.mask.where]{Where functions}
+
+\begin{itemdecl}
+  template<class T, class Abi>
+  where_expression<simd_mask<T, Abi>, simd<T, Abi>> where(const typename simd<T, Abi>::mask_type& k,
+  simd<T, Abi>& v) noexcept;
+  template<class T, class Abi>
+  const_where_expression<simd_mask<T, Abi>, simd<T, Abi>> where(const typename simd<T, Abi>::mask_type& k,
+  const simd<T, Abi>& v) noexcept;
+  template<class T, class Abi>
+  where_expression<simd_mask<T, Abi>, simd_mask<T, Abi>> where(const nodeduce_t<simd_mask<T, Abi>>& k,
+  simd_mask<T, Abi>& v) noexcept;
+  template<class T, class Abi>
+  const_where_expression<simd_mask<T, Abi>, simd_mask<T, Abi>> where(const nodeduce_t<simd_mask<T, Abi>>& k,
+  const simd_mask<T, Abi>& v) noexcept;
+\end{itemdecl}
+
+\begin{itemdescr}
+  \returns
+  An object (\tref{parallel.simd.whereexpr}) with \tcode{mask} and \tcode{data} initialized with \tcode{k} and \tcode{v} respectively.
+\end{itemdescr}
+
+\begin{itemdecl}
+  template<class T> where_expression<bool T> where(@\seebelow@ k, T& v) noexcept;
+  template<class T>
+  const_where_expression<bool, T> where(@\seebelow@ k, const T& v) noexcept;
+\end{itemdecl}
+
+\begin{itemdescr}
+  \remarks
+  The functions shall not participate in overload resolution unless
+
+  \begin{itemize}
+    \item \tcode{T} is neither a \tcode{simd} nor a \tcode{simd_mask} specialization, and
+    \item the first argument is of type \tcode{bool}.
+  \end{itemize}
+
+  \returns
+  An object (\tref{parallel.simd.whereexpr}) with \tcode{mask} and \tcode{data} initialized with \tcode{k} and \tcode{v} respectively.
+\end{itemdescr}
