@@ -1641,7 +1641,7 @@ For each set of overloaded functions within \tcode{<cmath>}, there shall be addi
 It is unspecified whether a call to these overloads with arguments that are all convertible to \tcode{simd<T, Abi>} but are not of type \tcode{simd<T, Abi>} is well-formed.
 
 \pnum
-Each function overload produced by the above rules applies the indicated \tcode{<cmath>} function element-wise. The results per element are not required to be bitwise equal to the application of the function which is overloaded for the element type.
+Each function overload produced by the above rules applies the indicated \tcode{<cmath>} function element-wise. For the mathematical functions, the results per element only need to be approximately equal to the application of the function which is overloaded for the element type.
 
 \pnum
 The behavior is undefined if a domain, pole, or range error occurs when the input argument(s) are applied to the indicated \tcode{<cmath>} function.
