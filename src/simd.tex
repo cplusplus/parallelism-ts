@@ -30,8 +30,8 @@ The intent is to support acceleration through data-parallel execution resources,
 namespace std::experimental {
 inline namespace parallelism_v2 {
   namespace simd_abi {
-    struct scalar {};
-    template<int N> struct fixed_size {};
+    using scalar = @\seebelow@;
+    template<int N> using fixed_size = @\seebelow@;
     template<class T> inline constexpr int max_fixed_size = @\impdefx{maximum width supported for \tcode{fixed_size_simd} and \tcode{fixed_size_simd_mask}}@;
     template<class T> using compatible = @\impdefx{compatible and default ABI tag}@;
     template<class T> using native = @\impdefx{native ABI tag}@;
@@ -231,8 +231,8 @@ The header \tcode{<experimental/simd>} defines class templates, tag types, trait
 
 \begin{codeblock}
 namespace simd_abi {
-  struct scalar {};
-  template<int N> struct fixed_size {};
+  using scalar = @\seebelow@;
+  template<int N> using fixed_size = @\seebelow@;
   template<class T> inline constexpr int max_fixed_size = @\impdef@;
   template<class T> using compatible = @\impdef@;
   template<class T> using native = @\impdef@;
@@ -246,12 +246,15 @@ An \defn{ABI tag} is a type in the \tcode{std::experimental::parallelism_v2::sim
 \begin{note}The ABI tag is orthogonal to selecting the machine instruction set. The selected machine instruction set limits the usable ABI tag types, though (see \ref{parallel.simd.overview}). The ABI tags enable users to safely pass objects of data-parallel type between translation unit boundaries (e.g. function calls or I/O).\end{note}
 
 \pnum
-Use of the \tcode{scalar} tag type requires data-parallel types to store a single element (i.e., \tcode{simd<T, simd_abi::scalar>::size()} returns 1). \begin{note}\tcode{scalar} is not an alias for \tcode{fixed_size<1>}.\end{note}
+\tcode{scalar} is an alias for an unspecified ABI tag that is different from \tcode{fixed_size<1>}.
+Use of the \tcode{scalar} tag type requires data-parallel types to store a single element (i.e., \tcode{simd<T, simd_abi::scalar>::size()} returns 1).
 
 \pnum
 The value of \tcode{max_fixed_size<T>} is at least 32.
 
 \pnum
+\tcode{fixed_size<N>} is an alias for an unspecified ABI tag.
+\tcode{fixed_size} does not introduce a non-deduced context.
 Use of the \tcode{simd_abi::fixed_size<N>} tag type requires data-parallel types to store \tcode{N} elements (i.e. \tcode{simd<T, simd_abi::fixed_size<N>>::size()} is \tcode{N}). \tcode{simd<T, fixed_size<N>>} and \tcode{simd_mask<T, fixed_size<N>>} with \tcode{N > 0} and \tcode{N <= max_fixed_size<T>} shall be supported. Additionally, for every supported \tcode{simd<T, Abi>} (see \ref{parallel.simd.overview}), where \tcode{Abi} is an ABI tag that is not a specialization of \tcode{simd_abi::fixed_size}, \tcode{N == simd<T, Abi>::size()} shall be supported.
 
 \pnum
