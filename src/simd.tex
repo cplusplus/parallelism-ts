@@ -685,15 +685,6 @@ If \tcode{simd<T, Abi>} is not supported, the specialization shall have a delete
 \pnum
 Default intialization performs no initialization of the elements; value-initialization initializes each element with \tcode{T()}. \begin{note}Thus, default initialization leaves the elements in an indeterminate state.\end{note}
 
-\begin{itemdecl}
-static constexpr size_t size() noexcept;
-\end{itemdecl}
-
-\begin{itemdescr}
-  \pnum\returns
-  The width of \tcode{simd<T, Abi>}.
-\end{itemdescr}
-
 \pnum
 Implementations should enable explicit conversion from and to implementation-defined types. This adds one or more of the following declarations to class \tcode{simd}:
 
@@ -712,6 +703,17 @@ explicit simd(const @\impdefx{type(s) \tcode{simd} is explicit convertible from}
     }
   \end{codeblock}
 \end{example}
+
+\rSec2[parallel.simd.width]{\tcode{simd} width}
+
+\begin{itemdecl}
+static constexpr size_t size() noexcept;
+\end{itemdecl}
+
+\begin{itemdescr}
+  \pnum\returns
+  The width of \tcode{simd<T, Abi>}.
+\end{itemdescr}
 
 \rSec2[parallel.simd.reference]{Element references}
 
@@ -1628,15 +1630,6 @@ If \tcode{simd_mask<T, Abi>} is not supported, the specialization shall have a d
 \pnum
 Default initialization performs no intialization of the elements; value-initialization initializes each element with \tcode{false}. \begin{note}Thus, default initialization leaves the elements in an indeterminate state.\end{note}
 
-\begin{itemdecl}
-static constexpr size_t size() noexcept;
-\end{itemdecl}
-
-\begin{itemdescr}
-  \pnum\returns
-  The width of \tcode{simd<T, Abi>}.
-\end{itemdescr}
-
 \pnum
 Implementations should enable explicit conversion from and to implementation-defined types. This adds one or more of the following declarations to class \tcode{simd_mask}:
 
@@ -1647,6 +1640,17 @@ explicit simd_mask(const @\impdefx{type(s) \tcode{simd_mask} is explicit convert
 
 \pnum
 The member type \tcode{reference} has the same interface as \tcode{simd<T, Abi>::reference}, except its \tcode{value_type} is \tcode{bool}. (\ref{parallel.simd.reference})
+
+\rSec2[parallel.simd.mask.width]{\tcode{simd_mask} width}
+
+\begin{itemdecl}
+static constexpr size_t size() noexcept;
+\end{itemdecl}
+
+\begin{itemdescr}
+  \pnum\returns
+  The width of \tcode{simd<T, Abi>}.
+\end{itemdescr}
 
 \rSec2[parallel.simd.mask.ctor]{Constructors}
 
