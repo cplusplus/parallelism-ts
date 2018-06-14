@@ -259,18 +259,16 @@ An implementation may define additional \defn{extended ABI tag} types in the \tc
 
 \pnum
 \tcode{compatible<T>} is an implementation-defined alias for an ABI tag. \begin{note}The intent is to use the ABI tag producing the most efficient data-parallel execution for the element type \tcode{T} that ensures ABI compatibility between translation units on the target architecture.\end{note}
-
 \begin{example}
-  Consider a target architecture supporting the extended ABI tags \tcode{__simd128} and \tcode{__simd256}, where the \tcode{__simd256} type requires an optional ISA extension on said architecture. Also, the target architecture does not support \tcode{long double} with either ABI tag. The implementation therefore defines
+  Consider a target architecture supporting the extended ABI tags \tcode{__simd128} and \tcode{__simd256}, where the \tcode{__simd256} type requires an optional ISA extension on said architecture. Also, the target architecture does not support \tcode{long double} with either ABI tag. The implementation therefore defines \tcode{compatible<T>} as an alias for:
   \begin{itemize}
-    \item \tcode{compatible<T>} is an alias for \tcode{__simd128} for all vectorizable \tcode{T}, except \tcode{long double}, and
-    \item \tcode{compatible<long double>} as an alias for \tcode{scalar}.
+    \item \tcode{scalar} if \tcode{T} is the same type as \tcode{long double}, and
+    \item \tcode{__simd128} otherwise.
   \end{itemize}
 \end{example}
 
 \pnum
 \tcode{native<T>} is an implementation-defined alias for an ABI tag. \begin{note}The intent is to use the ABI tag producing the most efficient data-parallel execution for the element type \tcode{T} that is supported on the currently targeted system. For target architectures without ISA extensions, the \tcode{native<T>} and \tcode{compatible<T>} aliases will likely be the same. For target architectures with ISA extensions, compiler flags may influence the \tcode{native<T>} alias while \tcode{compatible<T>} will be the same independent of such flags.\end{note}
-
 \begin{example}
   Consider a target architecture supporting the extended ABI tags \tcode{__simd128} and \tcode{__simd256}, where hardware support for \tcode{__simd256} only exists for floating-point types. The implementation therefore defines \tcode{native<T>} as an alias for
   \begin{itemize}
