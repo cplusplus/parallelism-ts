@@ -87,8 +87,8 @@ inline namespace parallelism_v2 {
     simd_mask<T, simd_abi::fixed_size<N>>;
 
   // \ref{parallel.simd.casts}, Casts
-  template<class T, class U, class Abi> @\seebelow@ simd_cast(const simd<U, Abi>&);
-  template<class T, class U, class Abi> @\seebelow@ static_simd_cast(const simd<U, Abi>&);
+  template<class T, class U, class Abi> @\seebelow@ simd_cast(const simd<U, Abi>&) noexcept;
+  template<class T, class U, class Abi> @\seebelow@ static_simd_cast(const simd<U, Abi>&) noexcept;
 
   template<class T, class Abi>
     fixed_size_simd<T, simd_size_v<T, Abi>>
@@ -107,16 +107,16 @@ inline namespace parallelism_v2 {
 
   template<size_t... Sizes, class T, class Abi>
     tuple<simd<T, simd_abi::deduce_t<T, Sizes>>...>
-      split(const simd<T, Abi>&);
+      split(const simd<T, Abi>&) noexcept;
   template<size_t... Sizes, class T, class Abi>
     tuple<simd_mask<T, simd_mask_abi::deduce_t<T, Sizes>>...>
-      split(const simd_mask<T, Abi>&);
+      split(const simd_mask<T, Abi>&) noexcept;
   template<class V, class Abi>
     array<V, simd_size_v<typename V::value_type, Abi> / V::size()>
-      split(const simd<typename V::value_type, Abi>&);
+      split(const simd<typename V::value_type, Abi>&) noexcept;
   template<class V, class Abi>
     array<V, simd_size_v<typename V::simd_type::value_type, Abi> / V::size()>
-      split(const simd_mask<typename V::simd_type::value_type, Abi>&);
+      split(const simd_mask<typename V::simd_type::value_type, Abi>&) noexcept;
 
   template<size_t N, class T, class A>
     array<resize_simd<simd_size_v<T, A> / N, simd<T, A>>, N>
@@ -127,10 +127,10 @@ inline namespace parallelism_v2 {
 
   template<class T, class... Abis>
     simd<T, simd_abi::deduce_t<T, (simd_size_v<T, Abis> + ...)>>
-      concat(const simd<T, Abis>&...);
+      concat(const simd<T, Abis>&...) noexcept;
   template<class T, class... Abis>
     simd_mask<T, simd_abi::deduce_t<T, (simd_size_v<T, Abis> + ...)>>
-      concat(const simd_mask<T, Abis>&...);
+      concat(const simd_mask<T, Abis>&...) noexcept;
 
   template<class T, class Abi, size_t N>
     resize_simd<simd_size_v<T, Abi> * N, simd<T, Abi>>
@@ -153,8 +153,8 @@ inline namespace parallelism_v2 {
   bool none_of(@\UNSP{T}@) noexcept;
   bool some_of(@\UNSP{T}@) noexcept;
   int popcount(@\UNSP{T}@) noexcept;
-  int find_first_set(@\UNSP{T}@) noexcept;
-  int find_last_set(@\UNSP{T}@) noexcept;
+  int find_first_set(@\UNSP{T}@);
+  int find_last_set(@\UNSP{T}@);
 
   // \ref{parallel.simd.whereexpr}, Class templates \tcode{const_where_expression} and \tcode{where_expression}
   template<class M, class T> class const_where_expression;
@@ -196,28 +196,28 @@ inline namespace parallelism_v2 {
                                   BinaryOperation binary_op);
   template<class M, class V>
     typename V::value_type reduce(const const_where_expression<M, V>& x,
-                                  plus<> binary_op = {});
+                                  plus<> binary_op = {}) noexcept;
   template<class M, class V>
     typename V::value_type reduce(const const_where_expression<M, V>& x,
-                                  multiplies<> binary_op);
+                                  multiplies<> binary_op) noexcept;
   template<class M, class V>
     typename V::value_type reduce(const const_where_expression<M, V>& x,
-                                  bit_and<> binary_op);
+                                  bit_and<> binary_op) noexcept;
   template<class M, class V>
     typename V::value_type reduce(const const_where_expression<M, V>& x,
-                                  bit_or<> binary_op);
+                                  bit_or<> binary_op) noexcept;
   template<class M, class V>
     typename V::value_type reduce(const const_where_expression<M, V>& x,
-                                  bit_xor<> binary_op);
+                                  bit_xor<> binary_op) noexcept;
 
   template<class T, class Abi>
-    T hmin(const simd<T, abi>&);
+    T hmin(const simd<T, abi>&) noexcept;
   template<class M, class V>
-    typename V::value_type hmin(const const_where_expression<M, V>&);
+    typename V::value_type hmin(const const_where_expression<M, V>&) noexcept;
   template<class T, class Abi>
-    T hmax(const simd<T, abi>&);
+    T hmax(const simd<T, abi>&) noexcept;
   template<class M, class V>
-    typename V::value_type hmax(const const_where_expression<M, V>&);
+    typename V::value_type hmax(const const_where_expression<M, V>&) noexcept;
 
   // \ref{parallel.simd.alg}, Algorithms
   template<class T, class Abi>
@@ -233,7 +233,7 @@ inline namespace parallelism_v2 {
     simd<T, Abi>
       clamp(const simd<T, Abi>& v,
             const simd<T, Abi>& lo,
-            const simd<T, Abi>& hi) noexcept;
+            const simd<T, Abi>& hi);
 }
 }
 \end{codeblock}
@@ -472,34 +472,34 @@ public:
   const_where_expression(const const_where_expression&) = delete;
   const_where_expression& operator=(const const_where_expression&) = delete;
 
-  T operator-() const &&;
-  T operator+() const &&;
-  T operator~() const &&;
+  T operator-() const && noexcept;
+  T operator+() const && noexcept;
+  T operator~() const && noexcept;
 
-  template<class U, class Flags> void copy_to(U* mem, Flags f) const &&;
+  template<class U, class Flags> void copy_to(U* mem, Flags f) const && noexcept;
 };
 
 template<class M, class T>
 class where_expression : public const_where_expression<M, T> {
 public:
-  template<class U> void operator=(U&& x) &&;
-  template<class U> void operator+=(U&& x) &&;
-  template<class U> void operator-=(U&& x) &&;
-  template<class U> void operator*=(U&& x) &&;
-  template<class U> void operator/=(U&& x) &&;
-  template<class U> void operator%=(U&& x) &&;
-  template<class U> void operator&=(U&& x) &&;
-  template<class U> void operator|=(U&& x) &&;
-  template<class U> void operator^=(U&& x) &&;
-  template<class U> void operator<<=(U&& x) &&;
-  template<class U> void operator>>=(U&& x) &&;
+  template<class U> void operator=(U&& x) && noexcept;
+  template<class U> void operator+=(U&& x) && noexcept;
+  template<class U> void operator-=(U&& x) && noexcept;
+  template<class U> void operator*=(U&& x) && noexcept;
+  template<class U> void operator/=(U&& x) && noexcept;
+  template<class U> void operator%=(U&& x) && noexcept;
+  template<class U> void operator&=(U&& x) && noexcept;
+  template<class U> void operator|=(U&& x) && noexcept;
+  template<class U> void operator^=(U&& x) && noexcept;
+  template<class U> void operator<<=(U&& x) && noexcept;
+  template<class U> void operator>>=(U&& x) && noexcept;
 
-  void operator++() &&
-  void operator++(int) &&
-  void operator--() &&
-  void operator--(int) &&
+  void operator++() && noexcept;
+  void operator++(int) && noexcept;
+  void operator--() && noexcept;
+  void operator--(int) && noexcept;
 
-  template<class U, class Flags> void copy_from(const U* mem, Flags) &&;
+  template<class U, class Flags> void copy_from(const U* mem, Flags) && noexcept;
 };
 \end{codeblock}
 
@@ -527,20 +527,18 @@ In this subclause, the type \tcode{value_type} is an alias for \tcode{T} if \tco
 \end{note}
 
 \begin{itemdecl}
-T operator-() const &&;
-T operator+() const &&;
-T operator~() const &&;
+T operator-() const && noexcept;
+T operator+() const && noexcept;
+T operator~() const && noexcept;
 \end{itemdecl}
 
 \begin{itemdescr}
   \pnum\returns
   A copy of \tcode{data} with the indicated unary operator applied to all selected elements.
-
-  \pnum\throws Nothing.
 \end{itemdescr}
 
 \begin{itemdecl}
-template<class U, class Flags> void copy_to(U* mem, Flags) const &&;
+template<class U, class Flags> void copy_to(U* mem, Flags) const && noexcept;
 \end{itemdecl}
 
 \begin{itemdescr}
@@ -565,7 +563,7 @@ template<class U, class Flags> void copy_to(U* mem, Flags) const &&;
 \end{itemdescr}
 
 \begin{itemdecl}
-template<class U> void operator=(U&& x) &&;
+template<class U> void operator=(U&& x) && noexcept;
 \end{itemdecl}
 
 \begin{itemdescr}
@@ -577,16 +575,16 @@ template<class U> void operator=(U&& x) &&;
 \end{itemdescr}
 
 \begin{itemdecl}
-template<class U> void operator+=(U&& x) &&;
-template<class U> void operator-=(U&& x) &&;
-template<class U> void operator*=(U&& x) &&;
-template<class U> void operator/=(U&& x) &&;
-template<class U> void operator%=(U&& x) &&;
-template<class U> void operator&=(U&& x) &&;
-template<class U> void operator|=(U&& x) &&;
-template<class U> void operator^=(U&& x) &&;
-template<class U> void operator<<=(U&& x) &&;
-template<class U> void operator>>=(U&& x) &&;
+template<class U> void operator+=(U&& x) && noexcept;
+template<class U> void operator-=(U&& x) && noexcept;
+template<class U> void operator*=(U&& x) && noexcept;
+template<class U> void operator/=(U&& x) && noexcept;
+template<class U> void operator%=(U&& x) && noexcept;
+template<class U> void operator&=(U&& x) && noexcept;
+template<class U> void operator|=(U&& x) && noexcept;
+template<class U> void operator^=(U&& x) && noexcept;
+template<class U> void operator<<=(U&& x) && noexcept;
+template<class U> void operator>>=(U&& x) && noexcept;
 \end{itemdecl}
 
 \begin{itemdescr}
@@ -598,10 +596,10 @@ template<class U> void operator>>=(U&& x) &&;
 \end{itemdescr}
 
 \begin{itemdecl}
-void operator++() &&;
-void operator++(int) &&;
-void operator--() &&;
-void operator--(int) &&;
+void operator++() && noexcept;
+void operator++(int) && noexcept;
+void operator--() && noexcept;
+void operator--(int) && noexcept;
 \end{itemdecl}
 
 \begin{itemdescr}
@@ -613,7 +611,7 @@ void operator--(int) &&;
 \end{itemdescr}
 
 \begin{itemdecl}
-template<class U, class Flags> void copy_from(const U* mem, Flags) &&;
+template<class U, class Flags> void copy_from(const U* mem, Flags) && noexcept;
 \end{itemdecl}
 
 \begin{itemdescr}
@@ -649,16 +647,16 @@ public:
 
   static constexpr size_t size() noexcept;
 
-  simd() = default;
+  simd() noexcept = default;
 
   // implicit conversion constructor
-  template<class U> simd(const simd<U, simd_abi::fixed_size<size()>>&);
+  template<class U> simd(const simd<U, simd_abi::fixed_size<size()>>&) noexcept;
 
   // implicit broadcast constructor (see below for constraints)
-  template<class U> simd(U&& value);
+  template<class U> simd(U&& value) noexcept;
 
   // generator constructor (see below for constraints)
-  template<class G> explicit simd(G&& gen);
+  template<class G> explicit simd(G&& gen) noexcept;
 
   // load constructor
   template<class U, class Flags> simd(const U* mem, Flags f);
@@ -672,50 +670,50 @@ public:
   value_type operator[](size_t) const;
 
   // \ref{parallel.simd.unary}, Unary operators
-  simd& operator++();
-  simd operator++(int);
-  simd& operator--();
-  simd operator--(int);
-  mask_type operator!() const;
-  simd operator~() const;
-  simd operator+() const;
-  simd operator-() const;
+  simd& operator++() noexcept;
+  simd operator++(int) noexcept;
+  simd& operator--() noexcept;
+  simd operator--(int) noexcept;
+  mask_type operator!() const noexcept;
+  simd operator~() const noexcept;
+  simd operator+() const noexcept;
+  simd operator-() const noexcept;
 
   // \ref{parallel.simd.binary}, Binary operators
-  friend simd operator+(const simd&, const simd&);
-  friend simd operator-(const simd&, const simd&);
-  friend simd operator*(const simd&, const simd&);
-  friend simd operator/(const simd&, const simd&);
-  friend simd operator%(const simd&, const simd&);
-  friend simd operator&(const simd&, const simd&);
-  friend simd operator|(const simd&, const simd&);
-  friend simd operator^(const simd&, const simd&);
-  friend simd operator<<(const simd&, const simd&);
-  friend simd operator>>(const simd&, const simd&);
-  friend simd operator<<(const simd&, int);
-  friend simd operator>>(const simd&, int);
+  friend simd operator+(const simd&, const simd&) noexcept;
+  friend simd operator-(const simd&, const simd&) noexcept;
+  friend simd operator*(const simd&, const simd&) noexcept;
+  friend simd operator/(const simd&, const simd&) noexcept;
+  friend simd operator%(const simd&, const simd&) noexcept;
+  friend simd operator&(const simd&, const simd&) noexcept;
+  friend simd operator|(const simd&, const simd&) noexcept;
+  friend simd operator^(const simd&, const simd&) noexcept;
+  friend simd operator<<(const simd&, const simd&) noexcept;
+  friend simd operator>>(const simd&, const simd&) noexcept;
+  friend simd operator<<(const simd&, int) noexcept;
+  friend simd operator>>(const simd&, int) noexcept;
 
   // \ref{parallel.simd.cassign}, Compound assignment
-  friend simd& operator+=(simd&, const simd&);
-  friend simd& operator-=(simd&, const simd&);
-  friend simd& operator*=(simd&, const simd&);
-  friend simd& operator/=(simd&, const simd&);
-  friend simd& operator%=(simd&, const simd&);
-  friend simd& operator&=(simd&, const simd&);
-  friend simd& operator|=(simd&, const simd&);
-  friend simd& operator^=(simd&, const simd&);
-  friend simd& operator<<=(simd&, const simd&);
-  friend simd& operator>>=(simd&, const simd&);
-  friend simd& operator<<=(simd&, int);
-  friend simd& operator>>=(simd&, int);
+  friend simd& operator+=(simd&, const simd&) noexcept;
+  friend simd& operator-=(simd&, const simd&) noexcept;
+  friend simd& operator*=(simd&, const simd&) noexcept;
+  friend simd& operator/=(simd&, const simd&) noexcept;
+  friend simd& operator%=(simd&, const simd&) noexcept;
+  friend simd& operator&=(simd&, const simd&) noexcept;
+  friend simd& operator|=(simd&, const simd&) noexcept;
+  friend simd& operator^=(simd&, const simd&) noexcept;
+  friend simd& operator<<=(simd&, const simd&) noexcept;
+  friend simd& operator>>=(simd&, const simd&) noexcept;
+  friend simd& operator<<=(simd&, int) noexcept;
+  friend simd& operator>>=(simd&, int) noexcept;
 
   // \ref{parallel.simd.comparison}, Compare operators
-  friend mask_type operator==(const simd&, const simd&);
-  friend mask_type operator!=(const simd&, const simd&);
-  friend mask_type operator>=(const simd&, const simd&);
-  friend mask_type operator<=(const simd&, const simd&);
-  friend mask_type operator>(const simd&, const simd&);
-  friend mask_type operator<(const simd&, const simd&);
+  friend mask_type operator==(const simd&, const simd&) noexcept;
+  friend mask_type operator!=(const simd&, const simd&) noexcept;
+  friend mask_type operator>=(const simd&, const simd&) noexcept;
+  friend mask_type operator<=(const simd&, const simd&) noexcept;
+  friend mask_type operator>(const simd&, const simd&) noexcept;
+  friend mask_type operator<(const simd&, const simd&) noexcept;
 };
 \end{codeblock}
 
@@ -726,12 +724,18 @@ The class template \tcode{simd} is a data-parallel type. The width of a given \t
 Every specialization of \tcode{simd} shall be a complete type. The specialization \tcode{simd<T, Abi>} is supported if \tcode{T} is a vectorizable type and
 \begin{itemize}
   \item \tcode{Abi} is \tcode{simd_abi::scalar}, or
-  \item \tcode{Abi} is \tcode{simd_abi::fixed_size<N>}, with \tcode{N} is constrained as defined in \ref{parallel.simd.abi}.
+  \item \tcode{Abi} is \tcode{simd_abi::fixed_size<N>}, with \tcode{N} constrained as defined in \ref{parallel.simd.abi}.
 \end{itemize}
 
 If \tcode{Abi} is an extended ABI tag, it is implementation-defined whether \tcode{simd<T, Abi>} is supported. \begin{note}The intent is for implementations to decide on the basis of the currently targeted system.\end{note}
 
 If \tcode{simd<T, Abi>} is not supported, the specialization shall have a deleted default constructor, deleted destructor, deleted copy constructor, and deleted copy assignment.
+Otherwise, the following are true:
+\begin{itemize}
+  \item \tcode{is_nothrow_move_constructible_v<simd<T, Abi>>}, and
+  \item \tcode{is_nothrow_move_assignable_v<simd<T, Abi>>}, and
+  \item \tcode{is_nothrow_default_constructible_v<simd<T, Abi>>}.
+\end{itemize}
 
 \begin{example}
   Consider an implementation that defines the extended ABI tags \tcode{__simd_x} and \tcode{__gpu_y}. When the compiler is invoked to translate to a machine that has support for the \tcode{__simd_x} ABI tag for all arithmetic types other than \tcode{long double} and no support for the \tcode{__gpu_y} ABI tag, then:
@@ -793,23 +797,23 @@ public:
 
   operator value_type() const noexcept;
 
-  template<class U> reference operator=(U&& x) &&;
+  template<class U> reference operator=(U&& x) && noexcept;
 
-  template<class U> reference operator+=(U&& x) &&;
-  template<class U> reference operator-=(U&& x) &&;
-  template<class U> reference operator*=(U&& x) &&;
-  template<class U> reference operator/=(U&& x) &&;
-  template<class U> reference operator%=(U&& x) &&;
-  template<class U> reference operator|=(U&& x) &&;
-  template<class U> reference operator&=(U&& x) &&;
-  template<class U> reference operator^=(U&& x) &&;
-  template<class U> reference operator<<=(U&& x) &&;
-  template<class U> reference operator>>=(U&& x) &&;
+  template<class U> reference operator+=(U&& x) && noexcept;
+  template<class U> reference operator-=(U&& x) && noexcept;
+  template<class U> reference operator*=(U&& x) && noexcept;
+  template<class U> reference operator/=(U&& x) && noexcept;
+  template<class U> reference operator%=(U&& x) && noexcept;
+  template<class U> reference operator|=(U&& x) && noexcept;
+  template<class U> reference operator&=(U&& x) && noexcept;
+  template<class U> reference operator^=(U&& x) && noexcept;
+  template<class U> reference operator<<=(U&& x) && noexcept;
+  template<class U> reference operator>>=(U&& x) && noexcept;
 
-  reference operator++() &&;
-  value_type operator++(int) &&;
-  reference operator--() &&;
-  value_type operator--(int) &&;
+  reference operator++() && noexcept;
+  value_type operator++(int) && noexcept;
+  reference operator--() && noexcept;
+  value_type operator--(int) && noexcept;
 
   friend void swap(reference&& a, reference&& b) noexcept;
   friend void swap(value_type&& a, reference&& b) noexcept;
@@ -827,7 +831,7 @@ operator value_type() const noexcept;
 \end{itemdescr}
 
 \begin{itemdecl}
-template<class U> reference operator=(U&& x) &&;
+template<class U> reference operator=(U&& x) && noexcept;
 \end{itemdecl}
 
 \begin{itemdescr}
@@ -842,16 +846,16 @@ template<class U> reference operator=(U&& x) &&;
 \end{itemdescr}
 
 \begin{itemdecl}
-template<class U> reference operator+=(U&& x) &&;
-template<class U> reference operator-=(U&& x) &&;
-template<class U> reference operator*=(U&& x) &&;
-template<class U> reference operator/=(U&& x) &&;
-template<class U> reference operator%=(U&& x) &&;
-template<class U> reference operator|=(U&& x) &&;
-template<class U> reference operator&=(U&& x) &&;
-template<class U> reference operator^=(U&& x) &&;
-template<class U> reference operator<<=(U&& x) &&;
-template<class U> reference operator>>=(U&& x) &&;
+template<class U> reference operator+=(U&& x) && noexcept;
+template<class U> reference operator-=(U&& x) && noexcept;
+template<class U> reference operator*=(U&& x) && noexcept;
+template<class U> reference operator/=(U&& x) && noexcept;
+template<class U> reference operator%=(U&& x) && noexcept;
+template<class U> reference operator|=(U&& x) && noexcept;
+template<class U> reference operator&=(U&& x) && noexcept;
+template<class U> reference operator^=(U&& x) && noexcept;
+template<class U> reference operator<<=(U&& x) && noexcept;
+template<class U> reference operator>>=(U&& x) && noexcept;
 \end{itemdecl}
 
 \begin{itemdescr}
@@ -866,8 +870,8 @@ template<class U> reference operator>>=(U&& x) &&;
 \end{itemdescr}
 
 \begin{itemdecl}
-reference operator++() &&;
-reference operator--() &&;
+reference operator++() && noexcept;
+reference operator--() && noexcept;
 \end{itemdecl}
 
 \begin{itemdescr}
@@ -882,8 +886,8 @@ reference operator--() &&;
 \end{itemdescr}
 
 \begin{itemdecl}
-value_type operator++(int) &&;
-value_type operator--(int) &&;
+value_type operator++(int) && noexcept;
+value_type operator--(int) && noexcept;
 \end{itemdecl}
 
 \begin{itemdescr}
@@ -911,15 +915,12 @@ friend void swap(reference&& a, value_type& b) noexcept;
 \rSec2[parallel.simd.ctor]{Constructors}
 
 \begin{itemdecl}
-template<class U> simd(U&&);
+template<class U> simd(U&&) noexcept;
 \end{itemdecl}
 
 \begin{itemdescr}
   \pnum\effects
   Constructs an object with each element initialized to the value of the argument after conversion to \tcode{value_type}.
-
-  \pnum\throws
-  Any exception thrown while converting the argument to \tcode{value_type}.
 
   \pnum\remarks
   Let \tcode{From} identify the type \tcode{remove_cv_t<remove_reference_t<U>>}. This constructor shall not participate in overload resolution unless:
@@ -933,7 +934,7 @@ template<class U> simd(U&&);
 \end{itemdescr}
 
 \begin{itemdecl}
-template<class U> simd(const simd<U, simd_abi::fixed_size<size()>>& x);
+template<class U> simd(const simd<U, simd_abi::fixed_size<size()>>& x) noexcept;
 \end{itemdecl}
 
 \begin{itemdescr}
@@ -950,7 +951,7 @@ template<class U> simd(const simd<U, simd_abi::fixed_size<size()>>& x);
 \end{itemdescr}
 
 \begin{itemdecl}
-template<class G> simd(G&& gen);
+template<class G> simd(G&& gen) noexcept;
 \end{itemdecl}
 
 \begin{itemdescr}
@@ -1059,7 +1060,7 @@ value_type operator[](size_t i) const;
 Effects in this subclause are applied as unary element-wise operations.
 
 \begin{itemdecl}
-simd& operator++();
+simd& operator++() noexcept;
 \end{itemdecl}
 
 \begin{itemdescr}
@@ -1068,12 +1069,10 @@ simd& operator++();
 
   \pnum\returns
   \tcode{*this}.
-
-  \pnum\throws Nothing.
 \end{itemdescr}
 
 \begin{itemdecl}
-simd operator++(int);
+simd operator++(int) noexcept;
 \end{itemdecl}
 
 \begin{itemdescr}
@@ -1082,12 +1081,10 @@ simd operator++(int);
 
   \pnum\returns
   A copy of \tcode{*this} before incrementing.
-
-  \pnum\throws Nothing.
 \end{itemdescr}
 
 \begin{itemdecl}
-simd& operator--();
+simd& operator--() noexcept;
 \end{itemdecl}
 
 \begin{itemdescr}
@@ -1096,13 +1093,10 @@ simd& operator--();
 
   \pnum\returns
   \tcode{*this}.
-
-  \pnum\throws Nothing.
-
 \end{itemdescr}
 
 \begin{itemdecl}
-simd operator--(int);
+simd operator--(int) noexcept;
 \end{itemdecl}
 
 \begin{itemdescr}
@@ -1111,56 +1105,45 @@ simd operator--(int);
 
   \pnum\returns
   A copy of \tcode{*this} before decrementing.
-
-  \pnum\throws Nothing.
 \end{itemdescr}
 
 \begin{itemdecl}
-mask_type operator!() const;
+mask_type operator!() const noexcept;
 \end{itemdecl}
 
 \begin{itemdescr}
   \pnum\returns
   A \tcode{simd_mask} object with the $i^\text{th}$ element set to \tcode{!operator[](i)} \foralli.
-
-  \pnum\throws Nothing.
-
 \end{itemdescr}
 
 \begin{itemdecl}
-simd operator~() const;
+simd operator~() const noexcept;
 \end{itemdecl}
 
 \begin{itemdescr}
   \pnum\returns
   A \tcode{simd} object where each bit is the inverse of the corresponding bit in \tcode{*this}.
 
-  \pnum\throws Nothing.
-
   \pnum\remarks
   This operator shall not participate in overload resolution unless \tcode{T} is an integral type.
 \end{itemdescr}
 
 \begin{itemdecl}
-simd operator+() const;
+simd operator+() const noexcept;
 \end{itemdecl}
 
 \begin{itemdescr}
   \pnum\returns
   \tcode{*this}.
-
-  \pnum\throws Nothing.
 \end{itemdescr}
 
 \begin{itemdecl}
-simd operator-() const;
+simd operator-() const noexcept;
 \end{itemdecl}
 
 \begin{itemdescr}
   \pnum\returns
   A \tcode{simd} object where the $i^\text{th}$ element is initialized to \tcode{-operator[](i)} \foralli.
-
-  \pnum\throws Nothing.
 \end{itemdescr}
 
 \rSec1[parallel.simd.nonmembers]{Non-member operations}
@@ -1168,38 +1151,34 @@ simd operator-() const;
 \rSec2[parallel.simd.binary]{Binary operators}
 
 \begin{itemdecl}
-friend simd operator+(const simd& lhs, const simd& rhs);
-friend simd operator-(const simd& lhs, const simd& rhs);
-friend simd operator*(const simd& lhs, const simd& rhs);
-friend simd operator/(const simd& lhs, const simd& rhs);
-friend simd operator%(const simd& lhs, const simd& rhs);
-friend simd operator&(const simd& lhs, const simd& rhs);
-friend simd operator|(const simd& lhs, const simd& rhs);
-friend simd operator^(const simd& lhs, const simd& rhs);
-friend simd operator<<(const simd& lhs, const simd& rhs);
-friend simd operator>>(const simd& lhs, const simd& rhs);
+friend simd operator+(const simd& lhs, const simd& rhs) noexcept;
+friend simd operator-(const simd& lhs, const simd& rhs) noexcept;
+friend simd operator*(const simd& lhs, const simd& rhs) noexcept;
+friend simd operator/(const simd& lhs, const simd& rhs) noexcept;
+friend simd operator%(const simd& lhs, const simd& rhs) noexcept;
+friend simd operator&(const simd& lhs, const simd& rhs) noexcept;
+friend simd operator|(const simd& lhs, const simd& rhs) noexcept;
+friend simd operator^(const simd& lhs, const simd& rhs) noexcept;
+friend simd operator<<(const simd& lhs, const simd& rhs) noexcept;
+friend simd operator>>(const simd& lhs, const simd& rhs) noexcept;
 \end{itemdecl}
 
 \begin{itemdescr}
   \pnum\returns
   A \tcode{simd} object initialized with the results of the element-wise application of the indicated operator.
 
-  \pnum\throws Nothing.
-
   \pnum\remarks
   Each of these operators shall not participate in overload resolution unless the indicated operator can be applied to objects of type \tcode{value_type}.
 \end{itemdescr}
 
 \begin{itemdecl}
-friend simd operator<<(const simd& v, int n);
-friend simd operator>>(const simd& v, int n);
+friend simd operator<<(const simd& v, int n) noexcept;
+friend simd operator>>(const simd& v, int n) noexcept;
 \end{itemdecl}
 
 \begin{itemdescr}
   \pnum\returns
   A \tcode{simd} object where the $i^\text{th}$ element is initialized to the result of applying the indicated operator to \tcode{v[$i$]} and \tcode{n} \foralli.
-
-  \pnum\throws Nothing.
 
   \pnum\remarks
   These operators shall not participate in overload resolution unless the indicated operator can be applied to objects of type \tcode{value_type}.
@@ -1208,18 +1187,18 @@ friend simd operator>>(const simd& v, int n);
 \rSec2[parallel.simd.cassign]{Compound assignment}
 
 \begin{itemdecl}
-friend simd& operator+=(simd& lhs, const simd& rhs);
-friend simd& operator-=(simd& lhs, const simd& rhs);
-friend simd& operator*=(simd& lhs, const simd& rhs);
-friend simd& operator/=(simd& lhs, const simd& rhs);
-friend simd& operator%=(simd& lhs, const simd& rhs);
-friend simd& operator&=(simd& lhs, const simd& rhs);
-friend simd& operator|=(simd& lhs, const simd& rhs);
-friend simd& operator^=(simd& lhs, const simd& rhs);
-friend simd& operator<<=(simd& lhs, const simd& rhs);
-friend simd& operator>>=(simd& lhs, const simd& rhs);
-friend simd& operator<<=(simd& lhs, int n);
-friend simd& operator>>=(simd& lhs, int n);
+friend simd& operator+=(simd& lhs, const simd& rhs) noexcept;
+friend simd& operator-=(simd& lhs, const simd& rhs) noexcept;
+friend simd& operator*=(simd& lhs, const simd& rhs) noexcept;
+friend simd& operator/=(simd& lhs, const simd& rhs) noexcept;
+friend simd& operator%=(simd& lhs, const simd& rhs) noexcept;
+friend simd& operator&=(simd& lhs, const simd& rhs) noexcept;
+friend simd& operator|=(simd& lhs, const simd& rhs) noexcept;
+friend simd& operator^=(simd& lhs, const simd& rhs) noexcept;
+friend simd& operator<<=(simd& lhs, const simd& rhs) noexcept;
+friend simd& operator>>=(simd& lhs, const simd& rhs) noexcept;
+friend simd& operator<<=(simd& lhs, int n) noexcept;
+friend simd& operator>>=(simd& lhs, int n) noexcept;
 \end{itemdecl}
 
 \begin{itemdescr}
@@ -1229,8 +1208,6 @@ friend simd& operator>>=(simd& lhs, int n);
   \pnum\returns
   \tcode{lhs}.
 
-  \pnum\throws Nothing.
-
   \pnum\remarks
   These operators shall not participate in overload resolution unless the indicated operator can be applied to objects of type \tcode{value_type}.
 \end{itemdescr}
@@ -1238,19 +1215,17 @@ friend simd& operator>>=(simd& lhs, int n);
 \rSec2[parallel.simd.comparison]{Compare operators}
 
 \begin{itemdecl}
-friend mask_type operator==(const simd&, const simd&);
-friend mask_type operator!=(const simd&, const simd&);
-friend mask_type operator>=(const simd&, const simd&);
-friend mask_type operator<=(const simd&, const simd&);
-friend mask_type operator>(const simd&, const simd&);
-friend mask_type operator<(const simd&, const simd&);
+friend mask_type operator==(const simd&, const simd&) noexcept;
+friend mask_type operator!=(const simd&, const simd&) noexcept;
+friend mask_type operator>=(const simd&, const simd&) noexcept;
+friend mask_type operator<=(const simd&, const simd&) noexcept;
+friend mask_type operator>(const simd&, const simd&) noexcept;
+friend mask_type operator<(const simd&, const simd&) noexcept;
 \end{itemdecl}
 
 \begin{itemdescr}
   \pnum\returns
   A \tcode{simd_mask} object initialized with the results of the element-wise application of the indicated operator.
-
-  \pnum\throws Nothing.
 \end{itemdescr}
 
 \rSec2[parallel.simd.reductions]{Reductions}
@@ -1295,31 +1270,27 @@ template<class M, class V, class BinaryOperation>
 
 \begin{itemdecl}
 template<class M, class V>
-  typename V::value_type reduce(const const_where_expression<M, V>& x, plus<> binary_op);
+  typename V::value_type reduce(const const_where_expression<M, V>& x, plus<> binary_op) noexcept;
 \end{itemdecl}
 
 \begin{itemdescr}
   \pnum\returns
   If \tcode{none_of(x.mask)}, returns \tcode{0}. Otherwise, returns \tcode{\placeholdernc{GENERALIZED_SUM}(binary_op, x.data[$i$], ...)} \forallmaskedi.
-
-  \pnum\throws Nothing.
 \end{itemdescr}
 
 \begin{itemdecl}
 template<class M, class V>
-  typename V::value_type reduce(const const_where_expression<M, V>& x, multiplies<> binary_op);
+  typename V::value_type reduce(const const_where_expression<M, V>& x, multiplies<> binary_op) noexcept;
 \end{itemdecl}
 
 \begin{itemdescr}
   \pnum\returns
   If \tcode{none_of(x.mask)}, returns \tcode{1}. Otherwise, returns \tcode{\placeholdernc{GENERALIZED_SUM}(binary_op, x.data[$i$], ...)} \forallmaskedi.
-
-  \pnum\throws Nothing.
 \end{itemdescr}
 
 \begin{itemdecl}
 template<class M, class V>
-  typename V::value_type reduce(const const_where_expression<M, V>& x, bit_and<> binary_op);
+  typename V::value_type reduce(const const_where_expression<M, V>& x, bit_and<> binary_op) noexcept;
 \end{itemdecl}
 
 \begin{itemdescr}
@@ -1328,15 +1299,13 @@ template<class M, class V>
 
   \pnum\returns
   If \tcode{none_of(x.mask)}, returns \tcode{~V::value_type()}. Otherwise, returns \tcode{\placeholdernc{GENERALIZED_SUM}(binary_op, x.data[$i$], ...)} \forallmaskedi.
-
-  \pnum\throws Nothing.
 \end{itemdescr}
 
 \begin{itemdecl}
 template<class M, class V>
-  typename V::value_type reduce(const const_where_expression<M, V>& x, bit_or<> binary_op);
+  typename V::value_type reduce(const const_where_expression<M, V>& x, bit_or<> binary_op) noexcept;
 template<class M, class V>
-  typename V::value_type reduce(const const_where_expression<M, V>& x, bit_xor<> binary_op);
+  typename V::value_type reduce(const const_where_expression<M, V>& x, bit_xor<> binary_op) noexcept;
 \end{itemdecl}
 
 \begin{itemdescr}
@@ -1345,59 +1314,48 @@ template<class M, class V>
 
   \pnum\returns
   If \tcode{none_of(x.mask)}, returns \tcode{0}. Otherwise, returns \tcode{\placeholdernc{GENERALIZED_SUM}(binary_op, x.data[$i$], ...)} \forallmaskedi.
-
-  \pnum\throws Nothing.
 \end{itemdescr}
 
 \begin{itemdecl}
-template<class T, class Abi> T hmin(const simd<T, Abi>& x);
+template<class T, class Abi> T hmin(const simd<T, Abi>& x) noexcept;
 \end{itemdecl}
 
 \begin{itemdescr}
   \pnum\returns
   The value of an element \tcode{x[$j$]} for which \tcode{x[$j$] <= x[$i$]} \foralli.
-
-  \pnum\throws Nothing.
-
 \end{itemdescr}
 
 \begin{itemdecl}
-template<class M, class V> typename V::value_type hmin(const const_where_expression<M, V>& x);
+template<class M, class V> typename V::value_type hmin(const const_where_expression<M, V>& x) noexcept;
 \end{itemdecl}
 
 \begin{itemdescr}
   \pnum\returns
   If \tcode{none_of(x.mask)}, the return value is \tcode{numeric_limits<V::value_type>::max()}. Otherwise, returns the value of an element \tcode{x.data[$j$]} for which \tcode{x.mask[$j$] == true} and \tcode{x.data[$j$] <= x.data[$i$]} \forallmaskedi.
-
-  \pnum\throws Nothing.
 \end{itemdescr}
 
 \begin{itemdecl}
-template<class T, class Abi> T hmax(const simd<T, Abi>& x);
+template<class T, class Abi> T hmax(const simd<T, Abi>& x) noexcept;
 \end{itemdecl}
 
 \begin{itemdescr}
   \pnum\returns
   The value of an element \tcode{x[$j$]} for which \tcode{x[$j$] >= x[$i$]} \foralli.
-
-  \pnum\throws Nothing.
 \end{itemdescr}
 
 \begin{itemdecl}
-template<class M, class V> typename V::value_type hmax(const const_where_expression<M, V>& x);
+template<class M, class V> typename V::value_type hmax(const const_where_expression<M, V>& x) noexcept;
 \end{itemdecl}
 
 \begin{itemdescr}
   \pnum\returns
   If \tcode{none_of(x.mask)}, the return value is \tcode{numeric_limits<V::value_type>::lowest()}. Otherwise, returns the value of an element \tcode{x.data[$j$]} for which \tcode{x.mask[$j$] == true} and \tcode{x.data[$j$] >= x.data[$i$]} \forallmaskedi.
-
-  \pnum\throws Nothing.
 \end{itemdescr}
 
 \rSec2[parallel.simd.casts]{Casts}
 
 \begin{itemdecl}
-template<class T, class U, class Abi> @\seebelow@ simd_cast(const simd<U, Abi>& x)
+template<class T, class U, class Abi> @\seebelow@ simd_cast(const simd<U, Abi>& x) noexcept;
 \end{itemdecl}
 
 \begin{itemdescr}
@@ -1406,8 +1364,6 @@ template<class T, class U, class Abi> @\seebelow@ simd_cast(const simd<U, Abi>& 
 
   \pnum\returns
   A \tcode{simd} object with the $i^\text{th}$ element initialized to \tcode{static_cast<To>(x[$i$])} \foralli.
-
-  \pnum\throws Nothing.
 
   \pnum\remarks
   The function shall not participate in overload resolution unless
@@ -1431,7 +1387,7 @@ template<class T, class U, class Abi> @\seebelow@ simd_cast(const simd<U, Abi>& 
 \end{itemdescr}
 
 \begin{itemdecl}
-template<class T, class U, class Abi> @\seebelow@ static_simd_cast(const simd<U, Abi>& x);
+template<class T, class U, class Abi> @\seebelow@ static_simd_cast(const simd<U, Abi>& x) noexcept;
 \end{itemdecl}
 
 \begin{itemdescr}
@@ -1440,8 +1396,6 @@ template<class T, class U, class Abi> @\seebelow@ static_simd_cast(const simd<U,
 
   \pnum\returns
   A \tcode{simd} object with the $i^\text{th}$ element initialized to \tcode{static_cast<To>(x[$i$])} \foralli.
-
-  \pnum\throws Nothing.
 
   \pnum\remarks
   The function shall not participate in overload resolution unless either
@@ -1500,10 +1454,10 @@ template<class T, int N> simd_mask<T> to_compatible(const fixed_size_simd_mask<T
 \begin{itemdecl}
 template<size_t... Sizes, class T, class Abi>
   tuple<simd<T, simd_abi::deduce_t<T, Sizes>>...>
-    split(const simd<T, Abi>& x);
+    split(const simd<T, Abi>& x) noexcept;
 template<size_t... Sizes, class T, class Abi>
   tuple<simd_mask<T, simd_abi::deduce_t<T, Sizes>>...>
-    split(const simd_mask<T, Abi>& x);
+    split(const simd_mask<T, Abi>& x) noexcept;
 \end{itemdecl}
 
 \begin{itemdescr}
@@ -1517,10 +1471,10 @@ template<size_t... Sizes, class T, class Abi>
 \begin{itemdecl}
 template<class V, class Abi>
   array<V, simd_size_v<typename V::value_type, Abi> / V::size()>
-    split(const simd<typename V::value_type, Abi>& x);
+    split(const simd<typename V::value_type, Abi>& x) noexcept;
 template<class V, class Abi>
   array<V, simd_size_v<typename V::simd_type::value_type, Abi> / V::size()>
-    split(const simd_mask<typename V::simd_type::value_type, Abi>& x);
+    split(const simd_mask<typename V::simd_type::value_type, Abi>& x) noexcept;
 \end{itemdecl}
 
 \begin{itemdescr}
@@ -1555,10 +1509,10 @@ template<size_t N, class T, class A>
 \begin{itemdecl}
 template<class T, class... Abis>
   simd<T, simd_abi::deduce_t<T, (simd_size_v<T, Abis> + ...)>> concat(
-    const simd<T, Abis>&... xs);
+    const simd<T, Abis>&... xs) noexcept;
 template<class T, class... Abis>
   simd_mask<T, simd_abi::deduce_t<T, (simd_size_v<T, Abis> + ...)>> concat(
-    const simd_mask<T, Abis>&... xs);
+    const simd_mask<T, Abis>&... xs) noexcept;
 \end{itemdecl}
 
 \begin{itemdescr}
@@ -1663,7 +1617,7 @@ public:
 
   static constexpr size_t size() noexcept;
 
-  simd_mask() = default;
+  simd_mask() noexcept = default;
 
   // broadcast constructor
   explicit simd_mask(value_type) noexcept;
@@ -1709,14 +1663,20 @@ The class template \tcode{simd_mask} is a data-parallel type with the element ty
 
 \pnum
 Every specialization of \tcode{simd_mask} shall be a complete type. The specialization \tcode{simd_mask<T, Abi>} is supported if \tcode{T} is a vectorizable type and
-
 \begin{itemize}
   \item \tcode{Abi} is \tcode{simd_abi::scalar}, or
   \item \tcode{Abi} is \tcode{simd_abi::fixed_size<N>}, with \tcode{N} constrained as defined in (\ref{parallel.simd.abi}).
 \end{itemize}
 
 If \tcode{Abi} is an extended ABI tag, it is implementation-defined whether \tcode{simd_mask<T, Abi>} is supported. \begin{note}The intent is for implementations to decide on the basis of the currently targeted system.\end{note}
+
 If \tcode{simd_mask<T, Abi>} is not supported, the specialization shall have a deleted default constructor, deleted destructor, deleted copy constructor, and deleted copy assignment.
+Otherwise, the following are true:
+\begin{itemize}
+  \item \tcode{is_nothrow_move_constructible_v<simd_mask<T, Abi>>}, and
+  \item \tcode{is_nothrow_move_assignable_v<simd_mask<T, Abi>>}, and
+  \item \tcode{is_nothrow_default_constructible_v<simd_mask<T, Abi>>}.
+\end{itemize}
 
 \pnum
 Default initialization performs no intialization of the elements; value-initialization initializes each element with \tcode{false}. \begin{note}Thus, default initialization leaves the elements in an indeterminate state.\end{note}
@@ -1777,6 +1737,8 @@ template<class Flags> simd_mask(const value_type* mem, Flags);
   \pnum\effects
   Constructs an object where the $i^\text{th}$ element is initialized to \tcode{mem[$i$]} \foralli.
 
+  \pnum\throws Nothing.
+
   \pnum\remarks
   This constructor shall not participate in overload resolution unless \tcode{is_simd_flag_type_v<Flags>} is \tcode{true}.
 
@@ -1795,6 +1757,8 @@ template<class Flags> void copy_from(const value_type* mem, Flags);
   \pnum\effects
   Replaces the elements of the \tcode{simd_mask} object such that the $i^\text{th}$ element is replaced with \tcode{mem[$i$]} \foralli.
 
+  \pnum\throws Nothing.
+
   \pnum\remarks
   This function shall not participate in overload resolution unless \tcode{is_simd_flag_type_v<Flags>} is \tcode{true}.
 
@@ -1810,6 +1774,8 @@ template<class Flags> void copy_to(value_type* mem, Flags);
 
   \pnum\effects
   Copies all \tcode{simd_mask} elements as if \tcode{mem[$i$] = operator[](i)} \foralli.
+
+  \pnum\throws Nothing.
 
   \pnum\remarks
   This function shall not participate in overload resolution unless \tcode{is_simd_flag_type_v<Flags>} is \tcode{true}.
@@ -1958,6 +1924,8 @@ template<class T, class Abi> int find_first_set(const simd_mask<T, Abi>& k);
 
   \pnum\returns
   The lowest element index $i$ where \tcode{k[$i$]} is \tcode{true}.
+
+  \pnum\throws Nothing.
 \end{itemdescr}
 
 \begin{itemdecl}
@@ -1970,6 +1938,8 @@ template<class T, class Abi> int find_last_set(const simd_mask<T, Abi>& k);
 
   \pnum\returns
   The greatest element index $i$ where \tcode{k[$i$]} is \tcode{true}.
+
+  \pnum\throws Nothing.
 \end{itemdescr}
 
 \begin{itemdecl}
@@ -1989,8 +1959,8 @@ int popcount(@\UNSP{T}@) noexcept;
 \end{itemdescr}
 
 \begin{itemdecl}
-int find_first_set(@\UNSP{T}@) noexcept;
-int find_last_set(@\UNSP{T}@) noexcept;
+int find_first_set(@\UNSP{T}@);
+int find_last_set(@\UNSP{T}@);
 \end{itemdecl}
 
 \begin{itemdescr}
@@ -1999,6 +1969,8 @@ int find_last_set(@\UNSP{T}@) noexcept;
 
   \pnum\returns
   \tcode{0}.
+
+  \pnum\throws Nothing.
 
   \pnum\remarks
   The parameter type \tcode{T} is an unspecified type that is only constructible via implicit conversion from \tcode{bool}.
