@@ -118,12 +118,26 @@ inline namespace parallelism_v2 {
     array<V, simd_size_v<typename V::simd_type::value_type, Abi> / V::size()>
       split(const simd_mask<typename V::simd_type::value_type, Abi>&);
 
+  template<size_t N, class T, class A>
+    array<resize_simd<simd_size_v<T, A> / N, simd<T, A>>, N>
+      split_by(const simd<T, A>& x) noexcept;
+  template<size_t N, class T, class A>
+    array<resize_simd<simd_size_v<T, A> / N, simd_mask<T, A>>, N>
+      split_by(const simd_mask<T, A>& x) noexcept;
+
   template<class T, class... Abis>
     simd<T, simd_abi::deduce_t<T, (simd_size_v<T, Abis> + ...)>>
       concat(const simd<T, Abis>&...);
   template<class T, class... Abis>
     simd_mask<T, simd_abi::deduce_t<T, (simd_size_v<T, Abis> + ...)>>
       concat(const simd_mask<T, Abis>&...);
+
+  template<class T, class Abi, size_t N>
+    resize_simd<simd_size_v<T, Abi> * N, simd<T, Abi>>
+      concat(const array<simd<T, Abi>, N>& arr) noexcept;
+  template<class T, class Abi, size_t N>
+    resize_simd<simd_size_v<T, Abi> * N, simd_mask<T, Abi>>
+      concat(const array<simd_mask<T, Abi>, N>& arr) noexcept;
 
   // \ref{parallel.simd.mask.reductions}, Reductions
   template<class T, class Abi> bool all_of(const simd_mask<T, Abi>&) noexcept;
@@ -1522,6 +1536,23 @@ template<class V, class Abi>
 \end{itemdescr}
 
 \begin{itemdecl}
+template<size_t N, class T, class A>
+  array<resize_simd<simd_size_v<T, A> / N, simd<T, A>>, N>
+    split_by(const simd<T, A>& x) noexcept;
+template<size_t N, class T, class A>
+  array<resize_simd<simd_size_v<T, A> / N, simd_mask<T, A>>, N>
+    split_by(const simd_mask<T, A>& x) noexcept;
+\end{itemdecl}
+
+\begin{itemdescr}
+  \pnum\returns
+  An array \tcode{arr}, where \tcode{arr[$i$][$j$]} is initialized by \tcode{x[$i$ * (simd_size_v<T, A> / N) + $j$]}.
+
+  \pnum\remarks
+  The functions shall not participate in overload resolution unless \tcode{simd_size_v<T, A>} is an integral multiple of \tcode N.
+\end{itemdescr}
+
+\begin{itemdecl}
 template<class T, class... Abis>
   simd<T, simd_abi::deduce_t<T, (simd_size_v<T, Abis> + ...)>> concat(
     const simd<T, Abis>&... xs);
@@ -1533,6 +1564,20 @@ template<class T, class... Abis>
 \begin{itemdescr}
   \pnum\returns
   A data-parallel object initialized with the concatenated values in the \tcode{xs} pack of data-parallel objects: The $i^\text{th}$ \tcode{simd}/\tcode{simd_mask} element of the $j^\text{th}$ parameter in the \tcode{xs} pack is copied to the return value's element with index $i$ + the sum of the width of the first $j$ parameters in the \tcode{xs} pack.
+\end{itemdescr}
+
+\begin{itemdecl}
+  template<class T, class Abi, size_t N>
+    resize_simd<simd_size_v<T, Abi> * N, simd<T, Abi>>
+      concat(const array<simd<T, Abi>, N>& arr) noexcept;
+  template<class T, class Abi, size_t N>
+    resize_simd<simd_size_v<T, Abi> * N, simd_mask<T, Abi>>
+      concat(const array<simd_mask<T, Abi>, N>& arr) noexcept;
+\end{itemdecl}
+
+\begin{itemdescr}
+  \pnum\returns
+  A data-parallel object, the $i^\text{th}$ element of which is initialized by \tcode{arr[$i$ / simd_size_v<T, Abi>][$i$ \% simd_size_v<T, Abi>]}.
 \end{itemdescr}
 
 \rSec2[parallel.simd.alg]{Algorithms}
