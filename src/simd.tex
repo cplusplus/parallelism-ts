@@ -192,11 +192,11 @@ inline namespace parallelism_v2 {
 
   template<class T, class Abi>
     T hmin(const simd<T, abi>&);
-  template<class T, class Abi> @\ednote{The template parameters are wrong. P0214R9 is correct.}@
+  template<class M, class V>
     typename V::value_type hmin(const const_where_expression<M, V>&);
   template<class T, class Abi>
     T hmax(const simd<T, abi>&);
-  template<class T, class Abi> @\ednote{The template parameters are wrong. P0214R9 is correct.}@
+  template<class M, class V>
     typename V::value_type hmax(const const_where_expression<M, V>&);
 
   // \ref{parallel.simd.alg}, Algorithms
@@ -1299,7 +1299,7 @@ template<class T, class Abi> T hmin(const simd<T, Abi>& x);
 \end{itemdescr}
 
 \begin{itemdecl}
-template<class T, class V> typename V::value_type hmin(const const_where_expression<M, V>& x);
+template<class M, class V> typename V::value_type hmin(const const_where_expression<M, V>& x);
 \end{itemdecl}
 
 \begin{itemdescr}
@@ -1321,7 +1321,7 @@ template<class T, class Abi> T hmax(const simd<T, Abi>& x);
 \end{itemdescr}
 
 \begin{itemdecl}
-template<class T, class V> typename V::value_type hmax(const const_where_expression<M, V>& x);
+template<class M, class V> typename V::value_type hmax(const const_where_expression<M, V>& x);
 \end{itemdecl}
 
 \begin{itemdescr}
