@@ -1,7 +1,7 @@
 %!TEX root = ts.tex
 
 \newcommand\foralli[1][]{for all $i$ in the range of \tcode{[0, #1size())}}
-\newcommand\forallmaskedi{for all $i \in \{j \in \mathbb{N} | j < \tcode{M::size()} \wedge \tcode{mask[}j\tcode{]} \}$}
+\newcommand\forallmaskedi{for all selected indices $i$}
 
 \rSec0[parallel.simd]{Data-Parallel Types}
 \rSec1[parallel.simd.general]{General}
@@ -484,10 +484,10 @@ template<class U, class Flags> void copy_to(U* mem, Flags) const &&;
 
 \begin{itemdescr}
   \pnum\requires
-  If the template parameter \tcode{Flags} is \tcode{vector_aligned_tag}, \tcode{mem} shall point to storage aligned by \tcode{memory_alignment_v<T, U>}. If the template parameter \tcode{Flags} is \tcode{overaligned_tag<N>}, \tcode{mem} shall point to storage aligned by \tcode{N}. If the template parameter \tcode{Flags} is \tcode{element_aligned_tag}, \tcode{mem} shall point to storage aligned by \tcode{alignof(U)}. If \tcode{M} is not \tcode{bool}, the largest \tcode{i} $\in$ \tcode{[0, M::size())} where \tcode{mask[i]} is \tcode{true} is less than the number of values pointed to by \tcode{mem}.
+  If the template parameter \tcode{Flags} is \tcode{vector_aligned_tag}, \tcode{mem} shall point to storage aligned by \tcode{memory_alignment_v<T, U>}. If the template parameter \tcode{Flags} is \tcode{overaligned_tag<N>}, \tcode{mem} shall point to storage aligned by \tcode{N}. If the template parameter \tcode{Flags} is \tcode{element_aligned_tag}, \tcode{mem} shall point to storage aligned by \tcode{alignof(U)}. If \tcode{M} is not \tcode{bool}, the largest selected index is less than the number of values pointed to by \tcode{mem}.
 
   \pnum\effects
-  Copies the selected elements as if \tcode{mem[i] = static_cast<U>(data[i])} for all selected indices \tcode{i}.
+  Copies the selected elements as if \tcode{mem[$i$] = static_cast<U>(data[$i$])} for all selected indices $i$.
 
   \pnum\throws Nothing.
 
@@ -509,7 +509,7 @@ template<class U> void operator=(U&& x) &&;
 
 \begin{itemdescr}
   \pnum\effects
-  Replaces \tcode{data[i]} with \tcode{static_cast<T>(std\colcol{}forward<U>(x))[i]} for all selected indices \tcode{i}.
+  Replaces \tcode{data[$i$]} with \tcode{static_cast<T>(std\colcol{}forward<U>(x))[$i$]} for all selected indices $i$.
 
   \pnum\remarks
   This operator shall not participate in overload resolution unless \tcode{U} is convertible to \tcode{T}.
@@ -530,7 +530,7 @@ template<class U> void operator>>=(U&& x) &&;
 
 \begin{itemdescr}
   \pnum\effects
-  Replaces \tcode{data[i]} with \tcode{static_cast<T>(data @ std\colcol{}forward<U>(x))[i]} (where \tcode{@} denotes the indicated operator) for all selected indices \tcode{i}.
+  Replaces \tcode{data[$i$]} with \tcode{static_cast<T>(data @ std\colcol{}forward<U>(x))[$i$]} (where \tcode{@} denotes the indicated operator) for all selected indices $i$.
 
   \pnum\remarks
   Each of these operators shall not participate in overload resolution unless the return type of \tcode{data @ std\colcol{}forward<U>(x)} is convertible to \tcode{T}. It is unspecified whether the binary operator, implied by the compound assignment operator, is executed on all elements or only on the selected elements.
@@ -557,10 +557,10 @@ template<class U, class Flags> void copy_from(const U* mem, Flags) &&;
 
 \begin{itemdescr}
   \pnum\requires
-  If the template parameter \tcode{Flags} is \tcode{vector_aligned_tag}, \tcode{mem} shall point to storage aligned by \tcode{memory_alignment_v<T, U>}. If the template parameter \tcode{Flags} is \tcode{overaligned_tag<N>}, \tcode{mem} shall point to storage aligned by \tcode{N}. If the template parameter \tcode{Flags} is \tcode{element_aligned_tag}, \tcode{mem} shall point to storage aligned by \tcode{alignof(U)}. If \tcode{is_simd_flag_type_v<U>} is \tcode{true}, for all selected indices \tcode{i}, \tcode{i} shall be less than the number of values pointed to by \tcode{mem}.
+  If the template parameter \tcode{Flags} is \tcode{vector_aligned_tag}, \tcode{mem} shall point to storage aligned by \tcode{memory_alignment_v<T, U>}. If the template parameter \tcode{Flags} is \tcode{overaligned_tag<N>}, \tcode{mem} shall point to storage aligned by \tcode{N}. If the template parameter \tcode{Flags} is \tcode{element_aligned_tag}, \tcode{mem} shall point to storage aligned by \tcode{alignof(U)}. If \tcode{is_simd_flag_type_v<U>} is \tcode{true}, for all selected indices $i$, $i$ shall be less than the number of values pointed to by \tcode{mem}.
 
   \pnum\effects
-  Replaces the selected elements as if \tcode{data[i] = static_cast<value_type>(mem[i])} for all selected indices \tcode{i}.
+  Replaces the selected elements as if \tcode{data[$i$] = static_cast<value_type>(mem[$i$])} for all selected indices $i$.
 
   \pnum\remarks
   This function shall not participate in overload resolution unless
@@ -875,7 +875,7 @@ template<class U> simd(const simd<U, simd_abi::fixed_size<size()>>& x);
 
 \begin{itemdescr}
   \pnum\effects
-  Constructs an object where the $i$-th element equals \tcode{static_cast<T>(x[i])} \foralli.
+  Constructs an object where the $i^\text{th}$ element equals \tcode{static_cast<T>(x[$i$])} \foralli.
 
   \pnum\remarks
   This constructor shall not participate in overload resolution unless
@@ -892,7 +892,7 @@ template<class G> simd(G&& gen);
 
 \begin{itemdescr}
   \pnum\effects
-  Constructs an object where the $i$-th element is initialized to \tcode{gen(integral_constant<size_t, i>())}.
+  Constructs an object where the $i^\text{th}$ element is initialized to \tcode{gen(integral_constant<size_t, i>())}.
 
   \pnum\remarks
   This constructor shall not participate in overload resolution unless \tcode{simd(gen(integral_constant<size_t, i>()))} is well-formed \foralli.
@@ -910,7 +910,7 @@ template<class U, class Flags> simd(const U* mem, Flags);
   If the template parameter \tcode{Flags} is \tcode{vector_aligned_tag}, \tcode{mem} shall point to storage aligend by \tcode{memory_alignment_v<simd, U>}. If the template parameter \tcode{Flags} is \tcode{overaligned_tag<N>}, \tcode{mem} shall point to storage aligned by \tcode{N}. If the template parameter \tcode{Flags} is \tcode{element_aligned_tag}, \tcode{mem} shall point to storage aligned by \tcode{alignof(U)}. \tcode{[mem, mem + size())} is a valid range.
 
   \pnum\effects
-  Constructs an object where the $i$-th element is initialized to \tcode{static_cast<T>(mem[i])} \foralli.
+  Constructs an object where the $i^\text{th}$ element is initialized to \tcode{static_cast<T>(mem[$i$])} \foralli.
 
   \pnum\remarks
   This constructor shall not participate in overload resolution unless
@@ -931,7 +931,7 @@ template<class U, class Flags> void copy_from(const U* mem, Flags);
   If the template parameter \tcode{Flags} is \tcode{vector_aligned_tag}, \tcode{mem} shall point to storage aligned by \tcode{memory_alignment_v<simd, U>}. If the template parameter \tcode{Flags} is \tcode{overaligned_tag<N>}, \tcode{mem} shall point to storage aligend by \tcode{N}. If the template parameter \tcode{Flags} is \tcode{element_aligned_tag}, \tcode{mem} shall point to storage aligned by \tcode{alignof(U)}. \tcode{[mem, mem + size())} is a valid range.
 
   \pnum\effects
-  Replaces the elements of the \tcode{simd} object such that the $i$-th element is assigned with \tcode{static_cast<T>(mem[i])} \foralli.
+  Replaces the elements of the \tcode{simd} object such that the $i^\text{th}$ element is assigned with \tcode{static_cast<T>(mem[$i$])} \foralli.
 
   \pnum\remarks
   This function shall not participate in overload resolution unless
@@ -950,7 +950,7 @@ template<class U, class Flags> void copy_to(U* mem, Flags) const;
   If the template parameter \tcode{Flags} is \tcode{vector_aligned_tag}, \tcode{mem} shall point to storage aligned by \tcode{memory_alignment_v<simd, U>}. If the template parameter \tcode{Flags} is \tcode{overaligned_tag<N>}, \tcode{mem} shall point to storage aligned by \tcode{N}. If the template parameter \tcode{Flags} is \tcode{element_aligned_tag}, \tcode{mem} shall point to storage aligned by \tcode{alignof(U)}. \tcode{[mem, mem + size())} is a valid range.
 
   \pnum\effects
-  Copies all \tcode{simd} elements as if \tcode{mem[i] = static_cast<U>(operator[](i))} \foralli.
+  Copies all \tcode{simd} elements as if \tcode{mem[$i$] = static_cast<U>(operator[]($i$))} \foralli.
 
   \pnum\remarks
   This function shall not participate in overload resolution unless
@@ -971,7 +971,7 @@ reference operator[](size_t i);
   \tcode{i < size()}.
 
   \pnum\returns
-  A \tcode{reference} (see \ref{parallel.simd.reference}) referring to the $i$-th element.
+  A \tcode{reference} (see \ref{parallel.simd.reference}) referring to the $i^\text{th}$ element.
 
   \pnum\throws Nothing.
 \end{itemdescr}
@@ -985,7 +985,7 @@ value_type operator[](size_t i) const;
   \tcode{i < size()}.
 
   \pnum\returns
-  The value of the $i$-th element.
+  The value of the $i^\text{th}$ element.
 
   \pnum\throws Nothing.
 \end{itemdescr}
@@ -1058,7 +1058,7 @@ mask_type operator!() const;
 
 \begin{itemdescr}
   \pnum\returns
-  A \tcode{simd_mask} object with the $i$-th element set to \tcode{!operator[](i)} \foralli.
+  A \tcode{simd_mask} object with the $i^\text{th}$ element set to \tcode{!operator[](i)} \foralli.
 
   \pnum\throws Nothing.
 
@@ -1095,7 +1095,7 @@ simd operator-() const;
 
 \begin{itemdescr}
   \pnum\returns
-  A \tcode{simd} object where the $i$-th element is initialized to \tcode{-operator[](i)} \foralli.
+  A \tcode{simd} object where the $i^\text{th}$ element is initialized to \tcode{-operator[](i)} \foralli.
 
   \pnum\throws Nothing.
 \end{itemdescr}
@@ -1134,7 +1134,7 @@ friend simd operator>>(const simd& v, int n);
 
 \begin{itemdescr}
   \pnum\returns
-  A \tcode{simd} object where the $i$-th element is initialized to the result of applying the indicated operator to \tcode{v[i]} and \tcode{n} \foralli.
+  A \tcode{simd} object where the $i^\text{th}$ element is initialized to the result of applying the indicated operator to \tcode{v[$i$]} and \tcode{n} \foralli.
 
   \pnum\throws Nothing.
 
@@ -1205,7 +1205,7 @@ template<class T, class Abi, class BinaryOperation = plus<>>
   \tcode{binary_op} shall be callable with two arguments of type \tcode{T} returning \tcode{T}, or callable with two arguments of type \tcode{simd<T, A1>} returning \tcode{simd<T, A1>} for every \tcode{A1} that is an ABI tag type.
 
   \pnum\returns
-  \tcode{\placeholdernc{GENERALIZED_SUM}(binary_op, x.data[i], ...)} \foralli.
+  \tcode{\placeholdernc{GENERALIZED_SUM}(binary_op, x.data[$i$], ...)} \foralli.
 
   \pnum\throws
   Any exception thrown from \tcode{binary_op}.
@@ -1224,7 +1224,7 @@ template<class M, class V, class BinaryOperation>
   \tcode{binary_op} shall be callable with two arguments of type \tcode{T} returning \tcode{T}, or callable with two arguments of type \tcode{simd<T, A1>} returning \tcode{simd<T, A1>} for every \tcode{A1} that is an ABI tag type. The results of \tcode{binary_op(identity_element, x)} and \tcode{binary_op(x, identity_element)} shall be equal to \tcode{x} for all finite values \tcode{x} representable by \tcode{V::value_type}.
 
   \pnum\returns
-  If \tcode{none_of(x.mask)}, returns \tcode{identity_element}. Otherwise, returns \tcode{\placeholdernc{GENERALIZED_SUM}(binary_op, x.data[i], ...)} \forallmaskedi.
+  If \tcode{none_of(x.mask)}, returns \tcode{identity_element}. Otherwise, returns \tcode{\placeholdernc{GENERALIZED_SUM}(binary_op, x.data[$i$], ...)} \forallmaskedi.
 
   \pnum\throws
   Any exception thrown from \tcode{binary_op}.
@@ -1237,7 +1237,7 @@ template<class M, class V>
 
 \begin{itemdescr}
   \pnum\returns
-  If \tcode{none_of(x.mask)}, returns \tcode{0}. Otherwise, returns \tcode{\placeholdernc{GENERALIZED_SUM}(binary_op, x.data[i], ...)} \forallmaskedi.
+  If \tcode{none_of(x.mask)}, returns \tcode{0}. Otherwise, returns \tcode{\placeholdernc{GENERALIZED_SUM}(binary_op, x.data[$i$], ...)} \forallmaskedi.
 
   \pnum\throws Nothing.
 \end{itemdescr}
@@ -1249,7 +1249,7 @@ template<class M, class V>
 
 \begin{itemdescr}
   \pnum\returns
-  If \tcode{none_of(x.mask)}, returns \tcode{1}. Otherwise, returns \tcode{\placeholdernc{GENERALIZED_SUM}(binary_op, x.data[i], ...)} \forallmaskedi.
+  If \tcode{none_of(x.mask)}, returns \tcode{1}. Otherwise, returns \tcode{\placeholdernc{GENERALIZED_SUM}(binary_op, x.data[$i$], ...)} \forallmaskedi.
 
   \pnum\throws Nothing.
 \end{itemdescr}
@@ -1264,7 +1264,7 @@ template<class M, class V>
   \tcode{is_integral_v<V::value_type>} is \tcode{true}.
 
   \pnum\returns
-  If \tcode{none_of(x.mask)}, returns \tcode{~V::value_type()}. Otherwise, returns \tcode{\placeholdernc{GENERALIZED_SUM}(binary_op, x.data[i], ...)} \forallmaskedi.
+  If \tcode{none_of(x.mask)}, returns \tcode{~V::value_type()}. Otherwise, returns \tcode{\placeholdernc{GENERALIZED_SUM}(binary_op, x.data[$i$], ...)} \forallmaskedi.
 
   \pnum\throws Nothing.
 \end{itemdescr}
@@ -1281,7 +1281,7 @@ template<class M, class V>
   \tcode{is_integral_v<V::value_type>} is \tcode{true}.
 
   \pnum\returns
-  If \tcode{none_of(x.mask)}, returns \tcode{0}. Otherwise, returns \tcode{\placeholdernc{GENERALIZED_SUM}(binary_op, x.data[i], ...)} \forallmaskedi.
+  If \tcode{none_of(x.mask)}, returns \tcode{0}. Otherwise, returns \tcode{\placeholdernc{GENERALIZED_SUM}(binary_op, x.data[$i$], ...)} \forallmaskedi.
 
   \pnum\throws Nothing.
 \end{itemdescr}
@@ -1292,7 +1292,7 @@ template<class T, class Abi> T hmin(const simd<T, Abi>& x);
 
 \begin{itemdescr}
   \pnum\returns
-  The value of an element \tcode{x[j]} for which \tcode{x[j] <= x[i]} \foralli.
+  The value of an element \tcode{x[$j$]} for which \tcode{x[$j$] <= x[$i$]} \foralli.
 
   \pnum\throws Nothing.
 
@@ -1304,7 +1304,7 @@ template<class M, class V> typename V::value_type hmin(const const_where_express
 
 \begin{itemdescr}
   \pnum\returns
-  If \tcode{none_of(x.mask)}, the return value is \tcode{numeric_limits<V::value_type>::max()}. Otherwise, returns the value of an element \tcode{x.data[j]} for which \tcode{x.mask[j] == true} and \tcode{x.data[j] <= x.data[i]} \forallmaskedi.
+  If \tcode{none_of(x.mask)}, the return value is \tcode{numeric_limits<V::value_type>::max()}. Otherwise, returns the value of an element \tcode{x.data[$j$]} for which \tcode{x.mask[$j$] == true} and \tcode{x.data[$j$] <= x.data[$i$]} \forallmaskedi.
 
   \pnum\throws Nothing.
 \end{itemdescr}
@@ -1315,7 +1315,7 @@ template<class T, class Abi> T hmax(const simd<T, Abi>& x);
 
 \begin{itemdescr}
   \pnum\returns
-  The value of an element \tcode{x[j]} for which \tcode{x[j] >= x[i]} \foralli.
+  The value of an element \tcode{x[$j$]} for which \tcode{x[$j$] >= x[$i$]} \foralli.
 
   \pnum\throws Nothing.
 \end{itemdescr}
@@ -1326,7 +1326,7 @@ template<class M, class V> typename V::value_type hmax(const const_where_express
 
 \begin{itemdescr}
   \pnum\returns
-  If \tcode{none_of(x.mask)}, the return value is \tcode{numeric_limits<V::value_type>::lowest()}. Otherwise, returns the value of an element \tcode{x.data[j]} for which \tcode{x.mask[j] == true} and \tcode{x.data[j] >= x.data[i]} \forallmaskedi.
+  If \tcode{none_of(x.mask)}, the return value is \tcode{numeric_limits<V::value_type>::lowest()}. Otherwise, returns the value of an element \tcode{x.data[$j$]} for which \tcode{x.mask[$j$] == true} and \tcode{x.data[$j$] >= x.data[$i$]} \forallmaskedi.
 
   \pnum\throws Nothing.
 \end{itemdescr}
@@ -1342,7 +1342,7 @@ template<class T, class U, class Abi> @\seebelow@ simd_cast(const simd<U, Abi>& 
   Let \tcode{To} identify \tcode{T::value_type} if \tcode{is_simd_v<T>} is \tcode{true}, or \tcode{T} otherwise.
 
   \pnum\returns
-  A \tcode{simd} object with the $i$-th element initialized to \tcode{static_cast<To>(x[i])} \foralli.
+  A \tcode{simd} object with the $i^\text{th}$ element initialized to \tcode{static_cast<To>(x[$i$])} \foralli.
 
   \pnum\throws Nothing.
 
@@ -1376,7 +1376,7 @@ template<class T, class U, class Abi> @\seebelow@ static_simd_cast(const simd<U,
   Let \tcode{To} identify \tcode{T::value_type} if \tcode{is_simd_v<T>} is \tcode{true} or \tcode{T} otherwise.
 
   \pnum\returns
-  A \tcode{simd} object with the $i$-th element initialized to \tcode{static_cast<To>(x[i])} \foralli.
+  A \tcode{simd} object with the $i^\text{th}$ element initialized to \tcode{static_cast<To>(x[$i$])} \foralli.
 
   \pnum\throws Nothing.
 
@@ -1405,7 +1405,7 @@ template<class T, class Abi>
 
 \begin{itemdescr}
   \pnum\returns
-  A data-parallel object with the $i$-th element initialized to \tcode{x[i]} \foralli.
+  A data-parallel object with the $i^\text{th}$ element initialized to \tcode{x[$i$]} \foralli.
 \end{itemdescr}
 
 \begin{itemdecl}
@@ -1415,7 +1415,7 @@ template<class T, int N> native_simd_mask<T> to_native(const fixed_size_simd_mas
 
 \begin{itemdescr}
   \pnum\returns
-  A data-parallel object with the $i$-th element initialized to \tcode{x[i]} \foralli.
+  A data-parallel object with the $i^\text{th}$ element initialized to \tcode{x[$i$]} \foralli.
 
   \pnum\remarks
   These functions shall not participate in overload resolution unless \tcode{simd_size_v<T, simd_abi::native<T>> == N} is \tcode{true}.
@@ -1428,7 +1428,7 @@ template<class T, int N> simd_mask<T> to_compatible(const fixed_size_simd_mask<T
 
 \begin{itemdescr}
   \pnum\returns
-  A data-parallel object with the $i$-th element initialized to \tcode{x[i]} \foralli.
+  A data-parallel object with the $i^\text{th}$ element initialized to \tcode{x[$i$]} \foralli.
 
   \pnum\remarks
   These functions shall not participate in overload resolution unless \tcode{simd_size_v<T, simd_abi::compatible<T>> == N} is \tcode{true}.
@@ -1445,7 +1445,7 @@ template<size_t... Sizes, class T, class Abi>
 
 \begin{itemdescr}
   \pnum\returns
-  A \tcode{tuple} of data-parallel objects with the $i$-th \tcode{simd}/\tcode{simd_mask} element of the $j$-th \tcode{tuple} element initialized to the value of the element \tcode{x} with index $i$ + sum of the first $j$ values in the \tcode{Sizes} pack.
+  A \tcode{tuple} of data-parallel objects with the $i^\text{th}$ \tcode{simd}/\tcode{simd_mask} element of the $j^\text{th}$ \tcode{tuple} element initialized to the value of the element \tcode{x} with index $i$ + sum of the first $j$ values in the \tcode{Sizes} pack.
 
   \pnum\remarks
   These functions shall not participate in overload resolution unless the sum of all values in the \tcode{Sizes} pack is equal to \tcode{simd_size_v<T, Abi>}.
@@ -1462,7 +1462,7 @@ template<class V, class Abi>
 
 \begin{itemdescr}
   \pnum\returns
-  An \tcode{array} of data-parallel objects with the $i$-th \tcode{simd}/\tcode{simd_mask} element of the $j$-th \tcode{array} element initialized to the value of the element in \tcode{x} with index \tcode{$i$ + $j$ * V::size()}.
+  An \tcode{array} of data-parallel objects with the $i^\text{th}$ \tcode{simd}/\tcode{simd_mask} element of the $j^\text{th}$ \tcode{array} element initialized to the value of the element in \tcode{x} with index \tcode{$i$ + $j$ * V::size()}.
 
   \pnum\remarks
   These functions shall not participate in overload resolution unless
@@ -1484,7 +1484,7 @@ template<class T, class... Abis>
 
 \begin{itemdescr}
   \pnum\returns
-  A data-parallel object initialized with the concatenated values in the \tcode{xs} pack of data-parallel objects: The $i$-th \tcode{simd}/\tcode{simd_mask} element of the $j$-th parameter in the \tcode{xs} pack is copied to the return value's element with index $i$ + the sum of the width of the first $j$ parameters in the \tcode{xs} pack.
+  A data-parallel object initialized with the concatenated values in the \tcode{xs} pack of data-parallel objects: The $i^\text{th}$ \tcode{simd}/\tcode{simd_mask} element of the $j^\text{th}$ parameter in the \tcode{xs} pack is copied to the return value's element with index $i$ + the sum of the width of the first $j$ parameters in the \tcode{xs} pack.
 \end{itemdescr}
 
 \rSec2[parallel.simd.alg]{Algorithms}
@@ -1495,7 +1495,7 @@ template<class T, class Abi> simd<T, Abi> min(const simd<T, Abi>& a, const simd<
 
 \begin{itemdescr}
   \pnum\returns
-  The result of the element-wise application of \tcode{std::min(a[i], b[i])} \foralli.
+  The result of the element-wise application of \tcode{std::min(a[$i$], b[$i$])} \foralli.
 \end{itemdescr}
 
 \begin{itemdecl}
@@ -1504,7 +1504,7 @@ template<class T, class Abi> simd<T, Abi> max(const simd<T, Abi>& a, const simd<
 
 \begin{itemdescr}
   \pnum\returns
-  The result of the element-wise application of \tcode{std::max(a[i], b[i])} \foralli.
+  The result of the element-wise application of \tcode{std::max(a[$i$], b[$i$])} \foralli.
 \end{itemdescr}
 
 \begin{itemdecl}
@@ -1516,8 +1516,8 @@ template<class T, class Abi>
   \pnum\returns
   A \tcode{pair} initialized with
   \begin{itemize}
-    \item the result of element-wise application of \tcode{std::min(a[i], b[i])} \foralli{} in the \tcode{first} member, and
-    \item the result of element-wise application of \tcode{std::max(a[i], b[i])} \foralli{} in the \tcode{second} member.
+    \item the result of element-wise application of \tcode{std::min(a[$i$], b[$i$])} \foralli{} in the \tcode{first} member, and
+    \item the result of element-wise application of \tcode{std::max(a[$i$], b[$i$])} \foralli{} in the \tcode{second} member.
   \end{itemize}
 \end{itemdescr}
 
@@ -1531,7 +1531,7 @@ template<class T, class Abi> simd<T, Abi>
   No element in \tcode{lo} shall be greater than the corresponding element in \tcode{hi}.
 
   \pnum\returns
-  The result of element-wise application of \tcode{std::clamp(v[i], lo[i], hi[i])} \foralli.
+  The result of element-wise application of \tcode{std::clamp(v[$i$], lo[$i$], hi[$i$])} \foralli.
 \end{itemdescr}
 
 \rSec2[parallel.simd.math]{Math library}
@@ -1665,7 +1665,7 @@ template<class U> simd_mask(const simd_mask<U, simd_abi::fixed_size<size()>>& x)
 
 \begin{itemdescr}
   \pnum\effects
-  Constructs an object of type \tcode{simd_mask} where the $i$-th element equals \tcode{x[i]} \foralli.
+  Constructs an object of type \tcode{simd_mask} where the $i^\text{th}$ element equals \tcode{x[$i$]} \foralli.
 
   \pnum\remarks
   This constructor shall not participate in overload resolution unless \tcode{abi_type} is \tcode{simd_abi::fixed_size<size()>}.
@@ -1680,7 +1680,7 @@ template<class Flags> simd_mask(const value_type* mem, Flags);
   If the template parameter \tcode{Flags} is \tcode{vector_aligned_tag}, \tcode{mem} shall point to storage aligned by \tcode{memory_alignment_v<simd_mask>}. If the template parameter \tcode{Flags} is \tcode{overaligned_tag<N>}, \tcode{mem} shall point to storage aligned by \tcode{N}. If the template parameter \tcode{Flags} is \tcode{element_aligned_tag}, \tcode{mem} shall point to storage aligned by \tcode{alignof(U)}. \tcode{[mem, mem + size())} is a valid range.
 
   \pnum\effects
-  Constructs an object where the $i$-th element is initialized to \tcode{mem[i]} \foralli.
+  Constructs an object where the $i^\text{th}$ element is initialized to \tcode{mem[$i$]} \foralli.
 
   \pnum\remarks
   This constructor shall not participate in overload resolution unless \tcode{is_simd_flag_type_v<Flags>} is \tcode{true}.
@@ -1698,7 +1698,7 @@ template<class Flags> void copy_from(const value_type* mem, Flags);
   If the template parameter \tcode{Flags} is \tcode{vector_aligned_tag}, \tcode{mem} shall point to storage aligned by \tcode{memory_alignment_v<simd_mask>}. If the template parameter \tcode{Flags} is \tcode{overaligned_tag<N>}, \tcode{mem} shall point to storage aligned by \tcode{N}. If the template parameter \tcode{Flags} is \tcode{element_aligned_tag}, \tcode{mem} shall point to storage aligned by \tcode{alignof(U)}. \tcode{[mem, mem + size())} is a valid range.
 
   \pnum\effects
-  Replaces the elements of the \tcode{simd_mask} object such that the $i$-th element is replaced with \tcode{mem[i]} \foralli.
+  Replaces the elements of the \tcode{simd_mask} object such that the $i^\text{th}$ element is replaced with \tcode{mem[$i$]} \foralli.
 
   \pnum\remarks
   This function shall not participate in overload resolution unless \tcode{is_simd_flag_type_v<Flags>} is \tcode{true}.
@@ -1714,7 +1714,7 @@ template<class Flags> void copy_to(value_type* mem, Flags);
   If the template parameter \tcode{Flags} is \tcode{vector_aligned_tag}, \tcode{mem} shall point to storage aligned by \tcode{memory_alignment_v<simd_mask>}. If the template parameter \tcode{Flags} is \tcode{overaligned_tag<N>}, \tcode{mem} shall point to storage aligned by \tcode{N}. If the template parameter \tcode{Flags} is \tcode{element_aligned_tag}, \tcode{mem} shall point to storage aligned by \tcode{alignof(U)}. \tcode{[mem, mem + size())} is a valid range.
 
   \pnum\effects
-  Copies all \tcode{simd_mask} elements as if \tcode{mem[i] = operator[](i)} \foralli.
+  Copies all \tcode{simd_mask} elements as if \tcode{mem[$i$] = operator[](i)} \foralli.
 
   \pnum\remarks
   This function shall not participate in overload resolution unless \tcode{is_simd_flag_type_v<Flags>} is \tcode{true}.
@@ -1731,7 +1731,7 @@ reference operator[](size_t i);
   \tcode{i < size()}.
 
   \pnum\returns
-  A \tcode{reference} (see \ref{parallel.simd.reference}) referring to the $i$-th element.
+  A \tcode{reference} (see \ref{parallel.simd.reference}) referring to the $i^\text{th}$ element.
 
   \pnum\throws Nothing.
 \end{itemdescr}
@@ -1745,7 +1745,7 @@ value_type operator[](size_t i) const;
   \tcode{i < size()}.
 
   \pnum\returns
-  The value of the $i$-th element.
+  The value of the $i^\text{th}$ element.
 
   \pnum\throws Nothing.
 \end{itemdescr}
@@ -1862,7 +1862,7 @@ template<class T, class Abi> int find_first_set(const simd_mask<T, Abi>& k);
   \tcode{any_of(k)} returns \tcode{true}.
 
   \pnum\returns
-  The lowest element index \tcode{i} where \tcode{k[i]} is \tcode{true}.
+  The lowest element index $i$ where \tcode{k[$i$]} is \tcode{true}.
 \end{itemdescr}
 
 \begin{itemdecl}
@@ -1874,7 +1874,7 @@ template<class T, class Abi> int find_last_set(const simd_mask<T, Abi>& k);
   \tcode{any_of(k)} returns \tcode{true}.
 
   \pnum\returns
-  The greatest element index \tcode{i} where \tcode{k[i]} is \tcode{true}.
+  The greatest element index $i$ where \tcode{k[$i$]} is \tcode{true}.
 \end{itemdescr}
 
 \begin{itemdecl}
