@@ -1891,7 +1891,7 @@ int popcount(@\UNSP{T}@) noexcept;
   \tcode{all_of} and \tcode{any_of} return their arguments; \tcode{none_of} returns the negation of its argument; \tcode{some_of} returns \tcode{false}; \tcode{popcount} returns the integral representation of its argument.
 
   \pnum\remarks
-  The functions shall not participate in overload resolution unless the argument is of type \tcode{bool}.
+  The parameter type \tcode{T} is an unspecified type that is only constructible via implicit conversion from \tcode{bool}.
 \end{itemdescr}
 
 \begin{itemdecl}
@@ -1907,7 +1907,7 @@ int find_last_set(@\UNSP{T}@) noexcept;
   \tcode{0}.
 
   \pnum\remarks
-  The functions shall not participate in overload resolution unless the argument is of type \tcode{bool}.
+  The parameter type \tcode{T} is an unspecified type that is only constructible via implicit conversion from \tcode{bool}.
 \end{itemdescr}
 
 \rSec2[parallel.simd.mask.where]{Where functions}
