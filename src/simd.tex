@@ -884,7 +884,7 @@ template<class U> simd(const simd<U, simd_abi::fixed_size<size()>>& x);
   \begin{itemize}
     \item \tcode{abi_type} is \tcode{simd_abi::fixed_size<size()>}, and
     \item every possible value of \tcode{U} can be represented with type \tcode{value_type}, and
-    \item if both \tcode{U} and \tcode{value_type} are integral, the integer conversion rank [conv.rank] of \tcode{value_type} is greater than the integer conversion rank of \tcode{U}.
+    \item if both \tcode{U} and \tcode{value_type} are integral, the integer conversion rank (\CppXref{conv.rank}) of \tcode{value_type} is greater than the integer conversion rank of \tcode{U}.
   \end{itemize}
 \end{itemdescr}
 
@@ -900,7 +900,7 @@ template<class G> simd(G&& gen);
   This constructor shall not participate in overload resolution unless \tcode{simd(gen(integral_constant<size_t, i>()))} is well-formed \foralli.
 
   \pnum
-  The calls to \tcode{gen} are unsequenced with respect to each other. Vectorization-unsafe standard library functions may not be invoked by \tcode{gen} ([algorithms.parallel.exec]).
+  The calls to \tcode{gen} are unsequenced with respect to each other. Vectorization-unsafe standard library functions may not be invoked by \tcode{gen} (\CppXref{algorithms.parallel.exec}).
 \end{itemdescr}
 
 \begin{itemdecl}
@@ -1207,7 +1207,7 @@ template<class T, class Abi, class BinaryOperation = plus<>>
   \tcode{binary_op} shall be callable with two arguments of type \tcode{T} returning \tcode{T}, or callable with two arguments of type \tcode{simd<T, A1>} returning \tcode{simd<T, A1>} for every \tcode{A1} that is an ABI tag type.
 
   \pnum\returns
-  \tcode{\placeholdernc{GENERALIZED_SUM}(binary_op, x.data[$i$], ...)} \foralli.
+  \tcode{\placeholdernc{GENERALIZED_SUM}(binary_op, x.data[$i$], ...)} \foralli (\CppXref{numerics.defns}).
 
   \pnum\throws
   Any exception thrown from \tcode{binary_op}.
