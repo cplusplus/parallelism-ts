@@ -109,8 +109,8 @@ inline namespace parallelism_v2 {
     array<V, simd_size_v<typename V::value_type, Abi> / V::size()>
       split(const simd<typename V::value_type, Abi>&);
   template<class V, class Abi>
-    array<V, simd_size_v<typename V::value_type, Abi> / V::size()>
-      split(const simd_mask<typename V::value_type, Abi>&);
+    array<V, simd_size_v<typename V::simd_type::value_type, Abi> / V::size()>
+      split(const simd_mask<typename V::simd_type::value_type, Abi>&);
 
   template<class T, class... Abis>
     simd<T, simd_abi::deduce_t<T, (simd_size_v<T, Abis> + ...)>>
@@ -1458,8 +1458,8 @@ template<class V, class Abi>
   array<V, simd_size_v<typename V::value_type, Abi> / V::size()>
     split(const simd<typename V::value_type, Abi>& x);
 template<class V, class Abi>
-  array<V, simd_size_v<typename V::value_type, Abi> / V::size()>
-    split(const simd_mask<typename V::value_type, Abi>& x);
+  array<V, simd_size_v<typename V::simd_type::value_type, Abi> / V::size()>
+    split(const simd_mask<typename V::simd_type::value_type, Abi>& x);
 \end{itemdecl}
 
 \begin{itemdescr}
@@ -1467,11 +1467,10 @@ template<class V, class Abi>
   An \tcode{array} of data-parallel objects with the $i^\text{th}$ \tcode{simd}/\tcode{simd_mask} element of the $j^\text{th}$ \tcode{array} element initialized to the value of the element in \tcode{x} with index \tcode{$i$ + $j$ * V::size()}.
 
   \pnum\remarks
-  These functions shall not participate in overload resolution unless
-
+  These functions shall not participate in overload resolution unless either:
   \begin{itemize}
-    \item \tcode{simd_size_v<typename V::value_type, Abi>} is an integral multiple of \tcode{V::size()}, and
-    \item for the overload with a \tcode{simd} parameter \tcode{is_simd_v<V>} is \tcode{true}, for the overload with a \tcode{simd_mask} parameter \tcode{is_simd_mask_v<V>} is \tcode{true}.
+    \item \tcode{is_simd_v<V>} is \tcode{true} and \tcode{simd_size_v<typename V::value_type, Abi>} is an integral multiple of \tcode{V::size()}, or
+    \item \tcode{is_simd_mask_v<V>} is \tcode{true} and \tcode{simd_size_v<typename V::simd_type::value_type, Abi>} is an integral multiple of \tcode{V::size()}.
   \end{itemize}
 \end{itemdescr}
 
