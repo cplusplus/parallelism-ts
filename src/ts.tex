@@ -22,6 +22,7 @@
 \usepackage[normalem]{ulem}
 \usepackage{color}        % define colors for strikeouts and underlines
 \usepackage{amsmath}      % additional math symbols
+\usepackage{amssymb}      % mathbb
 \usepackage{mathrsfs}     % mathscr font
 \usepackage{microtype}
 \usepackage{multicol}
@@ -61,11 +62,11 @@
 \newcommand{\completionsig}{\Fundesc{Completion signature}}
 \newcommand{\DEDUCED}{\placeholdernc{\texttt{DEDUCED}}}
 % The base standard:
-\newcommand{\CppStd}{\CppXVII}
-\newcommand{\CppXref}[1]{\CppStd [#1]}
+\newcommand{\CppStd}{\Cpp{}17\xspace}
+%\newcommand{\CppXref}[1]{\CppStd [#1]}
 % Alternative formatting of cross-references, resolving stable name to number.
-% \input{cxx}
-% \newcommand{\CppXref}[1]{\CppStd, \cxxref{#1}}
+\input{cxx}
+\newcommand{\CppXref}[1]{\CppStd \S\cxxref{#1}}
 
 % Add an extensible implementation entry to the main and library name indices
 \newcommand{\indexextensible}[1]{%
@@ -119,6 +120,7 @@
 %\include{namespaces}
 %\include{featuretest}
 %\include{description}
+\include{simd}
 
 
 %%--------------------------------------------------
