@@ -36,8 +36,9 @@ inline namespace parallelism_v2 {
     template<class T> using compatible = @\impdefx{compatible and default ABI tag}@;
     template<class T> using native = @\impdefx{native ABI tag}@;
 
-    template<class T, size_t N> struct deduce { using type = @\seebelow@; };
-    template<class T, size_t N> using deduce_t = typename deduce<T, N>::type;
+    template<class T, size_t N, class... Abis> struct deduce { using type = @\seebelow@; };
+    template<class T, size_t N, class... Abis> using deduce_t =
+      typename deduce<T, N, Abis...>::type;
   }
 
   struct element_aligned_tag {};
@@ -68,6 +69,11 @@ inline namespace parallelism_v2 {
   template<class T, class U = typename T::value_type> struct memory_alignment;
   template<class T, class U = typename T::value_type>
     inline constexpr size_t memory_alignment_v = memory_alignment<T,U>::value;
+
+  template<class T, class V> struct rebind_simd { using type = @\seebelow@; };
+  template<class T, class V> using rebind_simd_t = typename rebind_simd<T, V>::type;
+  template<int N, class V> struct resize_simd { using type = @\seebelow@; };
+  template<int N, class V> using resize_simd_t = typename resize_simd<N, V>::type;
 
   // \ref{parallel.simd.class}, Class template \tcode{simd}
   template<class T, class Abi = simd_abi::compatible<T>> class simd;
@@ -278,7 +284,7 @@ An implementation may define additional \defn{extended ABI tag} types in the \tc
 \end{example}
 
 \begin{itemdecl}
-template<T, size_t N> struct deduce { using type = @\seebelow@; };
+template<T, size_t N, class... Abis> struct deduce { using type = @\seebelow@; };
 \end{itemdecl}
 
 \begin{itemdescr}
@@ -286,7 +292,8 @@ template<T, size_t N> struct deduce { using type = @\seebelow@; };
 The member \tcode{type} shall be present if and only if
 \begin{itemize}
   \item \tcode{T} is a vectorizable type, and
-  \item \tcode{simd_abi::fixed_size<N>} is supported (see \ref{parallel.simd.abi}).
+  \item \tcode{simd_abi::fixed_size<N>} is supported (see \ref{parallel.simd.abi}), and
+  \item every type in the \tcode{Abis} pack is an ABI tag.
 \end{itemize}
 
 \pnum
@@ -295,7 +302,9 @@ Where present, the member typedef \tcode{type} shall name an ABI tag type that s
   \item \tcode{simd_size<T, type> == N}, and
   \item \tcode{simd<T, type>} is default constructible (see \ref{parallel.simd.overview}).
 \end{itemize}
-If \tcode{N} is \tcode{1}, the member typedef \tcode{type} is \tcode{simd_abi::scalar}. Otherwise, if there are multiple ABI tag types that satisfy the constraints, the member typedef \tcode{type} is implementation-defined. \begin{note}It is expected that extended ABI tags can produce better optimizations and thus are preferred over \tcode{simd_abi::fixed_size<N>}.\end{note}
+If \tcode{N} is \tcode{1}, the member typedef \tcode{type} is \tcode{simd_abi::scalar}. Otherwise, if there are multiple ABI tag types that satisfy the constraints, the member typedef \tcode{type} is implementation-defined. \begin{note}It is expected that extended ABI tags can produce better optimizations and thus are preferred over \tcode{simd_abi::fixed_size<N>}.
+Implementations can base the choice on \tcode{Abis}, but can also ignore the \tcode{Abis} arguments.
+\end{note}
 
 \pnum
 The behavior of a program that adds specializations for \tcode{deduce} is undefined.
@@ -396,6 +405,43 @@ If \tcode{value} is present, the type \tcode{memory_alignment<T, U>} is a \tcode
 
 \pnum
 The behavior of a program that adds specializations for \tcode{memory_alignment} is undefined.
+\end{itemdescr}
+
+\begin{itemdecl}
+template<class T, class V> struct rebind_simd { using type = @\seebelow@; };
+\end{itemdecl}
+
+\begin{itemdescr}
+  \pnum
+  The member \tcode{type} is present if and only if
+  \begin{itemize}
+    \item \tcode{V} is either \tcode{simd<U, Abi0>} or \tcode{simd_mask<U, Abi0>}, where \tcode{U} and \tcode{Abi0} are deduced from \tcode{V}, and
+    \item \tcode{T} is a vectorizable type, and
+    \item \tcode{simd_abi::deduce<T, simd_size_v<U, Abi0>, Abi0>} has a member type \tcode{type}.
+  \end{itemize}
+
+  \pnum
+  Let \tcode{Abi1} denote the type \tcode{deduce_t<T, simd_size_v<U, Abi0>, Abi0>}.
+  Where present, the member typedef \tcode{type} names
+  \tcode{simd<T, Abi1>} if \tcode V is \tcode{simd<U, Abi0>} or
+  \tcode{simd_mask<T, Abi1>} if \tcode V is \tcode{simd_mask<U, Abi0>}.
+\end{itemdescr}
+
+\begin{itemdecl}
+template<int N, class V> struct resize_simd { using type = @\seebelow@; };
+\end{itemdecl}
+
+\begin{itemdescr}
+  \pnum
+  The member \tcode{type} is present if and only if
+  \begin{itemize}
+    \item \tcode{V} is either \tcode{simd<T, Abi0>} or \tcode{simd_mask<T, Abi0>}, where \tcode T and \tcode{Abi0} are deduced from \tcode V, and
+    \item \tcode{simd_abi::deduce<T, N, Abi0>} has a member type \tcode{type}.
+  \end{itemize}
+
+  \pnum
+  Let \tcode{Abi1} denote the type \tcode{deduce_t<T, N, Abi0>}.
+  Where present, the member typedef \tcode{type} names \tcode{simd<T, Abi1>} if \tcode V is \tcode{simd<T, Abi0>} or \tcode{simd_mask<T, Abi1>} if \tcode V is \tcode{simd_mask<T, Abi0>}.
 \end{itemdescr}
 
 \rSec2[parallel.simd.whereexpr]{Class templates \tcode{const_where_expression} and \tcode{where_expression}}
