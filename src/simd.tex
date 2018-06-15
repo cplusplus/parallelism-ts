@@ -923,7 +923,7 @@ template<class U> simd(U&&) noexcept;
   Constructs an object with each element initialized to the value of the argument after conversion to \tcode{value_type}.
 
   \pnum\remarks
-  Let \tcode{From} identify the type \tcode{remove_cv_t<remove_reference_t<U>>}. This constructor shall not participate in overload resolution unless:
+  Let \tcode{From} denote the type \tcode{remove_cv_t<remove_reference_t<U>>}. This constructor shall not participate in overload resolution unless:
   \begin{itemize}
     \item \tcode{From} is a vectorizable type and every possibly value of \tcode{From} can be represented with type \tcode{value_type}, or
     \item \tcode{From} is not an arithmetic type and is implicitly convertible to \tcode{value_type}, or
@@ -1371,14 +1371,13 @@ template<class T, class U, class Abi> @\seebelow@ simd_cast(const simd<U, Abi>& 
 
 \begin{itemdescr}
   \pnum
-  Let \tcode{To} identify \tcode{T::value_type} if \tcode{is_simd_v<T>} is \tcode{true}, or \tcode{T} otherwise.
+  Let \tcode{To} denote \tcode{T::value_type} if \tcode{is_simd_v<T>} is \tcode{true}, or \tcode{T} otherwise.
 
   \pnum\returns
   A \tcode{simd} object with the $i^\text{th}$ element initialized to \tcode{static_cast<To>(x[$i$])} \foralli.
 
   \pnum\remarks
   The function shall not participate in overload resolution unless
-
   \begin{itemize}
     \item every possible value of type \tcode{U} can be represented with type \tcode{To}, and
     \item either
@@ -1391,9 +1390,9 @@ template<class T, class U, class Abi> @\seebelow@ simd_cast(const simd<U, Abi>& 
   \pnum
   The return type is
   \begin{itemize}
-    \item \tcode{T} if \tcode{is_simd_v<T>} is \tcode{true}, otherwise
-    \item \tcode{simd<T, Abi>} is \tcode{U} is \tcode{T}, otherwise
-    \item \tcode{simd<T, simd_abi::fixed_size<simd<U, Abi>::size()>>}
+    \item \tcode{T} if \tcode{is_simd_v<T>} is \tcode{true};
+    \item otherwise, \tcode{simd<T, Abi>} if \tcode{U} is the same type as \tcode{T};
+    \item otherwise, \tcode{simd<T, simd_abi::fixed_size<simd<U, Abi>::size()>>}
   \end{itemize}
 \end{itemdescr}
 
@@ -1403,7 +1402,7 @@ template<class T, class U, class Abi> @\seebelow@ static_simd_cast(const simd<U,
 
 \begin{itemdescr}
   \pnum
-  Let \tcode{To} identify \tcode{T::value_type} if \tcode{is_simd_v<T>} is \tcode{true} or \tcode{T} otherwise.
+  Let \tcode{To} denote \tcode{T::value_type} if \tcode{is_simd_v<T>} is \tcode{true} or \tcode{T} otherwise.
 
   \pnum\returns
   A \tcode{simd} object with the $i^\text{th}$ element initialized to \tcode{static_cast<To>(x[$i$])} \foralli.
@@ -1418,9 +1417,9 @@ template<class T, class U, class Abi> @\seebelow@ static_simd_cast(const simd<U,
   \pnum
   The return type is
   \begin{itemize}
-    \item \tcode{T} if \tcode{is_simd_v<T>} is \tcode{true}, otherwise
-    \item \tcode{simd<T, Abi>} if either \tcode{U} is \tcode{T} or \tcode{U} and \tcode{T} are integral types that only differ in signedness, otherwise
-    \item \tcode{simd<T, simd_abi::fixed_size<simd<U, Abi>::size()>>}.
+    \item \tcode{T} if \tcode{is_simd_v<T>} is \tcode{true};
+    \item otherwise, \tcode{simd<T, Abi>} if either \tcode{U} is the same type as \tcode{T} or \tcode{make_signed_t<U>} is the same type as \tcode{make_signed_t<T>};
+    \item otherwise, \tcode{simd<T, simd_abi::fixed_size<simd<U, Abi>::size()>>}.
   \end{itemize}
 \end{itemdescr}
 
