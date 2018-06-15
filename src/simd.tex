@@ -649,16 +649,10 @@ public:
 
   simd() noexcept = default;
 
-  // implicit conversion constructor
-  template<class U> simd(const simd<U, simd_abi::fixed_size<size()>>&) noexcept;
-
-  // implicit broadcast constructor (see below for constraints)
+  // \ref{parallel.simd.ctor}, Constructors
   template<class U> simd(U&& value) noexcept;
-
-  // generator constructor (see below for constraints)
+  template<class U> simd(const simd<U, simd_abi::fixed_size<size()>>&) noexcept;
   template<class G> explicit simd(G&& gen) noexcept;
-
-  // load constructor
   template<class U, class Flags> simd(const U* mem, Flags f);
 
   // \ref{parallel.simd.copy}, Copy functions
@@ -1629,14 +1623,10 @@ public:
 
   simd_mask() noexcept = default;
 
-  // broadcast constructor
+  // \ref{parallel.simd.mask.ctor}, Constructors
   explicit simd_mask(value_type) noexcept;
-
-  // implicit type conversion constructor
   template<class U>
     simd_mask(const simd_mask<U, simd_abi::fixed_size<size()>>&) noexcept;
-
-  // load constructor
   template<class Flags> simd_mask(const value_Type* mem, Flags);
 
   // \ref{parallel.simd.mask.copy}, Copy functions
