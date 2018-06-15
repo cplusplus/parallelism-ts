@@ -642,7 +642,7 @@ template<class T, class Abi> class simd {
 public:
   using value_type = T;
   using reference = @\seebelow@;
-  using mask_type = simd_mask<T, Abi>
+  using mask_type = simd_mask<T, Abi>;
   using abi_type = Abi;
 
   static constexpr size_t size() noexcept;
