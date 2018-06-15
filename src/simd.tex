@@ -335,7 +335,7 @@ template<class T> struct is_abi_tag { @\seebelow@ };
 
 \begin{itemdescr}
 \pnum
-The type \tcode{is_abi_tag<T>} is a \tcode{UnaryTypeTrait} with a \tcode{BaseCharacteristic} of \tcode{true_type} if \tcode{T} is a standard or extended ABI tag, and \tcode{false_type} otherwise.
+The type \tcode{is_abi_tag<T>} is a \tcode{UnaryTypeTrait} with a base characteristic of \tcode{true_type} if \tcode{T} is a standard or extended ABI tag, and \tcode{false_type} otherwise.
 
 \pnum
 The behavior of a program that adds specializations for \tcode{is_abi_tag} is undefined.
@@ -347,7 +347,7 @@ template<class T> struct is_simd { @\seebelow@ };
 
 \begin{itemdescr}
 \pnum
-The type \tcode{is_simd<T>} is a \tcode{UnaryTypeTrait} with a \tcode{BaseCharacteristic} of \tcode{true_type} if \tcode{T} is a specialization of the \tcode{simd} class template, and \tcode{false_type} otherwise.
+The type \tcode{is_simd<T>} is a \tcode{UnaryTypeTrait} with a base characteristic of \tcode{true_type} if \tcode{T} is a specialization of the \tcode{simd} class template, and \tcode{false_type} otherwise.
 
 \pnum
 The behavior of a program that adds specializations for \tcode{is_simd} is undefined.
@@ -359,7 +359,7 @@ template<class T> struct is_simd_mask { @\seebelow@ };
 
 \begin{itemdescr}
 \pnum
-The type \tcode{is_simd_mask<T>} is a \tcode{UnaryTypeTrait} with a \tcode{BaseCharacteristic} of \tcode{true_type} if \tcode{T} is a specialization of the \tcode{simd_mask} class template, and \tcode{false_type} otherwise.
+The type \tcode{is_simd_mask<T>} is a \tcode{UnaryTypeTrait} with a base characteristic of \tcode{true_type} if \tcode{T} is a specialization of the \tcode{simd_mask} class template, and \tcode{false_type} otherwise.
 
 \pnum
 The behavior of a program that adds specializations for \tcode{is_simd_mask} is undefined.
@@ -371,7 +371,7 @@ template<class T> struct is_simd_flag_type { @\seebelow@ };
 
 \begin{itemdescr}
 \pnum
-The type \tcode{is_simd_flag_type<class T>} is a \tcode{UnaryTypeTrait} with a \tcode{BaseCharacteristic} of \tcode{true_type} if \tcode{T} is one of
+The type \tcode{is_simd_flag_type<class T>} is a \tcode{UnaryTypeTrait} with a base characteristic of \tcode{true_type} if \tcode{T} is one of
 \begin{itemize}
   \item \tcode{element_aligned_tag}, or
   \item \tcode{vector_aligned_tag}, or
@@ -399,7 +399,7 @@ template<class T, class Abi = simd_abi::compatible<T>> struct simd_size { @\seeb
 \end{note}
 
 \pnum
-If \tcode{value} is present, the type \tcode{simd_size<T, Abi>} is a \tcode{BinaryTypeTrait} with a \tcode{BaseCharacteristic} of \tcode{integral_constant<size_t, N>} with \tcode{N} equal to the number of elements in a \tcode{simd<T, Abi>} object. \begin{note}If \tcode{simd<T, Abi>} is not supported for the currently targeted system, \tcode{simd_size<T, Abi>::value} produces the value \tcode{simd<T, Abi>::size()} would return if it were supported.\end{note}
+If \tcode{value} is present, the type \tcode{simd_size<T, Abi>} is a \tcode{BinaryTypeTrait} with a base characteristic of \tcode{integral_constant<size_t, N>} with \tcode{N} equal to the number of elements in a \tcode{simd<T, Abi>} object. \begin{note}If \tcode{simd<T, Abi>} is not supported for the currently targeted system, \tcode{simd_size<T, Abi>::value} produces the value \tcode{simd<T, Abi>::size()} would return if it were supported.\end{note}
 
 \pnum
 The behavior of a program that adds specializations for \tcode{simd_size} is undefined.
@@ -418,7 +418,7 @@ template<class T, class U = typename T::value_type> struct memory_alignment { @\
 \end{itemize}
 
 \pnum
-If \tcode{value} is present, the type \tcode{memory_alignment<T, U>} is a \tcode{BinaryTypeTrait} with a \tcode{BaseCharacteristic} of \tcode{integral_constant<size_t, N>} for some implementation-defined \tcode{N} (see \ref{parallel.simd.copy} and \ref{parallel.simd.mask.copy}). \begin{note}\tcode{value} identifies the alignment restrictions on pointers used for (converting) loads and stores for the give type \tcode{T} on arrays of type \tcode{U}.\end{note}
+If \tcode{value} is present, the type \tcode{memory_alignment<T, U>} is a \tcode{BinaryTypeTrait} with a base characteristic of \tcode{integral_constant<size_t, N>} for some implementation-defined \tcode{N} (see \ref{parallel.simd.copy} and \ref{parallel.simd.mask.copy}). \begin{note}\tcode{value} identifies the alignment restrictions on pointers used for (converting) loads and stores for the give type \tcode{T} on arrays of type \tcode{U}.\end{note}
 
 \pnum
 The behavior of a program that adds specializations for \tcode{memory_alignment} is undefined.
