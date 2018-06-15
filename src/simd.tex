@@ -2,6 +2,11 @@
 
 \newcommand\foralli[1][]{for all $i$ in the range of \tcode{[0, #1size())}}
 \newcommand\forallmaskedi{for all selected indices $i$}
+\newcommand\flagsRequires[2]{
+\item If the template parameter \tcode{Flags} is \tcode{vector_aligned_tag}, \tcode{mem} shall point to storage aligned by \tcode{memory_alignment_v<#1>}.
+\item If the template parameter \tcode{Flags} is \tcode{overaligned_tag<N>}, \tcode{mem} shall point to storage aligned by \tcode{N}.
+\item If the template parameter \tcode{Flags} is \tcode{element_aligned_tag}, \tcode{mem} shall point to storage aligned by \tcode{alignof(#2)}.
+}
 
 \rSec0[parallel.simd]{Data-Parallel Types}
 \rSec1[parallel.simd.general]{General}
@@ -543,7 +548,10 @@ template<class U, class Flags> void copy_to(U* mem, Flags) const && noexcept;
 
 \begin{itemdescr}
   \pnum\requires
-  If the template parameter \tcode{Flags} is \tcode{vector_aligned_tag}, \tcode{mem} shall point to storage aligned by \tcode{memory_alignment_v<T, U>}. If the template parameter \tcode{Flags} is \tcode{overaligned_tag<N>}, \tcode{mem} shall point to storage aligned by \tcode{N}. If the template parameter \tcode{Flags} is \tcode{element_aligned_tag}, \tcode{mem} shall point to storage aligned by \tcode{alignof(U)}. If \tcode{M} is not \tcode{bool}, the largest selected index is less than the number of values pointed to by \tcode{mem}.
+  \begin{itemize}
+    \item If \tcode{M} is not \tcode{bool}, the largest selected index is less than the number of values pointed to by \tcode{mem}.
+    \flagsRequires{T, U}{U}
+  \end{itemize}
 
   \pnum\effects
   Copies the selected elements as if \tcode{mem[$i$] = static_cast<U>(data[$i$])} for all selected indices $i$.
@@ -616,7 +624,10 @@ template<class U, class Flags> void copy_from(const U* mem, Flags) && noexcept;
 
 \begin{itemdescr}
   \pnum\requires
-  If the template parameter \tcode{Flags} is \tcode{vector_aligned_tag}, \tcode{mem} shall point to storage aligned by \tcode{memory_alignment_v<T, U>}. If the template parameter \tcode{Flags} is \tcode{overaligned_tag<N>}, \tcode{mem} shall point to storage aligned by \tcode{N}. If the template parameter \tcode{Flags} is \tcode{element_aligned_tag}, \tcode{mem} shall point to storage aligned by \tcode{alignof(U)}. If \tcode{is_simd_flag_type_v<U>} is \tcode{true}, for all selected indices $i$, $i$ shall be less than the number of values pointed to by \tcode{mem}.
+  \begin{itemize}
+    \item If \tcode{is_simd_flag_type_v<U>} \ednote{\tcode{U} is wrong. P0214R9 says \tcode{M} instead. And it should be consistent with the wording in \tcode{copy_to} above.} is \tcode{true}, for all selected indices $i$, $i$ shall be less than the number of values pointed to by \tcode{mem}.
+    \flagsRequires{T, U}{U}
+  \end{itemize}
 
   \pnum\effects
   Replaces the selected elements as if \tcode{data[$i$] = static_cast<value_type>(mem[$i$])} for all selected indices $i$.
@@ -965,7 +976,10 @@ template<class U, class Flags> simd(const U* mem, Flags);
 
 \begin{itemdescr}
   \pnum\requires
-  If the template parameter \tcode{Flags} is \tcode{vector_aligned_tag}, \tcode{mem} shall point to storage aligend by \tcode{memory_alignment_v<simd, U>}. If the template parameter \tcode{Flags} is \tcode{overaligned_tag<N>}, \tcode{mem} shall point to storage aligned by \tcode{N}. If the template parameter \tcode{Flags} is \tcode{element_aligned_tag}, \tcode{mem} shall point to storage aligned by \tcode{alignof(U)}. \tcode{[mem, mem + size())} is a valid range.
+  \begin{itemize}
+    \item \tcode{[mem, mem + size())} is a valid range.
+    \flagsRequires{simd, U}{U}
+  \end{itemize}
 
   \pnum\effects
   Constructs an object where the $i^\text{th}$ element is initialized to \tcode{static_cast<T>(mem[$i$])} \foralli.
@@ -986,7 +1000,10 @@ template<class U, class Flags> void copy_from(const U* mem, Flags);
 
 \begin{itemdescr}
   \pnum\requires
-  If the template parameter \tcode{Flags} is \tcode{vector_aligned_tag}, \tcode{mem} shall point to storage aligned by \tcode{memory_alignment_v<simd, U>}. If the template parameter \tcode{Flags} is \tcode{overaligned_tag<N>}, \tcode{mem} shall point to storage aligend by \tcode{N}. If the template parameter \tcode{Flags} is \tcode{element_aligned_tag}, \tcode{mem} shall point to storage aligned by \tcode{alignof(U)}. \tcode{[mem, mem + size())} is a valid range.
+  \begin{itemize}
+    \item \tcode{[mem, mem + size())} is a valid range.
+    \flagsRequires{simd, U}{U}
+  \end{itemize}
 
   \pnum\effects
   Replaces the elements of the \tcode{simd} object such that the $i^\text{th}$ element is assigned with \tcode{static_cast<T>(mem[$i$])} \foralli.
@@ -1005,7 +1022,10 @@ template<class U, class Flags> void copy_to(U* mem, Flags) const;
 
 \begin{itemdescr}
   \pnum\requires
-  If the template parameter \tcode{Flags} is \tcode{vector_aligned_tag}, \tcode{mem} shall point to storage aligned by \tcode{memory_alignment_v<simd, U>}. If the template parameter \tcode{Flags} is \tcode{overaligned_tag<N>}, \tcode{mem} shall point to storage aligned by \tcode{N}. If the template parameter \tcode{Flags} is \tcode{element_aligned_tag}, \tcode{mem} shall point to storage aligned by \tcode{alignof(U)}. \tcode{[mem, mem + size())} is a valid range.
+  \begin{itemize}
+    \item \tcode{[mem, mem + size())} is a valid range.
+    \flagsRequires{simd, U}{U}
+  \end{itemize}
 
   \pnum\effects
   Copies all \tcode{simd} elements as if \tcode{mem[$i$] = static_cast<U>(operator[]($i$))} \foralli.
@@ -1732,7 +1752,10 @@ template<class Flags> simd_mask(const value_type* mem, Flags);
 
 \begin{itemdescr}
   \pnum\requires
-  If the template parameter \tcode{Flags} is \tcode{vector_aligned_tag}, \tcode{mem} shall point to storage aligned by \tcode{memory_alignment_v<simd_mask>}. If the template parameter \tcode{Flags} is \tcode{overaligned_tag<N>}, \tcode{mem} shall point to storage aligned by \tcode{N}. If the template parameter \tcode{Flags} is \tcode{element_aligned_tag}, \tcode{mem} shall point to storage aligned by \tcode{alignof(U)}. \tcode{[mem, mem + size())} is a valid range.
+  \begin{itemize}
+    \item \tcode{[mem, mem + size())} is a valid range.
+    \flagsRequires{simd_mask}{value_type}
+  \end{itemize}
 
   \pnum\effects
   Constructs an object where the $i^\text{th}$ element is initialized to \tcode{mem[$i$]} \foralli.
@@ -1752,7 +1775,10 @@ template<class Flags> void copy_from(const value_type* mem, Flags);
 
 \begin{itemdescr}
   \pnum\requires
-  If the template parameter \tcode{Flags} is \tcode{vector_aligned_tag}, \tcode{mem} shall point to storage aligned by \tcode{memory_alignment_v<simd_mask>}. If the template parameter \tcode{Flags} is \tcode{overaligned_tag<N>}, \tcode{mem} shall point to storage aligned by \tcode{N}. If the template parameter \tcode{Flags} is \tcode{element_aligned_tag}, \tcode{mem} shall point to storage aligned by \tcode{alignof(U)}. \tcode{[mem, mem + size())} is a valid range.
+  \begin{itemize}
+    \item \tcode{[mem, mem + size())} is a valid range.
+    \flagsRequires{simd_mask}{value_type}
+  \end{itemize}
 
   \pnum\effects
   Replaces the elements of the \tcode{simd_mask} object such that the $i^\text{th}$ element is replaced with \tcode{mem[$i$]} \foralli.
@@ -1770,7 +1796,10 @@ template<class Flags> void copy_to(value_type* mem, Flags);
 
 \begin{itemdescr}
   \pnum\requires
-  If the template parameter \tcode{Flags} is \tcode{vector_aligned_tag}, \tcode{mem} shall point to storage aligned by \tcode{memory_alignment_v<simd_mask>}. If the template parameter \tcode{Flags} is \tcode{overaligned_tag<N>}, \tcode{mem} shall point to storage aligned by \tcode{N}. If the template parameter \tcode{Flags} is \tcode{element_aligned_tag}, \tcode{mem} shall point to storage aligned by \tcode{alignof(U)}. \tcode{[mem, mem + size())} is a valid range.
+  \begin{itemize}
+    \item \tcode{[mem, mem + size())} is a valid range.
+    \flagsRequires{simd_mask}{value_type}
+  \end{itemize}
 
   \pnum\effects
   Copies all \tcode{simd_mask} elements as if \tcode{mem[$i$] = operator[](i)} \foralli.
