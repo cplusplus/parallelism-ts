@@ -1,0 +1,85 @@
+%!TEX root = ts.tex
+
+\rSec0[parallel.alg]{Parallel algorithms}
+
+\rSec1[parallel.alg.wavefront]{Wavefront Application}
+
+\pnum For the purposes of this section, an \defn{evaluation} is a value
+computation or side effect of an expression, or an execution of a statement.
+Initialization of a temporary object is considered a subexpression of the
+expression that necessitates the temporary object.
+
+\pnum An evaluation A \defn{contains} an evaluation B if:
+
+\begin{itemize}
+\item A and B are not potentially concurrent ([intro.races]); and
+\item the start of A is the start of B or the start of A is sequenced before the start of B; and
+\item the completion of B is the completion of A or the completion of B is sequenced before the completion of A.
+\end{itemize}
+
+\begin{note}
+This includes evaluations occurring in function invocations.
+\end{note}
+
+\pnum An evaluation A is ordered before an evaluation B if A is
+deterministically sequenced before B. \begin{note}If A is indeterminately
+sequenced with respect to B or A and B are unsequenced, then A is not ordered
+before B and B is not ordered before A. The ordered before relationship is
+transitive.\end{note}
+
+\pnum For an evaluation A ordered before an evaluation B, both contained in the
+same invocation of an element access function, A is a \defn{vertical antecedent} of B if:
+
+\begin{itemize}
+\item there exists an evaluation S such that:
+  \begin{itemize}
+    \item S contains A, and
+    \item S contains all evaluations C (if any) such that A is ordered before C and C is ordered before B,
+    \item but S does not contain B, and
+  \end{itemize}
+\item control reached B from A without executing any of the following:
+  \begin{itemize}
+    \item a \tcode{goto} statement or \tcode{asm} declaration that jumps to a statement outside of S, or
+    \item a \tcode{switch} statement executed within S that transfers control into a substatement of a nested selection or iteration statement, or
+    \item a \tcode{throw} \begin{note}Even if caught\end{note}, or
+    \item a \tcode{jongjmp}.
+  \end{itemize}
+\end{itemize}
+
+\begin{note}
+Vertical antecedent is an irreflexive, antisymmetric, nontransitive relationship between two evaluations. Informally, A is a vertical antecedent of B if A is sequenced immediately before B or A is nested zero or more levels within a statement S that immediately precedes B.
+\end{note}
+
+\pnum In the following, $X_i$ and $X_j$ refer to evaluations of the {\em same} expression
+or statement contained in the application of an element access function
+corresponding to the i\textsuperscript{th} and j\textsuperscript{th} elements of the input sequence.
+\begin{note}There might be several evaluations $X_k$, $Y_k$, etc. of a single
+expression or statement in application $k$, for example, if the expression or
+statement appears in a loop within the element access function.\end{note}
+
+\pnum \defn{Horizontally matched} is an equivalence relationship between two
+evaluations of the same expression. An evaluation B\textsubscript{i} is
+\defn{horizontally matched} with an evaluation B\textsubscript{j} if:
+
+\begin{itemize}
+\item both are the first evaluations in their respective applications of the element access function, or
+\item there exist horizontally matched evaluations A\textsubscript{i} and A\textsubscript{j} that are vertical antecedents of evaluations B\textsubscript{i} and B\textsubscript{j}, respectively.
+\end{itemize}
+
+\begin{note}\defn{Horizontally matched} establishes a theoretical {\em lock-step} relationship between evaluations in different applications of an element access function.\end{note}
+
+\pnum Let $f$ be a function called for each argument list in a sequence of argument lists. \defn{Wavefront application of f} requires that evaluation A\textsubscript{i} be sequenced before evaluation B\textsubscript{j} if i < j and:
+
+\begin{itemize}
+\item A\textsubscript{i} is sequenced before some evaluation B\textsubscript{i} and B\textsubscript{i} is horizontally matched with B\textsubscript{j}, or
+\item A\textsubscript{i} is horizontally matched with some evaluation A\textsubscript{j} and A\textsubscript{j} is sequenced before B\textsubscript{j}.
+\end{itemize}
+
+\begin{note}
+\defn{Wavefront application} guarantees that parallel applications i and j execute such that progress on application j never gets {\em ahead} of application i.
+\end{note}
+\begin{note}
+The relationships between A\textsubscript{i} and B\textsubscript{i} and between A\textsubscript{j} and B\textsubscript{j} are \defn{sequenced before}, not \defn{vertical antecedent}.
+\end{note}
+
+
