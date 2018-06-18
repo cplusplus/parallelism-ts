@@ -164,3 +164,103 @@ template<class ExecutionPolicy,
 }
 \end{codeblock}
 
+\rSec2[parallel.alg.reductions]{Reductions}
+
+\pnum Each of the function templates in this subclause
+([parallel.alg.reductions]) returns a \defn{reduction object} of unspecified type
+having a \defn{reduction value type} and encapsulating a \defn{reduction identity} value for
+the reduction, a \defn{combiner} function object, and a \defn{live-out object} from which the
+initial value is obtained and into which the final value is stored.
+
+\pnum An algorithm uses reduction objects by allocating an unspecified number
+of instances, known as \defn{accumulators}, of the reduction value type. \begin{note}An
+implementation might, for example, allocate an accumulator for each thread in
+its private thread pool.\end{note} Each accumulator is initialized with the
+object's reduction identity, except that the live-out object (which was
+    initialized by the caller) comprises one of the accumulators. The algorithm
+passes a reference to an accumulator to each application of an element-access
+function, ensuring that no two concurrently executing invocations share the
+same accumulator. An accumulator can be shared between two applications that do
+not execute concurrently, but initialization is performed only once per
+accumulator.
+
+\pnum Modifications to the accumulator by the application of element access
+functions accrue as partial results. At some point before the algorithm
+returns, the partial results are combined, two at a time, using the reduction
+object's combiner operation until a single value remains, which is then
+assigned back to the live-out object. \begin{note}In order to produce useful
+results, modifications to the accumulator should be limited to commutative
+operations closely related to the combiner operation. For example if the
+combiner is \tcode{plus<T>}, incrementing the accumulator would be consistent with the
+combiner but doubling it or assigning to it would not.\end{note}
+
+\begin{itemdecl}
+template<class T, class BinaryOperation>
+  @\unspec@ reduction(T& var, const T& identity, BinaryOperation combiner);
+\end{itemdecl}
+
+\begin{itemdescr}
+  \pnum \requires \tcode{T} shall meet the requirements of \tcode{CopyConstructible} and \tcode{MoveAssignable}. The expression \tcode{var = combiner(var, var)} shall be well-formed.
+
+  \pnum \returns A reduction object of unspecified type having reduction value type \tcode{T}, reduction identity \tcode{identity}, combiner function object \tcode{combiner}, and using the object referenced by \tcode{var} as its live-out object.
+\end{itemdescr}
+
+\begin{itemdecl}
+template<class T>
+  @\unspec@ unspecified reduction_plus(T& var);
+template<class T>
+  @\unspec@ unspecified reduction_multiplies(T& var);
+template<class T>
+  @\unspec@ unspecified reduction_bit_and(T& var);
+template<class T>
+  @\unspec@ unspecified reduction_bit_or(T& var);
+template<class T>
+  @\unspec@ unspecified reduction_bit_xor(T& var);
+template<class T>
+  @\unspec@ unspecified reduction_min(T& var);
+template<class T>
+  @\unspec@ unspecified reduction_max(T& var);
+\end{itemdecl}
+
+\begin{itemdescr}
+  \pnum \requires \tcode{T} shall meet the requirements of \tcode{CopyConstructible} and \tcode{MoveAssignable}.
+
+  \pnum \returns A reduction object of unspecified type having reduction value type \tcode{T}, reduction identity and combiner operation as specified in Table~\ref{tab:parallel.alg.reductions} and using the object referenced by \tcode{var} as its live-out object.
+\end{itemdescr}
+
+\begin{floattable}{Reduction identities and combiner operations}{tab:parallel.alg.reductions}
+{ccc}
+\topline
+\chdr{Function} & \chdr{Reduction Identity} & \chdr{Combiner Operation} \\
+\capsep
+\tcode{reduction_plus} & \tcode{T()} & \tcode{x + y} \\
+\hline
+\tcode{reduction_multiplies} & \tcode{T(1)} & \tcode{x * y} \\
+\hline
+\tcode{reduction_bit_and} & \tcode{(\~T())} & \tcode{x \& y} \\
+\hline
+\tcode{reduction_bit_or} & \tcode{T()} & \tcode{x | y} \\
+\hline
+\tcode{reduction_bit_xor} & \tcode{T()} & \tcode{x \^{} y} \\
+\hline
+\tcode{reduction_min} & \tcode{var} & \tcode{min(x, y)} \\
+\hline
+\tcode{reduction_max} & \tcode{var} & \tcode{max(x, y)} \\
+\end{floattable}
+
+\begin{example}
+The following code updates each element of \tcode{y} and sets \tcode{s} to the sum of the squares.
+\begin{codeblock}
+extern int n;
+extern float x[], y[], a;
+float s = 0;
+for_loop(execution::vec, 0, n,
+    reduction(s, 0.0f, plus<>()),
+    [&](int i, float& accum) {
+            y[i] += a*x[i];
+            accum += y[i]*y[i];
+    }
+);
+\end{codeblock}
+\end{example}
+
