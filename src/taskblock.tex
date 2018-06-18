@@ -192,5 +192,37 @@ define_task_block([&](auto& tb) {
 \end{codeblock}
 \end{example}
 
+\end{itemdescr}
+
+\rSec1[parallel.task_block.define_task_block]{Function template \tcode{define_task_block}}
+
+\begin{itemdecl}
+template<class F>
+  void define_task_block(F&& f);
+       
+template<class F>
+  void define_task_block_restore_thread(F&& f);
+\end{itemdecl}
+
+\begin{itemdescr}
+\pnum \requires Given an lvalue \tcode{tb} of type \tcode{task_block}, the expression \tcode{f(tb)} shall be well-formed
+
+\pnum \effects Constructs a \tcode{task_block} \tcode{tb} and calls \tcode{f(tb)}.
+
+\pnum \throws \tcode{exception_list}, as specified in \ref{parallel.task_block.exceptions}.
+
+\pnum \postconditions All tasks spawned from \tcode{f} have finished execution.
+
+\pnum \remarks The \tcode{define_task_block} function may return on a thread
+other than the one on which it was called unless there are no task blocks
+active on entry to \tcode{define_task_block} (see
+    \ref{parallel.task_block.class}), in which case the function returns on the
+original thread. When \tcode{define_task_block} returns on a different thread, it
+synchronizes with operations following the call. \begin{note}The return from
+\tcode{define_task_block} is ordered similarly to an ordinary function
+call in a single thread.\end{note} The \tcode{define_task_block_restore_thread}
+function always returns on the same thread as the one on which it was called.
+
+\pnum \realnotes It is expected (but not mandated) that \tcode{f} will (directly or indirectly) call \tcode{tb.run({\em function-object})}.
 
 \end{itemdescr}
