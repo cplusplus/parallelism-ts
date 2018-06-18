@@ -349,3 +349,37 @@ The first argument to {\em f} is an element from the input sequence.\begin{note}
 \pnum \remarks If {\em f} returns a result, the result is ignored.
 
 \end{itemdescr}
+
+\rSec2[parallel.alg.novec]{No vec}
+
+\begin{itemdecl}
+template<class F>
+  auto no_vec(F&& f) noexcept -> decltype(std::forward<F>(f)());
+\end{itemdecl}
+
+\begin{itemdescr}
+\pnum \effects Evaluates \tcode{std::forward<F>(f)()}. When invoked within an element access function in a parallel algorithm using \tcode{vector_policy}, if two calls to \tcode{no_vec} are horizontally matched within a wavefront application of an element access function over input sequence S, then the execution of \tcode{f} in the application for one element in S is sequenced before the execution of \tcode{f} in the application for a subsequent element in S; otherwise, there is no effect on sequencing.
+
+\pnum \returns The result of \tcode{f}.
+
+\pnum \realnotes If \tcode{f} exits via an exception, then \tcode{terminate} will be called, consistent with all other potentially-throwing operations invoked with \tcode{vector_policy} execution.
+
+\begin{example}
+\begin{codeblock}
+extern int* p;
+for_loop(vec, 0, n[&](int i) {
+  y[i] +=y[i+1];
+  if(y[i] < 0) {
+    no_vec([]{
+      *p++ = i;
+    });
+  }
+});
+\end{codeblock}
+
+The updates \tcode{*p++ = i} will occur in the same order as if the policy were \tcode{seq}.
+\end{example}
+
+\end{itemdescr}
+
+
