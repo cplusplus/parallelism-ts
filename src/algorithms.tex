@@ -448,3 +448,14 @@ invocation. \begin{note}The return-value deduction of the forwarded operations
 results in these operations returning by value, not reference. This formulation
 prevents accidental collisions on accesses to the return value.\end{note}
 
+\rSec2[parallel.alg.ordupdate.func]{Ordered update function template}
+
+\begin{itemdecl}
+template<T>
+  ordered_update_t<T> ordered_update(T& loc) noexcept;
+\end{itemdecl}
+
+\begin{itemdescr}
+\pnum \returns \tcode{\{ loc \}}.
+\end{itemdescr}
+
