@@ -224,5 +224,32 @@ call in a single thread.\end{note} The \tcode{define_task_block_restore_thread}
 function always returns on the same thread as the one on which it was called.
 
 \pnum \realnotes It is expected (but not mandated) that \tcode{f} will (directly or indirectly) call \tcode{tb.run({\em function-object})}.
-
 \end{itemdescr}
+
+\rSec1[parallel.task_block.exceptions]{Exception Handling}
+
+\pnum Every \tcode{task_block} has an associated exception list. When the task block starts, its associated exception list is empty.
+
+\pnum When an exception is thrown from the user-provided function object passed
+to \tcode{define_task_block} or \tcode{define_task_block_restore_thread}, it is
+added to the exception list for that task block. Similarly, when an exception
+is thrown from the user-provided function object passed into
+\tcode{task_block::run}, the exception object is added to the exception list
+associated with the nearest enclosing task block. In both cases, an
+implementation may discard any pending tasks that have not yet been invoked.
+Tasks that are already in progress are not interrupted except at a call to
+\tcode{task_block::run} or \tcode{task_block::wait} as described below.
+
+\pnum If the implementation is able to detect that an exception has been thrown
+by another task within the same nearest enclosing task block, then
+\tcode{task_block::run} or \tcode{task_block::wait} may throw
+\tcode{task_canceled_exception}; these instances of
+\tcode{task_canceled_exception} are not added to the exception list of the
+corresponding task block.
+
+\pnum When a task block finishes with a non-empty exception list, the
+exceptions are aggregated into an \tcode{exception_list} object, which is then thrown
+from the task block.
+
+\pnum The order of the exceptions in the \tcode{exception_list} object is unspecified.
+
