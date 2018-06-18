@@ -41,3 +41,13 @@ thrown by \tcode{task_block::run} or \tcode{task_block::wait} if they detect
 than an exception is pending within the current parallel block. See
 \ref{parallel.task_block.exceptions}, below.
 
+\rSec2[parallel.task_block.task_cancelled_exception.what]{\tcode{task_cancelled_exception} member function \tcode{what}}
+
+\begin{itemdecl}
+virtual const char* what() const noexcept
+\end{itemdecl}
+
+\begin{itemdescr}
+\pnum \returns An implementation-defined NTBS.
+\end{itemdescr}
+
