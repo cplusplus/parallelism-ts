@@ -20,3 +20,24 @@ inline namespace parallelism_v2 {
 }
 \end{codeblock}
 
+\rSec1[parallel.task_block.task_cancelled_exception]{Class \tcode{task_cancelled_exception}}
+
+\begin{codeblock}
+namespace std::experimental {
+inline namespace parallelism_v2 {
+
+  class task_cancelled_exception : public exception
+  {
+    public:
+      task_cancelled_exception() noexcept;
+      virtual const char* what() const noexcept override;
+  };
+}
+}
+\end{codeblock}
+
+\pnum The class \tcode{task_cancelled_exception} defines the type of objects
+thrown by \tcode{task_block::run} or \tcode{task_block::wait} if they detect
+than an exception is pending within the current parallel block. See
+\ref{parallel.task_block.exceptions}, below.
+
