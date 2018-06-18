@@ -382,4 +382,69 @@ The updates \tcode{*p++ = i} will occur in the same order as if the policy were 
 
 \end{itemdescr}
 
+\rSec2[parallel.alg.ordupdate.class]{Ordered update class}
+
+\begin{codeblock}
+template<class T>
+class ordered_update_t {
+  T& ref_; // exposition only
+public:
+  ordered_update_t(T& loc) noexcept
+    : ref_(loc) {}
+  ordered_update_t(const ordered_update_t&) = delete;
+  ordered_update_t& operator=(const ordered_update_t&) = delete;
+
+  template <class U>
+    auto operator=(U rhs) const noexcept
+      { return no_vec([&]{ return ref_ = std::move(rhs); }); }
+  template <class U>
+    auto operator+=(U rhs) const noexcept
+      { return no_vec([&]{ return ref_ += std::move(rhs); }); }
+  template <class U>
+    auto operator-=(U rhs) const noexcept
+      { return no_vec([&]{ return ref_ -= std::move(rhs); }); }
+  template <class U>
+    auto operator*=(U rhs) const noexcept
+      { return no_vec([&]{ return ref_ *= std::move(rhs); }); }
+  template <class U>
+    auto operator/=(U rhs) const noexcept
+      { return no_vec([&]{ return ref_ /= std::move(rhs); }); }
+  template <class U>
+    auto operator%=(U rhs) const noexcept
+      { return no_vec([&]{ return ref_ %= std::move(rhs); }); }
+  template <class U>
+    auto operator>>=(U rhs) const noexcept
+      { return no_vec([&]{ return ref_ >>= std::move(rhs); }); }
+  template <class U>
+    auto operator<<=(U rhs) const noexcept
+      { return no_vec([&]{ return ref_ <<= std::move(rhs); }); }
+  template <class U>
+    auto operator&=(U rhs) const noexcept
+      { return no_vec([&]{ return ref_ &= std::move(rhs); }); }
+  template <class U>
+    auto operator^=(U rhs) const noexcept
+      { return no_vec([&]{ return ref_ ^= std::move(rhs); }); }
+  template <class U>
+    auto operator|=(U rhs) const noexcept
+      { return no_vec([&]{ return ref_ |= std::move(rhs); }); }
+
+  auto operator++() const noexcept
+    { return no_vec([&]{ return ++ref_; }); }
+  auto operator++(int) const noexcept
+    { return no_vec([&]{ return ref_++; }); }
+  auto operator--() const noexcept
+    { return no_vec([&]{ return --ref_; }); }
+  auto operator--(int) const noexcept
+    { return no_vec([&]{ return ref_--; }); }
+};
+\end{codeblock}
+
+\pnum An object of type \tcode{ordered_update_t<T>} is a proxy for an object of
+type \tcode{T} intended to be used within a parallel application of an element
+access function using a policy object of type \tcode{vector_policy}. Simple
+increments, assignments, and compound assignments to the object are forwarded
+to the proxied object, but are sequenced as though executed within a \tcode{no_vec}
+invocation. \begin{note}The return-value deduction of the forwarded operations
+results in these operations returning by value, not reference. This formulation
+prevents accidental collisions on accesses to the return value.\end{note}
 
