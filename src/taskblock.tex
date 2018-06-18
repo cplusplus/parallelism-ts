@@ -161,3 +161,36 @@ completes.
 
 \end{itemdescr}
 
+\rSec2[parallel.task_block.class.wait]{\tcode{task_block} member function \tcode{wait}}
+
+\begin{itemdecl}
+void wait();
+\end{itemdecl}
+
+\begin{itemdescr}
+\pnum \realpreconditions \tcode{*this} shall be the active \tcode{task_block}.
+
+\pnum \effects Blocks until the tasks spawned using this \tcode{task_block} have completed.
+
+\pnum \throws \tcode{task_cancelled_exception}, as described in \ref{parallel.task_block.exceptions}.
+
+\pnum \postconditions All tasks spawned by the nearest enclosing task block have completed.
+
+\pnum \remarks The \tcode{wait} function may return on a thread other than the
+one on which it was called; in such cases, completion of the call to
+\tcode{wait} synchronizes with subsequent operations. \begin{note}The return
+from \tcode{wait} is ordered similarly to an ordinary function call in a single
+thread.\end{note}
+
+\begin{example}
+\begin{codeblock}
+define_task_block([&](auto& tb) {
+  tb.run([&]{ process(a, w, x); }); // Process a[w] through a[x]
+  if (y < x) tb.wait();             // Wait if overlap between [w,x) and [y,z)
+  process(a, y, z);                 // Process a[y] through a[z]
+});
+\end{codeblock}
+\end{example}
+
+
+\end{itemdescr}
