@@ -1,0 +1,22 @@
+%!TEX root = ts.tex
+
+\rSec0[parallel.task_block]{Task Block}
+
+\rSec1[parallel.task_block.synopsis]{Header \tcode{<experimental/task_block> synopsis}}
+
+\begin{codeblock}
+namespace std::experimental {
+inline namespace parallelism_v2 {
+  class task_cancelled_exception;
+
+  class task_block;
+
+  template<class F>
+    void define_task_block(F&& f);
+
+  template<class f>
+    void define_task_block_restore_thread(F&& f);
+}
+}
+\end{codeblock}
+
