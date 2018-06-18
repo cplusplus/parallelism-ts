@@ -123,3 +123,41 @@ Implementations are encouraged to diagnose the above error at translation time.
 
 \end{itemdescr}
 
+\rSec2[parallel.task_block.class.run]{\tcode{task_block} member function template \tcode{run}}
+
+\begin{itemdecl}
+template<class F> void run(F&& f);
+\end{itemdecl}
+
+\begin{itemdescr}
+\pnum \requires \tcode{F} shall be \tcode{MoveConstructible}. \tcode{DECAY_COPY(std::forward<F>(f))()} shall be a valid expression.
+
+\pnum \preconditions \tcode{*this} shall be the active \tcode{task_block}.
+
+\pnum \effects Evaluates \tcode{DECAY_COPY(std::forward<F>(f))()}, where
+\tcode{DECAY_COPY(std::forward<F>(f))} is evaluated synchronously within the
+current thread. The call to the resulting copy of the function object is
+permitted to run on an unspecified thread created by the implementation in an
+unordered fashion relative to the sequence of operations following the call to
+\tcode{run(f)} (the continuation), or indeterminately sequenced within the same thread
+as the continuation. The call to \tcode{run} synchronizes with the call to the function
+object. The completion of the call to the function object synchronizes with the
+next invocation of wait on the same task_block or completion of the nearest
+enclosing task block (i.e., the \tcode{define_task_block} or
+    \tcode{define_task_block_restore_thread} that created this \tcode{task_block}).
+
+\pnum \throws \tcode{task_cancelled_exception}, as described in \ref{parallel.task_block.exceptions}.
+
+\pnum \remarks The \tcode{run} function may return on a thread other than the
+one on which it was called; in such cases, completion of the call to
+\tcode{run} synchronizes with the continuation. \begin{note}The return from
+\tcode{run} is ordered similarly to an ordinary function call in a single
+thread.\end{note}
+
+\pnum \remarks The invocation of the user-supplied function object \tcode{f}
+may be immediate or may be delayed until compute resources are available.
+\tcode{run} might or might not return before the invocation of \tcode{f}
+completes.
+
+\end{itemdescr}
+
