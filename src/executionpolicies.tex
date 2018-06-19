@@ -45,7 +45,9 @@ that multiple function object invocations may be interleaved on a single
 thread.\end{note}
 
 \pnum
-\begin{note}This overrides the usual guarantee from the \Cpp Standard, C++17 \S4.6 [intro.execution] that function executions do not overlap with one another.\end{note}
+\begin{note}
+  This overrides the usual guarantee from the \Cpp Standard, \CppXref{intro.execution} that function executions do not overlap with one another.
+\end{note}
 
 \pnum
 During the execution of a parallel algorithm with the \tcode{experimental::execution::unsequenced_policy} policy, if the invocation of an element access function exits via an uncaught exception, \tcode{terminate()} will be called.

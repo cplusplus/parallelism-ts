@@ -14,7 +14,7 @@ expression that necessitates the temporary object.
 An evaluation A \defn{contains} an evaluation B if:
 
 \begin{itemize}
-\item A and B are not potentially concurrent ([intro.races]); and
+\item A and B are not potentially concurrent (\CppXref{intro.races}); and
 \item the start of A is the start of B or the start of A is sequenced before the start of B; and
 \item the completion of B is the completion of A or the completion of B is sequenced before the completion of A.
 \end{itemize}
