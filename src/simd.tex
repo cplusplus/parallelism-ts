@@ -15,7 +15,7 @@
 The data-parallel library consists of data-parallel types and operations on these types. A data-parallel type consists of elements of an underlying arithmetic type, called the \defn{element type}. The number of elements is a constant for each data-parallel type and called the \defn{width} of that type.
 
 \pnum
-Throughout this Clause, the term \defn{data-parallel type} refers to all \defn{supported} \ref{parallel.simd.overview} specializations of the \tcode{simd} and \tcode{simd_mask} class templates. A \defn{data-parallel object} is an object of \term{data-parallel type}.
+Throughout this Clause, the term \defn{data-parallel type} refers to all \defn{supported} (\ref{parallel.simd.overview}) specializations of the \tcode{simd} and \tcode{simd_mask} class templates. A \defn{data-parallel object} is an object of \term{data-parallel type}.
 
 \pnum
 An \defn{element-wise operation} applies a specified operation to the elements of one or more data-parallel objects. Each such application is unsequenced with respect to the others. A \defn{unary element-wise operation} is an element-wise operation that applies a unary operation to each element of a data-parallel object. A \defn{binary element-wise operation} is an element-wise operation that applies a binary operation to corresponding elements of two data-parallel objects.
@@ -470,8 +470,8 @@ template<int N, class V> struct resize_simd { using type = @\seebelow@; };
 
 \begin{codeblock}
 template<class M, class T> class const_where_expression {
-  const M mask; // \expos
-  T& data; // \expos
+  const M mask;    // \expos
+  T& data;         // \expos
 
 public:
   const_where_expression(const const_where_expression&) = delete;
