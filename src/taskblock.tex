@@ -90,8 +90,8 @@ ill-formed. Obtaining its address by any other means (including
 dereferencing such a pointer results in undefined behavior.
 
 \pnum
-A \tcode{task_block} is \defn{active} if it was created by the \defn{nearest
-  enclosing} \defn{task block}, where \defn{task block} refers to an invocation
+A \tcode{task_block} is \defn{active} if it was created by the \term{nearest
+  enclosing} \term{task block}, where \defn{task block} refers to an invocation
   of \tcode{define_task_block} or \tcode{define_task_block_restore_thread} and
   \defn{nearest enclosing} means the most recent invocation that has not yet
   completed. Code designated for execution in another thread by means other
