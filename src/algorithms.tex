@@ -55,7 +55,7 @@ Vertical antecedent is an irreflexive, antisymmetric, nontransitive relationship
 \end{note}
 
 \pnum
-In the following, $X_i$ and $X_j$ refer to evaluations of the {\em same} expression
+In the following, $X_i$ and $X_j$ refer to evaluations of the \emph{same} expression
 or statement contained in the application of an element access function
 corresponding to the i\textsuperscript{th} and j\textsuperscript{th} elements of the input sequence.
 \begin{note}There might be several evaluations $X_k$, $Y_k$, etc. of a single
@@ -72,7 +72,7 @@ evaluations of the same expression. An evaluation B\textsubscript{i} is
 \item there exist horizontally matched evaluations A\textsubscript{i} and A\textsubscript{j} that are vertical antecedents of evaluations B\textsubscript{i} and B\textsubscript{j}, respectively.
 \end{itemize}
 
-\begin{note}\term{Horizontally matched} establishes a theoretical {\em lock-step} relationship between evaluations in different applications of an element access function.\end{note}
+\begin{note}\term{Horizontally matched} establishes a theoretical \emph{lock-step} relationship between evaluations in different applications of an element access function.\end{note}
 
 \pnum
 Let $f$ be a function called for each argument list in a sequence of argument lists. \defn{Wavefront application} of $f$ requires that evaluation A\textsubscript{i} be sequenced before evaluation B\textsubscript{j} if i < j and:
@@ -83,7 +83,7 @@ Let $f$ be a function called for each argument list in a sequence of argument li
 \end{itemize}
 
 \begin{note}
-\term{Wavefront application} guarantees that parallel applications i and j execute such that progress on application j never gets {\em ahead} of application i.
+\term{Wavefront application} guarantees that parallel applications i and j execute such that progress on application j never gets \emph{ahead} of application i.
 \end{note}
 \begin{note}
 The relationships between A\textsubscript{i} and B\textsubscript{i} and between A\textsubscript{j} and B\textsubscript{j} are \term{sequenced before}, not \term{vertical antecedent}.
