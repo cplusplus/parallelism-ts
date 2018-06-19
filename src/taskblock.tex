@@ -240,7 +240,7 @@ call in a single thread.\end{note} The \tcode{define_task_block_restore_thread}
 function always returns on the same thread as the one on which it was called.
 
 \pnum
-\realnotes It is expected (but not mandated) that \tcode{f} will (directly or indirectly) call \tcode{tb.run({\em function-\brk{}object})}.
+\realnotes It is expected (but not mandated) that \tcode{f} will (directly or indirectly) call \tcode{tb.run(\UNSP{function-\brk{}object})}.
 \end{itemdescr}
 
 \rSec1[parallel.task_block.exceptions]{Exception Handling}
