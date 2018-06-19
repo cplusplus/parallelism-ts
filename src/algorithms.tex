@@ -305,34 +305,25 @@ template<class T, class S>
 
 \begin{itemdecl}
 template<class I, class... Rest>
-void for_loop(no_deduce_t<I> start, I finish, Rest&&... rest);
-template<class ExecutionPolicy,
-      class I, class... Rest>
-void for_loop(ExecutionPolicy&& exec,
-              no_deduce_t<I> start, I finish, Rest&&... rest);
+  void for_loop(no_deduce_t<I> start, I finish, Rest&&... rest);
+template<class ExecutionPolicy, class I, class... Rest>
+  void for_loop(ExecutionPolicy&& exec, no_deduce_t<I> start, I finish, Rest&&... rest);
 
 template<class I, class S, class... Rest>
-void for_loop_strided(no_deduce_t<I> start, I finish,
-                      S stride, Rest&&... rest);
-template<class ExecutionPolicy,
-      class I, class S, class... Rest>
-void for_loop_strided(ExecutionPolicy&& exec,
-                      no_deduce_t<I> start, I finish,
-                      S stride, Rest&&... rest);
+  void for_loop_strided(no_deduce_t<I> start, I finish, S stride, Rest&&... rest);
+template<class ExecutionPolicy, class I, class S, class... Rest>
+  void for_loop_strided(ExecutionPolicy&& exec, no_deduce_t<I> start, I finish, S stride,
+                        Rest&&... rest);
 
 template<class I, class Size, class... Rest>
-void for_loop_n(I start, Size n, Rest&&... rest);
-template<class ExecutionPolicy,
-      class I, class Size, class... Rest>
-void for_loop_n(ExecutionPolicy&& exec,
-                I start, Size n, Rest&&... rest);
+  void for_loop_n(I start, Size n, Rest&&... rest);
+template<class ExecutionPolicy, class I, class Size, class... Rest>
+  void for_loop_n(ExecutionPolicy&& exec, I start, Size n, Rest&&... rest);
 
 template<class I, class Size, class S, class... Rest>
-void for_loop_n_strided(I start, Size n, S stride, Rest&&... rest);
-template<class ExecutionPolicy,
-      class I, class Size, class S, class... Rest>
-void for_loop_n_strided(ExecutionPolicy&& exec,
-                        I start, Size n, S stride, Rest&&... rest);
+  void for_loop_n_strided(I start, Size n, S stride, Rest&&... rest);
+template<class ExecutionPolicy, class I, class Size, class S, class... Rest>
+  void for_loop_n_strided(ExecutionPolicy&& exec, I start, Size n, S stride, Rest&&... rest);
 \end{itemdecl}
 
 \begin{itemdescr}
