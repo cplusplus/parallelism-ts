@@ -26,7 +26,7 @@ inline namespace parallelism_v2 {
 The class \tcode{exception_list} owns a sequence of \tcode{exception_ptr} objects.
 
 \pnum
-The type \tcode{exception_list::iterator} fulfills the requirements of \tcode{ForwardIterator}.
+\tcode{exception_list::iterator} is an iterator which meets the forward iterator requirements and has a value type of \tcode{exception_ptr}.
 
 \begin{itemdecl}
 size_t size() const noexcept;
