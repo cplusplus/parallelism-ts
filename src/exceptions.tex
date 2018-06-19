@@ -49,10 +49,18 @@ iterator begin() const noexcept;
   \returns An iterator referring to the first \tcode{exception_ptr} object returned within the \tcode{exception_list}.
 \end{itemdescr}
 
+\begin{itemdecl}
+iterator end() const noexcept;
+\end{itemdecl}
+
 \begin{itemdescr}
   \pnum
   \returns An iterator that is past the end of the owned sequence.
 \end{itemdescr}
+
+\begin{itemdecl}
+const char* what() const noexcept override;
+\end{itemdecl}
 
 \begin{itemdescr}
   \pnum
