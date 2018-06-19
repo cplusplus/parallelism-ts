@@ -481,7 +481,7 @@ public:
   T operator+() const && noexcept;
   T operator~() const && noexcept;
 
-  template<class U, class Flags> void copy_to(U* mem, Flags f) const && noexcept;
+  template<class U, class Flags> void copy_to(U* mem, Flags f) const &&;
 };
 
 template<class M, class T>
@@ -504,7 +504,7 @@ public:
   void operator--() && noexcept;
   void operator--(int) && noexcept;
 
-  template<class U, class Flags> void copy_from(const U* mem, Flags) && noexcept;
+  template<class U, class Flags> void copy_from(const U* mem, Flags) &&;
 };
 \end{codeblock}
 
@@ -543,7 +543,7 @@ T operator~() const && noexcept;
 \end{itemdescr}
 
 \begin{itemdecl}
-template<class U, class Flags> void copy_to(U* mem, Flags) const && noexcept;
+template<class U, class Flags> void copy_to(U* mem, Flags) const &&;
 \end{itemdecl}
 
 \begin{itemdescr}
@@ -619,7 +619,7 @@ void operator--(int) && noexcept;
 \end{itemdescr}
 
 \begin{itemdecl}
-template<class U, class Flags> void copy_from(const U* mem, Flags) && noexcept;
+template<class U, class Flags> void copy_from(const U* mem, Flags) &&;
 \end{itemdecl}
 
 \begin{itemdescr}
@@ -631,6 +631,8 @@ template<class U, class Flags> void copy_from(const U* mem, Flags) && noexcept;
 
   \pnum\effects
   Replaces the selected elements as if \tcode{data[$i$] = static_cast<value_type>(mem[$i$])} for all selected indices $i$.
+
+  \pnum\throws Nothing.
 
   \pnum\remarks
   This function shall not participate in overload resolution unless
