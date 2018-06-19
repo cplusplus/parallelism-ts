@@ -1,0 +1,35 @@
+
+% Define section from the C++ standard that can be indexed
+% using its dotted identifer. That is:
+%
+%  \cxxsec{basic.def.odr}{3.2}
+%
+% This is used to make references to sections of the C++ Standard
+% that are not labeled within this document.
+\newcommand{\cxxsec}[2]{%
+  \expandafter\def\csname #1 \endcsname{#2}%
+}
+
+% Generate a reference to the section with the given id. This
+% expands to the full chapter/section/subsection number declared
+% by \cxxsec. For example:
+%
+%  \cxxref{basic.def.odr}
+%
+% Expands to the string 3.2.
+\newcommand{\cxxref}[1]{%
+  \csname #1 \endcsname%
+}
+
+\cxxsec{intro.execution}{4.6}
+\cxxsec{intro.races}{4.7.1}
+\cxxsec{conv.rank}{7.15}
+
+\cxxsec{library}{20}
+\cxxsec{description}{20.4}
+\cxxsec{structure.specifications}{20.4.1.4}
+
+\cxxsec{algorithms.general}{28.1}
+\cxxsec{algorithms.parallel.exec}{28.4.3}
+
+\cxxsec{numerics.defns}{29.2}

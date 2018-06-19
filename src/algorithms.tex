@@ -1,0 +1,479 @@
+%!TEX root = ts.tex
+
+\rSec0[parallel.alg]{Parallel algorithms}
+
+\rSec1[parallel.alg.wavefront]{Wavefront Application}
+
+\pnum
+For the purposes of this section, an \defn{evaluation} is a value
+computation or side effect of an expression, or an execution of a statement.
+Initialization of a temporary object is considered a subexpression of the
+expression that necessitates the temporary object.
+
+\pnum
+An evaluation A \defn{contains} an evaluation B if:
+
+\begin{itemize}
+\item A and B are not potentially concurrent (\CppXref{intro.races}); and
+\item the start of A is the start of B or the start of A is sequenced before the start of B; and
+\item the completion of B is the completion of A or the completion of B is sequenced before the completion of A.
+\end{itemize}
+
+\begin{note}
+This includes evaluations occurring in function invocations.
+\end{note}
+
+\pnum
+An evaluation A is \defn{ordered before} an evaluation B if A is
+deterministically sequenced before B. \begin{note}If A is indeterminately
+sequenced with respect to B or A and B are unsequenced, then A is not ordered
+before B and B is not ordered before A. The ordered before relationship is
+transitive.\end{note}
+
+\pnum
+For an evaluation A ordered before an evaluation B, both contained in the
+same invocation of an element access function, A is a \defn{vertical antecedent} of B if:
+
+\begin{itemize}
+\item there exists an evaluation S such that:
+  \begin{itemize}
+    \item S contains A, and
+    \item S contains all evaluations C (if any) such that A is ordered before C and C is ordered before B,
+    \item but S does not contain B, and
+  \end{itemize}
+\item control reached B from A without executing any of the following:
+  \begin{itemize}
+    \item a \tcode{goto} statement or \tcode{asm} declaration that jumps to a statement outside of S, or
+    \item a \tcode{switch} statement executed within S that transfers control into a substatement of a nested selection or iteration statement, or
+    \item a \tcode{throw} \begin{note}Even if caught\end{note}, or
+    \item a \tcode{jongjmp}.
+  \end{itemize}
+\end{itemize}
+
+\begin{note}
+Vertical antecedent is an irreflexive, antisymmetric, nontransitive relationship between two evaluations. Informally, A is a vertical antecedent of B if A is sequenced immediately before B or A is nested zero or more levels within a statement S that immediately precedes B.
+\end{note}
+
+\pnum
+In the following, $X_i$ and $X_j$ refer to evaluations of the \emph{same} expression
+or statement contained in the application of an element access function
+corresponding to the $i^\text{th}$ and $j^\text{th}$ elements of the input sequence.
+\begin{note}There might be several evaluations $X_k$, $Y_k$, etc. of a single
+expression or statement in application $k$, for example, if the expression or
+statement appears in a loop within the element access function.\end{note}
+
+\pnum
+\defn{Horizontally matched} is an equivalence relationship between two
+evaluations of the same expression. An evaluation B\textsubscript{i} is
+\term{horizontally matched} with an evaluation B\textsubscript{j} if:
+
+\begin{itemize}
+\item both are the first evaluations in their respective applications of the element access function, or
+\item there exist horizontally matched evaluations A\textsubscript{i} and A\textsubscript{j} that are vertical antecedents of evaluations B\textsubscript{i} and B\textsubscript{j}, respectively.
+\end{itemize}
+
+\begin{note}\term{Horizontally matched} establishes a theoretical \emph{lock-step} relationship between evaluations in different applications of an element access function.\end{note}
+
+\pnum
+Let $f$ be a function called for each argument list in a sequence of argument lists. \defn{Wavefront application} of $f$ requires that evaluation A\textsubscript{i} be sequenced before evaluation B\textsubscript{j} if i < j and:
+
+\begin{itemize}
+\item A\textsubscript{i} is sequenced before some evaluation B\textsubscript{i} and B\textsubscript{i} is horizontally matched with B\textsubscript{j}, or
+\item A\textsubscript{i} is horizontally matched with some evaluation A\textsubscript{j} and A\textsubscript{j} is sequenced before B\textsubscript{j}.
+\end{itemize}
+
+\begin{note}
+\term{Wavefront application} guarantees that parallel applications i and j execute such that progress on application j never gets \emph{ahead} of application i.
+\end{note}
+\begin{note}
+The relationships between A\textsubscript{i} and B\textsubscript{i} and between A\textsubscript{j} and B\textsubscript{j} are \term{sequenced before}, not \term{vertical antecedent}.
+\end{note}
+
+\rSec1[parallel.alg.ops]{Non-Numeric Parallel Algorithms}
+
+\rSec2[parallel.alg.ops.synopsis]{Header \tcode{<experimental/algorithm>} synopsis}
+
+\begin{codeblock}
+#include <algorithm>
+
+namespace std::experimental {
+inline namespace parallelism_v2 {
+namespace execution {
+  // \ref{parallel.alg.novec}, No vec
+  template<class F>
+    auto no_vec(F&& f) noexcept -> decltype(std::forward<F>(f)());
+
+  // \ref{parallel.alg.ordupdate.class}, Ordered update class
+  template<class T>
+    class ordered_update_t;
+
+  // \ref{parallel.alg.ordupdate.func}, Ordered update function template
+  template<class T>
+    ordered_update_t<T> ordered_update(T& ref) noexcept;
+}
+
+// Exposition only: Suppress template argument deduction.
+template<class T> struct type_identity { using type = T; };
+template<class T> using type_identity_t = typename type_identity<T>::type;
+
+// \ref{parallel.alg.reductions}, Reductions
+template<class T, class BinaryOperation>
+  @\unspec@ reduction(T& var, const T& identity, BinaryOperation combiner);
+template<class T>
+  @\unspec@ reduction_plus(T& var);
+template<class T>
+  @\unspec@ reduction_multiplies(T& var);
+template<class T>
+  @\unspec@ reduction_bit_and(T& var);
+template<class T>
+  @\unspec@ reduction_bit_or(T& var);
+template<class T>
+  @\unspec@ reduction_bit_xor(T& var);
+template<class T>
+  @\unspec@ reduction_min(T& var);
+template<class T>
+  @\unspec@ reduction_max(T& var);
+
+// \ref{parallel.alg.inductions}, Inductions
+template<class T>
+  @\unspec@ induction(T&& var);
+template<class T, class S>
+  @\unspec@ induction(T&& var, S stride);
+
+// \ref{parallel.alg.forloop}, For loop
+template<class I, class... Rest>
+  void for_loop(type_identity_t<I> start, I finish, Rest&&... rest);
+template<class ExecutionPolicy,
+         class I, class... Rest>
+  void for_loop(ExecutionPolicy&& exec,
+                type_identity_t<I> start, I finish, Rest&&... rest);
+template<class I, class S, class... Rest>
+  void for_loop_strided(type_identity_t<I> start, I finish,
+                        S stride, Rest&&... rest);
+template<class ExecutionPolicy,
+         class I, class S, class... Rest>
+  void for_loop_strided(ExecutionPolicy&& exec,
+                        type_identity_t<I> start, I finish,
+                        S stride, Rest&&... rest);
+template<class I, class Size, class... Rest>
+  void for_loop_n(I start, Size n, Rest&&... rest);
+template<class ExecutionPolicy,
+         class I, class Size, class... Rest>
+  void for_loop_n(ExecutionPolicy&& exec,
+                  I start, Size n, Rest&&... rest);
+template<class I, class Size, class S, class... Rest>
+  void for_loop_n_strided(I start, Size n, S stride, Rest&&... rest);
+template<class ExecutionPolicy,
+         class I, class Size, class S, class... Rest>
+  void for_loop_n_strided(ExecutionPolicy&& exec,
+                          I start, Size n, S stride, Rest&&... rest);
+}
+}
+\end{codeblock}
+
+\rSec2[parallel.alg.reductions]{Reductions}
+
+\pnum
+Each of the function templates in this subclause
+(\ref{parallel.alg.reductions}) returns a \defn{reduction object} of unspecified type
+having a \defn{reduction value type} and encapsulating a \defn{reduction identity} value for
+the reduction, a \defn{combiner} function object, and a \defn{live-out object} from which the
+initial value is obtained and into which the final value is stored.
+
+\pnum
+An algorithm uses reduction objects by allocating an unspecified number
+of instances, known as \defn{accumulators}, of the reduction value type. \begin{note}An
+implementation might, for example, allocate an accumulator for each thread in
+its private thread pool.\end{note} Each accumulator is initialized with the
+object's reduction identity, except that the live-out object (which was
+    initialized by the caller) comprises one of the accumulators. The algorithm
+passes a reference to an accumulator to each application of an element-access
+function, ensuring that no two concurrently executing invocations share the
+same accumulator. An accumulator can be shared between two applications that do
+not execute concurrently, but initialization is performed only once per
+accumulator.
+
+\pnum
+Modifications to the accumulator by the application of element access
+functions accrue as partial results. At some point before the algorithm
+returns, the partial results are combined, two at a time, using the reduction
+object's combiner operation until a single value remains, which is then
+assigned back to the live-out object. \begin{note}In order to produce useful
+results, modifications to the accumulator should be limited to commutative
+operations closely related to the combiner operation. For example if the
+combiner is \tcode{plus<T>}, incrementing the accumulator would be consistent with the
+combiner but doubling it or assigning to it would not.\end{note}
+
+\begin{itemdecl}
+template<class T, class BinaryOperation>
+  @\unspec@ reduction(T& var, const T& identity, BinaryOperation combiner);
+\end{itemdecl}
+
+\begin{itemdescr}
+  \pnum
+  \requires \tcode{T} shall meet the requirements of \tcode{CopyConstructible} and \tcode{MoveAssignable}. The expression \tcode{var = combiner(var, var)} shall be well-formed.
+
+  \pnum
+  \returns A reduction object of unspecified type having reduction value type \tcode{T}, reduction identity \tcode{identity}, combiner function object \tcode{combiner}, and using the object referenced by \tcode{var} as its live-out object.
+\end{itemdescr}
+
+\begin{itemdecl}
+template<class T>
+  @\unspec@ reduction_plus(T& var);
+template<class T>
+  @\unspec@ reduction_multiplies(T& var);
+template<class T>
+  @\unspec@ reduction_bit_and(T& var);
+template<class T>
+  @\unspec@ reduction_bit_or(T& var);
+template<class T>
+  @\unspec@ reduction_bit_xor(T& var);
+template<class T>
+  @\unspec@ reduction_min(T& var);
+template<class T>
+  @\unspec@ reduction_max(T& var);
+\end{itemdecl}
+
+\begin{itemdescr}
+  \pnum
+  \requires \tcode{T} shall meet the requirements of \tcode{CopyConstructible} and \tcode{MoveAssignable}.
+
+  \pnum
+  \returns A reduction object of unspecified type having reduction value type \tcode{T}, reduction identity and combiner operation as specified in Table~\ref{tab:parallel.alg.reductions} and using the object referenced by \tcode{var} as its live-out object.
+\end{itemdescr}
+
+\begin{floattable}{Reduction identities and combiner operations}{tab:parallel.alg.reductions}
+{ccc}
+\topline
+\lhdr{Function} & \chdr{Reduction Identity} & \rhdr{Combiner Operation} \\
+\capsep
+\tcode{reduction_plus} & \tcode{T()} & \tcode{x + y} \\
+\hline
+\tcode{reduction_multiplies} & \tcode{T(1)} & \tcode{x * y} \\
+\hline
+\tcode{reduction_bit_and} & \tcode{(\~T())} & \tcode{x \& y} \\
+\hline
+\tcode{reduction_bit_or} & \tcode{T()} & \tcode{x | y} \\
+\hline
+\tcode{reduction_bit_xor} & \tcode{T()} & \tcode{x \^{} y} \\
+\hline
+\tcode{reduction_min} & \tcode{var} & \tcode{min(x, y)} \\
+\hline
+\tcode{reduction_max} & \tcode{var} & \tcode{max(x, y)} \\
+\end{floattable}
+
+\begin{example}
+The following code updates each element of \tcode{y} and sets \tcode{s} to the sum of the squares.
+\begin{codeblock}
+extern int n;
+extern float x[], y[], a;
+float s = 0;
+for_loop(execution::vec, 0, n,
+    reduction(s, 0.0f, plus<>()),
+    [&](int i, float& accum) {
+            y[i] += a*x[i];
+            accum += y[i]*y[i];
+    }
+);
+\end{codeblock}
+\end{example}
+
+\rSec2[parallel.alg.inductions]{Inductions}
+
+\pnum
+Each of the function templates in this section return an \defn{induction object} of unspecified type having an \defn{induction value type} and encapsulating an initial value $i$ of that type and, optionally, a $stride$.
+
+\pnum
+For each element in the input range, an algorithm over input sequence $S$ computes an \defn{induction value} from an induction variable and ordinal position $p$ within $S$ by the formula $i + p * stride$ if a stride was specified or $i + p$ otherwise. This induction value is passed to the element access function.
+
+\pnum
+An induction object may refer to a \defn{live-out} object to hold the final value of the induction sequence. When the algorithm using the induction object completes, the live-out object is assigned the value $i + n * stride$, where $n$ is the number of elements in the input range.
+
+\begin{itemdecl}
+template<class T>
+  @\unspec@ induction(T&& var);
+template<class T, class S>
+  @\unspec@ induction(T&& var, S stride);
+\end{itemdecl}
+
+\begin{itemdescr}
+\pnum
+\returns An induction object with induction value type \tcode{remove_cv_t<remove_reference_t<T>>}, initial value \tcode{var}, and (if specified) stride \tcode{stride}. If \tcode{T} is an lvalue reference to non-\tcode{const} type, then the object referenced by \tcode{var} becomes the live-out object for the induction object; otherwise there is no live-out object.
+\end{itemdescr}
+
+\rSec2[parallel.alg.forloop]{For loop}
+
+\begin{itemdecl}
+template<class I, class... Rest>
+  void for_loop(type_identity_t<I> start, I finish, Rest&&... rest);
+template<class ExecutionPolicy, class I, class... Rest>
+  void for_loop(ExecutionPolicy&& exec, type_identity_t<I> start, I finish, Rest&&... rest);
+
+template<class I, class S, class... Rest>
+  void for_loop_strided(type_identity_t<I> start, I finish, S stride, Rest&&... rest);
+template<class ExecutionPolicy, class I, class S, class... Rest>
+  void for_loop_strided(ExecutionPolicy&& exec, type_identity_t<I> start, I finish, S stride,
+                        Rest&&... rest);
+
+template<class I, class Size, class... Rest>
+  void for_loop_n(I start, Size n, Rest&&... rest);
+template<class ExecutionPolicy, class I, class Size, class... Rest>
+  void for_loop_n(ExecutionPolicy&& exec, I start, Size n, Rest&&... rest);
+
+template<class I, class Size, class S, class... Rest>
+  void for_loop_n_strided(I start, Size n, S stride, Rest&&... rest);
+template<class ExecutionPolicy, class I, class Size, class S, class... Rest>
+  void for_loop_n_strided(ExecutionPolicy&& exec, I start, Size n, S stride, Rest&&... rest);
+\end{itemdecl}
+
+\begin{itemdescr}
+\pnum
+\requires For the overloads with an \tcode{ExecutionPolicy}, \tcode{I} shall be an integral type or meet the requirements of a forward iterator type; otherwise, \tcode{I} shall be an integral type or meet the requirements of an input iterator type. \tcode{Size} shall be an integral type and \tcode{n} shall be non-negative. \tcode{S} shall have integral type and \tcode{stride} shall have non-zero value. \tcode{stride} shall be negative only if \tcode{I} has integral type or meets the requirements of a bidirectional iterator. The \tcode{rest} parameter pack shall have at least one element, comprising objects returned by invocations of \tcode{reduction} (\ref{parallel.alg.reductions}) and/or \tcode{induction} (\ref{parallel.alg.inductions}) function templates followed by exactly one invocable element-access function, $f$. For the overloads with an \tcode{ExecutionPolicy}, $f$ shall meet the requirements of \tcode{CopyConstructible}; otherwise, $f$ shall meet the requirements of \tcode{MoveConstructible}.
+
+\pnum
+\effects Applies $f$ to each element in the \defn{input sequence}, as described below, with additional arguments corresponding to the reductions and inductions in the \tcode{rest} parameter pack. The length of the input sequence is:
+
+\begin{itemize}
+\item \tcode{n}, if specified,
+
+\item otherwise \tcode{finish - start} if neither \tcode{n} nor \tcode{stride} is specified,
+
+\item otherwise \tcode{1 + (finish-start-1)/stride} if \tcode{stride} is positive,
+
+\item otherwise \tcode{1 + (start-finish-1)/-stride}.
+\end{itemize}
+
+The first element in the input sequence is \tcode{start}. Each subsequent element is generated by adding \tcode{stride} to the previous element, if \tcode{stride} is specified, otherwise by incrementing the previous element.
+\begin{note}As described in the \Cpp Standard, \CppXref{algorithms.general}, arithmetic on non-random-access iterators is performed using \tcode{advance} and \tcode{distance}.\end{note}
+\begin{note}The order of the elements of the input sequence is important for determining ordinal position of an application of $f$, even though the applications themselves may be unordered.\end{note}
+
+The first argument to $f$ is an element from the input sequence.\begin{note}If \tcode{I} is an iterator type, the iterators in the input sequence are not dereferenced before being passed to $f$.\end{note} For each member of the \tcode{rest} parameter pack excluding $f$, an additional argument is passed to each application of $f$ as follows:
+
+\begin{itemize}
+\item If the pack member is an object returned by a call to a reduction function listed in section \ref{parallel.alg.reductions}, then the additional argument is a reference to an accumulator of that reduction object.
+
+\item If the pack member is an object returned by a call to \tcode{induction}, then the additional argument is the induction value for that induction object corresponding to the position of the application of $f$ in the input sequence.
+\end{itemize}
+
+\pnum
+\complexity Applies $f$ exactly once for each element of the input sequence.
+
+\pnum
+\remarks If $f$ returns a result, the result is ignored.
+
+\end{itemdescr}
+
+\rSec2[parallel.alg.novec]{No vec}
+
+\begin{itemdecl}
+template<class F>
+  auto no_vec(F&& f) noexcept -> decltype(std::forward<F>(f)());
+\end{itemdecl}
+
+\begin{itemdescr}
+\pnum
+\effects Evaluates \tcode{std::forward<F>(f)()}. When invoked within an element access function in a parallel algorithm using \tcode{vector_policy}, if two calls to \tcode{no_vec} are horizontally matched within a wavefront application of an element access function over input sequence S, then the execution of \tcode{f} in the application for one element in S is sequenced before the execution of \tcode{f} in the application for a subsequent element in S; otherwise, there is no effect on sequencing.
+
+\pnum
+\returns The result of \tcode{f}.
+
+\pnum
+\realnotes If \tcode{f} exits via an exception, then \tcode{terminate} will be called, consistent with all other potentially-throwing operations invoked with \tcode{vector_policy} execution.
+
+\begin{example}
+\begin{codeblock}
+extern int* p;
+for_loop(vec, 0, n[&](int i) {
+  y[i] +=y[i+1];
+  if(y[i] < 0) {
+    no_vec([]{
+      *p++ = i;
+    });
+  }
+});
+\end{codeblock}
+
+The updates \tcode{*p++ = i} will occur in the same order as if the policy were \tcode{seq}.
+\end{example}
+
+\end{itemdescr}
+
+\rSec2[parallel.alg.ordupdate.class]{Ordered update class}
+
+\begin{codeblock}
+template<class T>
+class ordered_update_t {
+  T& ref_;         // \expos
+public:
+  ordered_update_t(T& loc) noexcept
+    : ref_(loc) {}
+  ordered_update_t(const ordered_update_t&) = delete;
+  ordered_update_t& operator=(const ordered_update_t&) = delete;
+
+  template <class U>
+    auto operator=(U rhs) const noexcept
+      { return no_vec([&]{ return ref_ = std::move(rhs); }); }
+  template <class U>
+    auto operator+=(U rhs) const noexcept
+      { return no_vec([&]{ return ref_ += std::move(rhs); }); }
+  template <class U>
+    auto operator-=(U rhs) const noexcept
+      { return no_vec([&]{ return ref_ -= std::move(rhs); }); }
+  template <class U>
+    auto operator*=(U rhs) const noexcept
+      { return no_vec([&]{ return ref_ *= std::move(rhs); }); }
+  template <class U>
+    auto operator/=(U rhs) const noexcept
+      { return no_vec([&]{ return ref_ /= std::move(rhs); }); }
+  template <class U>
+    auto operator%=(U rhs) const noexcept
+      { return no_vec([&]{ return ref_ %= std::move(rhs); }); }
+  template <class U>
+    auto operator>>=(U rhs) const noexcept
+      { return no_vec([&]{ return ref_ >>= std::move(rhs); }); }
+  template <class U>
+    auto operator<<=(U rhs) const noexcept
+      { return no_vec([&]{ return ref_ <<= std::move(rhs); }); }
+  template <class U>
+    auto operator&=(U rhs) const noexcept
+      { return no_vec([&]{ return ref_ &= std::move(rhs); }); }
+  template <class U>
+    auto operator^=(U rhs) const noexcept
+      { return no_vec([&]{ return ref_ ^= std::move(rhs); }); }
+  template <class U>
+    auto operator|=(U rhs) const noexcept
+      { return no_vec([&]{ return ref_ |= std::move(rhs); }); }
+
+  auto operator++() const noexcept
+    { return no_vec([&]{ return ++ref_; }); }
+  auto operator++(int) const noexcept
+    { return no_vec([&]{ return ref_++; }); }
+  auto operator--() const noexcept
+    { return no_vec([&]{ return --ref_; }); }
+  auto operator--(int) const noexcept
+    { return no_vec([&]{ return ref_--; }); }
+};
+\end{codeblock}
+
+\pnum
+An object of type \tcode{ordered_update_t<T>} is a proxy for an object of
+type \tcode{T} intended to be used within a parallel application of an element
+access function using a policy object of type \tcode{vector_policy}. Simple
+increments, assignments, and compound assignments to the object are forwarded
+to the proxied object, but are sequenced as though executed within a \tcode{no_vec}
+invocation. \begin{note}The return-value deduction of the forwarded operations
+results in these operations returning by value, not reference. This formulation
+prevents accidental collisions on accesses to the return value.\end{note}
+
+\rSec2[parallel.alg.ordupdate.func]{Ordered update function template}
+
+\begin{itemdecl}
+template<T>
+  ordered_update_t<T> ordered_update(T& loc) noexcept;
+\end{itemdecl}
+
+\begin{itemdescr}
+\pnum
+\returns \tcode{\{ loc \}}.
+\end{itemdescr}
+

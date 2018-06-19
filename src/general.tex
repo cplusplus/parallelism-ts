@@ -1,0 +1,52 @@
+%!TEX root = ts.tex
+
+\rSec0[parallel.general]{General}
+
+\rSec1[parallel.general.namespaces]{Namespaces and headers}
+
+\pnum Since the extensions described in this Technical Specification are
+experimental and not part of the \Cpp Standard Library, they should not be
+declared directly within namespace \tcode{std}. Unless otherwise specified, all
+components described in this Technical Specification are declared in namespace
+\tcode{std\colcol{}experimental\colcol{}parallelism_v2}.
+
+\begin{note}Once standardized, the components described by this Technical
+Specification are expected to be promoted to namespace \tcode{std}.\end{note}
+
+\pnum
+Each header described in this technical specification shall import the contents of \tcode{std\colcol{}experimental\colcol{}parallelism_v2} into \tcode{std\colcol{}experimental} as if by
+\begin{codeblock}
+namespace std::experimental {
+  inline namespace parallelism_v2 {}
+}
+\end{codeblock}
+
+\pnum Unless otherwise specified, references to such entities described in this
+Technical Specification are assumed to be qualified with
+\tcode{std::experimental::parallelism_v2}, and references to entities described
+in the \Cpp Standard Library are assumed to be qualified with \tcode{std::}.
+
+\pnum Extensions that are expected to eventually be added to an existing header \tcode{<meow>} are provided inside the \tcode{<experimental/meow>} header, which shall include the standard contents of \tcode{<meow>} as if by
+
+\begin{codeblock}
+#include <meow>
+\end{codeblock}
+
+\rSec1[parallel.general.features]{Feature-testing recommendations}
+
+\pnum An implementation that provides support for this Technical Specification shall define the feature test macro(s) in \tref{tab:parallel.general.features}.
+
+\begin{floattable}{Feature-test macro(s)}{tab:parallel.general.features}
+  { x{2.1cm} | x{1cm} | x{4.4cm} | c | x{5.35cm} }
+\topline
+\lhdr{Title} & \chdr{Section} & \chdr{Macro Name} & \chdr{Value} & \rhdr{Header} \\
+\capsep
+Task Block R5 & \ref{parallel.taskblock} & \tcode{__cpp_lib_experimental_parallel_task_block} & 201711 & \tcode{<experimental/exception_list> \ <experimental/task_block>} \\
+\hline
+Vector and Wavefront Policies & \ref{parallel.execpol.unseq} & \tcode{__cpp_lib_experimental_execution_vector_policy} & 201711 & \tcode{<experimental/algorithm> \ <experimental/execution>} \\
+\hline
+Template Library for Parallel For Loops & \ref{parallel.alg.reductions}, \ref{parallel.alg.inductions}, \ref{parallel.alg.forloop} & \tcode{__cpp_lib_experimental_parallel_for_loop} & 201711 & \tcode{<experimental/algorithm>} \\
+\hline
+Data-Parallel Vector Types & \ref{parallel.simd} & \tcode{__cpp_lib_experimental_parallel_simd} & 201803 & \tcode{<experimental/simd>} \\
+\end{floattable}
+
