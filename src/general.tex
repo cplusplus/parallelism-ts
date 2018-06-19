@@ -13,6 +13,14 @@ components described in this Technical Specification are declared in namespace
 \begin{note}Once standardized, the components described by this Technical
 Specification are expected to be promoted to namespace \tcode{std}.\end{note}
 
+\pnum
+Each header described in this technical specification shall import the contents of \tcode{std\colcol{}experimental\colcol{}parallelism_v2} into \tcode{std\colcol{}experimental} as if by
+\begin{codeblock}
+namespace std::experimental {
+  inline namespace parallelism_v2 {}
+}
+\end{codeblock}
+
 \pnum Unless otherwise specified, references to such entities described in this
 Technical Specification are assumed to be qualified with
 \tcode{std::experimental::parallelism_v2}, and references to entities described
