@@ -175,7 +175,7 @@ template<class ExecutionPolicy,
 
 \pnum
 Each of the function templates in this subclause
-([parallel.alg.reductions]) returns a \defn{reduction object} of unspecified type
+(\ref{parallel.alg.reductions}) returns a \defn{reduction object} of unspecified type
 having a \defn{reduction value type} and encapsulating a \defn{reduction identity} value for
 the reduction, a \defn{combiner} function object, and a \defn{live-out object} from which the
 initial value is obtained and into which the final value is stored.
@@ -328,7 +328,7 @@ template<class ExecutionPolicy, class I, class Size, class S, class... Rest>
 
 \begin{itemdescr}
 \pnum
-\requires For the overloads with an \tcode{ExecutionPolicy}, \tcode{I} shall be an integral type or meet the requirements of a forward iterator type; otherwise, \tcode{I} shall be an integral type or meet the requirements of an input iterator type. \tcode{Size} shall be an integral type and \tcode{n} shall be non-negative. \tcode{S} shall have integral type and \tcode{stride} shall have non-zero value. \tcode{stride} shall be negative only if \tcode{I} has integral type or meets the requirements of a bidirectional iterator. The \tcode{rest} parameter pack shall have at least one element, comprising objects returned by invocations of \tcode{reduction} ([parallel.alg.reduction]) and/or \tcode{induction} ([parallel.alg.induction]) function templates followed by exactly one invocable element-access function, {\em f}. For the overloads with an \tcode{ExecutionPolicy}, {\em f} shall meet the requirements of \tcode{CopyConstructible}; otherwise, {\em f} shall meet the requirements of \tcode{MoveConstructible}.
+\requires For the overloads with an \tcode{ExecutionPolicy}, \tcode{I} shall be an integral type or meet the requirements of a forward iterator type; otherwise, \tcode{I} shall be an integral type or meet the requirements of an input iterator type. \tcode{Size} shall be an integral type and \tcode{n} shall be non-negative. \tcode{S} shall have integral type and \tcode{stride} shall have non-zero value. \tcode{stride} shall be negative only if \tcode{I} has integral type or meets the requirements of a bidirectional iterator. The \tcode{rest} parameter pack shall have at least one element, comprising objects returned by invocations of \tcode{reduction} (\ref{parallel.alg.reductions}) and/or \tcode{induction} (\ref{parallel.alg.inductions}) function templates followed by exactly one invocable element-access function, $f$. For the overloads with an \tcode{ExecutionPolicy}, $f$ shall meet the requirements of \tcode{CopyConstructible}; otherwise, $f$ shall meet the requirements of \tcode{MoveConstructible}.
 
 \pnum
 \effects Applies {\em f} to each element in the \defn{input sequence}, as described below, with additional arguments corresponding to the reductions and inductions in the \tcode{rest} parameter pack. The length of the input sequence is:

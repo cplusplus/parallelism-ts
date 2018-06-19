@@ -64,7 +64,7 @@ unique type to disambiguate parallel algorithm overloading and indicate that a
 parallel algorithm's execution may be vectorized. Additionally, such
 vectorization will result in an execution that respects the sequencing
 constraints of wavefront application
-(\hyperref[parallel.alg.general.wavefront]{[parallel.alg.general.wavefront]}).
+(\ref{parallel.alg.wavefront}).
 \begin{note}The implementation thus makes stronger guarantees than for
 \tcode{unsequenced_policy}, for example.\end{note}
 
@@ -74,7 +74,7 @@ invoked with an execution policy of type \tcode{vector_policy} are permitted to
 execute in unordered fashion in the calling thread, unsequenced with respect to
 one another within the calling thread, subject to the sequencing constraints of
 wavefront application
-(\hyperref[parallel.alg.general.wavefront]{[parallel.alg.general.wavefront]})
+(\ref{parallel.alg.wavefront})
 for the last argument to \tcode{for_loop}, \tcode{for_loop_n},
 \tcode{for_loop_strided}, or \tcode{for_loop_strided_n}.
 
