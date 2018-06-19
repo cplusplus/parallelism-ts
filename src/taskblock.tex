@@ -217,7 +217,7 @@ template<class F> void define_task_block_restore_thread(F&& f);
 
 \begin{itemdescr}
 \pnum
-\requires Given an lvalue \tcode{tb} of type \tcode{task_block}, the expression \tcode{f(tb)} shall be well-formed
+\requires Given an lvalue \tcode{tb} of type \tcode{task_block}, the expression \tcode{f(tb)} shall be well-formed.
 
 \pnum
 \effects Constructs a \tcode{task_block} \tcode{tb} and calls \tcode{f(tb)}.
