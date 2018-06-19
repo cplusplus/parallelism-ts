@@ -59,14 +59,14 @@ statement appears in a loop within the element access function.\end{note}
 
 \pnum \defn{Horizontally matched} is an equivalence relationship between two
 evaluations of the same expression. An evaluation B\textsubscript{i} is
-\defn{horizontally matched} with an evaluation B\textsubscript{j} if:
+\term{horizontally matched} with an evaluation B\textsubscript{j} if:
 
 \begin{itemize}
 \item both are the first evaluations in their respective applications of the element access function, or
 \item there exist horizontally matched evaluations A\textsubscript{i} and A\textsubscript{j} that are vertical antecedents of evaluations B\textsubscript{i} and B\textsubscript{j}, respectively.
 \end{itemize}
 
-\begin{note}\defn{Horizontally matched} establishes a theoretical {\em lock-step} relationship between evaluations in different applications of an element access function.\end{note}
+\begin{note}\term{Horizontally matched} establishes a theoretical {\em lock-step} relationship between evaluations in different applications of an element access function.\end{note}
 
 \pnum Let $f$ be a function called for each argument list in a sequence of argument lists. \defn{Wavefront application of f} requires that evaluation A\textsubscript{i} be sequenced before evaluation B\textsubscript{j} if i < j and:
 
@@ -76,10 +76,10 @@ evaluations of the same expression. An evaluation B\textsubscript{i} is
 \end{itemize}
 
 \begin{note}
-\defn{Wavefront application} guarantees that parallel applications i and j execute such that progress on application j never gets {\em ahead} of application i.
+\term{Wavefront application} guarantees that parallel applications i and j execute such that progress on application j never gets {\em ahead} of application i.
 \end{note}
 \begin{note}
-The relationships between A\textsubscript{i} and B\textsubscript{i} and between A\textsubscript{j} and B\textsubscript{j} are \defn{sequenced before}, not \defn{vertical antecedent}.
+The relationships between A\textsubscript{i} and B\textsubscript{i} and between A\textsubscript{j} and B\textsubscript{j} are \term{sequenced before}, not \term{vertical antecedent}.
 \end{note}
 
 \rSec1[parallel.alg.ops]{Non-Numeric Parallel Algorithms}
@@ -266,11 +266,11 @@ for_loop(execution::vec, 0, n,
 
 \rSec2[parallel.alg.inductions]{Inductions}
 
-\pnum Each of the function templates in this section return an \defn{induction object} of unspecified type having an \defn{induction value type} and encapsulating an initial value \defn{i} of that type and, optionally, a \defn{stride}.
+\pnum Each of the function templates in this section return an \defn{induction object} of unspecified type having an \defn{induction value type} and encapsulating an initial value $i$ of that type and, optionally, a $stride$.
 
-\pnum For each element in the input range, an algorithm over input sequence S computes an \defn{induction value} from an induction variable and ordinal position \defn{p} within S by the formula \defn{i + p * stride} if a stride was specified or \defn{i + p} otherwise. This induction value is passed to the element access function.
+\pnum For each element in the input range, an algorithm over input sequence S computes an \defn{induction value} from an induction variable and ordinal position $p$ within S by the formula $i + p * stride$ if a stride was specified or $i + p$ otherwise. This induction value is passed to the element access function.
 
-\pnum An induction object may refer to a \defn{live-out} object to hold the final value of the induction sequence. When the algorithm using the induction object completes, the live-out object is assigned the value \defn{i + n * stride}, where \defn{n} is the number of elements in the input range.
+\pnum An induction object may refer to a \defn{live-out} object to hold the final value of the induction sequence. When the algorithm using the induction object completes, the live-out object is assigned the value $i + n * stride$, where $n$ is the number of elements in the input range.
 
 \begin{itemdecl}
 template<class T>
