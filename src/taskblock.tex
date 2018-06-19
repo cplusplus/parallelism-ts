@@ -1,8 +1,8 @@
 %!TEX root = ts.tex
 
-\rSec0[parallel.task_block]{Task Block}
+\rSec0[parallel.taskblock]{Task Block}
 
-\rSec1[parallel.task_block.synopsis]{Header \tcode{<experimental/task_block> synopsis}}
+\rSec1[parallel.taskblock.synopsis]{Header \tcode{<experimental/task_block> synopsis}}
 
 \begin{codeblock}
 namespace std::experimental {
@@ -20,7 +20,7 @@ inline namespace parallelism_v2 {
 }
 \end{codeblock}
 
-\rSec1[parallel.task_block.task_cancelled_exception]{Class \tcode{task_cancelled_exception}}
+\rSec1[parallel.taskblock.task_cancelled_exception]{Class \tcode{task_cancelled_exception}}
 
 \begin{codeblock}
 namespace std::experimental {
@@ -40,9 +40,9 @@ inline namespace parallelism_v2 {
 The class \tcode{task_cancelled_exception} defines the type of objects
 thrown by \tcode{task_block\colcol{}run} or \tcode{task_block\colcol{}wait} if they detect
 than an exception is pending within the current parallel block. See
-\ref{parallel.task_block.exceptions}, below.
+\ref{parallel.taskblock.exceptions}, below.
 
-\rSec2[parallel.task_block.task_cancelled_exception.what]{\tcode{task_cancelled_exception} member function \tcode{what}}
+\rSec2[parallel.taskblock.task_cancelled_exception.what]{\tcode{task_cancelled_exception} member function \tcode{what}}
 
 \begin{itemdecl}
 virtual const char* what() const noexcept;
@@ -53,7 +53,7 @@ virtual const char* what() const noexcept;
 \returns An implementation-defined NTBS.
 \end{itemdescr}
 
-\rSec1[parallel.task_block.class]{Class \tcode{task_block}}
+\rSec1[parallel.taskblock.class]{Class \tcode{task_block}}
 
 \begin{codeblock}
 namespace std::experimental {
@@ -126,7 +126,7 @@ define_task_block([&](auto& tb) {
 Implementations are encouraged to diagnose the above error at translation time.
 \end{note}
 
-\rSec2[parallel.task_block.class.run]{\tcode{task_block} member function template \tcode{run}}
+\rSec2[parallel.taskblock.class.run]{\tcode{task_block} member function template \tcode{run}}
 
 \begin{itemdecl}
 template<class F> void run(F&& f);
@@ -153,7 +153,7 @@ enclosing task block (i.e., the \tcode{define_task_block} or
     \tcode{define_task_block_restore_thread} that created this \tcode{task_block}).
 
 \pnum
-\throws \tcode{task_cancelled_exception}, as described in \ref{parallel.task_block.exceptions}.
+\throws \tcode{task_cancelled_exception}, as described in \ref{parallel.taskblock.exceptions}.
 
 \pnum
 \remarks The \tcode{run} function may return on a thread other than the
@@ -170,7 +170,7 @@ completes.
 
 \end{itemdescr}
 
-\rSec2[parallel.task_block.class.wait]{\tcode{task_block} member function \tcode{wait}}
+\rSec2[parallel.taskblock.class.wait]{\tcode{task_block} member function \tcode{wait}}
 
 \begin{itemdecl}
 void wait();
@@ -184,7 +184,7 @@ void wait();
 \effects Blocks until the tasks spawned using this \tcode{task_block} have completed.
 
 \pnum
-\throws \tcode{task_cancelled_exception}, as described in \ref{parallel.task_block.exceptions}.
+\throws \tcode{task_cancelled_exception}, as described in \ref{parallel.taskblock.exceptions}.
 
 \pnum
 \postconditions All tasks spawned by the nearest enclosing task block have completed.
@@ -208,7 +208,7 @@ define_task_block([&](auto& tb) {
 
 \end{itemdescr}
 
-\rSec1[parallel.task_block.define_task_block]{Function template \tcode{define_task_block}}
+\rSec1[parallel.taskblock.define_task_block]{Function template \tcode{define_task_block}}
 
 \begin{itemdecl}
 template<class F> void define_task_block(F&& f);
@@ -223,7 +223,7 @@ template<class F> void define_task_block_restore_thread(F&& f);
 \effects Constructs a \tcode{task_block} \tcode{tb} and calls \tcode{f(tb)}.
 
 \pnum
-\throws \tcode{exception_list}, as specified in \ref{parallel.task_block.exceptions}.
+\throws \tcode{exception_list}, as specified in \ref{parallel.taskblock.exceptions}.
 
 \pnum
 \postconditions All tasks spawned from \tcode{f} have finished execution.
@@ -232,7 +232,7 @@ template<class F> void define_task_block_restore_thread(F&& f);
 \remarks The \tcode{define_task_block} function may return on a thread
 other than the one on which it was called unless there are no task blocks
 active on entry to \tcode{define_task_block} (see
-    \ref{parallel.task_block.class}), in which case the function returns on the
+    \ref{parallel.taskblock.class}), in which case the function returns on the
 original thread. When \tcode{define_task_block} returns on a different thread, it
 synchronizes with operations following the call. \begin{note}The return from
 \tcode{define_task_block} is ordered similarly to an ordinary function
@@ -243,7 +243,7 @@ function always returns on the same thread as the one on which it was called.
 \realnotes It is expected (but not mandated) that \tcode{f} will (directly or indirectly) call \tcode{tb.run(\UNSP{function-\brk{}object})}.
 \end{itemdescr}
 
-\rSec1[parallel.task_block.exceptions]{Exception Handling}
+\rSec1[parallel.taskblock.exceptions]{Exception Handling}
 
 \pnum
 Every \tcode{task_block} has an associated exception list. When the task block starts, its associated exception list is empty.
