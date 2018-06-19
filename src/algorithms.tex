@@ -116,7 +116,7 @@ namespace execution {
 template<class T> struct type_identity { using type = T; };
 template<class T> using type_identity_t = typename type_identity<T>::type;
 
-// \ref{parallel.alg.reductions}, Support for reductions
+// \ref{parallel.alg.reductions}, Reductions
 template<class T, class BinaryOperation>
   @\unspec@ reduction(T& var, const T& identity, BinaryOperation combiner);
 template<class T>
@@ -134,7 +134,7 @@ template<class T>
 template<class T>
   @\unspec@ reduction_max(T& var);
 
-// \ref{parallel.alg.inductions}, Support for inductions
+// \ref{parallel.alg.inductions}, Inductions
 template<class T>
   @\unspec@ induction(T&& var);
 template<class T, class S>
