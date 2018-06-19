@@ -22,33 +22,40 @@ inline namespace parallelism_v2 {
 }
 \end{codeblock}
 
-\pnum The class \tcode{exception_list} owns a sequence of \tcode{exception_ptr} objects.
+\pnum
+The class \tcode{exception_list} owns a sequence of \tcode{exception_ptr} objects.
 
-\pnum The type \tcode{exception_list::iterator} fulfills the requirements of \tcode{ForwardIterator}.
+\pnum
+The type \tcode{exception_list::iterator} fulfills the requirements of \tcode{ForwardIterator}.
 
 \begin{itemdecl}
-@\pnum@ size_t size() const noexcept;
+size_t size() const noexcept;
 \end{itemdecl}
 
 \begin{itemdescr}
-  \pnum \returns The number of \tcode{exception_ptr} objects contained within the \tcode{exception_list}.
+  \pnum
+  \returns The number of \tcode{exception_ptr} objects contained within the \tcode{exception_list}.
 
-  \pnum \complexity Constant time.
+  \pnum
+  \complexity Constant time.
 \end{itemdescr}
 
 \begin{itemdecl}
-@\pnum@ iterator begin() const noexcept;
+iterator begin() const noexcept;
 \end{itemdecl}
 
 \begin{itemdescr}
-  \pnum \returns An iterator referring to the first \tcode{exception_ptr} object returned within the \tcode{exception_list}.
+  \pnum
+  \returns An iterator referring to the first \tcode{exception_ptr} object returned within the \tcode{exception_list}.
 \end{itemdescr}
 
 \begin{itemdescr}
-  \pnum \returns An iterator that is past the end of the owned sequence.
+  \pnum
+  \returns An iterator that is past the end of the owned sequence.
 \end{itemdescr}
 
 \begin{itemdescr}
-  \pnum \returns An implementation-defined NTBS.
+  \pnum
+  \returns An implementation-defined NTBS.
 \end{itemdescr}
 

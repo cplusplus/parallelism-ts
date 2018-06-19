@@ -30,21 +30,25 @@ namespace execution {
 class unsequenced_policy{ @\unspec@ };
 \end{itemdecl}
 
-\pnum The class \tcode{unsequenced_policy} is an execution policy type used as
+\pnum
+The class \tcode{unsequenced_policy} is an execution policy type used as
 a unique type to disambiguate parallel algorithm overloading and indicate that
 a parallel algorithm's execution may be vectorized, e.g., executed on a single
 thread using instructions that operate on multiple data items.
 
-\pnum The invocations of element access functions in parallel algorithms
+\pnum
+The invocations of element access functions in parallel algorithms
 invoked with an execution policy of type \tcode{unsequenced_policy} are
 permitted to execute in an unordered fashion in the calling thread, unsequenced
 with respect to one another within the calling thread. \begin{note}This means
 that multiple function object invocations may be interleaved on a single
 thread.\end{note}
 
-\pnum \begin{note}This overrides the usual guarantee from the \Cpp Standard, C++17 \S4.6 [intro.execution] that function executions do not overlap with one another.\end{note}
+\pnum
+\begin{note}This overrides the usual guarantee from the \Cpp Standard, C++17 \S4.6 [intro.execution] that function executions do not overlap with one another.\end{note}
 
-\pnum During the execution of a parallel algorithm with the \tcode{experimental::execution::unsequenced_policy} policy, if the invocation of an element access function exits via an uncaught exception, \tcode{terminate()} will be called.
+\pnum
+During the execution of a parallel algorithm with the \tcode{experimental::execution::unsequenced_policy} policy, if the invocation of an element access function exits via an uncaught exception, \tcode{terminate()} will be called.
 
 \rSec1[parallel.execpol.vec]{Vector execution policy}
 
@@ -52,7 +56,8 @@ thread.\end{note}
 class vector_policy{ @\unspec@ };
 \end{itemdecl}
 
-\pnum The class \tcode{vector_policy} is an execution policy type used as a
+\pnum
+The class \tcode{vector_policy} is an execution policy type used as a
 unique type to disambiguate parallel algorithm overloading and indicate that a
 parallel algorithm's execution may be vectorized. Additionally, such
 vectorization will result in an execution that respects the sequencing
@@ -61,7 +66,8 @@ constraints of wavefront application
 \begin{note}The implementation thus makes stronger guarantees than for
 \tcode{unsequenced_policy}, for example.\end{note}
 
-\pnum The invocations of element access functions in parallel algorithms
+\pnum
+The invocations of element access functions in parallel algorithms
 invoked with an execution policy of type \tcode{vector_policy} are permitted to
 execute in unordered fashion in the calling thread, unsequenced with respect to
 one another within the calling thread, subject to the sequencing constraints of
@@ -70,7 +76,8 @@ wavefront application
 for the last argument to \tcode{for_loop}, \tcode{for_loop_n},
 \tcode{for_loop_strided}, or \tcode{for_loop_strided_n}.
 
-\pnum During the execution of a parallel algorithm with the
+\pnum
+During the execution of a parallel algorithm with the
 \tcode{experimental::execution::vector_policy} policy, if the invocation of an
 element access function exits via an uncaught exception, \tcode{terminate()}
 will be called.
@@ -82,7 +89,8 @@ inline constexpr execution::unsequenced_policy unseq{ @\unspec@ };
 inline constexpr execution::vector_policy vec{ @\unspec@ };
 \end{itemdecl}
 
-\pnum The header \tcode{<experimental/execution>} declares a global object
+\pnum
+The header \tcode{<experimental/execution>} declares a global object
 associated with each type of execution policy defined by this Technical
 Specification.
 

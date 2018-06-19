@@ -4,12 +4,14 @@
 
 \rSec1[parallel.alg.wavefront]{Wavefront Application}
 
-\pnum For the purposes of this section, an \defn{evaluation} is a value
+\pnum
+For the purposes of this section, an \defn{evaluation} is a value
 computation or side effect of an expression, or an execution of a statement.
 Initialization of a temporary object is considered a subexpression of the
 expression that necessitates the temporary object.
 
-\pnum An evaluation A \defn{contains} an evaluation B if:
+\pnum
+An evaluation A \defn{contains} an evaluation B if:
 
 \begin{itemize}
 \item A and B are not potentially concurrent ([intro.races]); and
@@ -21,13 +23,15 @@ expression that necessitates the temporary object.
 This includes evaluations occurring in function invocations.
 \end{note}
 
-\pnum An evaluation A is ordered before an evaluation B if A is
+\pnum
+An evaluation A is ordered before an evaluation B if A is
 deterministically sequenced before B. \begin{note}If A is indeterminately
 sequenced with respect to B or A and B are unsequenced, then A is not ordered
 before B and B is not ordered before A. The ordered before relationship is
 transitive.\end{note}
 
-\pnum For an evaluation A ordered before an evaluation B, both contained in the
+\pnum
+For an evaluation A ordered before an evaluation B, both contained in the
 same invocation of an element access function, A is a \defn{vertical antecedent} of B if:
 
 \begin{itemize}
@@ -50,14 +54,16 @@ same invocation of an element access function, A is a \defn{vertical antecedent}
 Vertical antecedent is an irreflexive, antisymmetric, nontransitive relationship between two evaluations. Informally, A is a vertical antecedent of B if A is sequenced immediately before B or A is nested zero or more levels within a statement S that immediately precedes B.
 \end{note}
 
-\pnum In the following, $X_i$ and $X_j$ refer to evaluations of the {\em same} expression
+\pnum
+In the following, $X_i$ and $X_j$ refer to evaluations of the {\em same} expression
 or statement contained in the application of an element access function
 corresponding to the i\textsuperscript{th} and j\textsuperscript{th} elements of the input sequence.
 \begin{note}There might be several evaluations $X_k$, $Y_k$, etc. of a single
 expression or statement in application $k$, for example, if the expression or
 statement appears in a loop within the element access function.\end{note}
 
-\pnum \defn{Horizontally matched} is an equivalence relationship between two
+\pnum
+\defn{Horizontally matched} is an equivalence relationship between two
 evaluations of the same expression. An evaluation B\textsubscript{i} is
 \term{horizontally matched} with an evaluation B\textsubscript{j} if:
 
@@ -68,7 +74,8 @@ evaluations of the same expression. An evaluation B\textsubscript{i} is
 
 \begin{note}\term{Horizontally matched} establishes a theoretical {\em lock-step} relationship between evaluations in different applications of an element access function.\end{note}
 
-\pnum Let $f$ be a function called for each argument list in a sequence of argument lists. \defn{Wavefront application of f} requires that evaluation A\textsubscript{i} be sequenced before evaluation B\textsubscript{j} if i < j and:
+\pnum
+Let $f$ be a function called for each argument list in a sequence of argument lists. \defn{Wavefront application of f} requires that evaluation A\textsubscript{i} be sequenced before evaluation B\textsubscript{j} if i < j and:
 
 \begin{itemize}
 \item A\textsubscript{i} is sequenced before some evaluation B\textsubscript{i} and B\textsubscript{i} is horizontally matched with B\textsubscript{j}, or
@@ -166,13 +173,15 @@ template<class ExecutionPolicy,
 
 \rSec2[parallel.alg.reductions]{Reductions}
 
-\pnum Each of the function templates in this subclause
+\pnum
+Each of the function templates in this subclause
 ([parallel.alg.reductions]) returns a \defn{reduction object} of unspecified type
 having a \defn{reduction value type} and encapsulating a \defn{reduction identity} value for
 the reduction, a \defn{combiner} function object, and a \defn{live-out object} from which the
 initial value is obtained and into which the final value is stored.
 
-\pnum An algorithm uses reduction objects by allocating an unspecified number
+\pnum
+An algorithm uses reduction objects by allocating an unspecified number
 of instances, known as \defn{accumulators}, of the reduction value type. \begin{note}An
 implementation might, for example, allocate an accumulator for each thread in
 its private thread pool.\end{note} Each accumulator is initialized with the
@@ -184,7 +193,8 @@ same accumulator. An accumulator can be shared between two applications that do
 not execute concurrently, but initialization is performed only once per
 accumulator.
 
-\pnum Modifications to the accumulator by the application of element access
+\pnum
+Modifications to the accumulator by the application of element access
 functions accrue as partial results. At some point before the algorithm
 returns, the partial results are combined, two at a time, using the reduction
 object's combiner operation until a single value remains, which is then
@@ -200,9 +210,11 @@ template<class T, class BinaryOperation>
 \end{itemdecl}
 
 \begin{itemdescr}
-  \pnum \requires \tcode{T} shall meet the requirements of \tcode{CopyConstructible} and \tcode{MoveAssignable}. The expression \tcode{var = combiner(var, var)} shall be well-formed.
+  \pnum
+  \requires \tcode{T} shall meet the requirements of \tcode{CopyConstructible} and \tcode{MoveAssignable}. The expression \tcode{var = combiner(var, var)} shall be well-formed.
 
-  \pnum \returns A reduction object of unspecified type having reduction value type \tcode{T}, reduction identity \tcode{identity}, combiner function object \tcode{combiner}, and using the object referenced by \tcode{var} as its live-out object.
+  \pnum
+  \returns A reduction object of unspecified type having reduction value type \tcode{T}, reduction identity \tcode{identity}, combiner function object \tcode{combiner}, and using the object referenced by \tcode{var} as its live-out object.
 \end{itemdescr}
 
 \begin{itemdecl}
@@ -223,9 +235,11 @@ template<class T>
 \end{itemdecl}
 
 \begin{itemdescr}
-  \pnum \requires \tcode{T} shall meet the requirements of \tcode{CopyConstructible} and \tcode{MoveAssignable}.
+  \pnum
+  \requires \tcode{T} shall meet the requirements of \tcode{CopyConstructible} and \tcode{MoveAssignable}.
 
-  \pnum \returns A reduction object of unspecified type having reduction value type \tcode{T}, reduction identity and combiner operation as specified in Table~\ref{tab:parallel.alg.reductions} and using the object referenced by \tcode{var} as its live-out object.
+  \pnum
+  \returns A reduction object of unspecified type having reduction value type \tcode{T}, reduction identity and combiner operation as specified in Table~\ref{tab:parallel.alg.reductions} and using the object referenced by \tcode{var} as its live-out object.
 \end{itemdescr}
 
 \begin{floattable}{Reduction identities and combiner operations}{tab:parallel.alg.reductions}
@@ -266,11 +280,14 @@ for_loop(execution::vec, 0, n,
 
 \rSec2[parallel.alg.inductions]{Inductions}
 
-\pnum Each of the function templates in this section return an \defn{induction object} of unspecified type having an \defn{induction value type} and encapsulating an initial value $i$ of that type and, optionally, a $stride$.
+\pnum
+Each of the function templates in this section return an \defn{induction object} of unspecified type having an \defn{induction value type} and encapsulating an initial value $i$ of that type and, optionally, a $stride$.
 
-\pnum For each element in the input range, an algorithm over input sequence S computes an \defn{induction value} from an induction variable and ordinal position $p$ within S by the formula $i + p * stride$ if a stride was specified or $i + p$ otherwise. This induction value is passed to the element access function.
+\pnum
+For each element in the input range, an algorithm over input sequence S computes an \defn{induction value} from an induction variable and ordinal position $p$ within S by the formula $i + p * stride$ if a stride was specified or $i + p$ otherwise. This induction value is passed to the element access function.
 
-\pnum An induction object may refer to a \defn{live-out} object to hold the final value of the induction sequence. When the algorithm using the induction object completes, the live-out object is assigned the value $i + n * stride$, where $n$ is the number of elements in the input range.
+\pnum
+An induction object may refer to a \defn{live-out} object to hold the final value of the induction sequence. When the algorithm using the induction object completes, the live-out object is assigned the value $i + n * stride$, where $n$ is the number of elements in the input range.
 
 \begin{itemdecl}
 template<class T>
@@ -280,7 +297,8 @@ template<class T, class S>
 \end{itemdecl}
 
 \begin{itemdescr}
-\pnum \returns An induction object with induction value type \tcode{remove_cv_t<remove_reference_t<T>>}, initial value \tcode{var}, and (if specified) stride \tcode{stride}. If \tcode{T} is an lvalue reference to non-\tcode{const} type, then the object referenced by \tcode{var} becomes the live-out object for the induction object; otherwise there is no live-out object.
+\pnum
+\returns An induction object with induction value type \tcode{remove_cv_t<remove_reference_t<T>>}, initial value \tcode{var}, and (if specified) stride \tcode{stride}. If \tcode{T} is an lvalue reference to non-\tcode{const} type, then the object referenced by \tcode{var} becomes the live-out object for the induction object; otherwise there is no live-out object.
 \end{itemdescr}
 
 \rSec2[parallel.alg.forloop]{For loop}
@@ -318,9 +336,11 @@ void for_loop_n_strided(ExecutionPolicy&& exec,
 \end{itemdecl}
 
 \begin{itemdescr}
-\pnum \requires For the overloads with an \tcode{ExecutionPolicy}, \tcode{I} shall be an integral type or meet the requirements of a forward iterator type; otherwise, \tcode{I} shall be an integral type or meet the requirements of an input iterator type. \tcode{Size} shall be an integral type and \tcode{n} shall be non-negative. \tcode{S} shall have integral type and \tcode{stride} shall have non-zero value. \tcode{stride} shall be negative only if \tcode{I} has integral type or meets the requirements of a bidirectional iterator. The \tcode{rest} parameter pack shall have at least one element, comprising objects returned by invocations of \tcode{reduction} ([parallel.alg.reduction]) and/or \tcode{induction} ([parallel.alg.induction]) function templates followed by exactly one invocable element-access function, {\em f}. For the overloads with an \tcode{ExecutionPolicy}, {\em f} shall meet the requirements of \tcode{CopyConstructible}; otherwise, {\em f} shall meet the requirements of \tcode{MoveConstructible}.
+\pnum
+\requires For the overloads with an \tcode{ExecutionPolicy}, \tcode{I} shall be an integral type or meet the requirements of a forward iterator type; otherwise, \tcode{I} shall be an integral type or meet the requirements of an input iterator type. \tcode{Size} shall be an integral type and \tcode{n} shall be non-negative. \tcode{S} shall have integral type and \tcode{stride} shall have non-zero value. \tcode{stride} shall be negative only if \tcode{I} has integral type or meets the requirements of a bidirectional iterator. The \tcode{rest} parameter pack shall have at least one element, comprising objects returned by invocations of \tcode{reduction} ([parallel.alg.reduction]) and/or \tcode{induction} ([parallel.alg.induction]) function templates followed by exactly one invocable element-access function, {\em f}. For the overloads with an \tcode{ExecutionPolicy}, {\em f} shall meet the requirements of \tcode{CopyConstructible}; otherwise, {\em f} shall meet the requirements of \tcode{MoveConstructible}.
 
-\pnum \effects Applies {\em f} to each element in the \defn{input sequence}, as described below, with additional arguments corresponding to the reductions and inductions in the \tcode{rest} parameter pack. The length of the input sequence is:
+\pnum
+\effects Applies {\em f} to each element in the \defn{input sequence}, as described below, with additional arguments corresponding to the reductions and inductions in the \tcode{rest} parameter pack. The length of the input sequence is:
 
 \begin{itemize}
 \item \tcode{n}, if specified,
@@ -344,9 +364,11 @@ The first argument to {\em f} is an element from the input sequence.\begin{note}
 \item If the pack member is an object returned by a call to \tcode{induction}, then the additional argument is the induction value for that induction object corresponding to the position of the application of {\em f} in the input sequence.
 \end{itemize}
 
-\pnum \complexity Applies {\em f} exactly once for each element of the input sequence.
+\pnum
+\complexity Applies {\em f} exactly once for each element of the input sequence.
 
-\pnum \remarks If {\em f} returns a result, the result is ignored.
+\pnum
+\remarks If {\em f} returns a result, the result is ignored.
 
 \end{itemdescr}
 
@@ -358,11 +380,14 @@ template<class F>
 \end{itemdecl}
 
 \begin{itemdescr}
-\pnum \effects Evaluates \tcode{std::forward<F>(f)()}. When invoked within an element access function in a parallel algorithm using \tcode{vector_policy}, if two calls to \tcode{no_vec} are horizontally matched within a wavefront application of an element access function over input sequence S, then the execution of \tcode{f} in the application for one element in S is sequenced before the execution of \tcode{f} in the application for a subsequent element in S; otherwise, there is no effect on sequencing.
+\pnum
+\effects Evaluates \tcode{std::forward<F>(f)()}. When invoked within an element access function in a parallel algorithm using \tcode{vector_policy}, if two calls to \tcode{no_vec} are horizontally matched within a wavefront application of an element access function over input sequence S, then the execution of \tcode{f} in the application for one element in S is sequenced before the execution of \tcode{f} in the application for a subsequent element in S; otherwise, there is no effect on sequencing.
 
-\pnum \returns The result of \tcode{f}.
+\pnum
+\returns The result of \tcode{f}.
 
-\pnum \realnotes If \tcode{f} exits via an exception, then \tcode{terminate} will be called, consistent with all other potentially-throwing operations invoked with \tcode{vector_policy} execution.
+\pnum
+\realnotes If \tcode{f} exits via an exception, then \tcode{terminate} will be called, consistent with all other potentially-throwing operations invoked with \tcode{vector_policy} execution.
 
 \begin{example}
 \begin{codeblock}
@@ -439,7 +464,8 @@ public:
 };
 \end{codeblock}
 
-\pnum An object of type \tcode{ordered_update_t<T>} is a proxy for an object of
+\pnum
+An object of type \tcode{ordered_update_t<T>} is a proxy for an object of
 type \tcode{T} intended to be used within a parallel application of an element
 access function using a policy object of type \tcode{vector_policy}. Simple
 increments, assignments, and compound assignments to the object are forwarded
@@ -456,6 +482,7 @@ template<T>
 \end{itemdecl}
 
 \begin{itemdescr}
-\pnum \returns \tcode{\{ loc \}}.
+\pnum
+\returns \tcode{\{ loc \}}.
 \end{itemdescr}
 

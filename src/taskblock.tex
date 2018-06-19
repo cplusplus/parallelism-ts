@@ -36,7 +36,8 @@ inline namespace parallelism_v2 {
 }
 \end{codeblock}
 
-\pnum The class \tcode{task_cancelled_exception} defines the type of objects
+\pnum
+The class \tcode{task_cancelled_exception} defines the type of objects
 thrown by \tcode{task_block::run} or \tcode{task_block::wait} if they detect
 than an exception is pending within the current parallel block. See
 \ref{parallel.task_block.exceptions}, below.
@@ -48,7 +49,8 @@ virtual const char* what() const noexcept
 \end{itemdecl}
 
 \begin{itemdescr}
-\pnum \returns An implementation-defined NTBS.
+\pnum
+\returns An implementation-defined NTBS.
 \end{itemdescr}
 
 \rSec1[parallel.task_block.class]{Class \tcode{task_block}}
@@ -77,16 +79,19 @@ inline namespace parallelism_v2 {
 \end{codeblock}
 
 \begin{itemdescr}
-\pnum The class \tcode{task_block} defines an interface for forking and joining parallel tasks. The \tcode{define_task_block} and \tcode{define_task_block_restore_thread} function templates create an object of type \tcode{task_block} and pass a reference to that object to a user-provided function object.
+\pnum
+The class \tcode{task_block} defines an interface for forking and joining parallel tasks. The \tcode{define_task_block} and \tcode{define_task_block_restore_thread} function templates create an object of type \tcode{task_block} and pass a reference to that object to a user-provided function object.
 
-\pnum An object of class \tcode{task_block} cannot be constructed, destroyed,
+\pnum
+An object of class \tcode{task_block} cannot be constructed, destroyed,
 copied, or moved except by the implementation of the task block library.
 Taking the address of a \tcode{task_block} object via \tcode{operator\&} is
 ill-formed. Obtaining its address by any other means (including
     \tcode{addressof}) results in a pointer with an unspecified value;
 dereferencing such a pointer results in undefined behavior.
 
-\pnum A \tcode{task_block} is \defn{active} if it was created by the \defn{nearest
+\pnum
+A \tcode{task_block} is \defn{active} if it was created by the \defn{nearest
   enclosing} \defn{task block}, where \defn{task block} refers to an invocation
   of \tcode{define_task_block} or \tcode{define_task_block_restore_thread} and
   \defn{nearest enclosing} means the most recent invocation that has not yet
@@ -97,7 +102,8 @@ dereferencing such a pointer results in undefined behavior.
   that code. Performing any operation on a \tcode{task_block} that is not
   active results in undefined behavior.
 
-\pnum When the argument to \tcode{task_block::run} is called, no
+\pnum
+When the argument to \tcode{task_block::run} is called, no
 \tcode{task_block} is active, not even the \tcode{task_block} on which
 \tcode{run} was called. (The function object should not, therefore, capture a
     \tcode{task_block} from the surrounding block.)
@@ -130,11 +136,14 @@ template<class F> void run(F&& f);
 \end{itemdecl}
 
 \begin{itemdescr}
-\pnum \requires \tcode{F} shall be \tcode{MoveConstructible}. \tcode{DECAY_COPY(std::forward<F>(f))()} shall be a valid expression.
+\pnum
+\requires \tcode{F} shall be \tcode{MoveConstructible}. \tcode{DECAY_COPY(std::forward<F>(f))()} shall be a valid expression.
 
-\pnum \preconditions \tcode{*this} shall be the active \tcode{task_block}.
+\pnum
+\preconditions \tcode{*this} shall be the active \tcode{task_block}.
 
-\pnum \effects Evaluates \tcode{DECAY_COPY(std::forward<F>(f))()}, where
+\pnum
+\effects Evaluates \tcode{DECAY_COPY(std::forward<F>(f))()}, where
 \tcode{DECAY_COPY(std::forward<F>(f))} is evaluated synchronously within the
 current thread. The call to the resulting copy of the function object is
 permitted to run on an unspecified thread created by the implementation in an
@@ -146,15 +155,18 @@ next invocation of wait on the same task_block or completion of the nearest
 enclosing task block (i.e., the \tcode{define_task_block} or
     \tcode{define_task_block_restore_thread} that created this \tcode{task_block}).
 
-\pnum \throws \tcode{task_cancelled_exception}, as described in \ref{parallel.task_block.exceptions}.
+\pnum
+\throws \tcode{task_cancelled_exception}, as described in \ref{parallel.task_block.exceptions}.
 
-\pnum \remarks The \tcode{run} function may return on a thread other than the
+\pnum
+\remarks The \tcode{run} function may return on a thread other than the
 one on which it was called; in such cases, completion of the call to
 \tcode{run} synchronizes with the continuation. \begin{note}The return from
 \tcode{run} is ordered similarly to an ordinary function call in a single
 thread.\end{note}
 
-\pnum \remarks The invocation of the user-supplied function object \tcode{f}
+\pnum
+\remarks The invocation of the user-supplied function object \tcode{f}
 may be immediate or may be delayed until compute resources are available.
 \tcode{run} might or might not return before the invocation of \tcode{f}
 completes.
@@ -168,15 +180,20 @@ void wait();
 \end{itemdecl}
 
 \begin{itemdescr}
-\pnum \realpreconditions \tcode{*this} shall be the active \tcode{task_block}.
+\pnum
+\realpreconditions \tcode{*this} shall be the active \tcode{task_block}.
 
-\pnum \effects Blocks until the tasks spawned using this \tcode{task_block} have completed.
+\pnum
+\effects Blocks until the tasks spawned using this \tcode{task_block} have completed.
 
-\pnum \throws \tcode{task_cancelled_exception}, as described in \ref{parallel.task_block.exceptions}.
+\pnum
+\throws \tcode{task_cancelled_exception}, as described in \ref{parallel.task_block.exceptions}.
 
-\pnum \postconditions All tasks spawned by the nearest enclosing task block have completed.
+\pnum
+\postconditions All tasks spawned by the nearest enclosing task block have completed.
 
-\pnum \remarks The \tcode{wait} function may return on a thread other than the
+\pnum
+\remarks The \tcode{wait} function may return on a thread other than the
 one on which it was called; in such cases, completion of the call to
 \tcode{wait} synchronizes with subsequent operations. \begin{note}The return
 from \tcode{wait} is ordered similarly to an ordinary function call in a single
@@ -205,15 +222,20 @@ template<class F>
 \end{itemdecl}
 
 \begin{itemdescr}
-\pnum \requires Given an lvalue \tcode{tb} of type \tcode{task_block}, the expression \tcode{f(tb)} shall be well-formed
+\pnum
+\requires Given an lvalue \tcode{tb} of type \tcode{task_block}, the expression \tcode{f(tb)} shall be well-formed
 
-\pnum \effects Constructs a \tcode{task_block} \tcode{tb} and calls \tcode{f(tb)}.
+\pnum
+\effects Constructs a \tcode{task_block} \tcode{tb} and calls \tcode{f(tb)}.
 
-\pnum \throws \tcode{exception_list}, as specified in \ref{parallel.task_block.exceptions}.
+\pnum
+\throws \tcode{exception_list}, as specified in \ref{parallel.task_block.exceptions}.
 
-\pnum \postconditions All tasks spawned from \tcode{f} have finished execution.
+\pnum
+\postconditions All tasks spawned from \tcode{f} have finished execution.
 
-\pnum \remarks The \tcode{define_task_block} function may return on a thread
+\pnum
+\remarks The \tcode{define_task_block} function may return on a thread
 other than the one on which it was called unless there are no task blocks
 active on entry to \tcode{define_task_block} (see
     \ref{parallel.task_block.class}), in which case the function returns on the
@@ -223,14 +245,17 @@ synchronizes with operations following the call. \begin{note}The return from
 call in a single thread.\end{note} The \tcode{define_task_block_restore_thread}
 function always returns on the same thread as the one on which it was called.
 
-\pnum \realnotes It is expected (but not mandated) that \tcode{f} will (directly or indirectly) call \tcode{tb.run({\em function-object})}.
+\pnum
+\realnotes It is expected (but not mandated) that \tcode{f} will (directly or indirectly) call \tcode{tb.run({\em function-object})}.
 \end{itemdescr}
 
 \rSec1[parallel.task_block.exceptions]{Exception Handling}
 
-\pnum Every \tcode{task_block} has an associated exception list. When the task block starts, its associated exception list is empty.
+\pnum
+Every \tcode{task_block} has an associated exception list. When the task block starts, its associated exception list is empty.
 
-\pnum When an exception is thrown from the user-provided function object passed
+\pnum
+When an exception is thrown from the user-provided function object passed
 to \tcode{define_task_block} or \tcode{define_task_block_restore_thread}, it is
 added to the exception list for that task block. Similarly, when an exception
 is thrown from the user-provided function object passed into
@@ -240,16 +265,19 @@ implementation may discard any pending tasks that have not yet been invoked.
 Tasks that are already in progress are not interrupted except at a call to
 \tcode{task_block::run} or \tcode{task_block::wait} as described below.
 
-\pnum If the implementation is able to detect that an exception has been thrown
+\pnum
+If the implementation is able to detect that an exception has been thrown
 by another task within the same nearest enclosing task block, then
 \tcode{task_block::run} or \tcode{task_block::wait} may throw
 \tcode{task_canceled_exception}; these instances of
 \tcode{task_canceled_exception} are not added to the exception list of the
 corresponding task block.
 
-\pnum When a task block finishes with a non-empty exception list, the
+\pnum
+When a task block finishes with a non-empty exception list, the
 exceptions are aggregated into an \tcode{exception_list} object, which is then thrown
 from the task block.
 
-\pnum The order of the exceptions in the \tcode{exception_list} object is unspecified.
+\pnum
+The order of the exceptions in the \tcode{exception_list} object is unspecified.
 
