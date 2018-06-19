@@ -118,27 +118,27 @@ template<class T> using no_deduce_t = typename no_deduce<T>::type;
 
 // \ref{parallel.alg.reductions}, Support for reductions
 template<class T, class BinaryOperation>
-  unspecified reduction(T& var, const T& identity, BinaryOperation combiner);
+  @\unspec@ reduction(T& var, const T& identity, BinaryOperation combiner);
 template<class T>
-  unspecified reduction_plus(T& var);
+  @\unspec@ reduction_plus(T& var);
 template<class T>
-  unspecified reduction_multiplies(T& var);
+  @\unspec@ reduction_multiplies(T& var);
 template<class T>
-  unspecified reduction_bit_and(T& var);
+  @\unspec@ reduction_bit_and(T& var);
 template<class T>
-  unspecified reduction_bit_or(T& var);
+  @\unspec@ reduction_bit_or(T& var);
 template<class T>
-  unspecified reduction_bit_xor(T& var);
+  @\unspec@ reduction_bit_xor(T& var);
 template<class T>
-  unspecified reduction_min(T& var);
+  @\unspec@ reduction_min(T& var);
 template<class T>
-  unspecified reduction_max(T& var);
+  @\unspec@ reduction_max(T& var);
 
 // \ref{parallel.alg.inductions}, Support for inductions
 template<class T>
-  unspecified induction(T&& var);
+  @\unspec@ induction(T&& var);
 template<class T, class S>
-  unspecified induction(T&& var, S stride);
+  @\unspec@ induction(T&& var, S stride);
 
 // \ref{parallel.alg.forloop}, For loop
 template<class I, class... Rest>
@@ -219,19 +219,19 @@ template<class T, class BinaryOperation>
 
 \begin{itemdecl}
 template<class T>
-  @\unspec@ unspecified reduction_plus(T& var);
+  @\unspec@ reduction_plus(T& var);
 template<class T>
-  @\unspec@ unspecified reduction_multiplies(T& var);
+  @\unspec@ reduction_multiplies(T& var);
 template<class T>
-  @\unspec@ unspecified reduction_bit_and(T& var);
+  @\unspec@ reduction_bit_and(T& var);
 template<class T>
-  @\unspec@ unspecified reduction_bit_or(T& var);
+  @\unspec@ reduction_bit_or(T& var);
 template<class T>
-  @\unspec@ unspecified reduction_bit_xor(T& var);
+  @\unspec@ reduction_bit_xor(T& var);
 template<class T>
-  @\unspec@ unspecified reduction_min(T& var);
+  @\unspec@ reduction_min(T& var);
 template<class T>
-  @\unspec@ unspecified reduction_max(T& var);
+  @\unspec@ reduction_max(T& var);
 \end{itemdecl}
 
 \begin{itemdescr}
