@@ -8,16 +8,15 @@
 namespace std::experimental {
 inline namespace parallelism_v2 {
 
-  class exception_list : public exception
-  {
-    public:
-      using iterator = @\unspec@;
+  class exception_list : public exception {
+  public:
+    using iterator = @\unspec@;
 
-      size_t size() const noexcept;
-      iterator begin() const noexcept;
-      iterator end() const noexcept;
+    size_t size() const noexcept;
+    iterator begin() const noexcept;
+    iterator end() const noexcept;
 
-      const char* what() const noexcept override;
+    const char* what() const noexcept override;
   };
 }
 }
