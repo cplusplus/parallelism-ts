@@ -113,8 +113,8 @@ namespace execution {
 }
 
 // Exposition only: Suppress template argument deduction.
-template<class T> struct no_deduce { using type = T; };
-template<class T> using no_deduce_t = typename no_deduce<T>::type;
+template<class T> struct type_identity { using type = T; };
+template<class T> using type_identity_t = typename type_identity<T>::type;
 
 // \ref{parallel.alg.reductions}, Support for reductions
 template<class T, class BinaryOperation>
@@ -142,18 +142,18 @@ template<class T, class S>
 
 // \ref{parallel.alg.forloop}, For loop
 template<class I, class... Rest>
-  void for_loop(no_deduce_t<I> start, I finish, Rest&&... rest);
+  void for_loop(type_identity_t<I> start, I finish, Rest&&... rest);
 template<class ExecutionPolicy,
          class I, class... Rest>
   void for_loop(ExecutionPolicy&& exec,
-                no_deduce_t<I> start, I finish, Rest&&... rest);
+                type_identity_t<I> start, I finish, Rest&&... rest);
 template<class I, class S, class... Rest>
-  void for_loop_strided(no_deduce_t<I> start, I finish,
+  void for_loop_strided(type_identity_t<I> start, I finish,
                         S stride, Rest&&... rest);
 template<class ExecutionPolicy,
          class I, class S, class... Rest>
   void for_loop_strided(ExecutionPolicy&& exec,
-                        no_deduce_t<I> start, I finish,
+                        type_identity_t<I> start, I finish,
                         S stride, Rest&&... rest);
 template<class I, class Size, class... Rest>
   void for_loop_n(I start, Size n, Rest&&... rest);
@@ -305,14 +305,14 @@ template<class T, class S>
 
 \begin{itemdecl}
 template<class I, class... Rest>
-  void for_loop(no_deduce_t<I> start, I finish, Rest&&... rest);
+  void for_loop(type_identity_t<I> start, I finish, Rest&&... rest);
 template<class ExecutionPolicy, class I, class... Rest>
-  void for_loop(ExecutionPolicy&& exec, no_deduce_t<I> start, I finish, Rest&&... rest);
+  void for_loop(ExecutionPolicy&& exec, type_identity_t<I> start, I finish, Rest&&... rest);
 
 template<class I, class S, class... Rest>
-  void for_loop_strided(no_deduce_t<I> start, I finish, S stride, Rest&&... rest);
+  void for_loop_strided(type_identity_t<I> start, I finish, S stride, Rest&&... rest);
 template<class ExecutionPolicy, class I, class S, class... Rest>
-  void for_loop_strided(ExecutionPolicy&& exec, no_deduce_t<I> start, I finish, S stride,
+  void for_loop_strided(ExecutionPolicy&& exec, type_identity_t<I> start, I finish, S stride,
                         Rest&&... rest);
 
 template<class I, class Size, class... Rest>
