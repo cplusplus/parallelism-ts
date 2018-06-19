@@ -24,7 +24,7 @@ This includes evaluations occurring in function invocations.
 \end{note}
 
 \pnum
-An evaluation A is ordered before an evaluation B if A is
+An evaluation A is \defn{ordered before} an evaluation B if A is
 deterministically sequenced before B. \begin{note}If A is indeterminately
 sequenced with respect to B or A and B are unsequenced, then A is not ordered
 before B and B is not ordered before A. The ordered before relationship is
@@ -75,7 +75,7 @@ evaluations of the same expression. An evaluation B\textsubscript{i} is
 \begin{note}\term{Horizontally matched} establishes a theoretical {\em lock-step} relationship between evaluations in different applications of an element access function.\end{note}
 
 \pnum
-Let $f$ be a function called for each argument list in a sequence of argument lists. \defn{Wavefront application of f} requires that evaluation A\textsubscript{i} be sequenced before evaluation B\textsubscript{j} if i < j and:
+Let $f$ be a function called for each argument list in a sequence of argument lists. \defn{Wavefront application} of $f$ requires that evaluation A\textsubscript{i} be sequenced before evaluation B\textsubscript{j} if i < j and:
 
 \begin{itemize}
 \item A\textsubscript{i} is sequenced before some evaluation B\textsubscript{i} and B\textsubscript{i} is horizontally matched with B\textsubscript{j}, or
