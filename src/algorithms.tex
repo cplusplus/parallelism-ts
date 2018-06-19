@@ -403,7 +403,7 @@ The updates \tcode{*p++ = i} will occur in the same order as if the policy were 
 \begin{codeblock}
 template<class T>
 class ordered_update_t {
-  T& ref_; // exposition only
+  T& ref_;         // \expos
 public:
   ordered_update_t(T& loc) noexcept
     : ref_(loc) {}

@@ -28,9 +28,9 @@ inline namespace parallelism_v2 {
 
   class task_cancelled_exception : public exception
   {
-    public:
-      task_cancelled_exception() noexcept;
-      virtual const char* what() const noexcept override;
+  public:
+    task_cancelled_exception() noexcept;
+    virtual const char* what() const noexcept override;
   };
 }
 }
@@ -61,18 +61,18 @@ inline namespace parallelism_v2 {
 
   class task_block
   {
-    private:
-      ~task_block();
+  private:
+    ~task_block();
 
-    public:
-      task_block(const task_block&) = delete;
-      task_block& operator=(const task_block&) = delete;
-      void operator&() const = delete;
+  public:
+    task_block(const task_block&) = delete;
+    task_block& operator=(const task_block&) = delete;
+    void operator&() const = delete;
 
-      template<class F>
-        void run(F&& f);
+    template<class F>
+      void run(F&& f);
 
-      void wait();
+    void wait();
   };
 }
 }
@@ -202,9 +202,9 @@ thread.\end{note}
 \begin{example}
 \begin{codeblock}
 define_task_block([&](auto& tb) {
-  tb.run([&]{ process(a, w, x); }); // Process a[w] through a[x]
-  if (y < x) tb.wait();             // Wait if overlap between [w,x) and [y,z)
-  process(a, y, z);                 // Process a[y] through a[z]
+  tb.run([&]{ process(a, w, x); });    // Process a[w] through a[x]
+  if (y < x) tb.wait();                // Wait if overlap between [w,x) and [y,z)
+  process(a, y, z);                    // Process a[y] through a[z]
 });
 \end{codeblock}
 \end{example}
@@ -214,11 +214,8 @@ define_task_block([&](auto& tb) {
 \rSec1[parallel.task_block.define_task_block]{Function template \tcode{define_task_block}}
 
 \begin{itemdecl}
-template<class F>
-  void define_task_block(F&& f);
-
-template<class F>
-  void define_task_block_restore_thread(F&& f);
+template<class F> void define_task_block(F&& f);
+template<class F> void define_task_block_restore_thread(F&& f);
 \end{itemdecl}
 
 \begin{itemdescr}
