@@ -350,7 +350,7 @@ The first element in the input sequence is \tcode{start}. Each subsequent elemen
 The first argument to $f$ is an element from the input sequence.\begin{note}If \tcode{I} is an iterator type, the iterators in the input sequence are not dereferenced before being passed to $f$.\end{note} For each member of the \tcode{rest} parameter pack excluding $f$, an additional argument is passed to each application of $f$ as follows:
 
 \begin{itemize}
-\item If the pack member is an object returned by a call to a reduction function listed in section [parallel.alg.reductions], then the additional argument is a reference to an accumulator of that reduction object.
+\item If the pack member is an object returned by a call to a reduction function listed in section \ref{parallel.alg.reductions}, then the additional argument is a reference to an accumulator of that reduction object.
 
 \item If the pack member is an object returned by a call to \tcode{induction}, then the additional argument is the induction value for that induction object corresponding to the position of the application of $f$ in the input sequence.
 \end{itemize}
