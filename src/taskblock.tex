@@ -38,7 +38,7 @@ inline namespace parallelism_v2 {
 
 \pnum
 The class \tcode{task_cancelled_exception} defines the type of objects
-thrown by \tcode{task_block::run} or \tcode{task_block::wait} if they detect
+thrown by \tcode{task_block\colcol{}run} or \tcode{task_block\colcol{}wait} if they detect
 than an exception is pending within the current parallel block. See
 \ref{parallel.task_block.exceptions}, below.
 
@@ -243,7 +243,7 @@ call in a single thread.\end{note} The \tcode{define_task_block_restore_thread}
 function always returns on the same thread as the one on which it was called.
 
 \pnum
-\realnotes It is expected (but not mandated) that \tcode{f} will (directly or indirectly) call \tcode{tb.run({\em function-object})}.
+\realnotes It is expected (but not mandated) that \tcode{f} will (directly or indirectly) call \tcode{tb.run({\em function-\brk{}object})}.
 \end{itemdescr}
 
 \rSec1[parallel.task_block.exceptions]{Exception Handling}
