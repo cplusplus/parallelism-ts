@@ -151,7 +151,7 @@ unordered fashion relative to the sequence of operations following the call to
 \tcode{run(f)} (the continuation), or indeterminately sequenced within the same thread
 as the continuation. The call to \tcode{run} synchronizes with the call to the function
 object. The completion of the call to the function object synchronizes with the
-next invocation of wait on the same task_block or completion of the nearest
+next invocation of wait on the same \tcode{task_block} or completion of the nearest
 enclosing task block (i.e., the \tcode{define_task_block} or
     \tcode{define_task_block_restore_thread} that created this \tcode{task_block}).
 
