@@ -26,9 +26,9 @@ namespace execution {
 
 \rSec1[parallel.execpol.unseq]{Unsequenced execution policy}
 
-\begin{itemdecl}
-class unsequenced_policy{ @\unspec@ };
-\end{itemdecl}
+\begin{codeblock}
+class unsequenced_policy { @\unspec@ };
+\end{codeblock}
 
 \pnum
 The class \tcode{unsequenced_policy} is an execution policy type used as
@@ -54,9 +54,9 @@ During the execution of a parallel algorithm with the \tcode{experimental::execu
 
 \rSec1[parallel.execpol.vec]{Vector execution policy}
 
-\begin{itemdecl}
-class vector_policy{ @\unspec@ };
-\end{itemdecl}
+\begin{codeblock}
+class vector_policy { @\unspec@ };
+\end{codeblock}
 
 \pnum
 The class \tcode{vector_policy} is an execution policy type used as a
@@ -86,10 +86,10 @@ will be called.
 
 \rSec1[parallel.execpol.objects]{Execution policy objects}
 
-\begin{itemdecl}
+\begin{codeblock}
 inline constexpr execution::unsequenced_policy unseq{ @\unspec@ };
 inline constexpr execution::vector_policy vec{ @\unspec@ };
-\end{itemdecl}
+\end{codeblock}
 
 \pnum
 The header \tcode{<experimental/execution>} declares a global object
