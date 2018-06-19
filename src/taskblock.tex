@@ -78,7 +78,6 @@ inline namespace parallelism_v2 {
 }
 \end{codeblock}
 
-\begin{itemdescr}
 \pnum
 The class \tcode{task_block} defines an interface for forking and joining parallel tasks. The \tcode{define_task_block} and \tcode{define_task_block_restore_thread} function templates create an object of type \tcode{task_block} and pass a reference to that object to a user-provided function object.
 
@@ -126,8 +125,6 @@ define_task_block([&](auto& tb) {
 \begin{note}
 Implementations are encouraged to diagnose the above error at translation time.
 \end{note}
-
-\end{itemdescr}
 
 \rSec2[parallel.task_block.class.run]{\tcode{task_block} member function template \tcode{run}}
 
