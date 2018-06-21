@@ -1,4 +1,4 @@
-    Document Number: NYYYY
+    Document Number: N4756
     Date:            2018-06-26
     Revises:
     Project:         Programming Language C++
@@ -9,11 +9,11 @@
 
 # Parallelism TS Editor's Report, post-Rapperswil mailing 
 
-NXXXX is the proposed working draft of Parallelism TS Version 2. It contains normative changes as directed by the ISO C++ Standards Committee at the 2018 Rapperswil meeting and editorial changes to the Parallelism TS.
+N4755 is the proposed working draft of Parallelism TS Version 2. It contains normative changes as directed by the ISO C++ Standards Committee at the 2018 Rapperswil meeting and editorial changes to the Parallelism TS.
 
-NXXXX updates the previous draft, N4742, published in the pre-Jacksonville mailing.
+N4755 updates the previous draft, N4742, published in the pre-Jacksonville mailing.
 
-NZZZZ is document NXXXX reformatted as a TS document.
+N4757 is document N4755 reformatted as a TS document.
 
 ## Normative Changes
 
