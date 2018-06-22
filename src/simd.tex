@@ -1129,7 +1129,7 @@ mask_type operator!() const noexcept;
 
 \begin{itemdescr}
   \pnum\returns
-  A \tcode{simd_mask} object with the $i^\text{th}$ element set to \tcode{!operator[](i)} \foralli.
+  A \tcode{simd_mask} object with the $i^\text{th}$ element set to \tcode{!operator[]($i$)} \foralli.
 \end{itemdescr}
 
 \begin{itemdecl}
@@ -1159,7 +1159,7 @@ simd operator-() const noexcept;
 
 \begin{itemdescr}
   \pnum\returns
-  A \tcode{simd} object where the $i^\text{th}$ element is initialized to \tcode{-operator[](i)} \foralli.
+  A \tcode{simd} object where the $i^\text{th}$ element is initialized to \tcode{-operator[]($i$)} \foralli.
 \end{itemdescr}
 
 \rSec1[parallel.simd.nonmembers]{Non-member operations}
@@ -1804,7 +1804,7 @@ template<class Flags> void copy_to(value_type* mem, Flags);
   \end{itemize}
 
   \pnum\effects
-  Copies all \tcode{simd_mask} elements as if \tcode{mem[$i$] = operator[](i)} \foralli.
+  Copies all \tcode{simd_mask} elements as if \tcode{mem[$i$] = operator[]($i$)} \foralli.
 
   \pnum\throws Nothing.
 
@@ -2007,21 +2007,21 @@ int find_last_set(@\UNSP{T}@);
   The parameter type \tcode{T} is an unspecified type that is only constructible via implicit conversion from \tcode{bool}.
 \end{itemdescr}
 
-\rSec2[parallel.simd.mask.where]{Where functions}
+\rSec2[parallel.simd.mask.where]{\tcode{where} functions}
 
 \begin{itemdecl}
 template<class T, class Abi>
-  where_expression<simd_mask<T, Abi>, simd<T, Abi>> where(const typename simd<T, Abi>::mask_type& k,
-                                                          simd<T, Abi>& v) noexcept;
+  where_expression<simd_mask<T, Abi>, simd<T, Abi>>
+    where(const typename simd<T, Abi>::mask_type& k, simd<T, Abi>& v) noexcept;
 template<class T, class Abi>
-  const_where_expression<simd_mask<T, Abi>, simd<T, Abi>> where(const typename simd<T, Abi>::mask_type& k,
-                                                                const simd<T, Abi>& v) noexcept;
+  const_where_expression<simd_mask<T, Abi>, simd<T, Abi>>
+    where(const typename simd<T, Abi>::mask_type& k, const simd<T, Abi>& v) noexcept;
 template<class T, class Abi>
-  where_expression<simd_mask<T, Abi>, simd_mask<T, Abi>> where(const type_identity_t<simd_mask<T, Abi>>& k,
-                                                               simd_mask<T, Abi>& v) noexcept;
+  where_expression<simd_mask<T, Abi>, simd_mask<T, Abi>>
+    where(const type_identity_t<simd_mask<T, Abi>>& k, simd_mask<T, Abi>& v) noexcept;
 template<class T, class Abi>
-  const_where_expression<simd_mask<T, Abi>, simd_mask<T, Abi>> where(const type_identity_t<simd_mask<T, Abi>>& k,
-                                                                     const simd_mask<T, Abi>& v) noexcept;
+  const_where_expression<simd_mask<T, Abi>, simd_mask<T, Abi>>
+    where(const type_identity_t<simd_mask<T, Abi>>& k, const simd_mask<T, Abi>& v) noexcept;
 \end{itemdecl}
 
 \begin{itemdescr}
@@ -2030,9 +2030,12 @@ template<class T, class Abi>
 \end{itemdescr}
 
 \begin{itemdecl}
-template<class T> where_expression<bool T> where(@\seebelow@ k, T& v) noexcept;
 template<class T>
-  const_where_expression<bool, T> where(@\seebelow@ k, const T& v) noexcept;
+  where_expression<bool T>
+    where(@\seebelow@ k, T& v) noexcept;
+template<class T>
+  const_where_expression<bool, T>
+    where(@\seebelow@ k, const T& v) noexcept;
 \end{itemdecl}
 
 \begin{itemdescr}
