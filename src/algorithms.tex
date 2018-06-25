@@ -11,12 +11,12 @@ Initialization of a temporary object is considered a subexpression of the
 expression that necessitates the temporary object.
 
 \pnum
-An evaluation A \defn{contains} an evaluation B if:
+An evaluation \placeholder{A} \defn{contains} an evaluation \placeholder{B} if:
 
 \begin{itemize}
-\item A and B are not potentially concurrent (\CppXref{intro.races}); and
-\item the start of A is the start of B or the start of A is sequenced before the start of B; and
-\item the completion of B is the completion of A or the completion of B is sequenced before the completion of A.
+\item \placeholder{A} and \placeholder{B} are not potentially concurrent (\CppXref{intro.races}); and
+\item the start of \placeholder{A} is the start of \placeholder{B} or the start of \placeholder{A} is sequenced before the start of \placeholder{B}; and
+\item the completion of \placeholder{B} is the completion of \placeholder{A} or the completion of \placeholder{B} is sequenced before the completion of \placeholder{A}.
 \end{itemize}
 
 \begin{note}
@@ -24,34 +24,33 @@ This includes evaluations occurring in function invocations.
 \end{note}
 
 \pnum
-An evaluation A is \defn{ordered before} an evaluation B if A is
-deterministically sequenced before B. \begin{note}If A is indeterminately
-sequenced with respect to B or A and B are unsequenced, then A is not ordered
-before B and B is not ordered before A. The ordered before relationship is
-transitive.\end{note}
+An evaluation \placeholder{A} is \defn{ordered before} an evaluation \placeholder{B} if \placeholder{A} is deterministically sequenced before \placeholder{B}.
+\begin{note}If \placeholder{A} is indeterminately sequenced with respect to \placeholder{B} or \placeholder{A} and \placeholder{B} are unsequenced, then \placeholder{A} is not ordered
+before \placeholder{B} and \placeholder{B} is not ordered before \placeholder{A}.
+The ordered before relationship is transitive.\end{note}
 
 \pnum
-For an evaluation A ordered before an evaluation B, both contained in the
-same invocation of an element access function, A is a \defn{vertical antecedent} of B if:
+For an evaluation \placeholder{A} ordered before an evaluation \placeholder{B}, both contained in the
+same invocation of an element access function, \placeholder{A} is a \defn{vertical antecedent} of \placeholder{B} if:
 
 \begin{itemize}
-\item there exists an evaluation S such that:
+\item there exists an evaluation \placeholder{S} such that:
   \begin{itemize}
-    \item S contains A, and
-    \item S contains all evaluations C (if any) such that A is ordered before C and C is ordered before B,
-    \item but S does not contain B, and
+    \item \placeholder{S} contains \placeholder{A}, and
+    \item \placeholder{S} contains all evaluations \placeholder{C} (if any) such that \placeholder{A} is ordered before \placeholder{C} and \placeholder{C} is ordered before \placeholder{B},
+    \item but \placeholder{S} does not contain \placeholder{B}, and
   \end{itemize}
-\item control reached B from A without executing any of the following:
+\item control reached \placeholder{B} from \placeholder{A} without executing any of the following:
   \begin{itemize}
-    \item a \tcode{goto} statement or \tcode{asm} declaration that jumps to a statement outside of S, or
-    \item a \tcode{switch} statement executed within S that transfers control into a substatement of a nested selection or iteration statement, or
+    \item a \tcode{goto} statement or \tcode{asm} declaration that jumps to a statement outside of \placeholder{S}, or
+    \item a \tcode{switch} statement executed within \placeholder{S} that transfers control into a substatement of a nested selection or iteration statement, or
     \item a \tcode{throw} \begin{note}Even if caught\end{note}, or
-    \item a \tcode{jongjmp}.
+    \item a \tcode{longjmp}.
   \end{itemize}
 \end{itemize}
 
 \begin{note}
-Vertical antecedent is an irreflexive, antisymmetric, nontransitive relationship between two evaluations. Informally, A is a vertical antecedent of B if A is sequenced immediately before B or A is nested zero or more levels within a statement S that immediately precedes B.
+Vertical antecedent is an irreflexive, antisymmetric, nontransitive relationship between two evaluations. Informally, \placeholder{A} is a vertical antecedent of \placeholder{B} if \placeholder{A} is sequenced immediately before \placeholder{B} or \placeholder{A} is nested zero or more levels within a statement \placeholder{S} that immediately precedes \placeholder{B}.
 \end{note}
 
 \pnum
@@ -64,29 +63,29 @@ statement appears in a loop within the element access function.\end{note}
 
 \pnum
 \defn{Horizontally matched} is an equivalence relationship between two
-evaluations of the same expression. An evaluation B\textsubscript{i} is
-\term{horizontally matched} with an evaluation B\textsubscript{j} if:
+evaluations of the same expression. An evaluation $B_i$ is
+\term{horizontally matched} with an evaluation $B_j$ if:
 
 \begin{itemize}
 \item both are the first evaluations in their respective applications of the element access function, or
-\item there exist horizontally matched evaluations A\textsubscript{i} and A\textsubscript{j} that are vertical antecedents of evaluations B\textsubscript{i} and B\textsubscript{j}, respectively.
+\item there exist horizontally matched evaluations $A_i$ and $A_j$ that are vertical antecedents of evaluations $B_i$ and $B_j$, respectively.
 \end{itemize}
 
 \begin{note}\term{Horizontally matched} establishes a theoretical \emph{lock-step} relationship between evaluations in different applications of an element access function.\end{note}
 
 \pnum
-Let $f$ be a function called for each argument list in a sequence of argument lists. \defn{Wavefront application} of $f$ requires that evaluation A\textsubscript{i} be sequenced before evaluation B\textsubscript{j} if i < j and:
+Let $f$ be a function called for each argument list in a sequence of argument lists. \defn{Wavefront application} of $f$ requires that evaluation $A_i$ be sequenced before evaluation $B_j$ if $i < j$ and:
 
 \begin{itemize}
-\item A\textsubscript{i} is sequenced before some evaluation B\textsubscript{i} and B\textsubscript{i} is horizontally matched with B\textsubscript{j}, or
-\item A\textsubscript{i} is horizontally matched with some evaluation A\textsubscript{j} and A\textsubscript{j} is sequenced before B\textsubscript{j}.
+\item $A_i$ is sequenced before some evaluation $B_i$ and $B_i$ is horizontally matched with $B_j$, or
+\item $A_i$ is horizontally matched with some evaluation $A_j$ and $A_j$ is sequenced before $B_j$.
 \end{itemize}
 
 \begin{note}
-\term{Wavefront application} guarantees that parallel applications i and j execute such that progress on application j never gets \emph{ahead} of application i.
+\term{Wavefront application} guarantees that parallel applications $i$ and $j$ execute such that progress on application $j$ never gets \emph{ahead} of application $i$.
 \end{note}
 \begin{note}
-The relationships between A\textsubscript{i} and B\textsubscript{i} and between A\textsubscript{j} and B\textsubscript{j} are \term{sequenced before}, not \term{vertical antecedent}.
+The relationships between $A_i$ and $B_i$ and between $A_j$ and $B_j$ are \term{sequenced before}, not \term{vertical antecedent}.
 \end{note}
 
 \rSec1[parallel.alg.ops]{Non-Numeric Parallel Algorithms}
@@ -269,11 +268,11 @@ extern int n;
 extern float x[], y[], a;
 float s = 0;
 for_loop(execution::vec, 0, n,
-    reduction(s, 0.0f, plus<>()),
-    [&](int i, float& accum) {
-            y[i] += a*x[i];
-            accum += y[i]*y[i];
-    }
+  reduction(s, 0.0f, plus<>()),
+  [&](int i, float& accum) {
+    y[i] += a*x[i];
+    accum += y[i]*y[i];
+  }
 );
 \end{codeblock}
 \end{example}
@@ -372,7 +371,7 @@ template<class F>
 
 \begin{itemdescr}
 \pnum
-\effects Evaluates \tcode{std::forward<F>(f)()}. When invoked within an element access function in a parallel algorithm using \tcode{vector_policy}, if two calls to \tcode{no_vec} are horizontally matched within a wavefront application of an element access function over input sequence S, then the execution of \tcode{f} in the application for one element in S is sequenced before the execution of \tcode{f} in the application for a subsequent element in S; otherwise, there is no effect on sequencing.
+\effects Evaluates \tcode{std::forward<F>(f)()}. When invoked within an element access function in a parallel algorithm using \tcode{vector_policy}, if two calls to \tcode{no_vec} are horizontally matched within a wavefront application of an element access function over input sequence \placeholder{S}, then the execution of \tcode{f} in the application for one element in \placeholder{S} is sequenced before the execution of \tcode{f} in the application for a subsequent element in \placeholder{S}; otherwise, there is no effect on sequencing.
 
 \pnum
 \returns The result of \tcode{f}.
@@ -382,10 +381,11 @@ template<class F>
 
 \begin{example}
 \begin{codeblock}
+extern float y[];
 extern int* p;
-for_loop(vec, 0, n[&](int i) {
-  y[i] +=y[i+1];
-  if(y[i] < 0) {
+for_loop(vec, 0, n, [&](int i) {
+  y[i] += y[i+1];
+  if (y[i] < 0) {
     no_vec([]{
       *p++ = i;
     });
