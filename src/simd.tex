@@ -625,7 +625,7 @@ template<class U, class Flags> void copy_from(const U* mem, Flags) &&;
 \begin{itemdescr}
   \pnum\requires
   \begin{itemize}
-    \item If \tcode{is_simd_flag_type_v<U>} \ednote{\tcode{U} is wrong. P0214R9 says \tcode{M} instead. And it should be consistent with the wording in \tcode{copy_to} above.} is \tcode{true}, for all selected indices $i$, $i$ shall be less than the number of values pointed to by \tcode{mem}.
+    \item If \tcode{is_simd_flag_type_v<U>} is \tcode{true}, for all selected indices $i$, $i$ shall be less than the number of values pointed to by \tcode{mem}.
     \flagsRequires{T, U}{U}
   \end{itemize}
 
