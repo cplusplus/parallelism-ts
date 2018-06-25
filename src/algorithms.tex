@@ -54,7 +54,7 @@ Vertical antecedent is an irreflexive, antisymmetric, nontransitive relationship
 \end{note}
 
 \pnum
-In the following, $X_i$ and $X_j$ refer to evaluations of the \emph{same} expression
+In the following, $X_i$ and $X_j$ refer to evaluations of the same expression
 or statement contained in the application of an element access function
 corresponding to the $i^\text{th}$ and $j^\text{th}$ elements of the input sequence.
 \begin{note}There might be several evaluations $X_k$, $Y_k$, etc. of a single
@@ -71,7 +71,7 @@ evaluations of the same expression. An evaluation $B_i$ is
 \item there exist horizontally matched evaluations $A_i$ and $A_j$ that are vertical antecedents of evaluations $B_i$ and $B_j$, respectively.
 \end{itemize}
 
-\begin{note}\term{Horizontally matched} establishes a theoretical \emph{lock-step} relationship between evaluations in different applications of an element access function.\end{note}
+\begin{note}\term{Horizontally matched} establishes a theoretical lock-step relationship between evaluations in different applications of an element access function.\end{note}
 
 \pnum
 Let $f$ be a function called for each argument list in a sequence of argument lists. \defn{Wavefront application} of $f$ requires that evaluation $A_i$ be sequenced before evaluation $B_j$ if $i < j$ and:
@@ -82,7 +82,7 @@ Let $f$ be a function called for each argument list in a sequence of argument li
 \end{itemize}
 
 \begin{note}
-\term{Wavefront application} guarantees that parallel applications $i$ and $j$ execute such that progress on application $j$ never gets \emph{ahead} of application $i$.
+\term{Wavefront application} guarantees that parallel applications $i$ and $j$ execute such that progress on application $j$ never gets ahead of application $i$.
 \end{note}
 \begin{note}
 The relationships between $A_i$ and $B_i$ and between $A_j$ and $B_j$ are \term{sequenced before}, not \term{vertical antecedent}.
