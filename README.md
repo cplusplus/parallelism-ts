@@ -31,5 +31,5 @@ N4757 is document N4755 reformatted as a TS document.
 
 Thanks to Matthias Kretz for help typesetting the final TS document.
 
-Thanks to [reviewers] for reviewing and suggesting editorial changes.
+Thanks to Matthias Kretz, Bryce Lelbach, Marshall Clow, and Hubert Tong for reviewing and suggesting editorial changes.
 
