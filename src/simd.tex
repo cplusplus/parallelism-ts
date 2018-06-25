@@ -161,7 +161,7 @@ inline namespace parallelism_v2 {
   int find_first_set(@\UNSP{T}@);
   int find_last_set(@\UNSP{T}@);
 
-  // \ref{parallel.simd.whereexpr}, Class templates \tcode{const_where_expression} and \tcode{where_expression}
+  // \ref{parallel.simd.whereexpr}, Where expression class templates
   template<class M, class T> class const_where_expression;
   template<class M, class T> class where_expression;
 
@@ -466,7 +466,7 @@ template<int N, class V> struct resize_simd { using type = @\seebelow@; };
   Where present, the member typedef \tcode{type} names \tcode{simd<T, Abi1>} if \tcode V is \tcode{simd<T, Abi0>} or \tcode{simd_mask<T, Abi1>} if \tcode V is \tcode{simd_mask<T, Abi0>}.
 \end{itemdescr}
 
-\rSec2[parallel.simd.whereexpr]{Class templates \tcode{const_where_expression} and \tcode{where_expression}}
+\rSec2[parallel.simd.whereexpr]{Where expression class templates}
 
 \begin{codeblock}
 template<class M, class T> class const_where_expression {
@@ -625,7 +625,7 @@ template<class U, class Flags> void copy_from(const U* mem, Flags) &&;
 \begin{itemdescr}
   \pnum\requires
   \begin{itemize}
-    \item If \tcode{is_simd_flag_type_v<U>} \ednote{\tcode{U} is wrong. P0214R9 says \tcode{M} instead. And it should be consistent with the wording in \tcode{copy_to} above.} is \tcode{true}, for all selected indices $i$, $i$ shall be less than the number of values pointed to by \tcode{mem}.
+    \item If \tcode{is_simd_flag_type_v<U>} is \tcode{true}, for all selected indices $i$, $i$ shall be less than the number of values pointed to by \tcode{mem}.
     \flagsRequires{T, U}{U}
   \end{itemize}
 
@@ -662,21 +662,21 @@ public:
 
   simd() noexcept = default;
 
-  // \ref{parallel.simd.ctor}, Constructors
+  // \ref{parallel.simd.ctor}, \tcode{simd} constructors
   template<class U> simd(U&& value) noexcept;
   template<class U> simd(const simd<U, simd_abi::fixed_size<size()>>&) noexcept;
   template<class G> explicit simd(G&& gen) noexcept;
   template<class U, class Flags> simd(const U* mem, Flags f);
 
-  // \ref{parallel.simd.copy}, Copy functions
+  // \ref{parallel.simd.copy}, \tcode{simd} copy functions
   template<class U, class Flags> copy_from(const U* mem, Flags f);
   template<class U, class Flags> copy_to(U* mem, Flags f);
 
-  // \ref{parallel.simd.subscr}, Subscript operators
+  // \ref{parallel.simd.subscr}, \tcode{simd} subscript operators
   reference operator[](size_t);
   value_type operator[](size_t) const;
 
-  // \ref{parallel.simd.unary}, Unary operators
+  // \ref{parallel.simd.unary}, \tcode{simd} unary operators
   simd& operator++() noexcept;
   simd operator++(int) noexcept;
   simd& operator--() noexcept;
@@ -686,7 +686,7 @@ public:
   simd operator+() const noexcept;
   simd operator-() const noexcept;
 
-  // \ref{parallel.simd.binary}, Binary operators
+  // \ref{parallel.simd.binary}, \tcode{simd} binary operators
   friend simd operator+(const simd&, const simd&) noexcept;
   friend simd operator-(const simd&, const simd&) noexcept;
   friend simd operator*(const simd&, const simd&) noexcept;
@@ -700,7 +700,7 @@ public:
   friend simd operator<<(const simd&, int) noexcept;
   friend simd operator>>(const simd&, int) noexcept;
 
-  // \ref{parallel.simd.cassign}, Compound assignment
+  // \ref{parallel.simd.cassign}, \tcode{simd} compound assignment
   friend simd& operator+=(simd&, const simd&) noexcept;
   friend simd& operator-=(simd&, const simd&) noexcept;
   friend simd& operator*=(simd&, const simd&) noexcept;
@@ -714,7 +714,7 @@ public:
   friend simd& operator<<=(simd&, int) noexcept;
   friend simd& operator>>=(simd&, int) noexcept;
 
-  // \ref{parallel.simd.comparison}, Compare operators
+  // \ref{parallel.simd.comparison}, \tcode{simd} compare operators
   friend mask_type operator==(const simd&, const simd&) noexcept;
   friend mask_type operator!=(const simd&, const simd&) noexcept;
   friend mask_type operator>=(const simd&, const simd&) noexcept;
@@ -919,7 +919,7 @@ friend void swap(reference&& a, value_type& b) noexcept;
   Exchanges the values \tcode{a} and \tcode{b} refer to.
 \end{itemdescr}
 
-\rSec2[parallel.simd.ctor]{Constructors}
+\rSec2[parallel.simd.ctor]{\tcode{simd} constructors}
 
 \begin{itemdecl}
 template<class U> simd(U&&) noexcept;
@@ -994,7 +994,7 @@ template<class U, class Flags> simd(const U* mem, Flags);
   \end{itemize}
 \end{itemdescr}
 
-\rSec2[parallel.simd.copy]{Copy functions}
+\rSec2[parallel.simd.copy]{\tcode{simd} copy functions}
 
 \begin{itemdecl}
 template<class U, class Flags> void copy_from(const U* mem, Flags);
@@ -1040,7 +1040,7 @@ template<class U, class Flags> void copy_to(U* mem, Flags) const;
   \end{itemize}
 \end{itemdescr}
 
-\rSec2[parallel.simd.subscr]{Subscript operators}
+\rSec2[parallel.simd.subscr]{\tcode{simd} subscript operators}
 
 \begin{itemdecl}
 reference operator[](size_t i);
@@ -1070,7 +1070,7 @@ value_type operator[](size_t i) const;
   \pnum\throws Nothing.
 \end{itemdescr}
 
-\rSec2[parallel.simd.unary]{Unary operators}
+\rSec2[parallel.simd.unary]{\tcode{simd} unary operators}
 
 \pnum
 Effects in this subclause are applied as unary element-wise operations.
@@ -1162,9 +1162,9 @@ simd operator-() const noexcept;
   A \tcode{simd} object where the $i^\text{th}$ element is initialized to \tcode{-operator[]($i$)} \foralli.
 \end{itemdescr}
 
-\rSec1[parallel.simd.nonmembers]{Non-member operations}
+\rSec1[parallel.simd.nonmembers]{\tcode{simd} non-member operations}
 
-\rSec2[parallel.simd.binary]{Binary operators}
+\rSec2[parallel.simd.binary]{\tcode{simd} binary operators}
 
 \begin{itemdecl}
 friend simd operator+(const simd& lhs, const simd& rhs) noexcept;
@@ -1200,7 +1200,7 @@ friend simd operator>>(const simd& v, int n) noexcept;
   These operators shall not participate in overload resolution unless the indicated operator can be applied to objects of type \tcode{value_type}.
 \end{itemdescr}
 
-\rSec2[parallel.simd.cassign]{Compound assignment}
+\rSec2[parallel.simd.cassign]{\tcode{simd} compound assignment}
 
 \begin{itemdecl}
 friend simd& operator+=(simd& lhs, const simd& rhs) noexcept;
@@ -1239,7 +1239,7 @@ friend simd& operator>>=(simd& lhs, int n) noexcept;
   These operators shall not participate in overload resolution unless the indicated operator can be applied to objects of type \tcode{value_type}.
 \end{itemdescr}
 
-\rSec2[parallel.simd.comparison]{Compare operators}
+\rSec2[parallel.simd.comparison]{\tcode{simd} compare operators}
 
 \begin{itemdecl}
 friend mask_type operator==(const simd& lhs, const simd& rhs) noexcept;
@@ -1895,7 +1895,7 @@ friend simd_mask operator!=(const simd_mask&, const simd_mask&) noexcept;
 
 \begin{itemdescr}
   \pnum\returns
-  An object initialized with the results of applying the indicated operator to \tcode{lhs} and \tcode{rhs} as a binary element-wise operation.
+  A \tcode{simd_mask} object initialized with the results of applying the indicated operator to \tcode{lhs} and \tcode{rhs} as a binary element-wise operation.
 \end{itemdescr}
 
 \rSec2[parallel.simd.mask.reductions]{Reductions}
