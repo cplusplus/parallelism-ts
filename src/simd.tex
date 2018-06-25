@@ -161,7 +161,7 @@ inline namespace parallelism_v2 {
   int find_first_set(@\UNSP{T}@);
   int find_last_set(@\UNSP{T}@);
 
-  // \ref{parallel.simd.whereexpr}, Class templates \tcode{const_where_expression} and \tcode{where_expression}
+  // \ref{parallel.simd.whereexpr}, Where expression class templates \tcode{const_where_expression} and \tcode{where_expression}
   template<class M, class T> class const_where_expression;
   template<class M, class T> class where_expression;
 
@@ -466,7 +466,7 @@ template<int N, class V> struct resize_simd { using type = @\seebelow@; };
   Where present, the member typedef \tcode{type} names \tcode{simd<T, Abi1>} if \tcode V is \tcode{simd<T, Abi0>} or \tcode{simd_mask<T, Abi1>} if \tcode V is \tcode{simd_mask<T, Abi0>}.
 \end{itemdescr}
 
-\rSec2[parallel.simd.whereexpr]{Class templates \tcode{const_where_expression} and \tcode{where_expression}}
+\rSec2[parallel.simd.whereexpr]{Where expression class templates}
 
 \begin{codeblock}
 template<class M, class T> class const_where_expression {
