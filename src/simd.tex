@@ -1649,7 +1649,7 @@ public:
   explicit simd_mask(value_type) noexcept;
   template<class U>
     simd_mask(const simd_mask<U, simd_abi::fixed_size<size()>>&) noexcept;
-  template<class Flags> simd_mask(const value_Type* mem, Flags);
+  template<class Flags> simd_mask(const value_type* mem, Flags);
 
   // \ref{parallel.simd.mask.copy}, Copy functions
   template<class Flags> void copy_from(const value_type* mem, Flags);
