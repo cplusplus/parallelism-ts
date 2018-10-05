@@ -15,13 +15,14 @@ N4773 updates the previous draft, N4755, published in the post-Rapperswil mailin
 
 ## Normative Changes
 
-None.
+* None.
 
 ## Editorial Changes
 
+* Eliminate mistakenly applied `noexcept` from `copy_to` and `copy_from`.
 * Various typographical corrections.
 
 # Acknowledgements
 
-Thanks to Hubert Tong for submitting editorial changes.
+Thanks to Matthias Kretz for correcting `copy_to` and `copy_from` and Hubert Tong for submitting editorial changes.
 
