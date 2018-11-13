@@ -4,17 +4,17 @@
 
 \rSec1[parallel.general.namespaces]{Namespaces and headers}
 
-\pnum Since the extensions described in this Technical Specification are
+\pnum Since the extensions described in this document are
 experimental and not part of the \Cpp Standard Library, they should not be
 declared directly within namespace \tcode{std}. Unless otherwise specified, all
-components described in this Technical Specification are declared in namespace
+components described in this document are declared in namespace
 \tcode{std\colcol{}experimental\colcol{}parallelism_v2}.
 
-\begin{note}Once standardized, the components described by this Technical
-Specification are expected to be promoted to namespace \tcode{std}.\end{note}
+\begin{note}Once standardized, the components described by this document
+are expected to be promoted to namespace \tcode{std}.\end{note}
 
 \pnum
-Each header described in this technical specification shall import the contents of \tcode{std\colcol{}experimental\colcol{}parallelism_v2} into \tcode{std\colcol{}experimental} as if by
+Each header described in this document shall import the contents of \tcode{std\colcol{}experimental\colcol{}parallelism_v2} into \tcode{std\colcol{}experimental} as if by
 \begin{codeblock}
 namespace std::experimental {
   inline namespace parallelism_v2 {}
@@ -22,7 +22,7 @@ namespace std::experimental {
 \end{codeblock}
 
 \pnum Unless otherwise specified, references to such entities described in this
-Technical Specification are assumed to be qualified with
+document are assumed to be qualified with
 \tcode{std::experimental::parallelism_v2}, and references to entities described
 in the \Cpp Standard Library are assumed to be qualified with \tcode{std::}.
 
@@ -34,12 +34,12 @@ in the \Cpp Standard Library are assumed to be qualified with \tcode{std::}.
 
 \rSec1[parallel.general.features]{Feature-testing recommendations}
 
-\pnum An implementation that provides support for this Technical Specification shall define the feature test macro(s) in \tref{tab:parallel.general.features}.
+\pnum An implementation that provides support for this document shall define the feature test macro(s) in \tref{tab:parallel.general.features}.
 
 \begin{floattable}{Feature-test macro(s)}{tab:parallel.general.features}
   { x{2.1cm} | x{1cm} | x{4.4cm} | c | x{5.35cm} }
 \topline
-\lhdr{Title} & \chdr{Section} & \chdr{Macro Name} & \chdr{Value} & \rhdr{Header} \\
+\lhdr{Title} & \chdr{Subclause} & \chdr{Macro Name} & \chdr{Value} & \rhdr{Header} \\
 \capsep
 Task Block & \ref{parallel.taskblock} & \tcode{__cpp_lib_experimental_parallel_task_block} & 201711 & \tcode{<experimental/exception_list> \ <experimental/task_block>} \\
 \hline

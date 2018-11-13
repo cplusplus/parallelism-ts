@@ -3,7 +3,7 @@
 
 %%--------------------------------------------------
 %% basics
-\documentclass[ebook,10pt,oneside,openany,final]{memoir}
+\documentclass[ebook,10pt,openany,final]{memoir}
 
 \usepackage[american]
            {babel}        % needed for iso dates
@@ -100,12 +100,25 @@
 
 %%--------------------------------------------------
 %% configuration
-\input{config}
+
+% comment this line to toggle final draft mode
+\newcommand*{\workingdraft}{}
+
+\ifdefined\workingdraft
+  \input{config-wd}
+\else
+  \input{config-reg}
+\fi
 
 %%--------------------------------------------------
 %% front matter
 \frontmatter
-\include{front}
+
+\ifdefined\workingdraft
+  \include{front-wd}
+\else
+  \include{front-reg}
+\fi
 
 %%--------------------------------------------------
 %% main body of the document

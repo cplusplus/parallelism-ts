@@ -93,7 +93,7 @@ A \tcode{task_block} is \defn{active} if it was created by the \term{nearest
   of \tcode{define_task_block} or \tcode{define_task_block_restore_thread} and
   \defn{nearest enclosing} means the most recent invocation that has not yet
   completed. Code designated for execution in another thread by means other
-  than the facilities in this section (e.g., using \tcode{thread} or
+  than the facilities in this subclause (e.g., using \tcode{thread} or
       \tcode{async}) are not enclosed in the task block and a
   \tcode{task_block} passed to (or captured by) such code is not active within
   that code. Performing any operation on a \tcode{task_block} that is not
@@ -123,8 +123,6 @@ define_task_block([&](auto& tb) {
 \begin{note}
 Implementations are encouraged to diagnose the above error at translation time.
 \end{note}
-
-\rSec2[parallel.taskblock.class.run]{\tcode{task_block} member function template \tcode{run}}
 
 \begin{itemdecl}
 template<class F> void run(F&& f);
@@ -167,8 +165,6 @@ may be immediate or may be delayed until compute resources are available.
 completes.
 
 \end{itemdescr}
-
-\rSec2[parallel.taskblock.class.wait]{\tcode{task_block} member function \tcode{wait}}
 
 \begin{itemdecl}
 void wait();

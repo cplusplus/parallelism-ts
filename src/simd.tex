@@ -246,7 +246,7 @@ inline namespace parallelism_v2 {
 \pnum
 The header \tcode{<experimental/simd>} defines class templates, tag types, trait types, and function templates for element-wise operations on data-parallel objects.
 
-\rSec2[parallel.simd.abi]{\tcode{simd} ABI tags}
+\rSec1[parallel.simd.abi]{\tcode{simd} ABI tags}
 
 \begin{codeblock}
 namespace simd_abi {
@@ -332,7 +332,7 @@ Implementations can base the choice on \tcode{Abis}, but can also ignore the \tc
 The behavior of a program that adds specializations for \tcode{deduce} is undefined.
 \end{itemdescr}
 
-\rSec2[parallel.simd.traits]{\tcode{simd} type traits}
+\rSec1[parallel.simd.traits]{\tcode{simd} type traits}
 
 \begin{itemdecl}
 template<class T> struct is_abi_tag { @\seebelow@ };
@@ -466,7 +466,7 @@ template<int N, class V> struct resize_simd { using type = @\seebelow@; };
   Where present, the member typedef \tcode{type} names \tcode{simd<T, Abi1>} if \tcode V is \tcode{simd<T, Abi0>} or \tcode{simd_mask<T, Abi1>} if \tcode V is \tcode{simd_mask<T, Abi0>}.
 \end{itemdescr}
 
-\rSec2[parallel.simd.whereexpr]{Where expression class templates}
+\rSec1[parallel.simd.whereexpr]{Where expression class templates}
 
 \begin{codeblock}
 template<class M, class T> class const_where_expression {

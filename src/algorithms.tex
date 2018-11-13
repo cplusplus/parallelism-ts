@@ -5,7 +5,7 @@
 \rSec1[parallel.alg.wavefront]{Wavefront Application}
 
 \pnum
-For the purposes of this section, an \defn{evaluation} is a value
+For the purposes of this subclause, an \defn{evaluation} is a value
 computation or side effect of an expression, or an execution of a statement.
 Initialization of a temporary object is considered a subexpression of the
 expression that necessitates the temporary object.
@@ -57,7 +57,7 @@ Vertical antecedent is an irreflexive, antisymmetric, nontransitive relationship
 In the following, $X_i$ and $X_j$ refer to evaluations of the same expression
 or statement contained in the application of an element access function
 corresponding to the $i^\text{th}$ and $j^\text{th}$ elements of the input sequence.
-\begin{note}There might be several evaluations $X_k$, $Y_k$, etc. of a single
+\begin{note}There can be several evaluations $X_k$, $Y_k$, etc. of a single
 expression or statement in application $k$, for example, if the expression or
 statement appears in a loop within the element access function.\end{note}
 
@@ -182,7 +182,7 @@ initial value is obtained and into which the final value is stored.
 \pnum
 An algorithm uses reduction objects by allocating an unspecified number
 of instances, known as \defn{accumulators}, of the reduction value type. \begin{note}An
-implementation might, for example, allocate an accumulator for each thread in
+implementation can, for example, allocate an accumulator for each thread in
 its private thread pool.\end{note} Each accumulator is initialized with the
 object's reduction identity, except that the live-out object (which was
     initialized by the caller) comprises one of the accumulators. The algorithm
@@ -280,7 +280,7 @@ for_loop(execution::vec, 0, n,
 \rSec2[parallel.alg.inductions]{Inductions}
 
 \pnum
-Each of the function templates in this section return an \defn{induction object} of unspecified type having an \defn{induction value type} and encapsulating an initial value $i$ of that type and, optionally, a $stride$.
+Each of the function templates in this subclause return an \defn{induction object} of unspecified type having an \defn{induction value type} and encapsulating an initial value $i$ of that type and, optionally, a $stride$.
 
 \pnum
 For each element in the input range, an algorithm over input sequence $S$ computes an \defn{induction value} from an induction variable and ordinal position $p$ within $S$ by the formula $i + p * stride$ if a stride was specified or $i + p$ otherwise. This induction value is passed to the element access function.
@@ -349,7 +349,7 @@ The first element in the input sequence is \tcode{start}. Each subsequent elemen
 The first argument to $f$ is an element from the input sequence.\begin{note}If \tcode{I} is an iterator type, the iterators in the input sequence are not dereferenced before being passed to $f$.\end{note} For each member of the \tcode{rest} parameter pack excluding $f$, an additional argument is passed to each application of $f$ as follows:
 
 \begin{itemize}
-\item If the pack member is an object returned by a call to a reduction function listed in section \ref{parallel.alg.reductions}, then the additional argument is a reference to an accumulator of that reduction object.
+\item If the pack member is an object returned by a call to a reduction function listed in subclause \ref{parallel.alg.reductions}, then the additional argument is a reference to an accumulator of that reduction object.
 
 \item If the pack member is an object returned by a call to \tcode{induction}, then the additional argument is the induction value for that induction object corresponding to the position of the application of $f$ in the input sequence.
 \end{itemize}

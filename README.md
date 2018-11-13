@@ -1,5 +1,5 @@
-    Document Number: N4774
-    Date:            2018-10-08
+    Document Number: NXXXX+1
+    Date:            2018-XX-XX
     Revises:
     Project:         Programming Language C++
     Project Number:  TS 19570
@@ -7,22 +7,21 @@
                      NVIDIA Corporation
                      jhoberock@nvidia.com
 
-# Parallelism TS Editor's Report, pre-San Diego mailing 
+# Parallelism TS Editor's Report, post-San Diego mailing 
 
-N4773 is the proposed working draft of Parallelism TS Version 2. It contains editorial changes to the Parallelism TS working draft.
+NXXXX is the proposed working draft of Parallelism TS Version 2. It contains editorial changes to the Parallelism TS working draft.
 
-N4773 updates the previous draft, N4755, published in the post-Rapperswil mailing.
+NXXXX updates the previous draft, N4473, published in the pre-San Diego mailing.
 
 ## Normative Changes
 
-* None.
+XXX TODO
 
 ## Editorial Changes
 
-* Eliminate mistakenly applied `noexcept` from `copy_to` and `copy_from`.
-* Various typographical corrections.
+* Various changes requested by ISO.
 
 # Acknowledgements
 
-Thanks to Matthias Kretz for correcting `copy_to` and `copy_from` and Hubert Tong for submitting editorial changes.
+Thanks to Hubert Tong, Richard Smith, Casey Carter, and Jens Maurer for ISO-approved wording suggestions.
 
