@@ -1,4 +1,4 @@
-    Document Number: N4789
+    Document Number: N4794
     Date:            2018-11-26
     Revises:
     Project:         Programming Language C++
@@ -9,9 +9,9 @@
 
 # Parallelism TS Editor's Report, post-San Diego mailing 
 
-N4788 is the proposed working draft of Parallelism TS Version 2. It contains editorial changes to the Parallelism TS working draft.
+N4793 is the proposed working draft of Parallelism TS Version 2. It contains editorial changes to the Parallelism TS working draft.
 
-N4788 updates the previous draft, N4473, published in the pre-San Diego mailing.
+N4793 updates the previous draft, N4473, published in the pre-San Diego mailing.
 
 ## Normative Changes
 
