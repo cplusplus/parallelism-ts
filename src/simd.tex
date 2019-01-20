@@ -277,7 +277,7 @@ The value of \tcode{max_fixed_size<T>} is at least 32.
 Use of the \tcode{simd_abi::fixed_size<N>} tag type requires data-parallel types to store \tcode{N} elements (i.e. \tcode{simd<T, simd_abi::fixed_size<N>>::size()} is \tcode{N}). \tcode{simd<T, fixed_size<N>>} and \tcode{simd_mask<T, fixed_size<N>>} with \tcode{N > 0} and \tcode{N <= max_fixed_size<T>} shall be supported. Additionally, for every supported \tcode{simd<T, Abi>} (see \ref{parallel.simd.overview}), where \tcode{Abi} is an ABI tag that is not a specialization of \tcode{simd_abi::fixed_size}, \tcode{N == simd<T, Abi>::size()} shall be supported.
 
 \pnum
-\begin{note}It is unspecified whether \tcode{simd<T, fixed_size<T, fixed_size<N>>} with \tcode{N > max_fixed_size<T>} is supported. The value of \tcode{max_fixed_size<T>} can depend on compiler flags and can change between different compiler versions.\end{note}
+\begin{note}It is unspecified whether \tcode{simd<T, fixed_size<N>>} with \tcode{N > max_fixed_size<T>} is supported. The value of \tcode{max_fixed_size<T>} can depend on compiler flags and can change between different compiler versions.\end{note}
 
 \pnum
 \begin{note}An implementation can forego ABI compatibility between differently compiled translation units for \tcode{simd} and \tcode{simd_mask} specializations using the same \tcode{simd_abi::fixed_size<N>} tag. Otherwise, the efficiency of \tcode{simd<T, Abi>} is likely to be better than for \tcode{simd<T, fixed_size<simd_size_v<T, Abi>>>} (with \tcode{Abi} not a specialization of \tcode{simd_abi::fixed_size}).\end{note}
