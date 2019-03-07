@@ -823,8 +823,8 @@ public:
   value_type operator--(int) && noexcept;
 
   friend void swap(reference&& a, reference&& b) noexcept;
-  friend void swap(value_type&& a, reference&& b) noexcept;
-  friend void swap(reference&& a, value_type&& b) noexcept;
+  friend void swap(value_type& a, reference&& b) noexcept;
+  friend void swap(reference&& a, value_type& b) noexcept;
 };
 \end{codeblock}
 
