@@ -849,7 +849,7 @@ template<class U> reference operator=(U&& x) && noexcept;
   A copy of \tcode{*this}.
 
   \pnum\remarks
-  This function shall not participate in overload resolution unless \tcode{declval<value_type\&>() = std\colcol{}forward>U>(x)} is well-formed.
+  This function shall not participate in overload resolution unless \tcode{declval<value_type\&>() = std\colcol{}forward<U>(x)} is well-formed.
 \end{itemdescr}
 
 \begin{itemdecl}
